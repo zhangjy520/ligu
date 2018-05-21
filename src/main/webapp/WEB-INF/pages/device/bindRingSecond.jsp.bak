@@ -1,0 +1,129 @@
+<%@ include file="../common/common.jsp"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="login">
+	<meta name="author" content="lexi">
+    <style>
+        *{
+            box-sizing: border-box;
+            margin:0;
+            padding:0;
+        }
+        section{
+            width:1000px;
+            height:600px;
+            border:1px solid #333;
+            margin:0 auto;
+            font-size:14px;
+        }
+        section aside{
+            float:left;
+            height:100%;
+            border-right:1px solid #333;
+            padding:50px 30px;
+        }
+        section aside div{
+            margin:20px 0;
+        }
+        aside div input[type=text]{
+            height:28px;
+            padding-left:5px;
+        }
+        aside div button{
+            width:100%;
+            height:35px;
+            border:1px solid #169BD5;
+            background:#169BD5;
+            color:#fff;
+            border-radius: 4px;
+            font-size:14px;
+        }
+        main{
+            padding:10px;
+            height:100%;
+            overflow-y:scroll;
+        }
+        main table{
+            width:80%;
+        }
+        table td{
+            height:30px;
+            padding-left:10px;
+        }
+    </style>
+    <script src="${ctxStatic}/js/jquery.js"></script>
+
+    <script>
+        $(function() {
+            $("#submit-btn").click(function(event){
+                $.post($('form').attr('action'),{
+                    id:$("input[name='id']").val(),
+                    no:$("input[name='no']").val(),
+                    name:$("input[name='name']").val(),
+                },function(retJson){
+                    if (retJson.code == '0') {
+                        alert('绑定成功');
+                        window.location.href = "${ctx}/device/ring/bindRingSecond";
+                    } else {
+                        alert(retJson.msg);
+                    }
+                });
+            });
+        });
+    </script>
+    <title>手环序号-姓名绑定</title>
+</head>
+<body>
+
+<section>
+    <aside>
+        <form action="${ctx}/device/ring/doBindRingSecond">
+            <input type="hidden" name="id" value="${ring.id}">
+            <div>
+                <span>手环编号</span>
+                <input type="text" name="no" value="${ring.ringNum}" placeholder="手环编号，1~150"/>
+            </div>
+            <div>
+                <span>用户姓名</span>
+                <input type="text" name="name" value="${ring.studentName}" placeholder="用户姓名"/>
+            </div>
+            <div>
+                <input id="submit-btn" type="button" value="提交">
+            </div>
+        </form>
+    </aside>
+    <main>
+        <table>
+            <tr>
+                <td>手环编号</td>
+                <td>MAC地址</td>
+                <td>用户姓名</td>
+                <td>教室</td>
+            </tr>
+            <c:forEach items="${ringList}" var="ring">
+                <tr>
+                    <td>
+                        ${ring.ringNum}
+                    </td>
+                    <td>
+                        ${ring.studentName}
+                    </td>
+                    <td>
+                        ${ring.stationName}
+                    </td>
+                    <td>
+                        <a href="${ctx}/device/ring/edit/${ring.mac}">编辑</a>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
+    </main>
+</section>
+
+</body>
+</html>

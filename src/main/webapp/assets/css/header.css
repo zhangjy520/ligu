@@ -1,0 +1,90 @@
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#F4F4F3;font-family: '微软雅黑';}
+.menu,.tool_item,section{width:1200px;margin:0 auto;}
+.left{float:left}
+.right{float:right}
+ul{list-style:none;}
+ul li:before{content:'';display:block;}
+a{text-decoration: none;display:inline-block;}
+nav{width:100%;height:60px;background:#214050;}
+.menu{width:1200px;height:100%;margin:0 auto;}
+.menu .menu_logo{line-height:49px;text-align:center;float:left;height:100%;width:250px;background:#1AB394;color:#fff;font-size:18px;}
+.menu_main{float:left;}
+.menu_main>li{float:left;position:relative;}
+.menu_main li.dailyHealth ul{display:none;border-radius:0 0 3px 3px;width:100px;background:#214050;position:absolute;top:60px;left:0;color:#fff;font-size:14px;}
+.menu_main li.dailyHealth ul li{width:100%;text-align:center;padding:10px 0;}
+.menu_main li.dailyHealth ul li:active,.menu_main li.dailyHealth ul li:hover{color:#fff;cursor: pointer;}
+.menu_main li a{width:100px;height:60px;color:#fff;font-size:14px;text-align: center;line-height:60px;}
+.menu_main li a.active,.menu_main li a:hover{background:#3E7189}
+.menu-box li:hover,.menu-box li.active{background:#3E7189}
+.menu .user{float:right;}
+.menu .user b{display:inline-block;height:20px;margin:0 15px;border-left:1px solid #ddd;margin-top:16px;position:relative;top:3px;}
+.user span{color:#ddd;line-height:32px;font-size:14px;display:inline-block;padding-left:40px;height:32px;background:url('../image/m/user.png') no-repeat center left;}
+.user span.user1{color:#ddd;line-height:32px;font-size:14px;display:inline-block;padding-left:40px;height:32px;background:url('../image/m/teacher.png') no-repeat center left;}
+header{height:49px;background:#f5fdfb;border-bottom:1px solid #e7eaec;}
+.tool_item{clear:both;font-size:14px;color:#565656;}
+.tool_item p{height:100%;line-height:49px;}
+.tool_item span{margin-right:10px;}
+.tool_item img{position:relative;top:9px;}
+section{padding:15px 0;}
+.row{overflow:hidden;}
+.average_data h4{font-size:16px;color:#333;font-weight:normal;}
+.data{padding:10px 3px;margin:20px 0;overflow: hidden;}
+.data img{margin:10px 25px 0 0;vertical-align: top;}
+.data li{background:#fff;float:left;padding:20px;width:276px;height:140px;box-shadow:0px 0px 10px #d6d6d5;}
+p.title{font-size:16px;color:#333;overflow:hidden;}
+p.title button{background:#1AB394;color:#fff;padding:8px 15px;border:1px solid #1AB394;border-radius:4px;}
+.data li h3{font-size:30px;}
+.data li h2,.data li h3{display:inline-block;margin:15px 0;font-size:30px;color:#676a6c;font-weight:normal;}
+.data li span{font-size:14px;color:#676a6c;}
+.up{color:#1ab394;background:url('../image/m/up.png') no-repeat center right;}
+.down{color:#FF2525;background:url('../image/m/down.png') no-repeat center right;}
+.line{background:url('../image/m/line.png') no-repeat center right; height:10px;}
+.data li div{padding-right:25px;text-align:right;}
+.data li{margin-right:30px;}
+.data li:last-child{margin:0;}
+.exercise_item{overflow:hidden;}
+.exercise_left{overflow:hidden;background:#fff;float:left;width:892px;border-top:4px solid #e7eaec;padding:20px 20px 40px 20px;}
+.exercise_right{background:#fff;float:right;margin-left:30px;width:278px;border-top:4px solid #e7eaec;padding:20px 10px;}
+.time_tool{border:1px solid #ddd;border-right:none;border-bottom:none;font-size:12px;overflow:hidden;}
+.time_tool span{cursor:pointer;text-align:center;width:33.33%;float:left;padding:4px 8px;border:1px solid #ddd;border-top:none;border-left:none;display:inline-block;color:#676a6c;}
+.time_tool span.current{background:#1AB394;color:#fff;}
+.time_tool select{height:30px;width:150px;border:1px solid #ddd;border-radius :4px;}
+.time_tool button{border:1px solid #1AB394;background:#1AB394;color:#fff;width:55px;height:28px;border-radius:3px;margin-left:15px;}
+.time_ranking li{overflow:hidden;padding:0 8px;font-size:14px;color:#676a6c;margin:18px 0; }
+.data_record{margin-top:30px;}
+.data_record>div{padding:10px 0 25px 0;background:#fff;width:585px;border-top:4px solid #e7eaec;}
+.record_left>div,.record_right>div{overflow:hidden;padding:8px 20px;border-bottom:1px solid #e7eaec;margin-bottom:15px;}
+.record_left>table,.record_right>table{text-align:center;font-size:13px;color:#676a6c;border-collapse:collapse;width:95%;margin:0 auto;}
+.record_left>table th,.record_left>table td,.record_right>table th,.record_right>table td
+{border-bottom: 1px solid #ddd;padding:8px 0;}
+.time_chart{clear:both;width:100%;padding:0 20px;padding-top:20px;}
+#myfirstchart{width:85%;}
+.chart_list{width:10%;}
+.chart_list p{margin:15px 0;font-size:14px;color:#676a6c;height:20px;position:relative;}
+.chart_list p span:first-child{display:inline-block;width:20px;height:20px;}
+.chart_list p span:last-child{position:absolute;top:0;left:28px;}
+.btn{width:80px;height:28px;border-radius:3px;border:1px solid #1AB394;color:#fff;background:#1AB394;font-size:12px; }
+.all_datas{overflow:hidden;}
+.all_datas>div{padding:0 20px;border-top:4px solid #e7eaec;width:585px;height:600px;background:#fff;}
+.all_datas>div:nth-child(3),.all_datas>div:nth-child(4){margin-top:30px;}
+.header{padding:10px 0;}
+ul.data_table{overflow:hidden;margin:20px auto;margin-top:40px;background:#fff;position:relative;z-index:100;width:90%;border-bottom:1px solid #e7eaec;border-right:1px solid #e7eaec;;}
+ul.data_table li{width:50%;height:36px;border-top:1px solid #e7eaec;float:left;}
+ul.data_table li table{width:100%;height:100%;border-collapse: collapse;text-align:center;font-size:13px;color:#676a6c;}
+ul.data_table li table td{width:33.33%;}
+.chart_item{position:relative;}
+.chart_item>div{overflow:hidden;width:100px;position:absolute;top:40px;right:20px;}
+.chart_item>div p.left span{display:block;width:20px;height:20px;margin:5px 5px;}
+.chart_item>div p.right span{display:block;margin:8px 0;font-size:13px;color:#676a6c}
+.chart_item .radio{font-size:13px;color:#676a6c;padding-top:20px;}
+#grade_chart{margin:0 0 28px 0;}
+#class_chart{margin:60px 0 35px 50px;}
+
+
+.fenye a,.fenye span,.fenye1 a,.fenye1 span{color:#676a6c;margin:0 5px;}
+.fenye span.current,.fenye1 span.current{color:#1AB394;}
+
+.tag{padding:20px 20px;font-weight:normal;}
+
+

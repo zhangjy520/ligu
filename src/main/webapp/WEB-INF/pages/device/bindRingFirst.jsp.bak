@@ -1,0 +1,175 @@
+<%@ include file="../common/common.jsp"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="login">
+	<meta name="author" content="lexi">
+	<style>
+		*{
+			box-sizing: border-box;
+			margin:0;
+			padding:0;
+		}
+		section{
+			width:1000px;
+			height:600px;
+			border:1px solid #333;
+			margin:0 auto;
+			font-size:14px;
+		}
+		section aside{
+			float:left;
+			height:100%;
+			border-right:1px solid #333;
+			padding:50px 30px;
+		}
+		section aside div{
+			margin:20px 0;
+		}
+		section aside div span{
+			display:inline-block;
+			width:100px;
+		}
+		aside div input[type=text]{
+			height:28px;
+			padding-left:5px;
+		}
+		aside div button{
+			width:100%;
+			height:35px;
+			border:1px solid #169BD5;
+			background:#169BD5;
+			color:#fff;
+			border-radius: 4px;
+			font-size:14px;
+		}
+		main{
+			padding:10px;
+			padding-top: 50px;
+			height:100%;
+			overflow-y:scroll;
+		}
+		main table{
+			width:80%;
+		}
+		table td{
+			height:30px;
+			padding-left:10px;
+		}
+	</style>
+	<script src="${ctxStatic}/js/jquery.js"></script>
+
+	<script>
+		$(function() {
+			$("#submit-btn").click(function(event){
+				$.post($('#bindForm').attr('action'),{
+					mac:$("input[name='mac']").val(),
+					no:$("input[name='no']").val(),
+				},function(retJson){
+					if (retJson.code == '0') {
+						alert('保存成功');
+						window.location.href="${ctx}/device/bindRingFirst";
+					} else {
+						alert(retJson.msg);
+					}
+				});
+			});
+
+			$("#import_btn").click(function(event){
+				var form = $('#importForm');
+				var fileName = $("input[name='file']").val();
+				alert('导入文件：' + fileName);
+				if (fileName == "" || fileName.length == 0) {
+					alert('请选择导入文件');
+					return;
+				} else {
+					form.submit();
+				}
+			});
+
+			$("#random_btn").click(function(event){
+				$.post($('#randomForm').attr('action'),{
+
+				},function(retJson){
+					if (retJson.code == '0') {
+						alert('分班成功');
+						window.location.href="${ctx}/device/ring/bindRingFirst";
+					} else {
+						alert(retJson.msg);
+					}
+				});
+			});
+		});
+	</script>
+	<title>手环序号-mc绑定</title>
+</head>
+<body>
+
+<%--手环序号-mc绑定。--%>
+<%--<form id="bindForm" action="${ctx}/device/doBindRingFirst">--%>
+	<%--<input type="hidden" name="id" value="">--%>
+	<%--手环mac：<input name="mac" value="" type="text"> <br>--%>
+	<%--收换序号（1-150）：<input name="no" value="" type="text"> <br>--%>
+	<%--<input id="submit-btn" type="button" value="提交">--%>
+<%--</form>--%>
+
+<section>
+	<aside>
+		<form action="${ctx}/device/station/doBindStation">
+			<div>
+				<form id="importForm" action="${ctx}/device/ring/importRings" method="post" enctype="multipart/form-data" >
+					<input type="file" name="file"> <br>
+					<input type="button" id="import_btn" value="导入">
+				</form>
+			</div>
+			<div>
+				手环随机分班：
+				<form id="randomForm" action="${ctx}/device/ring/random">
+					<input type="button" id="random_btn" value="随机分班">
+				</form>
+			</div>
+		</form>
+	</aside>
+	<main>
+		<table>
+			<tr>
+				<th>
+					手环mac
+				</th>
+				<th>
+					手环编号
+				</th>
+				<th>
+					所在班级
+				</th>
+			</tr>
+			<c:forEach items="${ringList}" var="ring">
+				<tr>
+					<th>
+						${ring.mac}
+					</th>
+					<th>
+						${ring.ringNum}
+					</th>
+					<th>
+						<c:choose>
+							<c:when test="${empty ring.stationName}">
+								未分班
+							</c:when>
+							<c:otherwise>
+								${ring.stationName}
+							</c:otherwise>
+						</c:choose>
+					</th>
+				</tr>
+			</c:forEach>
+		</table>
+	</main>
+</section>
+
+</body>
+</html>

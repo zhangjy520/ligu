@@ -1,0 +1,89 @@
+绑定数据：
+{
+    code: 0,
+    msg: "ok",
+    data: {
+        ringList: [
+            {
+                mac: "a-b-c-3",
+                ringNum: 4,
+                studentName: "张九",
+                stationMac: "a-b-c-d",
+                status: 1
+            },
+            {
+                mac: "a-b-c-cb",
+                ringNum: 3,
+                studentName: "李八",
+                stationMac: "a-b-c-d",
+                status: 1
+            },
+            {
+                mac: "a-b-c-c",
+                ringNum: 2,
+                studentName: "张三",
+                stationMac: "a-b-c-d",
+                status: 1
+            },
+            {
+                mac: "a-b-c-d",
+                ringNum: 1,
+                studentName: "李四",
+                stationMac: "a-b-c-d",
+                status: 1
+            }
+        ],
+        newList: [
+            "张三",
+            "张三2",
+            "张三3",
+            "张三4",
+            "张三5"
+        ],
+        className: "北大一班"
+    }
+}
+
+空数据===================：
+{
+    code: 0,
+    msg: "ok",
+    data: [
+        {
+            mac: "1-2-3-4",
+            ringNum: 7,
+            stationMac: "a-b-c-d",
+            status: 0
+        },
+        {
+            mac: "aa-bb-cc-dd",
+            ringNum: 6,
+            stationMac: "a-b-c-d",
+            status: 0
+        },
+        {
+            mac: "a-b-c-3",
+            ringNum: 4,
+            stationMac: "a-b-c-d",
+            status: 1
+        },
+        {
+            mac: "a-b-c-cb",
+            ringNum: 3,
+            stationMac: "a-b-c-d",
+            status: 1
+        },
+        {
+            mac: "a-b-c-c",
+            ringNum: 2,
+            stationMac: "a-b-c-d",
+            status: 1
+        },
+        {
+            mac: "a-b-c-d",
+            ringNum: 1,
+            stationMac: "a-b-c-d",
+            status: 1
+        }
+    ]
+}

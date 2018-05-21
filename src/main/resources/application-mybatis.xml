@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd"
+       default-lazy-init="true">
+
+    <description>Spring-Mybatis</description>
+
+    <context:component-scan base-package="cc.ligu.mvc.persistence"/>
+
+    <!-- import config file -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath*:db.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- bonecp connection pool -->
+    <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+
+        <property name="driverClass">
+            <value>${jdbc.driver}</value>
+        </property>
+        <property name="jdbcUrl">
+            <value>${jdbc.url}</value>
+        </property>
+        <property name="username">
+            <value>${jdbc.username}</value>
+        </property>
+        <property name="password">
+            <value>${jdbc.password}</value>
+        </property>
+
+        <!-- 检查数据库连接池中空闲连接的间隔时间，单位是分，默认值：240，如果要取消则设置为0 -->
+        <property name="idleConnectionTestPeriodInSeconds" value="120"/>
+        <!-- 连接池中未使用的链接最大存活时间，单位是分，默认值：60，如果要永远存活设置为0 -->
+        <property name="idleMaxAgeInSeconds" value="60"/>
+        <!-- 每个分区最大的连接数 -->
+        <property name="maxConnectionsPerPartition" value="10"/>
+        <!-- 每个分区最小的连接数 -->
+        <property name="minConnectionsPerPartition" value="1"/>
+        <!-- 分区数 ，默认值2，最小1，推荐3-4，视应用而定 -->
+        <property name="partitionCount" value="2"/>
+        <!-- 每次去拿数据库连接的时候一次性要拿几个,默认值：2 -->
+        <property name="acquireIncrement" value="1"/>
+        <!-- 缓存prepared statements的大小，默认值：0 -->
+        <property name="statementsCacheSize" value="20"/>
+    </bean>
+
+    <!-- spring-MyBatis -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!-- scan xml file -->
+        <property name="mapperLocations" value="classpath:cc/ligu/mvc/persistence/mapping/*.xml"></property>
+        <property name="typeAliasesPackage" value="cc.ligu.mvc.persistence.entity"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+    </bean>
+
+    <!-- mysql mapping scan -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="cc.ligu.mvc.persistence.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <!-- transaction manager, use JtaTransactionManager for global tx -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- open annotation transaction -->
+    <!--<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />-->
+
+    <!--&lt;!&ndash; aop &ndash;&gt;-->
+    <!--<aop:aspectj-autoproxy />-->
+
+</beans>

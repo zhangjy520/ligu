@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.ligu.mvc.persistence.dao.A_DeviceExtensionMapper" >
+
+    <resultMap id="ExtensionRingBaseResultMap" type="cc.ligu.mvc.persistence.entity.DeviceRing"
+               extends="cc.ligu.mvc.persistence.dao.DeviceRingMapper.BaseResultMap" >
+    </resultMap>
+
+    <resultMap id="ExtensionStatioinBaseResultMap" type="cc.ligu.mvc.persistence.entity.DeviceStation"
+               extends="cc.ligu.mvc.persistence.dao.DeviceStationMapper.BaseResultMap" >
+    </resultMap>
+
+    <!-- device ring extension-->
+    <select id="selectLastRingRecord" resultType="cc.ligu.mvc.persistence.entity.DeviceRing"
+            parameterType="cc.ligu.mvc.persistence.entity.DeviceRing">
+        select
+        <include refid="cc.ligu.mvc.persistence.dao.DeviceRingMapper.Base_Column_List"/>
+        from device_ring a
+        WHERE a.del_flag = #{delFlag,jdbcType=INTEGER}
+        and a.mac = #{mac,jdbcType=VARCHAR}
+        ORDER BY a.create_date DESC limit 1;
+    </select>
+
+    <select id="findRingsByExample" resultType="cc.ligu.mvc.persistence.entity.DeviceRing" parameterType="cc.ligu.mvc.persistence.entity.DeviceRingExample">
+        select
+        <include refid="cc.ligu.mvc.persistence.dao.DeviceRingMapper.Base_Column_List"/>
+        from device_ring a
+        LEFT JOIN device_station st ON a.station = st.mac
+        LEFT JOIN user_student s ON s.id = a.student_id
+        <if test="_parameter != null">
+            <include refid="cc.ligu.mvc.persistence.dao.DeviceRingMapper.Example_Where_Clause"/>
+        </if>
+        AND a.del_flag = 0
+        ORDER BY a.create_date DESC
+    </select>
+
+    <select id="findDistinctRingsByExample" resultType="cc.ligu.mvc.persistence.entity.DeviceRing" parameterType="cc.ligu.mvc.persistence.entity.DeviceRingExample">
+        select
+        <include refid="cc.ligu.mvc.persistence.dao.DeviceRingMapper.Base_Column_List"/>
+        from device_ring a
+        LEFT JOIN device_station st ON a.station = st.mac
+        LEFT JOIN user_student s ON s.id = a.student_id
+        <if test="_parameter != null">
+            <include refid="cc.ligu.mvc.persistence.dao.DeviceRingMapper.Example_Where_Clause"/>
+        </if>
+        AND a.del_flag = 0
+        GROUP BY a.student_id
+        ORDER BY a.create_date DESC
+    </select>
+
+    <!-- 全部空数据 -->
+    <select id="findEmptyRingByScreenMac" resultType="cc.ligu.mvc.persistence.entity.DeviceRing" parameterType="java.lang.String">
+        select
+        dr.mac as mac,
+        dr.ring_num ringNum,
+	    dr.status status,
+        dr.station_mac stationMac
+        from device_ring dr, device_station st
+        where dr.station_mac = st.station_mac and st.screen_mac=#{screenMac}
+        ORDER BY dr.create_date DESC
+    </select>
+
+    <!-- 已经绑定的手环 -->
+    <select id="findRingListByScreenMac" resultType="cc.ligu.mvc.persistence.entity.DeviceRing" parameterType="java.lang.String">
+        select
+            dr.mac as mac,
+            dr.ring_num ringNum,
+	        dr.status status,
+            dr.student_name as studentName,
+            dr.station_mac as stationMac,
+            dr.station_name as stationName
+        from device_ring dr, device_station st
+        where dr.station_mac = st.station_mac and dr.status=1 and st.screen_mac=#{screenMac}
+        ORDER BY dr.create_date DESC
+    </select>
+
+
+    <!-- device station extension-->
+    <!-- todo ... -->
+
+</mapper>

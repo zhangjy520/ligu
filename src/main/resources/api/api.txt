@@ -1,0 +1,83 @@
+所有api返回结构为json对象，如下：
+{
+    code:0,
+    msg:"ok",
+    data:null
+}
+其中code代表错误码，0为正常，其他为错误，具体根据业务逻辑重新定义
+msg为错误信息，ok为默认正常
+data为数据域，json格式的数组或者对象
+
+baseUrl为：http://127.0.0.1/smartBoard/
+
+1. 接受基站数据：
+url:data/receive/station
+method: post
+params:
+stations:[{
+        mac:"10:22:ac:3c:af",
+        location:"grade_class_index",
+        timestamp:122342123123,
+        type:1|0
+    },
+    {
+        mac:"10:22:ac:3c:af",
+        location:"grade_class_index",
+        timestamp:122342123123,
+        type:1|0
+    }]
+此api基站信息同步到服务器：
+mac地址，
+位置，
+时间戳
+类型，0为收集数据基站，1为数据计算以及发送基站
+返回:
+{
+  "code" : 0,
+  "msg" : "ok",
+  "data" : null
+}
+
+2. 接受手环数据：
+url:data/receive/ring
+method: post
+params:
+    mac:"10:22:ac:3c:af",
+    timestamp:122342123123,
+    rings:"[{mac:"ab:dd:33:2s",station:"as:2g:29:ga",timestamp:122342123123},
+            {mac:"ab:ab:33:2s",station:"as:2g:29:ga",timestamp:122342123123},
+            {mac:"ab:dd:32:2s",station:"as:2g:29:ga",timestamp:122342123123}]"
+
+info为基站信息，
+timestamp是发送的时间戳，
+ring为手环信息，其中：每个手环都带基站信息，以及时间戳
+
+返回[code为404表示基站信息未同步过，需要调用 接口1同步基站数据，但是此mac的基站数据已经记录，不用多次同步]:
+{
+  "code" : 0,
+  "msg" : "ok",
+  "data" : null
+}
+
+================================================================================
+baseUrl为：http://127.0.0.1/smartBoard/
+temp:
+url:data/receive/temp
+method: post
+params:
+    mac:"10:22:ac:3c:af",
+    timestamp:122342123123,
+    rings:"ab:dd:33:2s,ab:dd:33:2s,ab:dd:33:2s"
+
+mac为基站mac信息，
+timestamp是发送的时间戳，
+rings为手环信息
+
+返回:
+{
+  "code" : 0,
+  "msg" : "ok",
+  "data" : null
+}
+
+

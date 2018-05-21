@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!-- 配置文件路径 -->
+    <properties resource="db.properties"/>
+
+    <!-- 数据库驱动包路径 -->
+    <classPathEntry location="${drive.class.path}"/>
+
+    <context id="MySQLTables" targetRuntime="MyBatis3">
+        <!-- 抑制警告 -->
+        <property name="suppressTypeWarnings" value="true" />
+
+        <!-- generate entity时，生成hashcode和equals方法 -->
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+        <!-- generate entity时，生成serialVersionUID -->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+        <!-- 这个插件只会增加字符串字段映射到一个JDBC字符的方法 -->
+        <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin" />
+        <!-- genenat entity时,生成toString -->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+
+        <!-- 抑制生成代码的注释 -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+
+
+        <!-- 数据库连接信息 -->
+        <jdbcConnection driverClass="${jdbc.driver}" connectionURL="${jdbc.url}" userId="${jdbc.username}"
+                        password="${jdbc.password}">
+        </jdbcConnection>
+
+        <!-- 生成的model 包路径 -->
+        <javaModelGenerator targetPackage="${model.package}" targetProject="${target.project}">
+            <property name="enableSubPackages" value="ture"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 生成xml mapper文件 路径 -->
+        <sqlMapGenerator targetPackage="${xml.mapper.package}" targetProject="${target.project}">
+            <property name="enableSubPackages" value="ture"/>
+        </sqlMapGenerator>
+
+        <!-- 生成的Dao接口 的包路径 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="${dao.package}" targetProject="${target.project}">
+            <property name="enableSubPackages" value="ture"/>
+        </javaClientGenerator>
+
+        <!-- entity mapping relation -->
+        <!-- 用户表[sys_user 用户] -->
+        <!--<table schema="smart_board" tableName="sys_user" domainObjectName="User"-->
+               <!--enableCountByExample="false"-->
+               <!--enableUpdateByExample="true"-->
+               <!--enableDeleteByExample="true"-->
+               <!--enableSelectByExample="true"-->
+               <!--selectByExampleQueryId="true">-->
+
+            <!--<property name="useActualColumnNames" value="false"/>-->
+
+            <!--&lt;!&ndash;<columnOverride column="login_name" property="account" javaType="String"/>&ndash;&gt;-->
+
+        <!--</table>-->
+
+        <!--&lt;!&ndash; 角色表[sys_role 角色] &ndash;&gt;-->
+        <!--<table schema="smart_board" tableName="sys_role" domainObjectName="Role"-->
+               <!--enableCountByExample="false"-->
+               <!--enableUpdateByExample="true"-->
+               <!--enableDeleteByExample="true"-->
+               <!--enableSelectByExample="true"-->
+               <!--selectByExampleQueryId="true">-->
+
+            <!--<property name="useActualColumnNames" value="false"/>-->
+
+        <!--</table>-->
+
+        <!--&lt;!&ndash; 角色表[ref_user_role 用户角色] &ndash;&gt;-->
+        <!--<table schema="smart_board" tableName="ref_user_role" domainObjectName="UserRole"-->
+               <!--enableCountByExample="false"-->
+               <!--enableUpdateByExample="true"-->
+               <!--enableDeleteByExample="true"-->
+               <!--enableSelectByExample="true"-->
+               <!--selectByExampleQueryId="true">-->
+
+            <!--<property name="useActualColumnNames" value="false"/>-->
+
+        <!--</table>-->
+
+        <!--&lt;!&ndash; 菜单表[sys_menu 菜单] &ndash;&gt;-->
+        <!--<table schema="smart_board" tableName="sys_menu" domainObjectName="Menu"-->
+               <!--enableCountByExample="false"-->
+               <!--enableUpdateByExample="true"-->
+               <!--enableDeleteByExample="true"-->
+               <!--enableSelectByExample="true"-->
+               <!--selectByExampleQueryId="true">-->
+
+            <!--<property name="useActualColumnNames" value="false"/>-->
+
+        <!--</table>-->
+
+        <!--&lt;!&ndash; 角色 -菜单表[sys_role_menu 角色 菜单] &ndash;&gt;-->
+        <!--<table schema="smart_board" tableName="ref_role_menu" domainObjectName="RoleMenu"-->
+               <!--enableCountByExample="false"-->
+               <!--enableUpdateByExample="true"-->
+               <!--enableDeleteByExample="true"-->
+               <!--enableSelectByExample="true"-->
+               <!--selectByExampleQueryId="true">-->
+
+            <!--<property name="useActualColumnNames" value="false"/>-->
+
+        <!--</table>-->
+
+        <!--&lt;!&ndash; 设备-基站表[device_station] &ndash;&gt;-->
+        <!--<table schema="smart_board" tableName="device_station" domainObjectName="DeviceStation"-->
+               <!--enableCountByExample="false"-->
+               <!--enableUpdateByExample="true"-->
+               <!--enableDeleteByExample="true"-->
+               <!--enableSelectByExample="true"-->
+               <!--selectByExampleQueryId="true">-->
+
+            <!--<property name="useActualColumnNames" value="false"/>-->
+
+        <!--</table>-->
+
+        <!--&lt;!&ndash; 设备-手环表[device_ring] &ndash;&gt;-->
+        <!--<table schema="smart_board" tableName="device_ring" domainObjectName="DeviceRing"-->
+               <!--enableCountByExample="false"-->
+               <!--enableUpdateByExample="true"-->
+               <!--enableDeleteByExample="true"-->
+               <!--enableSelectByExample="true"-->
+               <!--selectByExampleQueryId="true">-->
+
+            <!--<property name="useActualColumnNames" value="false"/>-->
+
+        <!--</table>-->
+
+        <!--&lt;!&ndash; 机构表[org_school 学校] &ndash;&gt;-->
+        <!--<table schema="smart_board" tableName="org_school" domainObjectName="School"-->
+               <!--enableCountByExample="false"-->
+               <!--enableUpdateByExample="true"-->
+               <!--enableDeleteByExample="true"-->
+               <!--enableSelectByExample="true"-->
+               <!--selectByExampleQueryId="true">-->
+
+            <!--<property name="useActualColumnNames" value="false"/>-->
+
+        <!--</table>-->
+
+        <!--&lt;!&ndash; role_schoole[ref_role_school 角色管理机构列表] &ndash;&gt;-->
+        <!--<table schema="smart_board" tableName="ref_role_school" domainObjectName="RoleSchool"-->
+               <!--enableCountByExample="false"-->
+               <!--enableUpdateByExample="true"-->
+               <!--enableDeleteByExample="true"-->
+               <!--enableSelectByExample="true"-->
+               <!--selectByExampleQueryId="true">-->
+
+            <!--<property name="useActualColumnNames" value="false"/>-->
+
+        <!--</table>-->
+
+        <!--&lt;!&ndash; 部门表[org_grade_class 班级] &ndash;&gt;-->
+        <!--<table schema="smart_board" tableName="org_grade_class" domainObjectName="GradeClass"-->
+               <!--enableCountByExample="false"-->
+               <!--enableUpdateByExample="true"-->
+               <!--enableDeleteByExample="true"-->
+               <!--enableSelectByExample="true"-->
+               <!--selectByExampleQueryId="true">-->
+
+            <!--<property name="useActualColumnNames" value="false"/>-->
+
+        <!--</table>-->
+
+        <!--&lt;!&ndash; 学段、学制表[org_class_section] &ndash;&gt;-->
+        <!--<table schema="smart_board" tableName="org_class_section" domainObjectName="ClassSection"-->
+               <!--enableCountByExample="false"-->
+               <!--enableUpdateByExample="true"-->
+               <!--enableDeleteByExample="true"-->
+               <!--enableSelectByExample="true"-->
+               <!--selectByExampleQueryId="true">-->
+
+            <!--<property name="useActualColumnNames" value="false"/>-->
+
+        <!--</table>-->
+
+        <!--&lt;!&ndash; 教师-班级[ref_teacher_class] &ndash;&gt;-->
+        <!--<table schema="smart_board" tableName="ref_teacher_class" domainObjectName="TeacherClass"-->
+               <!--enableCountByExample="false"-->
+               <!--enableUpdateByExample="true"-->
+               <!--enableDeleteByExample="true"-->
+               <!--enableSelectByExample="true"-->
+               <!--selectByExampleQueryId="true">-->
+
+            <!--<property name="useActualColumnNames" value="false"/>-->
+
+        <!--</table>-->
+
+        <!--&lt;!&ndash; 人事表[user_teacher 教师] &ndash;&gt;-->
+        <!--<table schema="smart_board" tableName="user_teacher" domainObjectName="Teacher"-->
+               <!--enableCountByExample="false"-->
+               <!--enableUpdateByExample="true"-->
+               <!--enableDeleteByExample="true"-->
+               <!--enableSelectByExample="true"-->
+               <!--selectByExampleQueryId="true">-->
+
+            <!--<property name="useActualColumnNames" value="false"/>-->
+
+        <!--</table>-->
+
+        <!--&lt;!&ndash; 学生表[user_student 教师] &ndash;&gt;-->
+        <!--<table schema="smart_board" tableName="user_student" domainObjectName="Student"-->
+               <!--enableCountByExample="false"-->
+               <!--enableUpdateByExample="true"-->
+               <!--enableDeleteByExample="true"-->
+               <!--enableSelectByExample="true"-->
+               <!--selectByExampleQueryId="true">-->
+
+            <!--<property name="useActualColumnNames" value="false"/>-->
+
+        <!--</table>-->
+
+        <!--&lt;!&ndash;手环日志表[ring_log ]&ndash;&gt;-->
+        <!--<table schema="smart_board" tableName="scan_log" domainObjectName="ScanLog"-->
+            <!--enableCountByExample="false"-->
+            <!--enableUpdateByExample="true"-->
+            <!--enableDeleteByExample="true"-->
+            <!--enableSelectByExample="true"-->
+            <!--selectByExampleQueryId="true">-->
+
+            <!--<property name="useActualColumnNames" value="false"/>-->
+
+        <!--</table>-->
+
+    </context>
+</generatorConfiguration>
