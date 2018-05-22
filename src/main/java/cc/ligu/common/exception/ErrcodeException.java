@@ -3,7 +3,7 @@ package cc.ligu.common.exception;
 import cc.ligu.common.entity.ResultEntity;
 
 /**
- * Created by conn on 2016/8/5.
+ * Created by zjy on 2018/5/22.
  */
 public class ErrcodeException extends cc.ligu.common.exception.CustomException {
     private ResultEntity obj = new ResultEntity();

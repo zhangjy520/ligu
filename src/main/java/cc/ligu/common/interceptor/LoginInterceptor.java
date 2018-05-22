@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by conn on 2016/8/5.
+ * Created by zjy on 2018/5/22.
  */
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 

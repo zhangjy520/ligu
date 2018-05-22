@@ -1,7 +1,5 @@
 package cc.ligu.common.shiro;
 
-import cc.ligu.mvc.modelView.MenuView;
-import cc.ligu.mvc.modelView.RoleView;
 import cc.ligu.mvc.persistence.entity.User;
 import cc.ligu.mvc.service.UserService;
 import org.apache.shiro.authc.*;
@@ -14,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by conn on 2016/7/29.
+ * Created by zjy on 2018/5/22.
  */
 public class ShiroAuthRealm extends AuthorizingRealm {
 
@@ -36,8 +34,8 @@ public class ShiroAuthRealm extends AuthorizingRealm {
             simpleAuthorInfo = new SimpleAuthorizationInfo();
 
             List<String> permissions = new ArrayList<String>();
-
-            List<RoleView> roleViews = userService.selectRoleViewByUserId(user.getId());
+            //添加菜单的permisssion字段，jc:manage:*,jc:manage:ab
+            /*List<RoleView> roleViews = userService.selectRoleViewByUserId(user.getId());
             for (RoleView roleView : roleViews) {
                 String role = roleView.getRoleIdentify();
                 if (!StringUtils.isEmpty(role)) {
@@ -52,7 +50,7 @@ public class ShiroAuthRealm extends AuthorizingRealm {
                         }
                     }
                 }
-            }
+            }*/
 
             simpleAuthorInfo.addStringPermissions(permissions);
         } else {

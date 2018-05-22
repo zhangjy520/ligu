@@ -13,7 +13,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by conn on 2016/8/5.
+ * Created by zjy on 2018/5/22.
  */
 @Controller
 public abstract class BasicController extends LoggerWrapper {

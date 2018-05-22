@@ -1,7 +1,7 @@
 package cc.ligu.common.entity;
 
 /**
- * Created by conn on 2016/8/23.
+ * Created by zjy on 2018/5/22.
  */
 public class WebMenu {
     private String id;

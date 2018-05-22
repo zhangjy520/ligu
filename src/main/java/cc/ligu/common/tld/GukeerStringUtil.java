@@ -3,7 +3,7 @@ package cc.ligu.common.tld;
 import org.springframework.util.StringUtils;
 
 /**
- * Created by conn on 2016/8/12.
+ * Created by zjy on 2018/5/21.
  */
 public class GukeerStringUtil {
 

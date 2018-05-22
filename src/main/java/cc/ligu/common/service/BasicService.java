@@ -4,7 +4,7 @@ import cc.ligu.common.utils.LoggerWrapper;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by conn on 2016/8/5.
+ * Created by zjy on 2018/5/22.
  */
 @Service
 public abstract class BasicService extends LoggerWrapper {
