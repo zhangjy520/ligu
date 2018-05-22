@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" default-autowire="byName">
+   
+
+    <!--定时查询数据库推送数据-->
+    <bean id="push" class="cn.gukeer.sync.service.push.SyncMian" />
+    <bean id="pushJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+                <property name="targetObject">
+                    <ref bean="push" />
+                </property>
+                <property name="targetMethod">
+                    <value>execute</value>
+                </property>
+                <property name="concurrent">
+                    <value>true</value>
+                </property>
+            </bean>
+        </property>
+        <property name="cronExpression">
+            <value>0 */1 * * * ?</value><!-- 每分钟 -->
+        </property>
+    </bean>
+
+
+    <bean id="findDevice" class="cn.gukeer.classcard.sync.DeviceSynchro"/>
+    <bean id="findDeviceJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+                <property name="targetObject">
+                    <ref bean="findDevice" />
+                </property>
+                <property name="targetMethod">
+                    <value>execute</value>
+                </property>
+                <property name="concurrent">
+                    <value>true</value>
+                </property>
+            </bean>
+        </property>
+        <property name="cronExpression">
+            <value>0 */1 * * * ?</value><!-- 每分钟-->
+        </property>
+    </bean>
+
+    <!--检查云盘账号创建的任务-->
+    <bean id="netDiskAccount" class="cn.gukeer.sync.netDiskAccount.CreateNetAccount"/>
+    <bean id="netDiskAccountJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+                <property name="targetObject">
+                    <ref bean="netDiskAccount" />
+                </property>
+                <property name="targetMethod">
+                    <value>createNetAccount</value>
+                </property>
+                <property name="concurrent">
+                    <value>true</value>
+                </property>
+            </bean>
+        </property>
+        <property name="cronExpression">
+            <value>0 */1 * * * ?</value>
+
+        </property>
+    </bean>
+
+    <!--零点清除班牌考勤数据的缓存-->
+    <bean id="cacheClean" class="cn.gukeer.sync.netty.classCardAttendance.EhCacheJob"/>
+    <bean id="cacheCleanJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+                <property name="targetObject">
+                    <ref bean="cacheClean" />
+                </property>
+                <property name="targetMethod">
+                    <value>execute</value>
+                </property>
+                <property name="concurrent">
+                    <value>true</value>
+                </property>
+            </bean>
+        </property>
+        <property name="cronExpression">
+            <value>0 0 0 * * ?</value><!--每天凌晨-->
+        </property>
+    </bean>
+
+    <!--每天零点缓存课表的任务-->
+    <bean id="saveTableToCacheJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+                <property name="targetObject">
+                    <ref bean="findDevice" />
+                </property>
+                <property name="targetMethod">
+                    <value>saveTableToCache</value>
+                </property>
+                <property name="concurrent">
+                    <value>true</value>
+                </property>
+            </bean>
+        </property>
+        <property name="cronExpression">
+            <value>0 0 0 * * ?</value>
+        </property>
+    </bean>
+
+    <!--每1小时重新缓存通知公告-->
+    <bean id="saveNotifyToCacheJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+                <property name="targetObject">
+                    <ref bean="findDevice" />
+                </property>
+                <property name="targetMethod">
+                    <value>saveNotifyToCache</value>
+                </property>
+                <property name="concurrent">
+                    <value>true</value>
+                </property>
+            </bean>
+        </property>
+        <property name="cronExpression">
+            <value>0 0 */1 * * ?</value><!-- 每隔一小时缓存一次 -->
+        </property>
+    </bean>
+
+    <!--定时器配置 lazy-init='false'-->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"  lazy-init="false" autowire="no">
+		<property name="triggers"> 
+			<list> 
+                <ref bean="pushJob"/>
+                <!--<ref bean="findDeviceJob"/>-->
+                <ref bean="cacheCleanJob"/>
+                <!--<ref bean="netDiskAccountJob"/>-->
+                <ref bean="saveTableToCacheJob"/>
+                <ref bean="saveNotifyToCacheJob"/>
+            </list>
+		</property> 
+	</bean>
+</beans>
