@@ -16,6 +16,29 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`ligu` /*!40100 DEFAULT CHARACTER SET ut
 
 USE `ligu`;
 
+/*Table structure for table `doc_source` */
+
+DROP TABLE IF EXISTS `doc_source`;
+
+CREATE TABLE `doc_source` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(50) DEFAULT NULL COMMENT '文档名称',
+  `type` int(10) DEFAULT NULL COMMENT '文档类别：1文档类 2视频类 3音频类 4图片类',
+  `url` varchar(255) DEFAULT NULL COMMENT '文档地址(全路径,可直接访问)',
+  `size` varchar(50) DEFAULT NULL COMMENT '文档大小(kb)',
+  `suffix` varchar(50) DEFAULT NULL COMMENT '文档后缀',
+  `apply_time` int(50) DEFAULT NULL COMMENT '文档请求次数(阅读量)',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `create_date` bigint(20) DEFAULT NULL COMMENT '创建日期(时间戳格式)',
+  `create_by` int(10) DEFAULT NULL COMMENT '创建人',
+  `update_date` bigint(20) DEFAULT NULL COMMENT '修改日期(时间戳格式)',
+  `update_by` int(10) DEFAULT NULL COMMENT '修改人',
+  `del_flag` int(5) DEFAULT NULL COMMENT '逻辑删除标记[0正常,1已删除,2黑名单]',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `doc_source` */
+
 /*Table structure for table `oa_company` */
 
 DROP TABLE IF EXISTS `oa_company`;
@@ -70,8 +93,7 @@ CREATE TABLE `oa_person` (
   `type` int(10) DEFAULT NULL COMMENT '人员类别：1管理员 2施工人员',
   `gender` varchar(5) DEFAULT NULL COMMENT '性别',
   `contact` varchar(50) DEFAULT NULL COMMENT '联系方式',
-  `identity
-_num` varchar(50) DEFAULT NULL COMMENT '身份证号码',
+  `identity_num` varchar(50) DEFAULT NULL COMMENT '身份证号码',
   `company_id` varchar(50) DEFAULT NULL COMMENT '施工单位id,关联oa_company主键',
   `insurance_purchases` varbinary(10) DEFAULT NULL COMMENT '保险情况',
   `salary_details` varchar(100) DEFAULT NULL COMMENT '薪资情况',

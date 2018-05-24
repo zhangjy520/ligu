@@ -28,9 +28,14 @@ public class LoginController extends BasicController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/login")
     public String toLogin(HttpServletRequest request, HttpServletResponse response) {
         return "login/login";
+    }
+
+    @RequestMapping(value = "/index")
+    public String index(HttpServletRequest request, HttpServletResponse response) {
+        return "index";
     }
 
     @ResponseBody

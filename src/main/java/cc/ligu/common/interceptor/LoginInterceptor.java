@@ -18,14 +18,14 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
         // 获得请求路径的uri
-        String uri = request.getRequestURI();
+      /*  String uri = request.getRequestURI();
         if (StringUtils.isEmpty(uri)) {
             throw new PermissionException();
         }
         Subject loginUser = SecurityUtils.getSubject();
         if (loginUser.isAuthenticated()) return true;
-        response.sendRedirect("/ring");
-        return false;
+        response.sendRedirect("index");*/
+        return true;
     }
 
 }

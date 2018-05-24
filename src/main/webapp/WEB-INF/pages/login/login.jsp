@@ -43,7 +43,8 @@
                 callback:function(){
                     initEnv();
                     $("#themeList").theme({themeBase:"themes"});
-                    setTimeout(function() {$("#sidebar .toggleCollapse div").trigger("click");}, 10);
+                    //默认收缩
+                    // setTimeout(function() {$("#sidebar .toggleCollapse div").trigger("click");}, 10);
                 }
             });
         });
@@ -60,11 +61,6 @@
                     <ul>
                         <li><a href="${ctxStatic}/dwz/sidebar_1.html">北京</a></li>
                         <li><a href="${ctxStatic}/dwz/sidebar_2.html">上海</a></li>
-                        <li><a href="${ctxStatic}/dwz/sidebar_2.html">南京</a></li>
-                        <li><a href="${ctxStatic}/dwz/sidebar_2.html">深圳</a></li>
-                        <li><a href="${ctxStatic}/dwz/sidebar_2.html">广州</a></li>
-                        <li><a href="${ctxStatic}/dwz/sidebar_2.html">天津</a></li>
-                        <li><a href="${ctxStatic}/dwz/sidebar_2.html">杭州</a></li>
                     </ul>
                 </li>
                 <li><a href="changepwd.html" target="dialog" width="600">设置</a></li>
@@ -74,17 +70,13 @@
                 <li theme="default"><div class="selected">蓝色</div></li>
                 <li theme="green"><div>绿色</div></li>
                 <li theme="red"><div>红色</div></li>
-                <li theme="purple"><div>紫色</div></li>
-                <li theme="silver"><div>银色</div></li>
-                <li theme="azure"><div>天蓝</div></li>
             </ul>
         </div>
 
         <div id="navMenu">
             <ul>
-                <li class="selected"><a href="${ctxStatic}/dwz/sidebar_1.html"><span>资讯管理</span></a></li>
-                <li><a href="${ctxStatic}/dwz/sidebar_2.html"><span>订单管理</span></a></li>
-                <li><a href="${ctxStatic}/dwz/sidebar_1.html"><span>产品管理</span></a></li>
+                <li class="selected"><a href="${ctx}/question/index"><span>题库管理</span></a></li>
+                <li><a href="${ctxStatic}/dwz/sidebar_1.html"><span>资源管理</span></a></li>
                 <li><a href="${ctxStatic}/dwz/sidebar_2.html"><span>会员管理</span></a></li>
                 <li><a href="${ctxStatic}/dwz/sidebar_1.html"><span>服务管理</span></a></li>
                 <li><a href="${ctxStatic}/dwz/sidebar_2.html"><span>系统设置</span></a></li>
@@ -100,92 +92,33 @@
         </div>
         <div id="sidebar">
             <div class="toggleCollapse"><h2>主菜单</h2><div>收缩</div></div>
-
             <div class="accordion" fillSpace="sidebar">
                 <div class="accordionHeader">
                     <h2><span>Folder</span>界面组件</h2>
                 </div>
                 <div class="accordionContent">
-                    <ul class="tree treeFolder">
-                        <li><a href="${ctxStatic}/dwz/tabsPage.html" target="navTab">主框架面板</a>
+                    <ul class="tree">
+                        <li><a>个人中心</a>
                             <ul>
-                                <li><a href="${ctxStatic}/dwz/main.html" target="navTab" rel="main">我的主页</a></li>
-                                <li><a href="http://www.baidu.com" target="navTab" rel="page1">页面一(外部页面)</a></li>
-                                <li><a href="${ctxStatic}/dwz/demo_page2.html" target="navTab" rel="external" external="true">iframe navTab页面</a></li>
-                                <li><a href="${ctxStatic}/dwz/demo_page1.html" target="navTab" rel="page1" fresh="false">替换页面一</a></li>
-                                <li><a href="${ctxStatic}/dwz/demo_page2.html" target="navTab" rel="page2">页面二</a></li>
-                                <li><a href="${ctxStatic}/dwz/demo_page4.html" target="navTab" rel="page3" title="页面三（自定义标签名）">页面三</a></li>
-                                <li><a href="${ctxStatic}/dwz/demo_page4.html" target="navTab" rel="page4" fresh="false">测试页面（fresh="false"）</a></li>
-                                <li><a href="${ctxStatic}/dwz/w_editor.html" target="navTab">表单提交会话超时</a></li>
-                                <li><a href="${ctxStatic}/dwz/demo/common/ajaxTimeout.html" target="navTab">navTab会话超时</a></li>
-                                <li><a href="${ctxStatic}/dwz/demo/common/ajaxTimeout.html" target="dialog">dialog会话超时</a></li>
+                                <li><a href="${ctx }/account/myLeave" target="navTab">我的申请</a></li>
+                                <li><a href="${ctx }/account/myTask" target="navTab">我的任务</a></li>
+                                <li><a href="${ctx }/account/groupTask" target="navTab">组任务</a></li>
                             </ul>
                         </li>
-
-                        <li><a>常用组件</a>
+                        <li><a href="" target="navTab">系统管理</a>
                             <ul>
-                                <li><a href="${ctxStatic}/dwz/w_panel.html" target="navTab" rel="w_panel">面板</a></li>
-                                <li><a href="${ctxStatic}/dwz/w_tabs.html" target="navTab" rel="w_tabs">选项卡面板</a></li>
-                                <li><a href="${ctxStatic}/dwz/w_dialog.html" target="navTab" rel="w_dialog">弹出窗口</a></li>
-                                <li><a href="${ctxStatic}/dwz/w_alert.html" target="navTab" rel="w_alert">提示窗口</a></li>
-                                <li><a href="${ctxStatic}/dwz/w_list.html" target="navTab" rel="w_list">CSS表格容器</a></li>
-                                <li><a href="${ctxStatic}/dwz/demo_page1.html" target="navTab" rel="w_table">表格容器</a></li>
-                                <li><a href="${ctxStatic}/dwz/w_removeSelected.html" target="navTab" rel="w_table">表格数据库排序+批量删除</a></li>
-                                <li><a href="${ctxStatic}/dwz/w_tree.html" target="navTab" rel="w_tree">树形菜单</a></li>
-                                <li><a href="${ctxStatic}/dwz/w_accordion.html" target="navTab" rel="w_accordion">滑动菜单</a></li>
-                                <li><a href="${ctxStatic}/dwz/w_editor.html" target="navTab" rel="w_editor">编辑器</a></li>
-                                <li><a href="${ctxStatic}/dwz/w_datepicker.html" target="navTab" rel="w_datepicker">日期控件</a></li>
-                                <li><a href="${ctxStatic}/dwz/demo/database/db_widget.html" target="navTab" rel="db">suggest+lookup+主从结构</a></li>
-                                <li><a href="${ctxStatic}/dwz/demo/sortDrag/1.html" target="navTab" rel="sortDrag">单个sortDrag示例</a></li>
-                                <li><a href="${ctxStatic}/dwz/demo/sortDrag/2.html" target="navTab" rel="sortDrag">多个sortDrag示例</a></li>
+                                <li><a href="${ctx }/user/list" target="navTab">用户管理</a></li>
+                                <li><a href="${ctx }/task/list" target="navTab">流程定义</a></li>
                             </ul>
                         </li>
-
-                        <li><a>表单组件</a>
-                            <ul>
-                                <li><a href="${ctxStatic}/dwz/w_validation.html" target="navTab" rel="w_validation">表单验证</a></li>
-                                <li><a href="${ctxStatic}/dwz/w_button.html" target="navTab" rel="w_button">按钮</a></li>
-                                <li><a href="${ctxStatic}/dwz/w_textInput.html" target="navTab" rel="w_textInput">文本框/文本域</a></li>
-                                <li><a href="${ctxStatic}/dwz/w_combox.html" target="navTab" rel="w_combox">下拉菜单</a></li>
-                                <li><a href="${ctxStatic}/dwz/w_checkbox.html" target="navTab" rel="w_checkbox">多选框/单选框</a></li>
-                                <li><a href="${ctxStatic}/dwz/demo_upload.html" target="navTab" rel="demo_upload">iframeCallback表单提交</a></li>
-                                <li><a href="${ctxStatic}/dwz/w_uploadify.html" target="navTab" rel="w_uploadify">uploadify多文件上传</a></li>
-                            </ul>
-                        </li>
-                        <li><a>组合应用</a>
-                            <ul>
-                                <li><a href="${ctxStatic}/dwz/demo/pagination/layout1.html" target="navTab" rel="pagination1">局部刷新分页1</a></li>
-                                <li><a href="${ctxStatic}/dwz/demo/pagination/layout2.html" target="navTab" rel="pagination2">局部刷新分页2</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="${ctxStatic}/dwz/dwz.frag.xml" target="navTab" external="true">dwz.frag.xml</a></li>
                     </ul>
                 </div>
                 <div class="accordionHeader">
                     <h2><span>Folder</span>典型页面</h2>
                 </div>
                 <div class="accordionContent">
-                    <ul class="tree treeFolder treeCheck">
-                        <li><a href="${ctxStatic}/dwz/demo_page1.html" target="navTab" rel="demo_page1">查询我的客户</a></li>
-                        <li><a href="${ctxStatic}/dwz/demo_page1.html" target="navTab" rel="demo_page2">表单查询页面</a></li>
-                        <li><a href="${ctxStatic}/dwz/demo_page4.html" target="navTab" rel="demo_page4">表单录入页面</a></li>
-                        <li><a href="${ctxStatic}/dwz/demo_page5.html" target="navTab" rel="demo_page5">有文本输入的表单</a></li>
-                        <li><a href="javascript:;">有提示的表单输入页面</a>
-                            <ul>
-                                <li><a href="javascript:;">页面一</a></li>
-                                <li><a href="javascript:;">页面二</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="javascript:;">选项卡和图形的页面</a>
-                            <ul>
-                                <li><a href="javascript:;">页面一</a></li>
-                                <li><a href="javascript:;">页面二</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="javascript:;">选项卡和图形切换的页面</a></li>
-                        <li><a href="javascript:;">左右两个互动的页面</a></li>
-                        <li><a href="javascript:;">列表输入的页面</a></li>
-                        <li><a href="javascript:;">双层栏目列表的页面</a></li>
+                    <ul class="tree treeFolder">
+
                     </ul>
                 </div>
                 <div class="accordionHeader">
@@ -193,15 +126,9 @@
                 </div>
                 <div class="accordionContent">
                     <ul class="tree">
-                        <li><a href="${ctxStatic}/dwz/newPage1.html" target="dialog" rel="dlg_page">列表</a></li>
-                        <li><a href="${ctxStatic}/dwz/newPage1.html" target="dialog" rel="dlg_page">列表</a></li>
-                        <li><a href="${ctxStatic}/dwz/newPage1.html" target="dialog" rel="dlg_page2">列表</a></li>
-                        <li><a href="${ctxStatic}/dwz/newPage1.html" target="dialog" rel="dlg_page2">列表</a></li>
-                        <li><a href="${ctxStatic}/dwz/newPage1.html" target="dialog" rel="dlg_page2">列表</a></li>
                     </ul>
                 </div>
             </div>
-
         </div>
     </div>
     <div id="container">
@@ -209,7 +136,6 @@
             <div class="tabsPageHeader">
                 <div class="tabsPageHeaderContent"><!-- 显示左右控制时添加 class="tabsPageHeaderMargin" -->
                     <ul class="navTab-tab">
-                        <li tabid="main" class="main"><a href="javascript:;"><span><span class="home_icon">我的主页</span></span></a></li>
                     </ul>
                 </div>
                 <div class="tabsLeft">left</div><!-- 禁用只需要添加一个样式 class="tabsLeft tabsLeftDisabled" -->
@@ -217,33 +143,14 @@
                 <div class="tabsMore">more</div>
             </div>
             <ul class="tabsMoreList">
-                <li><a href="javascript:;">我的主页</a></li>
             </ul>
             <div class="navTab-panel tabsPageContent layoutBox">
-                <div class="page unitBox">
-                    <div class="accountInfo">
-                        <div class="alertInfo">
-                            <h2><a href="${ctxStatic}/dwz/doc/a.mp4" target="_blank">DWZ框架使用手册(PDF)</a></h2>
-                            <a href="${ctxStatic}/dwz/doc/dwz-user-guide.swf" target="_blank">DWZ框架演示视频</a>
-                        </div>
-                        <div class="right">
-                            <p><a href="${ctxStatic}/dwz/doc/dwz-user-guide.zip" target="_blank" style="line-height:19px">DWZ框架使用手册(CHM)</a></p>
-                            <p><a href="${ctxStatic}/dwz/doc/dwz-ajax-develop.swf" target="_blank" style="line-height:19px">DWZ框架Ajax开发视频教材</a></p>
-                        </div>
-                        <p><span>DWZ富客户端框架</span></p>
-                        <p>DWZ官方微博:<a href="http://weibo.com/dwzui" target="_blank">http://weibo.com/dwzui</a></p>
-                    </div>
-                    <div class="pageFormContent" layoutH="80">
-                        <iframe width="100%" height="430" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?width=0&height=430&fansRow=2&ptype=1&speed=300&skin=1&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1739071261&verifier=c683dfe7"></iframe>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
 
 </div>
 
-<div id="footer">Copyright &copy; 2010 <a href="${ctxStatic}/dwz/demo_page2.html" target="dialog">DWZ团队</a></div>
+<div id="footer">Copyright &copy; 2010 <a href="${ctxStatic}/dwz/demo_page2.html" target="dialog">ligu</a></div>
 </body>
 </html>
