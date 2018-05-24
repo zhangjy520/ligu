@@ -75,7 +75,7 @@
 
         <div id="navMenu">
             <ul>
-                <li class="selected"><a href="${ctx}/question/index"><span>题库管理</span></a></li>
+                <li class="selected"><a href="#"><span>题库管理</span></a></li>
                 <li><a href="${ctxStatic}/dwz/sidebar_1.html"><span>资源管理</span></a></li>
                 <li><a href="${ctxStatic}/dwz/sidebar_2.html"><span>会员管理</span></a></li>
                 <li><a href="${ctxStatic}/dwz/sidebar_1.html"><span>服务管理</span></a></li>
@@ -100,7 +100,7 @@
                     <ul class="tree">
                         <li><a>个人中心</a>
                             <ul>
-                                <li><a href="${ctx }/account/myLeave" target="navTab">我的申请</a></li>
+                                <li><a href="${ctx}/question/index" target="navTab">my question</a></li>
                                 <li><a href="${ctx }/account/myTask" target="navTab">我的任务</a></li>
                                 <li><a href="${ctx }/account/groupTask" target="navTab">组任务</a></li>
                             </ul>

@@ -10,6 +10,9 @@ import cc.ligu.mvc.persistence.entity.User;
 import cc.ligu.mvc.persistence.entity.UserExample;
 import cc.ligu.mvc.service.QuestionService;
 import cc.ligu.mvc.service.UserService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -25,6 +28,16 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     @Autowired
     QuestionMapper questionMapper;
 
+
+    @Override
+    public PageInfo<Question> listAllQuestion(int pageSize, int pageNum) {
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria().andDelFlagEqualTo(0);
+        PageHelper.startPage(pageNum,pageSize);
+        List<Question> questionList =  questionMapper.selectByExample(questionExample);
+        PageInfo<Question> page = new PageInfo<Question>(questionList);
+        return page;
+    }
 
     @Override
     public int saveQuestion(Question question) {

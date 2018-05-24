@@ -1,8 +1,8 @@
 <%@ include file="../common/common.jsp"%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<form id="pagerForm" method="post" action="${ctx }/user/list">
-    <input type="hidden" name="pageNum" value="${users.current}" />
-    <input type="hidden" name="numPerPage" value="10" />
+<form id="pagerForm" method="post" action="${ctx }/question/index">
+    <input type="hidden" name="pageNum" value="${pageInfo.pageNum}" />
+    <input type="hidden" name="pageSize" value="10" />
 </form>
 
 <div class="pageHeader">
@@ -56,7 +56,7 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a class="add" href="${ctx }/user/add.html" target="dialog" mask="true"><span>添加</span></a></li>
+            <li><a class="add" href="${ctx }/question/pop/add" target="dialog" mask="true"><span>添加</span></a></li>
             <li><a class="delete" href="demo/common/ajaxDone.html?uid={sid_user}" target="ajaxTodo" title="确定要删除吗?"><span>删除</span></a></li>
             <li><a class="edit" href="demo_page4.html?uid={sid_user}" target="navTab"><span>修改</span></a></li>
             <li class="line">line</li>
@@ -67,28 +67,38 @@
         <thead>
         <tr>
             <th width="80">id</th>
-            <th width="120">名称</th>
-            <th>登录名</th>
-            <th width="100">密码</th>
-            <th width="150">职务</th>
-            <th width="80" align="center">职务描述</th>
-            <th width="80">角色code</th>
-            <th width="80" align="center">操作</th>
+            <th width="80">type</th>
+            <th width="80">name</th>
+            <th width="80">content</th>
+            <th width="80">level</th>
+            <th width="80" align="center">score</th>
+            <th width="80">a</th>
+            <th width="80">b</th>
+            <th width="80">c</th>
+            <th width="80">d</th>
+            <th width="120">answerCorrect</th>
+            <th width="120" align="center">answerExplain</th>
+            <th width="80" align="center">caozuo</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${users.records}" var="user">
+        <c:forEach items="${pageInfo.list}" var="question">
             <tr target="sid_user" rel="1">
-                <td>${user.id}</td>
-                <td>${user.name}</td>
-                <td>${user.loginName}</td>
-                <td>${user.passWord}</td>
-                <td>${user.bsRole.name}</td>
-                <td>${user.bsRole.dec}</td>
-                <td>${user.bsRole.roleCode}</td>
+                <td>${question.id}</td>
+                <td>${question.type}</td>
+                <td>${question.name}</td>
+                <td>${question.content}</td>
+                <td>${question.level}</td>
+                <td>${question.score}</td>
+                <td>${question.a}</td>
+                <td>${question.b}</td>
+                <td>${question.c}</td>
+                <td>${question.d}</td>
+                <td>${question.answerCorrect}</td>
+                <td>${question.answerExplain}</td>
                 <td>
                     <div>
-                        <a target="ajaxTodo" title="确认删除？" href="${ctx}/user/del.json?id=${user.id}" class="">删除</a>
+                        <a target="ajaxTodo" title="确认删除？" href="${ctx}/question/delete/${question.id}" class="">删除</a>
                     </div>
                 </td>
             </tr>
@@ -106,10 +116,10 @@
                 <option value="200">200</option>
                 <option value="250">250</option>
             </select>
-            <span>条，共${users.total}条</span>
+            <span>条，共${pageInfo.total}条</span>
         </div>
 
-        <div class="pagination" targetType="navTab" totalCount="${users.total}" numPerPage="10" pageNumShown="5" currentPage="${users.current}"></div>
+        <div class="pagination" targetType="navTab" totalCount="${pageInfo.total}" numPerPage="10" pageNumShown="5" currentPage="${pageInfo.pageNum}"></div>
 
     </div>
 </div>
