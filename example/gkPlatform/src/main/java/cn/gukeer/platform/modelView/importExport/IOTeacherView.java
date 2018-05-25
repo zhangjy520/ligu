@@ -61,7 +61,7 @@ public class IOTeacherView implements Serializable {
     private String szjb;//实职级别
     private String gzgwf;//工资岗位副
 
-    @ExcelField(title = "姓名", align = 2, sort = 1, groups = {1, 2},isnull=1)
+    @ExcelField(title = "姓名", align = 2, sort = 1, groups = {1, 2},isnull=1,isDropDown = 1,dropDownList = {"男","女"})
     public String getName() {
         return name;
     }
@@ -81,7 +81,7 @@ public class IOTeacherView implements Serializable {
     public String getIdentity() {
         return identity;
     }
-    @ExcelField(title = "性别", align = 2, sort = 6, groups = {1, 2})
+    @ExcelField(title = "性别", align = 2, sort = 6, groups = {1, 2},isDropDown = 1,dropDownList = {"男","女"})
     public String getGender() {
         return gender;
     }

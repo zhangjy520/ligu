@@ -30,20 +30,25 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
 
 
     @Override
-    public PageInfo<Question> listAllQuestion(int pageSize, int pageNum) {
+    public PageInfo<Question> listAllQuestion(int pageSize, int pageNum, Question question) {
         QuestionExample questionExample = new QuestionExample();
-        questionExample.createCriteria().andDelFlagEqualTo(0);
-        PageHelper.startPage(pageNum,pageSize);
-        List<Question> questionList =  questionMapper.selectByExample(questionExample);
+        QuestionExample.Criteria criteria = questionExample.createCriteria().andDelFlagEqualTo(0);
+
+        if (!StringUtils.isEmpty(question.getContent())) {
+            criteria.andContentLike("%" + question.getContent() + "%");
+        }
+
+        PageHelper.startPage(pageNum, pageSize);
+        List<Question> questionList = questionMapper.selectByExample(questionExample);
         PageInfo<Question> page = new PageInfo<Question>(questionList);
         return page;
     }
 
     @Override
     public int saveQuestion(Question question) {
-        if(StringUtils.isEmpty(question.getId())){
+        if (StringUtils.isEmpty(question.getId())) {
             questionMapper.insertSelective(question);
-        }else {
+        } else {
             questionMapper.updateByPrimaryKeySelective(question);
         }
         return 1;

@@ -15,6 +15,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExcelField {
 
+	//字段是否是下拉类型，导出模版时用 0：不是下拉   1：是下拉
+	int isDropDown() default 0;
+
+	//字段模版的下拉值列表
+	String[] dropDownList() default {};
+
 	/*
 	* 字段是否存在模板   0：存在   1：不存在
 	* */
@@ -64,4 +70,5 @@ public @interface ExcelField {
 	 * 字段归属组（根据分组导出导入）
 	 */
 	int[] groups() default {};
+
 }

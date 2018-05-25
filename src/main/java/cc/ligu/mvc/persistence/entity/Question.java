@@ -1,5 +1,7 @@
 package cc.ligu.mvc.persistence.entity;
 
+import cc.ligu.common.utils.excel.annotation.ExcelField;
+
 import java.io.Serializable;
 
 public class Question implements Serializable {
@@ -57,6 +59,7 @@ public class Question implements Serializable {
         this.id = id;
     }
 
+    @ExcelField(title = "题目类别", align = 2, sort = 1, groups = {1, 2},isnull=1,isDropDown = 1,dropDownList = {"单选题","多选题","其他"})
     public Integer getType() {
         return type;
     }
@@ -65,6 +68,7 @@ public class Question implements Serializable {
         this.type = type;
     }
 
+    @ExcelField(title = "题目简称", align = 2, sort = 2, groups = {1, 2})
     public String getName() {
         return name;
     }
@@ -73,6 +77,7 @@ public class Question implements Serializable {
         this.name = name == null ? null : name.trim();
     }
 
+    @ExcelField(title = "题目内容", align = 2, sort = 3, groups = {1, 2},isnull=1)
     public String getContent() {
         return content;
     }
@@ -81,6 +86,7 @@ public class Question implements Serializable {
         this.content = content == null ? null : content.trim();
     }
 
+    @ExcelField(title = "题目难度", align = 2, sort = 4, groups = {1, 2},isnull=1,isDropDown = 1,dropDownList = {"简单","一般","困难"})
     public Integer getLevel() {
         return level;
     }
@@ -89,6 +95,7 @@ public class Question implements Serializable {
         this.level = level;
     }
 
+    @ExcelField(title = "题目分数", align = 2, sort = 5, groups = {1, 2})
     public Integer getScore() {
         return score;
     }
@@ -97,6 +104,7 @@ public class Question implements Serializable {
         this.score = score;
     }
 
+    @ExcelField(title = "选项A", align = 2, sort = 6, groups = {1, 2})
     public String getA() {
         return a;
     }
@@ -105,6 +113,7 @@ public class Question implements Serializable {
         this.a = a == null ? null : a.trim();
     }
 
+    @ExcelField(title = "选项B", align = 2, sort = 7, groups = {1, 2})
     public String getB() {
         return b;
     }
@@ -113,6 +122,7 @@ public class Question implements Serializable {
         this.b = b == null ? null : b.trim();
     }
 
+    @ExcelField(title = "选项C", align = 2, sort = 8, groups = {1, 2})
     public String getC() {
         return c;
     }
@@ -121,6 +131,7 @@ public class Question implements Serializable {
         this.c = c == null ? null : c.trim();
     }
 
+    @ExcelField(title = "选项D", align = 2, sort = 9, groups = {1, 2})
     public String getD() {
         return d;
     }
@@ -129,6 +140,7 @@ public class Question implements Serializable {
         this.d = d == null ? null : d.trim();
     }
 
+    @ExcelField(title = "选项E", align = 2, sort = 10, groups = {1, 2})
     public String getE() {
         return e;
     }
@@ -137,6 +149,7 @@ public class Question implements Serializable {
         this.e = e == null ? null : e.trim();
     }
 
+    @ExcelField(title = "选项F", align = 2, sort = 11, groups = {1, 2})
     public String getF() {
         return f;
     }
@@ -145,6 +158,7 @@ public class Question implements Serializable {
         this.f = f == null ? null : f.trim();
     }
 
+    @ExcelField(title = "选项G", align = 2, sort = 12, groups = {1, 2})
     public String getG() {
         return g;
     }
@@ -153,6 +167,7 @@ public class Question implements Serializable {
         this.g = g == null ? null : g.trim();
     }
 
+    @ExcelField(title = "其他答案", align = 2, sort = 13, groups = {1, 2})
     public String getO() {
         return o;
     }
@@ -161,6 +176,7 @@ public class Question implements Serializable {
         this.o = o == null ? null : o.trim();
     }
 
+    @ExcelField(title = "正确答案", align = 2, sort = 14, groups = {1, 2},isnull=1)
     public String getAnswerCorrect() {
         return answerCorrect;
     }
@@ -169,6 +185,7 @@ public class Question implements Serializable {
         this.answerCorrect = answerCorrect == null ? null : answerCorrect.trim();
     }
 
+    @ExcelField(title = "答案说明", align = 2, sort = 15, groups = {1, 2})
     public String getAnswerExplain() {
         return answerExplain;
     }

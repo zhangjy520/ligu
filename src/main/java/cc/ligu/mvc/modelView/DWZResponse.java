@@ -43,7 +43,9 @@ public class DWZResponse implements Serializable{
 		return callbackType;
 	}
 	public void setCallbackType(String callbackType) {
-		this.callbackType = callbackType;
+		if(null!=callbackType){
+			this.callbackType = callbackType;
+		}
 	}
 	public String getForwardUrl() {
 		return forwardUrl;

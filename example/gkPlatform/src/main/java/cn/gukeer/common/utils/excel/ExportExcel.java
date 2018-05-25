@@ -3,10 +3,12 @@ package cn.gukeer.common.utils.excel;
 import cn.gukeer.common.utils.Reflections;
 import cn.gukeer.common.utils.excel.annotation.ExcelField;
 import cn.gukeer.platform.modelView.importExport.IOStudentView;
+import cn.gukeer.platform.modelView.importExport.IOTeacherView;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
@@ -54,6 +56,26 @@ public class ExportExcel {
      * 注解列表（Object[]{ ExcelField, Field/Method }）
      */
     List<Object[]> annotationList = Lists.newArrayList();
+
+    public static void main(String[] args) {
+        try {
+            String anno = "注释：橙色字段为必填项" +
+                    "1.姓名和职工编号为必填项目\n" +
+                    "2.手机号码、邮箱、身份证号请填写正确格式\n" +
+                    "3.性别请填写：男、女或者不填写任何内容。\n" +
+                    "4.职务信息请填写系统中存在的职务\n" +
+                    "5.是否专任教师、是否华侨、是否班主任三项情填写：是、否或者不填写任何内容。\n" +
+                    "6.校区需填写系统中已有的校区名称\n" +
+                    "7.政治面貌请填写：中共党员、共青团员、群众、其他或者不填写任何内容。\n" +
+                    "8.最高学历请填写：小学、初中、中职/高中、专科、本科、硕士研究生、博士研究生\n" +
+                    "9.日期格式：yyyymmdd,例如：20160901\n" +
+                    "10.部门信息请填写存在的部门，没有部门的人员不用填写";
+            new ExportExcel(false, "人员数据", IOTeacherView.class, 2, anno, 1).setDataList(new ArrayList()).writeFile("E:\\test.xlsx");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     /**
      * 构造函数
@@ -186,7 +208,7 @@ public class ExportExcel {
         this.sheet = wb.createSheet("Export");
         if (headerList.size() > 1) {
             this.styles = createStyles(wb);
-        }else{
+        } else {
             this.styles = createSingleStyles(wb);
         }
         // Create title
@@ -197,6 +219,7 @@ public class ExportExcel {
             titleCell.setCellStyle(styles.get("title"));
             titleCell.setCellValue(title);
             if (headerList.size() > 1) {
+
                 sheet.addMergedRegion(new CellRangeAddress(titleRow.getRowNum(),
                         titleRow.getRowNum(), titleRow.getRowNum(), headerList.size() - 1));
             }
@@ -212,6 +235,11 @@ public class ExportExcel {
                 sheet.addMergedRegion(new CellRangeAddress(introRow.getRowNum(),
                         introRow.getRowNum(), introRow.getRowNum() - 1, headerList.size() - 1));
             }
+            //如果该字段是下拉字典类型
+            System.out.println("当前rowNum"+introRow.getRowNum());
+            /*if (type == 2 && field.permission() == 1) {
+                String[] dlData = field.dropDownList();
+            }*/
         }
 
         // Create header
@@ -246,6 +274,15 @@ public class ExportExcel {
         for (int i = 0; i < headerList.size(); i++) {
             int colWidth = sheet.getColumnWidth(i) * 2;
             sheet.setColumnWidth(i, colWidth < 3000 ? 3000 : colWidth);
+        }
+
+        //判断该字段是否是下拉类型且是否需要填充默认值
+        for (Object[] os : annotationList) {
+            ExcelField field = (ExcelField) os[0];
+            if (field.isDropDown()==1&&type==2){
+                String[] dlData = field.dropDownList();
+                sheet.addValidationData(setDataValidation(sheet,dlData,1,50000,field.sort()-1,field.sort()-1));
+            }
         }
         log.debug("Initialize success.");
     }
@@ -438,6 +475,7 @@ public class ExportExcel {
 
         return styles;
     }
+
     /**
      * 添加一行
      *
@@ -648,5 +686,23 @@ public class ExportExcel {
         }
 
         return this;
+    }
+
+    private static DataValidation setDataValidation(Sheet sheet, String[] textList, int firstRow, int endRow, int firstCol, int endCol) {
+
+        DataValidationHelper helper = sheet.getDataValidationHelper();
+        //加载下拉列表内容
+        DataValidationConstraint constraint = helper.createExplicitListConstraint(textList);
+        //DVConstraint constraint = new DVConstraint();
+        constraint.setExplicitListValues(textList);
+
+        //设置数据有效性加载在哪个单元格上。四个参数分别是：起始行、终止行、起始列、终止列
+        CellRangeAddressList regions = new CellRangeAddressList(firstRow, endRow, firstCol, endCol);
+
+        //数据有效性对象
+        DataValidation data_validation = helper.createValidation(constraint, regions);
+        //DataValidation data_validation = new DataValidation(regions, constraint);
+
+        return data_validation;
     }
 }

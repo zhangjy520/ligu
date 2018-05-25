@@ -2,10 +2,12 @@ package cc.ligu.common.utils.excel;
 
 import cc.ligu.common.utils.Reflections;
 import cc.ligu.common.utils.excel.annotation.ExcelField;
+import cc.ligu.mvc.persistence.entity.Question;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
@@ -54,6 +56,18 @@ public class ExportExcel {
      */
     List<Object[]> annotationList = Lists.newArrayList();
 
+    public static void main(String[] args) {
+        try {
+            String anno = "注释：橙色字段为必填项" +
+                    "1.姓名和职工编号为必填项目\n" +
+                    "2.手机号码、邮箱、身份证号请填写正确格式\n" +
+                    "3.性别请填写：男、女或者不填写任何内容";
+            new ExportExcel("人员数据", Question.class, 2, 20, anno, 1).setDataList(new ArrayList()).writeFile("E:\\test.xlsx");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 构造函数
      *
@@ -61,18 +75,20 @@ public class ExportExcel {
      * @param cls   实体对象，通过annotation.ExportField获取标题
      */
     public ExportExcel(String title, String anno, Class<?> cls) {
-        this(title, cls, 1,anno);
+        this(title, cls, 1, 0, anno);
     }
 
     /**
      * 构造函数
      *
-     * @param title  表格标题，传“空值”，表示无标题
-     * @param cls    实体对象，通过annotation.ExportField获取标题
-     * @param type   导出类型（1:导出数据；2：导出模板）
-     * @param groups 导入分组
+     * @param title      表格标题，传“空值”，表示无标题
+     * @param cls        实体对象，通过annotation.ExportField获取标题
+     * @param type       导出类型（1:导出数据；2：导出模板）
+     * @param anno       注释内容
+     * @param annoHeight 注释内容高度
+     * @param groups     导入分组
      */
-    public ExportExcel(String title, Class<?> cls, int type, String anno, int... groups) {
+    public ExportExcel(String title, Class<?> cls, int type, int annoHeight, String anno, int... groups) {
         // Get annotation field
         Field[] fs = cls.getDeclaredFields();
         for (Field f : fs) {
@@ -127,15 +143,15 @@ public class ExportExcel {
                 return new Integer(((ExcelField) o1[0]).sort()).compareTo(
                         new Integer(((ExcelField) o2[0]).sort()));
             }
-
-            ;
         });
         // Initialize
         List<String> headerList = Lists.newArrayList();
-        List<Integer> reds=Lists.newArrayList();
+        List<Integer> reds = Lists.newArrayList();
         for (Object[] os : annotationList) {
-            String t = ((ExcelField) os[0]).title();
-            int red = ((ExcelField) os[0]).isnull();
+            ExcelField field = (ExcelField) os[0];
+
+            String t = field.title();
+            int red = field.isnull();
             // 如果是导出，则去掉注释
             if (type == 1) {
                 String[] ss = StringUtils.split(t, "**", 2);
@@ -146,7 +162,7 @@ public class ExportExcel {
             reds.add(red);
             headerList.add(t);
         }
-        initialize(title, headerList, anno,reds);
+        initialize(title, headerList, anno, annoHeight, reds, type);
     }
 
     /**
@@ -156,7 +172,7 @@ public class ExportExcel {
      * @param headers 表头数组
      */
     public ExportExcel(String title, String[] headers, String anno) {
-        initialize(title, Lists.newArrayList(headers),anno, null);
+        initialize(title, Lists.newArrayList(headers), anno, 0, null, null);
     }
 
     /**
@@ -165,8 +181,8 @@ public class ExportExcel {
      * @param title      表格标题，传“空值”，表示无标题
      * @param headerList 表头列表
      */
-    public ExportExcel(String title, List<String> headerList, String anno) {
-        initialize(title, headerList, anno, null);
+    public ExportExcel(String title, List<String> headerList, String anno, int type) {
+        initialize(title, headerList, anno, 0, null, type);
     }
 
     /**
@@ -175,28 +191,41 @@ public class ExportExcel {
      * @param title      表格标题，传“空值”，表示无标题
      * @param headerList 表头列表
      */
-    private void initialize(String title, List<String> headerList, String anno,List<Integer> reds) {
+    private void initialize(String title, List<String> headerList, String anno, int annoHeight, List<Integer> reds, Integer type) {
         this.wb = new SXSSFWorkbook(500);
         this.sheet = wb.createSheet("Export");
-        this.styles = createStyles(wb);
+        if (headerList.size() > 1) {
+            this.styles = createStyles(wb);
+        } else {
+            this.styles = createSingleStyles(wb);
+        }
         // Create title
         if (StringUtils.isNotBlank(title)) {
             Row titleRow = sheet.createRow(rownum++);
-            titleRow.setHeightInPoints(30);
+            titleRow.setHeightInPoints(40);
             Cell titleCell = titleRow.createCell(0);
             titleCell.setCellStyle(styles.get("title"));
             titleCell.setCellValue(title);
-            sheet.addMergedRegion(new CellRangeAddress(titleRow.getRowNum(),
-                    titleRow.getRowNum(), titleRow.getRowNum(), headerList.size() - 1));
-        }
+            if (headerList.size() > 1) {
 
-        Row introRow = sheet.createRow(rownum++);
-        introRow.setHeightInPoints(90);
-        Cell introCell = introRow.createCell(0);
-        introCell.setCellStyle(styles.get("intro"));
-        introCell.setCellValue(new XSSFRichTextString(anno));       //HSSFRichTextString
-        sheet.addMergedRegion(new CellRangeAddress(introRow.getRowNum(),
-                introRow.getRowNum(), introRow.getRowNum() - 1, headerList.size() - 1));
+                sheet.addMergedRegion(new CellRangeAddress(titleRow.getRowNum(),
+                        titleRow.getRowNum(), titleRow.getRowNum(), headerList.size() - 1));
+            }
+        }
+        if (type == 2) {
+            annoHeight = (annoHeight == 0 ? 60 : annoHeight);
+
+            Row introRow = sheet.createRow(rownum++);
+            introRow.setHeightInPoints(annoHeight);
+            Cell introCell = introRow.createCell(0);
+            styles.get("intro").setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            introCell.setCellStyle(styles.get("intro"));
+            introCell.setCellValue(new XSSFRichTextString(anno));       //HSSFRichTextString
+            if (headerList.size() > 1) {
+                sheet.addMergedRegion(new CellRangeAddress(introRow.getRowNum(),
+                        introRow.getRowNum(), introRow.getRowNum() - 1, headerList.size() - 1));
+            }
+        }
 
         // Create header
         if (headerList == null) {
@@ -206,12 +235,15 @@ public class ExportExcel {
         headerRow.setHeightInPoints(16);
         for (int i = 0; i < headerList.size(); i++) {
             Cell cell = headerRow.createCell(i);
-            if(reds.get(i)==0){
-            cell.setCellStyle(styles.get("header"));
+            if (reds != null && reds.size() > 0) {
+                if (reds.get(i) == 0) {
+                    cell.setCellStyle(styles.get("header"));
+                }
+                if (reds.get(i) == 1) {
+                    cell.setCellStyle(styles.get("header2"));
+                }
             }
-            if(reds.get(i)==1){
-            cell.setCellStyle(styles.get("header2"));
-            }
+
             String[] ss = StringUtils.split(headerList.get(i), "**", 2);
             if (ss.length == 2) {
                 cell.setCellValue(ss[0]);
@@ -227,6 +259,15 @@ public class ExportExcel {
         for (int i = 0; i < headerList.size(); i++) {
             int colWidth = sheet.getColumnWidth(i) * 2;
             sheet.setColumnWidth(i, colWidth < 3000 ? 3000 : colWidth);
+        }
+
+        //判断该字段是否是下拉类型且是否需要填充默认值
+        for (Object[] os : annotationList) {
+            ExcelField field = (ExcelField) os[0];
+            if (field.isDropDown() == 1 && type == 2) {
+                String[] dlData = field.dropDownList();
+                sheet.addValidationData(setDataValidation(sheet, dlData, 3, 50000, field.sort() - 1, field.sort() - 1));
+            }
         }
         log.debug("Initialize success.");
     }
@@ -291,9 +332,7 @@ public class ExportExcel {
         style.cloneStyleFrom(styles.get("data"));
         style.setAlignment(CellStyle.ALIGN_RIGHT);
         styles.put("data3", style);
-        
 
-   
 
         style = wb.createCellStyle();
         style.cloneStyleFrom(styles.get("data"));
@@ -308,7 +347,7 @@ public class ExportExcel {
         headerFont.setColor(IndexedColors.WHITE.getIndex());
         style.setFont(headerFont);
         styles.put("header", style);
-        
+
         style = wb.createCellStyle();
         style.cloneStyleFrom(styles.get("data"));
 //		style.setWrapText(true);
@@ -320,7 +359,102 @@ public class ExportExcel {
         headerFont2.setFontHeightInPoints((short) 10);
         headerFont2.setBoldweight(Font.BOLDWEIGHT_BOLD);
         headerFont2.setColor(IndexedColors.WHITE.getIndex());
-        headerFont2.setColor(IndexedColors.RED.index);
+        headerFont2.setColor(IndexedColors.GOLD.index);
+        style.setFont(headerFont2);
+        styles.put("header2", style);
+
+        return styles;
+    }
+
+
+    /**
+     * 创建单一列表格样式
+     *
+     * @param wb 工作薄对象
+     * @return 样式列表
+     */
+    private Map<String, CellStyle> createSingleStyles(Workbook wb) {
+        Map<String, CellStyle> styles = new HashMap<String, CellStyle>();
+
+        CellStyle style = wb.createCellStyle();
+
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        Font titleFont = wb.createFont();
+        titleFont.setFontName("Arial");
+        titleFont.setFontHeightInPoints((short) 10);
+        titleFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        style.setFont(titleFont);
+        styles.put("title", style);
+
+        style = wb.createCellStyle();
+        Font introFont = wb.createFont();
+        introFont.setFontName("Arial");
+        introFont.setFontHeightInPoints((short) 10);
+        introFont.setColor(IndexedColors.RED.getIndex());
+        style.setAlignment(CellStyle.ALIGN_LEFT);
+        style.setFont(introFont);
+        style.setWrapText(true);
+        styles.put("intro", style);
+
+        style = wb.createCellStyle();
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setRightBorderColor(IndexedColors.GREY_50_PERCENT.getIndex());
+        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setLeftBorderColor(IndexedColors.GREY_50_PERCENT.getIndex());
+        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setTopBorderColor(IndexedColors.GREY_50_PERCENT.getIndex());
+        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBottomBorderColor(IndexedColors.GREY_50_PERCENT.getIndex());
+        Font dataFont = wb.createFont();
+        dataFont.setFontName("Arial");
+        dataFont.setFontHeightInPoints((short) 10);
+        style.setFont(dataFont);
+        styles.put("data", style);
+
+        style = wb.createCellStyle();
+        style.cloneStyleFrom(styles.get("data"));
+        style.setAlignment(CellStyle.ALIGN_LEFT);
+        styles.put("data1", style);
+
+        style = wb.createCellStyle();
+        style.cloneStyleFrom(styles.get("data"));
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        styles.put("data2", style);
+
+        style = wb.createCellStyle();
+        style.cloneStyleFrom(styles.get("data"));
+        style.setAlignment(CellStyle.ALIGN_RIGHT);
+        styles.put("data3", style);
+
+
+        style = wb.createCellStyle();
+        style.cloneStyleFrom(styles.get("data"));
+//		style.setWrapText(true);
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        Font headerFont = wb.createFont();
+        headerFont.setFontName("Arial");
+        headerFont.setFontHeightInPoints((short) 10);
+        headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        headerFont.setColor(IndexedColors.WHITE.getIndex());
+        style.setFont(headerFont);
+        styles.put("header", style);
+
+        style = wb.createCellStyle();
+        style.cloneStyleFrom(styles.get("data"));
+//		style.setWrapText(true);
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        Font headerFont2 = wb.createFont();
+        headerFont2.setFontName("Arial");
+        headerFont2.setFontHeightInPoints((short) 10);
+        headerFont2.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        headerFont2.setColor(IndexedColors.WHITE.getIndex());
+        headerFont2.setColor(IndexedColors.WHITE.index);
         style.setFont(headerFont2);
         styles.put("header2", style);
 
@@ -430,6 +564,19 @@ public class ExportExcel {
                 this.addCell(row, colunm++, val, ef.align(), ef.fieldType());
                 sb.append(val + ", ");
             }
+            if (annotationList.size() == 0) {
+
+                Object val = null;
+
+                Method[] method = e.getClass().getDeclaredMethods();
+                List<Method> methodGet = new ArrayList<Method>();
+                for (Method m : method) {
+
+                    if (m.getName().indexOf("get") != -1) {
+                        methodGet.add(m);
+                    }
+                }
+            }
             log.debug("Write success: [" + row.getRowNum() + "] " + sb.toString());
         }
         return this;
@@ -452,7 +599,7 @@ public class ExportExcel {
      */
     public ExportExcel write(HttpServletResponse response, String fileName) throws IOException {
         response.reset();
-        response.setContentType("application/octet-stream; charset=utf-8");
+        response.setContentType("multipart/form-data");
         response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileName, "UTF-8"));
         write(response.getOutputStream());
         return this;
@@ -477,4 +624,59 @@ public class ExportExcel {
         return this;
     }
 
+    /**
+     * 根据headerList设置数据
+     *
+     * @param list
+     * @param headerList
+     * @param <E>
+     * @return
+     */
+    public <E> ExportExcel setDataListByHeader(List<E> list, List<String> headerList) {
+        try {
+            for (E e : list) {
+                int colunm = 0;
+                Row row = this.addRow();
+                StringBuilder sb = new StringBuilder();
+                Object val = null;
+                Method[] method = e.getClass().getDeclaredMethods();
+                for (String head : headerList) {
+                    for (Method m : method) {
+                        if (m.getName().indexOf("get") != -1) {
+                            ExcelField myAnnotation = m.getAnnotation(ExcelField.class);
+                            if (myAnnotation.title().equals(head)) {
+                                val = Reflections.invokeMethod(e, m.getName(), new Class[]{}, new Object[]{});
+                                this.addCell(row, colunm++, val, 2, e.getClass());
+                                sb.append(val + ", ");
+                            }
+                        }
+                    }
+                }
+
+                log.debug("Write success: [" + row.getRowNum() + "] " + sb.toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return this;
+    }
+
+    private static DataValidation setDataValidation(Sheet sheet, String[] textList, int firstRow, int endRow, int firstCol, int endCol) {
+
+        DataValidationHelper helper = sheet.getDataValidationHelper();
+        //加载下拉列表内容
+        DataValidationConstraint constraint = helper.createExplicitListConstraint(textList);
+        //DVConstraint constraint = new DVConstraint();
+        constraint.setExplicitListValues(textList);
+
+        //设置数据有效性加载在哪个单元格上。四个参数分别是：起始行、终止行、起始列、终止列
+        CellRangeAddressList regions = new CellRangeAddressList(firstRow, endRow, firstCol, endCol);
+
+        //数据有效性对象
+        DataValidation data_validation = helper.createValidation(constraint, regions);
+        //DataValidation data_validation = new DataValidation(regions, constraint);
+
+        return data_validation;
+    }
 }

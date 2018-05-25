@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+
+    <description>JSTL 1.1 functions library</description>
+    <display-name>JSTL functions sys</display-name>
+    <tlib-version>1.1</tlib-version>
+    <short-name>ligu</short-name>
+    <uri>http://java.sun.com/jsp/jstl/functionss</uri>
+
+    <function>
+        <description>判断和当前时间的间距</description>
+        <name>intervalNowTimeToView</name>
+        <function-class>cc.ligu.common.tld.DateTimeUtil</function-class>
+        <function-signature>java.lang.String formatDateInterval(long)</function-signature>
+        <example>${ligu:intervalNowTimeToView(long)}</example>
+    </function>
+
+    <function>
+        <description>将毫秒转换成日期</description>
+        <name>millsToyyyyMMdd</name>
+        <function-class>cc.ligu.common.utils.DateUtils</function-class>
+        <function-signature>java.lang.String millsToyyyyMMdd(java.lang.Long)</function-signature>
+        <example>${ligu:millsToyyyyMMdd(long)}</example>
+    </function>
+
+    <function>
+        <description>判断当前日期和数据日期差</description>
+        <name>outOfDate</name>
+        <function-class>cc.ligu.common.utils.DateUtils</function-class>
+        <function-signature>boolean outOfDate(java.lang.Long)</function-signature>
+        <example>${ligu:outOfDate(long)}</example>
+    </function>
+
+    <function>
+        <description>空字符判断</description>
+        <name>emptyString</name>
+        <function-class>cc.ligu.common.tld.GukeerStringUtil</function-class>
+        <function-signature>java.lang.Boolean isEmpty(java.lang.String)</function-signature>
+        <example>${ligu:isEmpty(java.lang.String)}</example>
+    </function>
+
+    <function>
+        <description>非空字符判断</description>
+        <name>notEmptyString</name>
+        <function-class>cc.ligu.common.tld.GukeerStringUtil</function-class>
+        <function-signature>java.lang.Boolean notEmpty(java.lang.String)</function-signature>
+        <example>${ligu:notEmpty(java.lang.String)}</example>
+    </function>
+
+    <!--字典参数翻译-->
+    <function>
+        <description>字典参数翻译keyToValue</description>
+        <name>getValueByKeyAndFlag</name>
+        <function-class>cc.ligu.common.utils.DicUtil</function-class>
+        <function-signature>java.lang.String getValueByKeyAndFlag(int,java.lang.String)</function-signature>
+        <example>${ligu:getKeyByValueAndFlag(java.lang.String,java.lang.String)}</example>
+    </function>
+
+    <function>
+        <description>字典参数翻译valueToKey</description>
+        <name>getKeyByValueAndFlag</name>
+        <function-class>cc.ligu.common.utils.DicUtil</function-class>
+        <function-signature>java.lang.Integer getKeyByValueAndFlag(java.lang.String,java.lang.String)</function-signature>
+        <example>${ligu:getKeyByValueAndFlag(java.lang.String,java.lang.String)}</example>
+    </function>
+
+</taglib>

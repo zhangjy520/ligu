@@ -139,7 +139,6 @@ function openDialogOne(title,url,width,height,target){
 var fp_submit_flag_growth;
 function openDialogWithoutReload(title,url,width,height,closeChild){
     fp_submit_flag_growth = 0;
-    debugger;
     layer.open({
         type: 2,
         area: [width, height],
