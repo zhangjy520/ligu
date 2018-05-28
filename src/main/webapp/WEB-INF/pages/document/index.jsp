@@ -60,7 +60,7 @@
                 <td>${ligu:getValueByKeyAndFlag(doc.type,'documentType')}</td>
                 <td>
                     <div>
-                        <a href="${doc.url}">${doc.url}</a>
+                        <a href="${doc.url}" target="view_window">${doc.url}</a>
                     </div>
                 </td>
                 <td>${doc.size}</td>
