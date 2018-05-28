@@ -47,7 +47,6 @@ public abstract class BasicController extends LoggerWrapper {
         return _pageSize;
     }
 
-
     protected String getParamVal(HttpServletRequest request, String key) {
         return getParamVal(request, key, "");
     }

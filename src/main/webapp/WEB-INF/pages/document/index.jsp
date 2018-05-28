@@ -1,18 +1,26 @@
 <%@ include file="../common/common.jsp"%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-
-<form id="pagerForm" method="post" action="${ctx}/question/index">
+<form id="pagerForm" method="post" action="${ctx}/doc/index">
     <input type="hidden" name="pageNum" value="${pageInfo.pageNum}" />
     <input type="hidden" name="numPerPage" value="${pageInfo.pageSize}" />
 </form>
 
 <div class="pageHeader">
-    <form onsubmit="return navTabSearch(this);" action="${ctx}/question/index" method="post" onreset="$(this).find('input').val()">
+    <form onsubmit="return navTabSearch(this);" action="${ctx}/doc/index" method="post" onreset="$(this).find('input').val()">
         <div class="searchBar">
             <table class="searchContent">
                 <tr>
                     <td>
-                        题目内容：<input type="text" name="content" value="${chooseContent}"/>
+                        文档名称：<input type="text" name="name" value="${chooseName}"/>
+                    </td>
+                    <td>
+                        文档类型：
+                        <select class="" name="type">
+                            <option value="0" >请选择</option>
+                            <option value="1" <c:if test="${chooseType eq'1'}">selected</c:if> >培训文档</option>
+                            <option value="2" <c:if test="${chooseType eq '2'}">selected</c:if> >安全原则</option>
+                            <option value="3" <c:if test="${chooseType eq '3'}">selected</c:if> >视频课程</option>
+                        </select>
                     </td>
                 </tr>
             </table>
@@ -28,49 +36,40 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a class="add" href="${ctx}/question/pop/modify" target="dialog" mask="true"><span>新增</span></a></li>
-            <li class="line">line</li>
-            <li><a class="icon" href="${ctx}/question/template/download" target="dwzExport" targetType="navTab" title="下载导入模版?"><span>下载导入模版</span></a></li>
-            <li><a class="icon" href="${ctx}/question/pop/upload" target="dialog" title="导入题库?"><span>导入题库</span></a></li>
+            <li><a class="add" href="${ctx}/doc/pop/modify" target="dialog" mask="true"><span>新增</span></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH="138">
         <thead>
         <tr>
             <th width="20">id</th>
-            <th width="40">type</th>
             <th width="60">name</th>
-            <th width="120">content</th>
-            <th width="40">level</th>
-            <th width="80" align="center">score</th>
-            <th width="80">a</th>
-            <th width="80">b</th>
-            <th width="80">c</th>
-            <th width="80">d</th>
-            <th width="120">answerCorrect</th>
-            <th width="120" align="center">answerExplain</th>
+            <th width="40">type</th>
+            <th width="40">url</th>
+            <th width="80">size</th>
+            <th width="80">apply_time</th>
+            <th width="80">remark</th>
             <th width="80" align="center">caozuo</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${pageInfo.list}" var="question">
+        <c:forEach items="${pageInfo.list}" var="doc">
             <tr target="sid_user" rel="1">
-                <td>${question.id}</td>
-                <td>${ligu:getValueByKeyAndFlag(question.type,'questionType')}</td>
-                <td>${question.name}</td>
-                <td>${question.content}</td>
-                <td>${ligu:getValueByKeyAndFlag(question.level,'questionLevel')}</td>
-                <td>${question.score}</td>
-                <td>${question.a}</td>
-                <td>${question.b}</td>
-                <td>${question.c}</td>
-                <td>${question.d}</td>
-                <td>${question.answerCorrect}</td>
-                <td>${question.answerExplain}</td>
+                <td>${doc.id}</td>
+                <td>${doc.name}</td>
+                <td>${ligu:getValueByKeyAndFlag(doc.type,'documentType')}</td>
                 <td>
                     <div>
-                        <a target="ajaxTodo" title="确认删除？" href="${ctx}/question/delete/${question.id}" class="">删除</a>
-                        <a target="dialog"  href="${ctx}/question/pop/modify?id=${question.id}" class="">修改</a>
+                        <a href="${doc.url}">${doc.url}</a>
+                    </div>
+                </td>
+                <td>${doc.size}</td>
+                <td>${doc.applyTime}</td>
+                <td>${doc.remark}</td>
+                <td>
+                    <div>
+                        <a target="ajaxTodo" title="确认删除？" href="${ctx}/doc/delete/${doc.id}" class="">删除</a>
+                        <a target="dialog"  href="${ctx}/doc/pop/modify?id=${doc.id}" class="">修改</a>
                     </div>
                 </td>
             </tr>

@@ -9,10 +9,13 @@ import java.util.*;
  */
 public class DicUtil {
 
-    // 题目类别
+    //题目类别：1单选题 2多选题 3其他
     public static List<KVEntity> questionTypeList = new ArrayList<KVEntity>();
-    //题目难度
+    //题目难度：1简单 2一般 3困难
     public static List<KVEntity> questionLevelList = new ArrayList<KVEntity>();
+
+    //文档类别：1培训文档 2安全原则 3视频课程
+    public static List<KVEntity> documentTypeList = new ArrayList<KVEntity>();
 
     public static Map<String, Object> map = new HashMap<String, Object>();
 
@@ -31,8 +34,17 @@ public class DicUtil {
         entry = new KVEntity("3", "困难");
         questionLevelList.add(entry);
 
+        entry = new KVEntity("1", "培训文档");
+        documentTypeList.add(entry);
+        entry = new KVEntity("2", "安全原则");
+        documentTypeList.add(entry);
+        entry = new KVEntity("3", "视频课程");
+        documentTypeList.add(entry);
+
+
         map.put("questionType", questionTypeList);
         map.put("questionLevel", questionLevelList);
+        map.put("documentType", documentTypeList);
     }
 
 

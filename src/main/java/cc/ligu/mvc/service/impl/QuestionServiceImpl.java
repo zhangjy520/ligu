@@ -47,8 +47,12 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     @Override
     public int saveQuestion(Question question) {
         if (StringUtils.isEmpty(question.getId())) {
+            question.setCreateBy(9999);//创建人
+            question.setCreateDate(System.currentTimeMillis());//创建时间
             questionMapper.insertSelective(question);
         } else {
+            question.setUpdateBy(9999);
+            question.setUpdateDate(System.currentTimeMillis());
             questionMapper.updateByPrimaryKeySelective(question);
         }
         return 1;
@@ -61,7 +65,6 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
 
     @Override
     public int deleteQuestion(Question question) {
-        questionMapper.deleteByPrimaryKey(question.getId());
-        return 1;
+        return questionMapper.deleteByPrimaryKey(question.getId());
     }
 }

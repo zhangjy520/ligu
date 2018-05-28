@@ -16,6 +16,40 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`ligu` /*!40100 DEFAULT CHARACTER SET ut
 
 USE `ligu`;
 
+/*Table structure for table `doc_question` */
+
+DROP TABLE IF EXISTS `doc_question`;
+
+CREATE TABLE `doc_question` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `type` int(10) DEFAULT NULL COMMENT '题目类别：1单选题 2多选题 3其他',
+  `name` varchar(50) DEFAULT NULL COMMENT '题目简称',
+  `content` varchar(255) DEFAULT NULL COMMENT '题目内容',
+  `level` int(10) DEFAULT NULL COMMENT '题目难度：1简单 2一般 3困难',
+  `score` int(10) DEFAULT NULL COMMENT '分值',
+  `a` varchar(100) DEFAULT NULL COMMENT '答案A',
+  `b` varchar(100) DEFAULT NULL COMMENT '答案B',
+  `c` varchar(100) DEFAULT NULL COMMENT '答案C',
+  `d` varchar(100) DEFAULT NULL COMMENT '答案D',
+  `e` varchar(100) DEFAULT NULL COMMENT '答案E',
+  `f` varchar(100) DEFAULT NULL COMMENT '答案F',
+  `g` varchar(100) DEFAULT NULL COMMENT '答案G',
+  `o` varchar(100) DEFAULT NULL COMMENT '其他答案',
+  `answer_correct` varchar(100) DEFAULT NULL COMMENT '正确答案(单选：A,多选：A,B,C)',
+  `answer_explain` varchar(255) DEFAULT NULL COMMENT '答案解析',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `create_date` bigint(20) DEFAULT NULL COMMENT '创建日期(时间戳格式)',
+  `create_by` int(10) DEFAULT NULL COMMENT '创建人',
+  `update_date` bigint(20) DEFAULT NULL COMMENT '修改日期(时间戳格式)',
+  `update_by` int(10) DEFAULT NULL COMMENT '修改人',
+  `del_flag` int(5) DEFAULT '0' COMMENT '逻辑删除标记[0正常,1已删除]',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8 COMMENT='题库表';
+
+/*Data for the table `doc_question` */
+
+insert  into `doc_question`(`id`,`type`,`name`,`content`,`level`,`score`,`a`,`b`,`c`,`d`,`e`,`f`,`g`,`o`,`answer_correct`,`answer_explain`,`remark`,`create_date`,`create_by`,`update_date`,`update_by`,`del_flag`) values (43,2,'爸爸','爸爸再爱我一次',3,10,'122','222','333','444','E','F','G','其他答案','A','因为是A',NULL,1527474080232,9999,NULL,NULL,0),(44,1,'妈妈','妈妈再爱我两次',1,3,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474080344,9999,NULL,NULL,0),(45,3,'爷爷','s',2,2,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474080460,9999,NULL,NULL,0),(46,2,'奶奶','D',1,2,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474080567,9999,NULL,NULL,0),(47,1,'爸爸','C',3,4,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474080696,9999,NULL,NULL,0),(48,3,'妈妈','D',1,10,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474080804,9999,NULL,NULL,0),(49,2,'爷爷','BV',2,3,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474080928,9999,NULL,NULL,0),(50,1,'奶奶','爸爸再爱我一次',1,2,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474081035,9999,NULL,NULL,0),(51,3,'爸爸','妈妈再爱我两次',3,2,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474081163,9999,NULL,NULL,0),(52,2,'妈妈','s',1,4,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474081270,9999,NULL,NULL,0),(53,1,'爷爷','D',2,10,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474081397,9999,NULL,NULL,0),(54,3,'奶奶','C',1,3,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474081505,9999,NULL,NULL,0),(55,2,'爸爸','D',3,2,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474081631,9999,NULL,NULL,0),(56,1,'妈妈','BV',1,2,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474081740,9999,NULL,NULL,0),(57,3,'爷爷','爸爸再爱我一次',2,4,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474081864,9999,NULL,NULL,0),(58,2,'奶奶','妈妈再爱我两次',1,10,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474081969,9999,NULL,NULL,0),(59,1,'爸爸','s',3,3,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474082095,9999,NULL,NULL,0),(60,3,'妈妈','D',1,2,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474082202,9999,NULL,NULL,0),(61,2,'爷爷','C',2,2,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474082328,9999,NULL,NULL,0),(62,1,'奶奶','D',1,4,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474082432,9999,NULL,NULL,0),(63,3,'爸爸','BV',3,10,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474082557,9999,NULL,NULL,0),(64,2,'妈妈','爸爸再爱我一次',1,3,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474082662,9999,NULL,NULL,0),(65,1,'爷爷','妈妈再爱我两次',2,2,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474082785,9999,NULL,NULL,0),(66,3,'奶奶','s',1,2,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474082889,9999,NULL,NULL,0),(67,2,'爸爸','D',3,4,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474083017,9999,NULL,NULL,0),(68,1,'妈妈','C',1,3,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474083133,9999,NULL,NULL,0);
+
 /*Table structure for table `doc_source` */
 
 DROP TABLE IF EXISTS `doc_source`;
@@ -27,17 +61,19 @@ CREATE TABLE `doc_source` (
   `url` varchar(255) DEFAULT NULL COMMENT '文档地址(全路径,可直接访问)',
   `size` varchar(50) DEFAULT NULL COMMENT '文档大小(kb)',
   `suffix` varchar(50) DEFAULT NULL COMMENT '文档后缀',
-  `apply_time` int(50) DEFAULT NULL COMMENT '文档请求次数(阅读量)',
+  `apply_time` int(50) DEFAULT '0' COMMENT '文档请求次数(阅读量)',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建日期(时间戳格式)',
   `create_by` int(10) DEFAULT NULL COMMENT '创建人',
   `update_date` bigint(20) DEFAULT NULL COMMENT '修改日期(时间戳格式)',
   `update_by` int(10) DEFAULT NULL COMMENT '修改人',
-  `del_flag` int(5) DEFAULT NULL COMMENT '逻辑删除标记[0正常,1已删除,2黑名单]',
+  `del_flag` int(5) DEFAULT '0' COMMENT '逻辑删除标记[0正常,1已删除,2黑名单]',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=165 DEFAULT CHARSET=utf8 COMMENT='媒体资源表';
 
 /*Data for the table `doc_source` */
+
+insert  into `doc_source`(`id`,`name`,`type`,`url`,`size`,`suffix`,`apply_time`,`remark`,`create_date`,`create_by`,`update_date`,`update_by`,`del_flag`) values (152,'223',1,'3331',NULL,'3131',0,'3131',1527478099749,9999,NULL,NULL,0),(153,'媒体名称',1,'c媒体地址(若为在线媒体请填写地址)：',NULL,'媒体后缀：',0,'媒体描述：',1527484249946,9999,NULL,NULL,0),(154,'ds',1,'localhost8081s',NULL,'s',0,'s',1527496562465,9999,NULL,NULL,0),(155,'2222',3,'localhost8081null',NULL,'2222',0,'222',1527497212624,9999,NULL,NULL,0),(156,'3',3,'localhost8081null',NULL,'dsadas',0,'dsadas',1527497288884,9999,NULL,NULL,0),(157,'dsadas',1,'localhost8081null',NULL,'dsa',0,'dsa',1527497341466,9999,NULL,NULL,0),(158,'dsa',1,'localhost8081source/attach/1527497418299.pdf',NULL,'dsa',0,'dsa',1527497433475,9999,NULL,NULL,0),(159,'dddd',1,'localhost:8081/source/attach/1527497569907.pdf',NULL,'sss',0,'ssss',1527497584436,9999,NULL,NULL,0),(160,'dsadas',1,'http://localhost:8085/source/attach/1527497761534.pdf',NULL,'dsadsa',0,'dsadas',1527497768042,9999,NULL,NULL,0),(161,'https://www.baidu.com/?tn=62095104_8_oem_dg',1,'http://localhost:8085https://www.baidu.com/?tn=62095104_8_oem_dg',NULL,'https://www.baidu.com/?tn=62095104_8_oem_dg',0,'https://www.baidu.com/?tn=62095104_8_oem_dg',1527497980961,9999,NULL,NULL,0),(162,'cscsa',1,'https://www.baidu.com/?tn=62095104_8_oem_dg',NULL,'ds',0,'dsa',1527498073822,9999,NULL,NULL,0),(163,'培训资源',1,'http://localhost:8085/source/attach/1527498235560.mp4',NULL,'222',0,'dsa',1527498241780,9999,NULL,NULL,0),(164,'人和狗',3,'http://localhost:8085/source/attach/1527498527782.mp4',NULL,'.mp4',0,'人和狗',1527498535381,9999,NULL,NULL,0);
 
 /*Table structure for table `oa_company` */
 
@@ -50,7 +86,7 @@ CREATE TABLE `oa_company` (
   `sort` int(10) DEFAULT NULL COMMENT '施工单位排序',
   `type` int(10) DEFAULT NULL COMMENT '施工单位资质[1总承包 2专业承包 3劳务分包]',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='施工单位表';
 
 /*Data for the table `oa_company` */
 
@@ -68,6 +104,7 @@ CREATE TABLE `oa_item` (
   `grade` int(10) DEFAULT NULL COMMENT '项目等级',
   `master` int(10) DEFAULT NULL COMMENT '负责人id,关联oa_person主键',
   `master_name` varchar(50) DEFAULT NULL COMMENT '负责人姓名',
+  `company_ids` varchar(100) DEFAULT NULL COMMENT '施工单位id集合,多个单位逗号隔开[1,2,3]',
   `item_flag` varchar(100) DEFAULT NULL COMMENT '项目标识,唯一',
   `item_cycle` varchar(100) DEFAULT NULL COMMENT '项目周期',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间',
@@ -79,7 +116,7 @@ CREATE TABLE `oa_item` (
   PRIMARY KEY (`id`),
   KEY `sys_office_parent_id` (`parent_id`),
   KEY `sys_office_type` (`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='机构表【教育局、学校】';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='项目表';
 
 /*Data for the table `oa_item` */
 

@@ -1,4 +1,4 @@
-/* 
+/*
  *	jQuery文件上传插件,封装UI,上传处理操作采用Baidu WebUploader;
  *	@Author 黑爪爪;
  */
@@ -43,6 +43,7 @@
                 opt['pick']['label'] = opt.buttonText;
                 delete opt.buttonText;
             }
+
             var webUploader = getUploader(opt);
 
             if (!WebUploader.Uploader.support()) {
@@ -50,15 +51,17 @@
                 return false;
             }
 
+            //传到后台的属性
+            webUploader.option('formData', {
+                imgPath: opt.imgPath
+            });
+
             //绑定文件加入队列事件;
             webUploader.on('fileQueued', function (file) {
-                if (file.id.substring(8) > 0 && $('.fileBoxUl li').length > 0) {
-                    layer.msg('请先删除现有图片')
-                    return false;
-                } else {
-                    createBox($fileInput, file, webUploader);
-                }
+                createBox($fileInput, file, webUploader);
+
             });
+
             //进度条事件
             webUploader.on('uploadProgress', function (file, percentage) {
                 var $fileBox = $('#fileBox_' + file.id);
@@ -73,7 +76,7 @@
             webUploader.on('uploadFinished', function () {
                 $fileInput.next('.parentFileBox').children('.diyButton').remove();
                 var failList = $("input[name='failList']").val();
-                if (failList != '') {
+                if (!!failList) {
                     var list = failList.split(',');
                     var showfail = '';
                     for (var i in list) {
@@ -93,9 +96,9 @@
                 var $fileBox = $('#fileBox_' + file.id);
                 var $diyBar = $fileBox.find('.diyBar');
                 $fileBox.removeClass('diyUploadHover');
-                $diyBar.fadeOut(1000, function () {
-                    $fileBox.children('.diySuccess').show();
-                });
+                // $diyBar.fadeOut( 1000 ,function(){
+                $fileBox.children('.diySuccess').show();
+                // });
                 if (successCallBack) {
                     successCallBack(response);
                 }
@@ -141,7 +144,7 @@
                         text = '未知错误!';
                         break;
                 }
-                layer.msg(text);
+                alert(text);
             });
         }
     });
@@ -235,8 +238,6 @@
     function createBox($fileInput, file, webUploader) {
 
         var file_id = file.id;
-        console.log(file_id)
-
         var $parentFileBox = $fileInput.next('.parentFileBox');
 
         //添加父系容器;
@@ -245,88 +246,33 @@
             var div = '<div class="parentFileBox"> \
 						<ul class="fileBoxUl">\
 						</ul>\
-						<div class="time" style="margin: 20px 0 0 75px;"></div>\
 					</div>';
             $fileInput.after(div);
             $parentFileBox = $fileInput.next('.parentFileBox');
         }
 
-        //创建按钮
-        // if ( $parentFileBox.find('.diyButton').length <= 0 ) {
-        //
-        //     var div = '<div class="diyButton"> \
-        // 			<a class="diyStart" href="javascript:void(0)">开始上传</a> \
-        // 			<a class="diyCancelAll" href="javascript:void(0)">全部取消</a> \
-        // 		</div>';
-        //     $parentFileBox.append( div );
-        //     var $startButton = $parentFileBox.find('.diyStart');
-        //     var $cancelButton = $parentFileBox.find('.diyCancelAll');
-        //
-        //     //开始上传,暂停上传,重新上传事件;
-        //     var uploadStart = function (){
-        //         webUploader.upload();
-        //         $startButton.text('暂停上传').one('click',function(){
-        //             webUploader.stop();
-        //             $(this).text('继续上传').one('click',function(){
-        //                 uploadStart();
-        //             });
-        //         });
-        //     };
-
-        //绑定开始上传按钮;
-        // $startButton.one('click',uploadStart);
-
-        //绑定取消全部按钮;
-        // $cancelButton.bind('click',function(){
-        //     var fileArr = webUploader.getFiles( 'queued' );
-        //     $.each( fileArr ,function( i, v ){
-        //         removeLi( $('#fileBox_'+v.id), v.id, webUploader );
-        //     });
-        // });
-        // }
 
         //添加子容器;
         var li = '<li id="fileBox_' + file_id + '" class="diyUploadHover"> \
 					<div class="diyCancel"></div> \
-					<div class="diySuccess"></div> \
 					<div class="diyFileName">' + file.name + '</div>\
 				</li>';
-        $parentFileBox.children('.fileBoxUl').html(li);
 
-        //上传的文件夹
-        var imgPath = "";
+        if ($fileInput.data('flag') != 'collectiondetail') {
+            $parentFileBox.children('.fileBoxUl').append(li);
+        }
+        //fileBoxUl
 
-        /*if ( file.type.split("/")[0] == 'image' ) {
-         imgPath="classcard/classspace/pic/";
-         }else if ( file.type.split("/")[0] == 'video' ) {
-         imgPath="classcard/classspace/video/";
-         }*/
 
-       /* if (file.type.split("/")[0] == 'image') {
-            if ($fileInput.data('flag') == 'schoolCulture') {
-                imgPath = "classcard/schoolculture/pic"
-            } else {
-                imgPath = "classcard/classspace/pic/"
-            }
-
-        } else if (file.type.split("/")[0] == 'video') {
-            if ($fileInput.data('flag') == 'schoolCulture') {
-                imgPath = "classcard/schoolculture/video"
-            } else {
-                imgPath = "classcard/classspace/video/"
-            }
-        }*/
-
+        var imgPath = ''
 
         //传到后台的属性
         webUploader.option('formData', {
             imgPath: imgPath
         });
-
-        //开始上传
-        webUploader.upload();
-        $('.introductionFileName').hide();
+        // console.log($fileInput.data('flag'));
         $('.time').show();
+        webUploader.upload();
 
         //父容器宽度;
         var $width = $('.fileBoxUl>li').length * 140;
@@ -337,33 +283,65 @@
         var $fileBox = $parentFileBox.find('#fileBox_' + file_id);
 
         //绑定取消事件;
-        var $diyCancel = $fileBox.children('.diyCancel').on('click', function () {
+        var $diyCancel = $fileBox.children('.diyCancel').one('click', function () {
             if ($(".time").length == 0 || $(".time").is(":hidden")) {
+                //var index = $('.fileBoxUl').children().index($(this).parent());
+                var delName = $(this).next().text();
                 removeLi($(this).parent('li'), file_id, webUploader);
-                //删除上传单文件的服务器上的文件
+                var singleUrl = $("input[name='fileUrl']").val();
+                var $fileUrls = $("input[name='fileUrl']").val();
+                var $fileNames = $("input[name='fileName']").val();
+
+                var urls = $fileUrls.split(',');
+                var fileNames = $fileNames.split(',');
+
+                var finalUrls = '';
+                var finalFileName = '';
+
+
+                var delUrl = '';
+                for (var i = 0; i < urls.length; i++) {
+                    if (urls[i].split("@#@")[0] != delName) {
+                        if (finalUrls != '') {
+                            finalUrls += "," + urls[i];
+                            finalFileName += "," + fileNames[i];
+                        } else {
+                            finalUrls += urls[i];
+                            finalFileName += fileNames[i];
+                        }
+                    } else {
+                        delUrl = urls[i].split("@#@")[1];
+                    }
+                }
+
+                $("input[name='fileUrl']").val(finalUrls);
+                $("input[name='fileName']").val(finalFileName);
+
                 var id_urls = [];
                 var id_url = {};
                 id_url.id = "-1";
-                id_url.url = $("input[name='url']").val();
+                id_url.url = delUrl;
                 id_urls.push(id_url);
-                var classCardId = $("input[name='classCardId']").val();
-                var ctx = $("input[name='ctx']").val();
+
+                var url = $("input[name='ctx']").val() + "/file/delete";
+
                 $.ajax({
-                    url: ctx + "/classcard/picture/multidelete",
+                    url: url,
                     type: "post",
                     data: {
-                        id_urls: JSON.stringify(id_urls),
-                        classCardId: classCardId
+                        url_delete: singleUrl
                     },
                     success: function () {
-                        layer.msg("删除成功");
+                        $("input[name='fileUrl']").val("");
+                        $("input[name='fileName']").val("");
+                        alert("删除成功");
                     },
                     error: function () {
-                        layer.msg("删除失败");
+                        alert("删除失败");
                     }
                 })
             } else {
-                layer.msg('图片上传中,请等待');
+                alert('图片上传中,请等待');
             }
         });
 
@@ -373,12 +351,12 @@
             return;
         }
 
-        // //生成预览缩略图;
-        // webUploader.makeThumb( file, function( error, dataSrc ) {
-        // 	if ( !error ) {
-        // 		$fileBox.find('.viewThumb').append('<img src="'+dataSrc+'" >');
-        // 	}
-        // });
+        //生成预览缩略图;
+       /* webUploader.makeThumb( file, function( error, dataSrc ) {
+        	if ( !error ) {
+        		$fileBox.find('.viewThumb').append('<img src="'+dataSrc+'" >');
+        	}
+        });*/
     }
 
     //获取文件类型;

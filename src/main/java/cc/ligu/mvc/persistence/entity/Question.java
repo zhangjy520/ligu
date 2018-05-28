@@ -59,7 +59,7 @@ public class Question implements Serializable {
         this.id = id;
     }
 
-    @ExcelField(title = "题目类别", align = 2, sort = 1, groups = {1, 2},isnull=1,isDropDown = 1,dropDownList = {"单选题","多选题","其他"})
+    @ExcelField(title = "题目类别", align = 2, sort = 1, groups = {1, 2},isnull=1,dictType = "questionType",isDropDown = 1,dropDownList = {"单选题","多选题","其他"})
     public Integer getType() {
         return type;
     }
@@ -86,7 +86,7 @@ public class Question implements Serializable {
         this.content = content == null ? null : content.trim();
     }
 
-    @ExcelField(title = "题目难度", align = 2, sort = 4, groups = {1, 2},isnull=1,isDropDown = 1,dropDownList = {"简单","一般","困难"})
+    @ExcelField(title = "题目难度", align = 2, sort = 4, groups = {1, 2},isnull=1,dictType = "questionLevel",isDropDown = 1,dropDownList = {"简单","一般","困难"})
     public Integer getLevel() {
         return level;
     }

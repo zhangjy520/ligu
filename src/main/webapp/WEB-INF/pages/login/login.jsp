@@ -101,8 +101,7 @@
                         <li><a>个人中心</a>
                             <ul>
                                 <li><a href="${ctx}/question/index" target="navTab">my question</a></li>
-                                <li><a href="${ctx }/account/myTask" target="navTab">我的任务</a></li>
-                                <li><a href="${ctx }/account/groupTask" target="navTab">组任务</a></li>
+                                <li><a href="${ctx}/doc/index" target="navTab">my source</a></li>
                             </ul>
                         </li>
                         <li><a href="" target="navTab">系统管理</a>

@@ -52,7 +52,18 @@
 
         <!-- entity mapping relation -->
         <!-- 题库[doc_question 用户] -->
-        <table schema="ligu" tableName="doc_question" domainObjectName="Question"
+       <!-- <table schema="ligu" tableName="doc_question" domainObjectName="Question"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+
+
+        <!-- 文档库[doc_source 用户] -->
+        <table schema="ligu" tableName="doc_source" domainObjectName="Source"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"

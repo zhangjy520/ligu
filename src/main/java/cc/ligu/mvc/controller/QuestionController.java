@@ -1,3 +1,7 @@
+/**
+ * Created by zjy on 2018/5/20.
+ * 题库管理（题库增删改+导入）
+ */
 package cc.ligu.mvc.controller;
 
 import cc.ligu.common.controller.BasicController;
@@ -8,11 +12,7 @@ import cc.ligu.mvc.modelView.DWZResponse;
 import cc.ligu.mvc.persistence.entity.Question;
 import cc.ligu.mvc.service.QuestionService;
 import com.github.pagehelper.PageInfo;
-import com.github.pagehelper.StringUtil;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -22,9 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RequestMapping("/question")
 @Controller
@@ -34,14 +32,14 @@ public class QuestionController extends BasicController {
     QuestionService questionService;
 
     @RequestMapping(value = "/index")
-    public String toLogin(HttpServletRequest request, Model model) {
+    public String questionIndex(HttpServletRequest request, Model model) {
         String content = getParamVal(request, "content");
         Question question = new Question();
         question.setContent(content);
         PageInfo<Question> pageInfo = questionService.listAllQuestion(getPageSize(request), getPageNum(request), question);
         model.addAttribute("pageInfo", pageInfo);
 
-        model.addAttribute("chooseContent",content);
+        model.addAttribute("chooseContent", content);
         return "question/index";
     }
 
@@ -111,9 +109,10 @@ public class QuestionController extends BasicController {
         ImportExcel importExcel = new ImportExcel(file, 2, 0);
         List<Question> list = importExcel.getDataList(Question.class, 1);
 
-        for (Question teacherView : list) {
+        for (Question question : list) {
             try {
-
+                //先循环入库吧，到时候定了再加个批量插入
+                questionService.saveQuestion(question);
             } catch (Exception e) {
                 e.printStackTrace();
                 continue;
@@ -121,10 +120,8 @@ public class QuestionController extends BasicController {
         }
 
         Long end = System.currentTimeMillis();
-    /*    Map res = new HashMap();
-        res.put("msg", "导入完成，共" + correctTeacherList.size() + "条成功，" + errorTeacherList.size() + "条失败,耗时" + (end - begin) / 1000 + "秒");
-        res.put("errorList", errorTeacherList);*/
-        return DWZResponseUtil.callbackSuccess("200", "导入成功");
+
+        return DWZResponseUtil.callbackSuccess("导入成功，耗时" + (end - begin) / 1000 + "秒", "_blank");
 
     }
 }

@@ -53,7 +53,7 @@
             //绑定文件加入队列事件;
             webUploader.on('fileQueued', function (file) {
                 if (file.id.substring(8) > 0 && $('.fileBoxUl li').length > 0) {
-                    layer.msg('请先删除现有图片')
+                    alert('请先删除现有图片')
                     return false;
                 } else {
                     createBox($fileInput, file, webUploader);
@@ -141,7 +141,7 @@
                         text = '未知错误!';
                         break;
                 }
-                layer.msg(text);
+                alert(text);
             });
         }
     });
@@ -296,28 +296,6 @@
         //上传的文件夹
         var imgPath = "";
 
-        /*if ( file.type.split("/")[0] == 'image' ) {
-         imgPath="classcard/classspace/pic/";
-         }else if ( file.type.split("/")[0] == 'video' ) {
-         imgPath="classcard/classspace/video/";
-         }*/
-
-       /* if (file.type.split("/")[0] == 'image') {
-            if ($fileInput.data('flag') == 'schoolCulture') {
-                imgPath = "classcard/schoolculture/pic"
-            } else {
-                imgPath = "classcard/classspace/pic/"
-            }
-
-        } else if (file.type.split("/")[0] == 'video') {
-            if ($fileInput.data('flag') == 'schoolCulture') {
-                imgPath = "classcard/schoolculture/video"
-            } else {
-                imgPath = "classcard/classspace/video/"
-            }
-        }*/
-
-
         //传到后台的属性
         webUploader.option('formData', {
             imgPath: imgPath
@@ -356,14 +334,14 @@
                         classCardId: classCardId
                     },
                     success: function () {
-                        layer.msg("删除成功");
+                        alert("删除成功");
                     },
                     error: function () {
-                        layer.msg("删除失败");
+                        alert("删除失败");
                     }
                 })
             } else {
-                layer.msg('图片上传中,请等待');
+                alert('图片上传中,请等待');
             }
         });
 

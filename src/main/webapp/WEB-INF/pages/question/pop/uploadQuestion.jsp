@@ -1,7 +1,7 @@
 <%@ include file="../../common/common.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <div class="pageContent">
-    <form id="inputForm" action="${ctx}/question/import/save" method="post" enctype="multipart/form-data" onsubmit="return validateCallback(this, dialogAjaxDone)">
+    <form id="inputForm" action="${ctx}/question/import/save" class="pageForm required-validate" method="post" enctype="multipart/form-data" onsubmit="return validateCallback(this, dialogAjaxDone)">
         <div class="pageFormContent" layoutH="58">
             <div class="unit">
                 <label>题目类别：</label>
@@ -30,7 +30,7 @@
     </form>
 
     <script type="">
-        function doSubmit() {
+        function doSubmit(par) {
             $.ajax({
                 url: '${ctx}/question/import/save',
                 type: 'POST',
@@ -39,9 +39,9 @@
                 processData: false,
                 contentType: false
             }).done(function (res) {
-                alert(res);
+                return dialogAjaxDone(res);
             }).fail(function (res) {
-                alert("aaaa");
+                //
             });
         }
     </script>

@@ -14,7 +14,7 @@ public class FileUtils {
 	public static BASE64Encoder encoder = new sun.misc.BASE64Encoder();
 	public static BASE64Decoder decoder = new sun.misc.BASE64Decoder();
 	public static final String VFS_ROOT_PATH = VFSUtil.getVFSRootPath();
-	public static final String SCHOOL_BACKGROUND = "school/background/";
+	public static final String SOURCE_ATTACH = "/source/attach/";
 
 	public static String readStreamAsString(InputStream ins) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(ins));
