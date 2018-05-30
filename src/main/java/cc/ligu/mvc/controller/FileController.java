@@ -40,7 +40,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by conn on 2016/9/14.
+ * Created by zjy on 2018/5/14.
  */
 @Controller
 @RequestMapping(value = "/file")
@@ -52,49 +52,48 @@ public class FileController extends BasicController {
 
     /**
      * 文件上传
-     *
      * @param file
      * @throws Exception
      */
-    @ResponseBody
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public ResultEntity uploads(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
-        FileOutputStream fos = null;
-        InputStream fis = null;
-        try {
-            String fullPath = FileUtils.VFS_ROOT_PATH + FileUtils.SOURCE_ATTACH;
-            File dir = new File(fullPath);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-            String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-            String fileName = System.currentTimeMillis()  + suffix;
-            String absPath = FileUtils.VFS_ROOT_PATH + FileUtils.SOURCE_ATTACH + fileName;
-            String fileRequestPath = FileUtils.SOURCE_ATTACH + fileName;
+        @ResponseBody
+        @RequestMapping(value = "/upload", method = RequestMethod.POST)
+        public ResultEntity uploads(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
+            FileOutputStream fos = null;
+            InputStream fis = null;
+            try {
+                String fullPath = FileUtils.VFS_ROOT_PATH + FileUtils.SOURCE_ATTACH;
+                File dir = new File(fullPath);
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+                String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+                String fileName = System.currentTimeMillis()  + suffix;
+                String absPath = FileUtils.VFS_ROOT_PATH + FileUtils.SOURCE_ATTACH + fileName;
+                String fileRequestPath = FileUtils.SOURCE_ATTACH + fileName;
 
-            fis = file.getInputStream();
-            File f = new File(absPath);
-            fos = new FileOutputStream(f);
-            byte[] b = new byte[1024];
-            int nRead = 0;
-            while ((nRead = fis.read(b)) != -1) {
-                fos.write(b, 0, nRead);
-            }
-            fos.flush();
+                fis = file.getInputStream();
+                File f = new File(absPath);
+                fos = new FileOutputStream(f);
+                byte[] b = new byte[1024];
+                int nRead = 0;
+                while ((nRead = fis.read(b)) != -1) {
+                    fos.write(b, 0, nRead);
+                }
+                fos.flush();
 
-            Map<String, String> pathMap = new HashMap<>();
-            pathMap.put("fileName", file.getOriginalFilename());
-            pathMap.put("fileRequestPath", fileRequestPath);
-            pathMap.put("suffix", suffix);
-            return ResultEntity.newResultEntity(pathMap);
-        } catch (Exception e) {
-            logger.error("上传文件失败", e);
-        } finally {
-            fos.close();
-            fis.close();
+                Map<String, String> pathMap = new HashMap<>();
+                pathMap.put("fileName", file.getOriginalFilename());
+                pathMap.put("fileRequestPath", fileRequestPath);
+                pathMap.put("suffix", suffix);
+                return ResultEntity.newResultEntity(pathMap);
+            } catch (Exception e) {
+                logger.error("上传文件失败", e);
+            } finally {
+                fos.close();
+                fis.close();
+            }
+            return ResultEntity.newErrEntity();
         }
-        return ResultEntity.newErrEntity();
-    }
 
     @ResponseBody
     @RequestMapping(value = "/delete")

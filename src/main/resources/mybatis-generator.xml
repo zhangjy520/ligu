@@ -24,9 +24,12 @@
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
 
         <!-- 抑制生成代码的注释 -->
-        <commentGenerator>
-            <property name="suppressAllComments" value="true" />
+        <!--<commentGenerator>
+            &lt;!&ndash;<property name="suppressAllComments" value="true" />&ndash;&gt;
+        </commentGenerator>-->
+        <commentGenerator type="cc.ligu.mvc.common.MyCommentGenerator">
         </commentGenerator>
+
 
 
         <!-- 数据库连接信息 -->
@@ -63,7 +66,7 @@
 
 
         <!-- 文档库[doc_source 用户] -->
-        <table schema="ligu" tableName="doc_source" domainObjectName="Source"
+        <table schema="ligu" tableName="setCallCenter" domainObjectName="CallCenter" mapperName="CallCenterDao"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"

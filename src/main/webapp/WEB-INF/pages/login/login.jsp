@@ -57,29 +57,29 @@
         <div class="headerNav">
             <a class="logo" href="http://j-ui.com">标志</a>
             <ul class="nav">
-                <li id="switchEnvBox"><a href="javascript:">（<span>北京</span>）切换城市</a>
+                <li id="switchEnvBox"><a href="javascript:">（<span>项目大庆油田</span>）切换项目</a>
                     <ul>
-                        <li><a href="${ctxStatic}/dwz/sidebar_1.html">北京</a></li>
-                        <li><a href="${ctxStatic}/dwz/sidebar_2.html">上海</a></li>
+                        <li><a href="${ctxStatic}/dwz/sidebar_1.html">高铁建设</a></li>
+                        <li><a href="${ctxStatic}/dwz/sidebar_2.html">房地产建设</a></li>
                     </ul>
                 </li>
                 <li><a href="changepwd.html" target="dialog" width="600">设置</a></li>
                 <li><a href="login.html">退出</a></li>
             </ul>
-            <ul class="themeList" id="themeList">
+           <%-- <ul class="themeList" id="themeList">
                 <li theme="default"><div class="selected">蓝色</div></li>
                 <li theme="green"><div>绿色</div></li>
                 <li theme="red"><div>红色</div></li>
-            </ul>
+            </ul>--%>
         </div>
 
         <div id="navMenu">
             <ul>
-                <li class="selected"><a href="#"><span>题库管理</span></a></li>
-                <li><a href="${ctxStatic}/dwz/sidebar_1.html"><span>资源管理</span></a></li>
+                <li class="selected"><a><span>力谷后台管理</span></a></li>
+                <%--<li><a href="${ctxStatic}/dwz/sidebar_1.html"><span>资源管理</span></a></li>
                 <li><a href="${ctxStatic}/dwz/sidebar_2.html"><span>会员管理</span></a></li>
                 <li><a href="${ctxStatic}/dwz/sidebar_1.html"><span>服务管理</span></a></li>
-                <li><a href="${ctxStatic}/dwz/sidebar_2.html"><span>系统设置</span></a></li>
+                <li><a href="${ctxStatic}/dwz/sidebar_2.html"><span>系统设置</span></a></li>--%>
             </ul>
         </div>
     </div>
@@ -94,25 +94,34 @@
             <div class="toggleCollapse"><h2>主菜单</h2><div>收缩</div></div>
             <div class="accordion" fillSpace="sidebar">
                 <div class="accordionHeader">
-                    <h2><span>Folder</span>界面组件</h2>
+                    <h2><span>Folder</span>管理模块</h2>
                 </div>
                 <div class="accordionContent">
                     <ul class="tree">
-                        <li><a>个人中心</a>
+                        <li><a>培训模块</a>
                             <ul>
-                                <li><a href="${ctx}/question/index" target="navTab">my question</a></li>
-                                <li><a href="${ctx}/doc/index" target="navTab">my source</a></li>
+                                <li><a href="${ctx}/doc/index" target="navTab">培训文档</a></li>
                             </ul>
                         </li>
-                        <li><a href="" target="navTab">系统管理</a>
+                        <li><a>认证模块</a>
                             <ul>
-                                <li><a href="${ctx }/user/list" target="navTab">用户管理</a></li>
-                                <li><a href="${ctx }/task/list" target="navTab">流程定义</a></li>
+                                <li><a href="${ctx}/question/index" target="navTab">题库管理</a></li>
+                            </ul>
+                        </li>
+                        <li><a>信息模块</a>
+                            <ul>
+                                <li><a href="">施工人员管理</a></li>
+                            </ul>
+                        </li>
+                        <li><a>项目模块</a>
+                            <ul>
+                                <li><a href="">项目管理</a></li>
+                                <li><a href="">施工单位管理</a></li>
                             </ul>
                         </li>
                     </ul>
                 </div>
-                <div class="accordionHeader">
+                <%--<div class="accordionHeader">
                     <h2><span>Folder</span>典型页面</h2>
                 </div>
                 <div class="accordionContent">
@@ -126,7 +135,7 @@
                 <div class="accordionContent">
                     <ul class="tree">
                     </ul>
-                </div>
+                </div>--%>
             </div>
         </div>
     </div>
