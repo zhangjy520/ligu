@@ -44,7 +44,7 @@ public class MyBatisPlusGenerator {
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
         gc.setOutputDir(properties.getProperty("outputDir"));// 自己的java目录
-        gc.setFileOverride(true);// 是否覆盖
+        gc.setFileOverride(false);// 是否覆盖
         gc.setActiveRecord(true);
         gc.setEnableCache(false);// XML 二级缓存
         gc.setBaseResultMap(true);// XML ResultMap
