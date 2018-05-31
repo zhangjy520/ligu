@@ -16,7 +16,7 @@
     <context:component-scan base-package="cc.ligu.common.controller,
                                              cc.ligu.common.service,
                                              cc.ligu.mvc.controller,
-                                             cc.ligu.mvc.service"/>
+                                             cc.ligu.mvc.service,cc.ligu.plus.controller,cc.ligu.plus.service,cc.ligu.common.shiro"/>
 
     <mvc:annotation-driven>
         <mvc:message-converters>

@@ -2,10 +2,12 @@ package cc.ligu.common.shiro;
 
 import cc.ligu.mvc.persistence.entity.User;
 import cc.ligu.mvc.service.UserService;
+import cc.ligu.mvc.service.impl.UserServiceImpl;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.*;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import java.util.List;
  */
 public class ShiroAuthRealm extends AuthorizingRealm {
 
-    UserService userService;
+    UserService userService = new UserServiceImpl();
 
     /**
      * 授权

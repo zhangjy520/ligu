@@ -1,3 +1,4 @@
+/*
 package cc.ligu.mvc.common;
 
 import org.mybatis.generator.api.MyBatisGenerator;
@@ -15,11 +16,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+*/
 /**
  * 描述：使用Java方式运行MBG
  *
  * 
- */
+ *//*
+
 public class GeneratorStartUp {
     public static void main(String[] args) throws URISyntaxException {
         try {
@@ -43,4 +46,4 @@ public class GeneratorStartUp {
             e.printStackTrace();
         }
     }
-}
+}*/
