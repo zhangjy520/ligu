@@ -59,7 +59,7 @@ public class SourceServiceImpl extends BasicService implements SourceService {
     }
 
     @Override
-    public Source selectSourceByPrimery(int sourceId) {
+    public Source selectSourceByPrimary(int sourceId) {
         return sourceMapper.selectByPrimaryKey(sourceId);
     }
 

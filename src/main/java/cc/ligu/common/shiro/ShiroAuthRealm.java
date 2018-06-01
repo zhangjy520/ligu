@@ -1,13 +1,9 @@
 package cc.ligu.common.shiro;
 
-import cc.ligu.mvc.persistence.entity.User;
-import cc.ligu.mvc.service.UserService;
-import cc.ligu.mvc.service.impl.UserServiceImpl;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.*;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -18,7 +14,7 @@ import java.util.List;
  */
 public class ShiroAuthRealm extends AuthorizingRealm {
 
-    UserService userService = new UserServiceImpl();
+//    UserService userService = new UserServiceImpl();
 
     /**
      * 授权
@@ -28,10 +24,10 @@ public class ShiroAuthRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
-        User user = (User) super.getAvailablePrincipal(principalCollection);
+        //User user = (User) super.getAvailablePrincipal(principalCollection);
 
         SimpleAuthorizationInfo simpleAuthorInfo = null;
-        if (null != user) {
+        if (null != "") {
 
             simpleAuthorInfo = new SimpleAuthorizationInfo();
 
@@ -78,17 +74,17 @@ public class ShiroAuthRealm extends AuthorizingRealm {
             return null;
         }
 
-        User user = userService.getByAccountAndPwd(username, pwd);
+       /* User user = userService.getByAccountAndPwd(username, pwd);
 
         if (user != null) {
             return new SimpleAuthenticationInfo(user,
                     user.getPassword(), getName());
-        }
+        }*/
 
         return null;
     }
 
-    public void setUserService(UserService userService) {
+   /* public void setUserService(UserService userService) {
         this.userService = userService;
-    }
+    }*/
 }

@@ -1,16 +1,10 @@
 package cc.ligu.mvc.service.impl;
 
 import cc.ligu.common.service.BasicService;
-import cc.ligu.common.utils.Constants;
 import cc.ligu.mvc.persistence.dao.QuestionMapper;
-import cc.ligu.mvc.persistence.dao.UserMapper;
 import cc.ligu.mvc.persistence.entity.Question;
 import cc.ligu.mvc.persistence.entity.QuestionExample;
-import cc.ligu.mvc.persistence.entity.User;
-import cc.ligu.mvc.persistence.entity.UserExample;
 import cc.ligu.mvc.service.QuestionService;
-import cc.ligu.mvc.service.UserService;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +53,7 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     }
 
     @Override
-    public Question selectQuestionByPrimery(int questionId) {
+    public Question selectQuestionByPrimary(int questionId) {
         return questionMapper.selectByPrimaryKey(questionId);
     }
 

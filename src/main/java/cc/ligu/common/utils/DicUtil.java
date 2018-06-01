@@ -17,6 +17,11 @@ public class DicUtil {
     //文档类别：1培训文档 2安全原则 3视频课程
     public static List<KVEntity> documentTypeList = new ArrayList<KVEntity>();
 
+    //性别：1男 2女
+    public static List<KVEntity> genderList = new ArrayList<>();
+    //人员类别：1管理员 2施工人员
+    public static List<KVEntity> personTypeList = new ArrayList<>();
+
     public static Map<String, Object> map = new HashMap<String, Object>();
 
     static {
@@ -41,10 +46,22 @@ public class DicUtil {
         entry = new KVEntity("3", "视频课程");
         documentTypeList.add(entry);
 
+        entry = new KVEntity("1", "男");
+        genderList.add(entry);
+        entry = new KVEntity("2", "女");
+        genderList.add(entry);
+
+        entry = new KVEntity("1", "管理员");
+        personTypeList.add(entry);
+        entry = new KVEntity("2", "施工人员");
+        personTypeList.add(entry);
+
 
         map.put("questionType", questionTypeList);
         map.put("questionLevel", questionLevelList);
         map.put("documentType", documentTypeList);
+        map.put("gender", genderList);
+        map.put("personType", personTypeList);
     }
 
 
@@ -94,9 +111,5 @@ public class DicUtil {
 
 
     public static void main(String[] args) {
-        System.out.println(getKeyByValueAndFlag("一年级","nj"));
-        System.out.println(getKeyByValueAndFlag("二年级","nj"));
-        System.out.println(getKeyByValueAndFlag("三年级","nj"));
-        System.out.println(splitWithOutNull("asdasd"));
     }
 }

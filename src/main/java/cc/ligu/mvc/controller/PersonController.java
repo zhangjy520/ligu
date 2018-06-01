@@ -9,7 +9,10 @@ import cc.ligu.common.utils.DWZResponseUtil;
 import cc.ligu.common.utils.excel.ExportExcel;
 import cc.ligu.common.utils.excel.ImportExcel;
 import cc.ligu.mvc.modelView.DWZResponse;
+import cc.ligu.mvc.persistence.entity.Person;
 import cc.ligu.mvc.persistence.entity.Question;
+import cc.ligu.mvc.service.ItemService;
+import cc.ligu.mvc.service.PersonService;
 import cc.ligu.mvc.service.QuestionService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,58 +27,61 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequestMapping("/question")
+@RequestMapping("/person")
 @Controller
-public class QuestionController extends BasicController {
+public class PersonController extends BasicController {
 
     @Autowired
-    QuestionService questionService;
+    PersonService personService;
+    @Autowired
+    ItemService itemService;
 
     @RequestMapping(value = "/index")
-    public String questionIndex(HttpServletRequest request, Model model) {
-        String content = getParamVal(request, "content");
-        Question question = new Question();
-        question.setContent(content);
-        PageInfo<Question> pageInfo = questionService.listAllQuestion(getPageSize(request), getPageNum(request), question);
+    public String personIndex(HttpServletRequest request, Model model) {
+        String name = getParamVal(request, "name");
+        Person person = new Person();
+        person.setName(name);
+        PageInfo<Person> pageInfo = personService.listAllPerson(getPageSize(request), getPageNum(request), person);
         model.addAttribute("pageInfo", pageInfo);
 
-        model.addAttribute("chooseContent", content);
-        return "question/index";
+        model.addAttribute("chooseName", name);
+        return "person/index";
     }
 
     @RequestMapping("/pop/modify")
     public String popAdd(Model model, HttpServletRequest request) {
         String id = getParamVal(request, "id");
         if (!StringUtils.isEmpty(id)) {
-            Question question = questionService.selectQuestionByPrimary(Integer.parseInt(id));
-            model.addAttribute("question", question);
+            Person person = personService.selectPersonByPrimary(Integer.parseInt(id));
+            model.addAttribute("person", person);
         }
-        return "question/pop/editQuestion";
+        model.addAttribute("itemList", itemService.listAllItem());
+        return "person/pop/editPerson";
     }
 
     @ResponseBody
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public DWZResponse saveQuestion(Model model, Question question) {
+    public DWZResponse savePerson(Model model, Person person) {
         try {
-            questionService.saveQuestion(question);
+            personService.savePerson(person);
         } catch (Exception e) {
-            return DWZResponseUtil.callbackFail("500", "保存题目失败", "");
+            return DWZResponseUtil.callbackFail("500", "保存失败", "");
         }
-        return DWZResponseUtil.callbackSuccess("保存题目成功", "_blank");
+        return DWZResponseUtil.callbackSuccess("保存成功", "_blank");
     }
 
 
     @ResponseBody
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    public DWZResponse deleteQuestion(Model model, @PathVariable("id") int id) {
+    public DWZResponse deletePerson(Model model, @PathVariable("id") int id) {
         try {
-            Question question = new Question();
-            question.setId(id);
-            questionService.deleteQuestion(question);
+            Person person = new Person();
+            person.setId(id);
+            personService.deletePerson(person);
         } catch (Exception e) {
-            return DWZResponseUtil.callbackFail("500", "删除题目失败", "");
+            return DWZResponseUtil.callbackFail("500", "删除失败", "");
         }
-        return DWZResponseUtil.callbackSuccess("删除题目成功", "");
+        return DWZResponseUtil.callbackSuccess("删除成功", "");
     }
 
     //问题库模版下载
@@ -83,11 +89,11 @@ public class QuestionController extends BasicController {
     @RequestMapping(value = "/template/download")
     public void exportMoban(HttpServletResponse response) {
         try {
-            String fileName = "问题库导入模板.xlsx";
+            String fileName = "施工人员导入模板.xlsx";
             String anno = "注释：橙色字段为必填项\n" +
-                    "1.若题目答案为多选，格式参考：A,B,C";
+                    "1.";
 
-            new ExportExcel("问题库导入模板", Question.class, 2, 50, anno, 1).setDataList(new ArrayList()).write(response, fileName).dispose();
+            new ExportExcel("施工人员导入模板", Person.class, 2, 50, anno, 1).setDataList(new ArrayList()).write(response, fileName).dispose();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,7 +103,7 @@ public class QuestionController extends BasicController {
     //题库导入页面
     @RequestMapping("/pop/upload")
     public String popUpload(Model model, HttpServletRequest request) {
-        return "question/pop/uploadQuestion";
+        return "person/pop/uploadPerson";
     }
 
     //导入问题库数据页面提交
@@ -107,12 +113,12 @@ public class QuestionController extends BasicController {
         Long begin = System.currentTimeMillis();
 
         ImportExcel importExcel = new ImportExcel(file, 2, 0);
-        List<Question> list = importExcel.getDataList(Question.class, 1);
+        List<Person> list = importExcel.getDataList(Person.class, 1);
 
-        for (Question question : list) {
+        for (Person person : list) {
             try {
                 //先循环入库吧，到时候定了再加个批量插入
-                questionService.saveQuestion(question);
+                personService.savePerson(person);
             } catch (Exception e) {
                 e.printStackTrace();
                 continue;
@@ -120,7 +126,6 @@ public class QuestionController extends BasicController {
         }
 
         Long end = System.currentTimeMillis();
-
         return DWZResponseUtil.callbackSuccess("导入成功，耗时" + (end - begin) / 1000 + "秒", "_blank");
 
     }

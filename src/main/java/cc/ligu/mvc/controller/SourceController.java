@@ -48,7 +48,7 @@ public class SourceController extends BasicController {
     public String popAdd(Model model, HttpServletRequest request) {
         String id = getParamVal(request, "id");
         if (!StringUtils.isEmpty(id)) {
-            Source source = sourceService.selectSourceByPrimery(Integer.parseInt(id));
+            Source source = sourceService.selectSourceByPrimary(Integer.parseInt(id));
             model.addAttribute("source", source);
         }
         return "document/pop/editDocument";

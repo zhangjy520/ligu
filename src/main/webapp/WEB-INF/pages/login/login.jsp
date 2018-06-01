@@ -108,17 +108,17 @@
                                 <li><a href="${ctx}/question/index" target="navTab">题库管理</a></li>
                             </ul>
                         </li>
+                        <li><a>项目模块</a>
+                        <ul>
+                            <li><a href="${ctx}/item/index" target="navTab">项目管理</a></li>
+                        </ul>
+                       </li>
                         <li><a>信息模块</a>
                             <ul>
-                                <li><a href="">施工人员管理</a></li>
+                                <li><a href="${ctx}/person/index" target="navTab">施工人员管理</a></li>
                             </ul>
                         </li>
-                        <li><a>项目模块</a>
-                            <ul>
-                                <li><a href="">项目管理</a></li>
-                                <li><a href="">施工单位管理</a></li>
-                            </ul>
-                        </li>
+
                     </ul>
                 </div>
                 <%--<div class="accordionHeader">

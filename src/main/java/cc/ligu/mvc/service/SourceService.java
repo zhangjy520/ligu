@@ -9,7 +9,7 @@ public interface SourceService {
 
     int saveSource(Source source);
 
-    Source selectSourceByPrimery(int sourceId);
+    Source selectSourceByPrimary(int sourceId);
 
     int deleteSource(Source source);
 }

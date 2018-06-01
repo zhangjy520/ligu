@@ -44,11 +44,11 @@ CREATE TABLE `doc_question` (
   `update_by` int(10) DEFAULT NULL COMMENT '修改人',
   `del_flag` int(5) DEFAULT '0' COMMENT '逻辑删除标记[0正常,1已删除]',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8 COMMENT='题库表';
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8 COMMENT='题库表';
 
 /*Data for the table `doc_question` */
 
-insert  into `doc_question`(`id`,`type`,`name`,`content`,`level`,`score`,`a`,`b`,`c`,`d`,`e`,`f`,`g`,`o`,`answer_correct`,`answer_explain`,`remark`,`create_date`,`create_by`,`update_date`,`update_by`,`del_flag`) values (45,3,'爷爷','s',2,2,'A','B','C','D','E','F','G','其他答案','A,C','因为C',NULL,1527474080460,9999,1527574495860,9999,0),(46,2,'奶奶','D',1,2,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474080567,9999,NULL,NULL,0),(47,1,'爸爸','C',3,4,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474080696,9999,NULL,NULL,0),(48,3,'妈妈','D',1,10,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474080804,9999,NULL,NULL,0),(49,2,'爷爷','BV',2,3,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474080928,9999,NULL,NULL,0),(50,1,'奶奶','爸爸再爱我一次',1,2,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474081035,9999,NULL,NULL,0),(51,3,'爸爸','妈妈再爱我两次',3,2,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474081163,9999,NULL,NULL,0),(52,2,'妈妈','s',1,4,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474081270,9999,NULL,NULL,0),(53,1,'爷爷','D',2,10,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474081397,9999,NULL,NULL,0),(54,3,'奶奶','C',1,3,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474081505,9999,NULL,NULL,0),(55,2,'爸爸','D',3,2,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474081631,9999,NULL,NULL,0),(56,1,'妈妈','BV',1,2,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474081740,9999,NULL,NULL,0),(57,3,'爷爷','爸爸再爱我一次',2,4,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474081864,9999,NULL,NULL,0),(58,2,'奶奶','妈妈再爱我两次',1,10,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474081969,9999,NULL,NULL,0),(59,1,'爸爸','s',3,3,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474082095,9999,NULL,NULL,0),(60,3,'妈妈','D',1,2,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474082202,9999,NULL,NULL,0),(61,2,'爷爷','C',2,2,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474082328,9999,NULL,NULL,0),(62,1,'奶奶','D',1,4,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474082432,9999,NULL,NULL,0),(63,3,'爸爸','BV',3,10,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474082557,9999,NULL,NULL,0),(64,2,'妈妈','爸爸再爱我一次',1,3,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474082662,9999,NULL,NULL,0),(65,1,'爷爷','妈妈再爱我两次',2,2,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474082785,9999,NULL,NULL,0),(66,3,'奶奶','s',1,2,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474082889,9999,NULL,NULL,0),(67,2,'爸爸','D',3,4,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474083017,9999,NULL,NULL,0),(68,1,'妈妈','C',1,3,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474083133,9999,NULL,NULL,0),(69,1,'你帅不帅','请问，你帅不帅',1,3,'帅','帅','帅','帅',NULL,NULL,NULL,NULL,'A,B,C,D','你别无选择',NULL,1527574721308,9999,NULL,NULL,0);
+insert  into `doc_question`(`id`,`type`,`name`,`content`,`level`,`score`,`a`,`b`,`c`,`d`,`e`,`f`,`g`,`o`,`answer_correct`,`answer_explain`,`remark`,`create_date`,`create_by`,`update_date`,`update_by`,`del_flag`) values (45,3,'爷爷','s',2,2,'A','B','C','D','E','F','G','其他答案','A,C','因为C',NULL,1527474080460,9999,1527574495860,9999,0),(46,2,'奶奶','D',1,2,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474080567,9999,NULL,NULL,0),(47,1,'爸爸','C',3,4,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474080696,9999,NULL,NULL,0),(48,3,'妈妈','D',1,10,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474080804,9999,NULL,NULL,0),(49,2,'爷爷','BV',2,3,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474080928,9999,NULL,NULL,0),(50,1,'奶奶','爸爸再爱我一次',1,2,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474081035,9999,NULL,NULL,0),(51,3,'爸爸','妈妈再爱我两次',3,2,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474081163,9999,NULL,NULL,0),(52,2,'妈妈','s',1,4,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474081270,9999,NULL,NULL,0),(53,1,'爷爷','D',2,10,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474081397,9999,NULL,NULL,0),(54,3,'奶奶','C',1,3,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474081505,9999,NULL,NULL,0),(55,2,'爸爸','D',3,2,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474081631,9999,NULL,NULL,0),(56,1,'妈妈','BV',1,2,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474081740,9999,NULL,NULL,0),(57,3,'爷爷','爸爸再爱我一次',2,4,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474081864,9999,NULL,NULL,0),(58,2,'奶奶','妈妈再爱我两次',1,10,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474081969,9999,NULL,NULL,0),(59,1,'爸爸','s',3,3,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474082095,9999,NULL,NULL,0),(60,3,'妈妈','D',1,2,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474082202,9999,NULL,NULL,0),(61,2,'爷爷','C',2,2,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474082328,9999,NULL,NULL,0),(62,1,'奶奶','D',1,4,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474082432,9999,NULL,NULL,0),(63,3,'爸爸','BV',3,10,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474082557,9999,NULL,NULL,0),(64,2,'妈妈','爸爸再爱我一次',1,3,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474082662,9999,NULL,NULL,0),(65,1,'爷爷','妈妈再爱我两次',2,2,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474082785,9999,NULL,NULL,0),(66,3,'奶奶','s',1,2,'A','B','C','D','E','F','G','其他答案','C','因为C',NULL,1527474082889,9999,NULL,NULL,0),(67,2,'爸爸','D',3,4,'A','B','C','D','E','F','G','其他答案','A','因为是A',NULL,1527474083017,9999,NULL,NULL,0),(68,1,'妈妈','C',1,3,'A','B','C','D','E','F','G','其他答案','B','因为B',NULL,1527474083133,9999,NULL,NULL,0),(69,1,'你帅不帅','请问，你帅不帅',1,3,'帅','帅','帅','帅',NULL,NULL,NULL,NULL,'A,B,C,D','你别无选择',NULL,1527574721308,9999,NULL,NULL,0),(70,1,'今天天气怎么样','天气怎么样哇',2,12,'很好','一般','差','不好','极差',NULL,NULL,NULL,'A','就是1dsadsa',NULL,1527818550194,9999,1527818567796,9999,0),(71,1,'今天天气怎么样2','天气怎么样哇2',2,12,'很好','一般','差','不好','极差',NULL,NULL,NULL,'A','就是1',NULL,1527818550306,9999,NULL,NULL,0);
 
 /*Table structure for table `doc_source` */
 
@@ -69,26 +69,11 @@ CREATE TABLE `doc_source` (
   `update_by` int(10) DEFAULT NULL COMMENT '修改人',
   `del_flag` int(5) DEFAULT '0' COMMENT '逻辑删除标记[0正常,1已删除,2黑名单]',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=169 DEFAULT CHARSET=utf8 COMMENT='媒体资源表';
+) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8 COMMENT='媒体资源表';
 
 /*Data for the table `doc_source` */
 
-insert  into `doc_source`(`id`,`name`,`type`,`url`,`size`,`suffix`,`apply_time`,`remark`,`create_date`,`create_by`,`update_date`,`update_by`,`del_flag`) values (160,'dsadas',1,'http://localhost:8085/source/attach/1527497761534.pdf',NULL,'dsadsa',0,'dsadas',1527497768042,9999,NULL,NULL,0),(164,'建设施工视频',3,'http://localhost:8085/source/attach/1527498527782.mp4',NULL,'.mp4',0,'建设施工视频',1527498535381,9999,1527574434712,9999,0),(165,'txt',1,'http://localhost:8085/source/attach/1527571808164.txt',NULL,'.txt',0,'txt试一试',1527571823638,9999,NULL,NULL,0),(166,'文档资源',1,'http://localhost:8085/source/attach/1527574407485.docx',NULL,'.docx',0,'',1527574418728,9999,NULL,NULL,0),(168,'视频测试测试',3,'http://localhost:8085/source/attach/1527574615134.mp4',NULL,'.mp4',0,'建设施工视频',1527574618357,9999,NULL,NULL,0);
-
-/*Table structure for table `oa_company` */
-
-DROP TABLE IF EXISTS `oa_company`;
-
-CREATE TABLE `oa_company` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '施工单位名称',
-  `address` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '施工单位地址',
-  `sort` int(10) DEFAULT NULL COMMENT '施工单位排序',
-  `type` int(10) DEFAULT NULL COMMENT '施工单位资质[1总承包 2专业承包 3劳务分包]',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='施工单位表';
-
-/*Data for the table `oa_company` */
+insert  into `doc_source`(`id`,`name`,`type`,`url`,`size`,`suffix`,`apply_time`,`remark`,`create_date`,`create_by`,`update_date`,`update_by`,`del_flag`) values (160,'dsadas',1,'http://localhost:8085/source/attach/1527497761534.pdf',NULL,'dsadsa',0,'dsadas',1527497768042,9999,NULL,NULL,0),(164,'建设施工视频',3,'http://localhost:8085/source/attach/1527498527782.mp4',NULL,'.mp4',0,'建设施工视频',1527498535381,9999,1527574434712,9999,0),(165,'txt',1,'http://localhost:8085/source/attach/1527571808164.txt',NULL,'.txt',0,'txt试一试',1527571823638,9999,NULL,NULL,0),(166,'文档资源',1,'http://localhost:8085/source/attach/1527574407485.docx',NULL,'.docx',0,'',1527574418728,9999,NULL,NULL,0),(168,'视频测试测试',3,'http://localhost:8085/source/attach/1527574615134.mp4',NULL,'.mp4',0,'建设施工视频',1527574618357,9999,NULL,NULL,0),(171,'aaaaaaa',3,'http://localhost:8085/source/attach/1527818425550.mp4',NULL,'.mp4',0,'aaa',1527818430988,9999,NULL,NULL,0);
 
 /*Table structure for table `oa_item` */
 
@@ -100,11 +85,11 @@ CREATE TABLE `oa_item` (
   `name` varchar(100) DEFAULT NULL COMMENT '项目名称',
   `sort` int(10) DEFAULT NULL COMMENT '项目排序',
   `code` varchar(100) DEFAULT NULL COMMENT '项目编号',
-  `type` int(10) DEFAULT NULL COMMENT '项目类型',
-  `grade` int(10) DEFAULT NULL COMMENT '项目等级',
+  `type` varchar(10) DEFAULT NULL COMMENT '项目类型',
+  `grade` varchar(10) DEFAULT NULL COMMENT '项目等级',
   `master` int(10) DEFAULT NULL COMMENT '负责人id,关联oa_person主键',
   `master_name` varchar(50) DEFAULT NULL COMMENT '负责人姓名',
-  `company_ids` varchar(100) DEFAULT NULL COMMENT '施工单位id集合,多个单位逗号隔开[1,2,3]',
+  `company_name` varchar(100) DEFAULT NULL COMMENT '施工单位名称',
   `item_flag` varchar(100) DEFAULT NULL COMMENT '项目标识,唯一',
   `item_cycle` varchar(100) DEFAULT NULL COMMENT '项目周期',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间',
@@ -116,9 +101,11 @@ CREATE TABLE `oa_item` (
   PRIMARY KEY (`id`),
   KEY `sys_office_parent_id` (`parent_id`),
   KEY `sys_office_type` (`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='项目表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='项目表';
 
 /*Data for the table `oa_item` */
+
+insert  into `oa_item`(`id`,`parent_id`,`name`,`sort`,`code`,`type`,`grade`,`master`,`master_name`,`company_name`,`item_flag`,`item_cycle`,`create_date`,`update_by`,`update_date`,`del_flag`,`remarks`,`create_by`) values (7,7,'项目名称sss',1,'项目编号：',NULL,NULL,1,'项目负责人姓名','施工单位名称','项目标识','项目周期',1527821857006,9999,1527821890223,0,NULL,9999),(8,7,'ces',3,'2',NULL,NULL,2,'2','2','2','2',1527843165548,NULL,NULL,0,NULL,9999);
 
 /*Table structure for table `oa_person` */
 
@@ -131,21 +118,23 @@ CREATE TABLE `oa_person` (
   `gender` varchar(5) DEFAULT NULL COMMENT '性别',
   `contact` varchar(50) DEFAULT NULL COMMENT '联系方式',
   `identity_num` varchar(50) DEFAULT NULL COMMENT '身份证号码',
-  `company_id` varchar(50) DEFAULT NULL COMMENT '施工单位id,关联oa_company主键',
   `insurance_purchases` varbinary(10) DEFAULT NULL COMMENT '保险情况',
   `salary_details` varchar(100) DEFAULT NULL COMMENT '薪资情况',
   `address` varchar(100) DEFAULT NULL COMMENT '现住址',
-  `item_id` int(10) DEFAULT NULL COMMENT '项目id,关联oa_item主键',
+  `item_id` int(10) DEFAULT NULL COMMENT '所在项目id,关联oa_item主键',
+  `item_name` varchar(100) DEFAULT NULL COMMENT '项目名称',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建日期(时间戳格式)',
   `create_by` int(10) DEFAULT NULL COMMENT '创建人',
   `update_date` bigint(20) DEFAULT NULL COMMENT '修改日期(时间戳格式)',
   `update_by` int(10) DEFAULT NULL COMMENT '修改人',
-  `del_flag` int(5) DEFAULT NULL COMMENT '逻辑删除标记[0正常,1已删除,2黑名单]',
+  `del_flag` int(5) DEFAULT '0' COMMENT '逻辑删除标记[0正常,1已删除,2黑名单]',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `oa_person` */
+
+insert  into `oa_person`(`id`,`name`,`type`,`gender`,`contact`,`identity_num`,`insurance_purchases`,`salary_details`,`address`,`item_id`,`item_name`,`remark`,`create_date`,`create_by`,`update_date`,`update_by`,`del_flag`) values (1,'姓名：',NULL,'性别：','联系方式：','身份证号码：',NULL,'薪资情况','现住址：',7,'项目名称sss',NULL,1527842687443,9999,1527844238986,9999,0);
 
 /*Table structure for table `ref_role_menu` */
 

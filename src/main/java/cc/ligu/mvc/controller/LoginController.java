@@ -5,7 +5,6 @@ import cc.ligu.common.entity.ResultEntity;
 import cc.ligu.common.exception.ErrcodeException;
 import cc.ligu.common.security.AESencryptor;
 import cc.ligu.mvc.common.UserRoleType;
-import cc.ligu.mvc.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
@@ -24,9 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class LoginController extends BasicController {
-
-    @Autowired
-    UserService userService;
 
     @RequestMapping(value = "/login")
     public String toLogin(HttpServletRequest request, HttpServletResponse response) {

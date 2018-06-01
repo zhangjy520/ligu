@@ -65,8 +65,18 @@
         </table>-->
 
 
-        <!-- 文档库[doc_source 用户] -->
-        <table schema="ligu" tableName="setCallCenter" domainObjectName="CallCenter" mapperName="CallCenterDao"
+        <!-- 文档库[oa_item 项目表] -->
+        <!--<table schema="ligu" tableName="oa_item" domainObjectName="Item"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+
+        <!-- 文档库[oa_item 项目表] -->
+        <table schema="ligu" tableName="oa_person" domainObjectName="Person"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"

@@ -1,3 +1,4 @@
+/*
 package cc.ligu.mvc.common;
 
 import java.io.InputStream;
@@ -18,9 +19,11 @@ import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import org.springframework.core.io.ClassPathResource;
 
+*/
 /**
  * mybatis-plus代码生成器(用于生成entity)<br>
- */
+ *//*
+
 public class MyBatisPlusGenerator {
 
     public static Properties getProperties(String path) {
@@ -67,7 +70,9 @@ public class MyBatisPlusGenerator {
                 return super.processTypeConvert(fieldType);
             }
         });
-        /**数据库配置这块可以自己手写读取配置文件里的配置项，为了省事我直接copy**/
+        */
+/**数据库配置这块可以自己手写读取配置文件里的配置项，为了省事我直接copy**//*
+
         dsc.setDriverName(properties.getProperty("jdbc.driver"));
         dsc.setUsername(properties.getProperty("jdbc.userName"));
         dsc.setPassword(properties.getProperty("jdbc.password"));
@@ -108,4 +113,4 @@ public class MyBatisPlusGenerator {
         System.err.println(mpg.getCfg().getMap().get("abc"));
     }
 
-}
+}*/
