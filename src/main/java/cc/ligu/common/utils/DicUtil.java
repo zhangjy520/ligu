@@ -19,8 +19,20 @@ public class DicUtil {
 
     //性别：1男 2女
     public static List<KVEntity> genderList = new ArrayList<>();
-    //人员类别：1管理员 2施工人员
+
+    //人员类别：1超级管理员 2人员审核管理员(主任) 3项目管理员(移动公司项目经理) 4施工管理员(施工方项目经理) 5施工工人
     public static List<KVEntity> personTypeList = new ArrayList<>();
+
+    //人员类别对应的权限
+    public static List<KVEntity> roleList = new ArrayList<>();
+
+    //人员类别对应的权限
+    public static List<KVEntity> rolePermissionList = new ArrayList<>();
+
+
+    //人员状态 审核状态[0未审核 1已审核]
+    public static List<KVEntity> personStatusList = new ArrayList<>();
+
 
     public static Map<String, Object> map = new HashMap<String, Object>();
 
@@ -51,17 +63,53 @@ public class DicUtil {
         entry = new KVEntity("2", "女");
         genderList.add(entry);
 
-        entry = new KVEntity("1", "管理员");
+        //1 超级管理员 2 人员审核管理员(主任) 3 项目管理员(移动公司项目经理) 4 施工管理员(施工方项目经理) 5 施工工人
+        entry = new KVEntity("1", "超级管理员");
         personTypeList.add(entry);
-        entry = new KVEntity("2", "施工人员");
+        entry = new KVEntity("2", "人员审核管理员");
+        personTypeList.add(entry);
+        entry = new KVEntity("3", "项目管理员");
+        personTypeList.add(entry);
+        entry = new KVEntity("4", "施工管理员");
+        personTypeList.add(entry);
+        entry = new KVEntity("5", "施工工人");
         personTypeList.add(entry);
 
+        entry = new KVEntity("0", "未审核");
+        personStatusList.add(entry);
+        entry = new KVEntity("1", "已审核");
+        personStatusList.add(entry);
+
+        entry = new KVEntity("1", "root");
+        roleList.add(entry);
+        entry = new KVEntity("2", "checker");
+        roleList.add(entry);
+        entry = new KVEntity("3", "item_er");
+        roleList.add(entry);
+        entry = new KVEntity("4", "worker_er");
+        roleList.add(entry);
+        entry = new KVEntity("5", "worker");
+        roleList.add(entry);
+
+        entry = new KVEntity("1", "per:all:*");
+        rolePermissionList.add(entry);
+        entry = new KVEntity("2", "per:check:*");
+        rolePermissionList.add(entry);
+        entry = new KVEntity("3", "per:item:*");
+        rolePermissionList.add(entry);
+        entry = new KVEntity("4", "per:worker:*");
+        rolePermissionList.add(entry);
+        entry = new KVEntity("5", "per:common:*");
+        rolePermissionList.add(entry);
 
         map.put("questionType", questionTypeList);
         map.put("questionLevel", questionLevelList);
         map.put("documentType", documentTypeList);
         map.put("gender", genderList);
         map.put("personType", personTypeList);
+        map.put("personStatus", personStatusList);
+        map.put("roles", roleList);
+        map.put("permissions", rolePermissionList);
     }
 
 

@@ -5,11 +5,10 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- 给ShiroAuthRealm使用 -->
-    <!--<bean id="userService" class="cc.ligu.mvc.service.impl.UserServiceImpl"></bean>-->
-
+    <bean id="userService" class="cc.ligu.mvc.service.impl.UserServiceImpl"></bean>
     <!-- 項目自定义的Realm -->
     <bean id="shiroAuthRealm" class="cc.ligu.common.shiro.ShiroAuthRealm">
-        <!--<property name="userService" ref="userService"/>-->
+        <property name="userService" ref="userService"/>
     </bean>
 
     <bean id="logout" class="cc.ligu.common.shiro.filter.LogoutAuthFilter">

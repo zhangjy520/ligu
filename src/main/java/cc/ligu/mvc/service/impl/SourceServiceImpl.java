@@ -3,10 +3,7 @@ package cc.ligu.mvc.service.impl;
 import cc.ligu.common.service.BasicService;
 import cc.ligu.mvc.persistence.dao.QuestionMapper;
 import cc.ligu.mvc.persistence.dao.SourceMapper;
-import cc.ligu.mvc.persistence.entity.Question;
-import cc.ligu.mvc.persistence.entity.QuestionExample;
-import cc.ligu.mvc.persistence.entity.Source;
-import cc.ligu.mvc.persistence.entity.SourceExample;
+import cc.ligu.mvc.persistence.entity.*;
 import cc.ligu.mvc.service.QuestionService;
 import cc.ligu.mvc.service.SourceService;
 import com.github.pagehelper.PageHelper;
@@ -45,13 +42,13 @@ public class SourceServiceImpl extends BasicService implements SourceService {
     }
 
     @Override
-    public int saveSource(Source source) {
+    public int saveSource(Source source, UserView userView) {
         if (StringUtils.isEmpty(source.getId())) {
-            source.setCreateBy(9999);//创建人
             source.setCreateDate(System.currentTimeMillis());//创建时间
+            source.setCreateBy(userView.getId());//创建人
             sourceMapper.insertSelective(source);
         } else {
-            source.setUpdateBy(9999);
+            source.setUpdateBy(userView.getId());
             source.setUpdateDate(System.currentTimeMillis());
             sourceMapper.updateByPrimaryKeySelective(source);
         }

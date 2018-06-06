@@ -1,9 +1,13 @@
 package cc.ligu.common.shiro;
 
+import cc.ligu.mvc.persistence.entity.User;
+import cc.ligu.mvc.persistence.entity.UserView;
+import cc.ligu.mvc.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.*;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -14,17 +18,18 @@ import java.util.List;
  */
 public class ShiroAuthRealm extends AuthorizingRealm {
 
-//    UserService userService = new UserServiceImpl();
+    private UserService userService;
 
     /**
      * 授权
+     *
      * @param principalCollection
      * @return
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
-        //User user = (User) super.getAvailablePrincipal(principalCollection);
+        UserView user = (UserView) super.getAvailablePrincipal(principalCollection);
 
         SimpleAuthorizationInfo simpleAuthorInfo = null;
         if (null != "") {
@@ -32,6 +37,12 @@ public class ShiroAuthRealm extends AuthorizingRealm {
             simpleAuthorInfo = new SimpleAuthorizationInfo();
 
             List<String> permissions = new ArrayList<String>();
+
+            UserView userView = userService.selectUserViewByPrimary(user.getRefId());
+            if (null != userView) {
+                permissions.add(userView.getRolePermisson());
+                simpleAuthorInfo.addRole(userView.getRoleName());
+            }
             //添加菜单的permisssion字段，jc:manage:*,jc:manage:ab
             /*List<RoleView> roleViews = userService.selectRoleViewByUserId(user.getId());
             for (RoleView roleView : roleViews) {
@@ -60,6 +71,7 @@ public class ShiroAuthRealm extends AuthorizingRealm {
 
     /**
      * 认证
+     *
      * @param authenticationToken
      * @return
      * @throws AuthenticationException
@@ -74,17 +86,17 @@ public class ShiroAuthRealm extends AuthorizingRealm {
             return null;
         }
 
-       /* User user = userService.getByAccountAndPwd(username, pwd);
+        UserView user = userService.selectUserViewByUsernameAndPassword(username, pwd);
 
         if (user != null) {
             return new SimpleAuthenticationInfo(user,
                     user.getPassword(), getName());
-        }*/
+        }
 
         return null;
     }
 
-   /* public void setUserService(UserService userService) {
+    public void setUserService(UserService userService) {
         this.userService = userService;
-    }*/
+    }
 }

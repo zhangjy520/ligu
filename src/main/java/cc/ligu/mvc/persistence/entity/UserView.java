@@ -1,11 +1,17 @@
 package cc.ligu.mvc.persistence.entity;
 
-import cc.ligu.common.utils.excel.annotation.ExcelField;
-
 import java.io.Serializable;
 
-public class Person implements Serializable {
+public class UserView implements Serializable {
     private Integer id;
+
+    private String username;
+
+    private String password;
+
+    private Integer refId;
+
+    private String photoUrl;
 
     private String name;
 
@@ -37,18 +43,6 @@ public class Person implements Serializable {
 
     private Integer blackFlag;
 
-    private String remark;
-
-    private Long createDate;
-
-    private Integer createBy;
-
-    private Long updateDate;
-
-    private Integer updateBy;
-
-    private Integer delFlag;
-
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -58,7 +52,39 @@ public class Person implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-    @ExcelField(title = "姓名", align = 2, sort = 1, groups = {1, 2})
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username == null ? null : username.trim();
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password == null ? null : password.trim();
+    }
+
+    public Integer getRefId() {
+        return refId;
+    }
+
+    public void setRefId(Integer refId) {
+        this.refId = refId;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl == null ? null : photoUrl.trim();
+    }
+
     public String getName() {
         return name;
     }
@@ -90,7 +116,7 @@ public class Person implements Serializable {
     public void setRolePermisson(String rolePermisson) {
         this.rolePermisson = rolePermisson == null ? null : rolePermisson.trim();
     }
-    @ExcelField(title = "性别", align = 2, sort = 2, groups = {1, 2},isnull=1,isDropDown = 1,dropDownList = {"男","女"})
+
     public String getGender() {
         return gender;
     }
@@ -98,7 +124,7 @@ public class Person implements Serializable {
     public void setGender(String gender) {
         this.gender = gender == null ? null : gender.trim();
     }
-    @ExcelField(title = "联系方式", align = 2, sort = 3, groups = {1, 2})
+
     public String getContact() {
         return contact;
     }
@@ -106,7 +132,7 @@ public class Person implements Serializable {
     public void setContact(String contact) {
         this.contact = contact == null ? null : contact.trim();
     }
-    @ExcelField(title = "身份证号", align = 2, sort = 4, groups = {1, 2})
+
     public String getIdentityNum() {
         return identityNum;
     }
@@ -114,7 +140,7 @@ public class Person implements Serializable {
     public void setIdentityNum(String identityNum) {
         this.identityNum = identityNum == null ? null : identityNum.trim();
     }
-    @ExcelField(title = "保险信息", align = 2, sort = 5, groups = {1, 2})
+
     public String getInsurancePurchases() {
         return insurancePurchases;
     }
@@ -122,7 +148,7 @@ public class Person implements Serializable {
     public void setInsurancePurchases(String insurancePurchases) {
         this.insurancePurchases = insurancePurchases == null ? null : insurancePurchases.trim();
     }
-    @ExcelField(title = "薪资信息", align = 2, sort = 6, groups = {1, 2})
+
     public String getSalaryDetails() {
         return salaryDetails;
     }
@@ -130,7 +156,7 @@ public class Person implements Serializable {
     public void setSalaryDetails(String salaryDetails) {
         this.salaryDetails = salaryDetails == null ? null : salaryDetails.trim();
     }
-    @ExcelField(title = "现住址", align = 2, sort = 7, groups = {1, 2})
+
     public String getAddress() {
         return address;
     }
@@ -162,7 +188,7 @@ public class Person implements Serializable {
     public void setItemName(String itemName) {
         this.itemName = itemName == null ? null : itemName.trim();
     }
-    @ExcelField(title = "施工单位专业", align = 2, sort = 8, groups = {1, 2})
+
     public String getProfessionalUnit() {
         return professionalUnit;
     }
@@ -179,54 +205,6 @@ public class Person implements Serializable {
         this.blackFlag = blackFlag;
     }
 
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
-
-    public Long getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Long createDate) {
-        this.createDate = createDate;
-    }
-
-    public Integer getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(Integer createBy) {
-        this.createBy = createBy;
-    }
-
-    public Long getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Long updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public Integer getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Integer updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Integer getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(Integer delFlag) {
-        this.delFlag = delFlag;
-    }
-
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -238,8 +216,12 @@ public class Person implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        Person other = (Person) that;
+        UserView other = (UserView) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
+            && (this.getUsername() == null ? other.getUsername() == null : this.getUsername().equals(other.getUsername()))
+            && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
+            && (this.getRefId() == null ? other.getRefId() == null : this.getRefId().equals(other.getRefId()))
+            && (this.getPhotoUrl() == null ? other.getPhotoUrl() == null : this.getPhotoUrl().equals(other.getPhotoUrl()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
             && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()))
             && (this.getRoleName() == null ? other.getRoleName() == null : this.getRoleName().equals(other.getRoleName()))
@@ -254,13 +236,7 @@ public class Person implements Serializable {
             && (this.getItemId() == null ? other.getItemId() == null : this.getItemId().equals(other.getItemId()))
             && (this.getItemName() == null ? other.getItemName() == null : this.getItemName().equals(other.getItemName()))
             && (this.getProfessionalUnit() == null ? other.getProfessionalUnit() == null : this.getProfessionalUnit().equals(other.getProfessionalUnit()))
-            && (this.getBlackFlag() == null ? other.getBlackFlag() == null : this.getBlackFlag().equals(other.getBlackFlag()))
-            && (this.getRemark() == null ? other.getRemark() == null : this.getRemark().equals(other.getRemark()))
-            && (this.getCreateDate() == null ? other.getCreateDate() == null : this.getCreateDate().equals(other.getCreateDate()))
-            && (this.getCreateBy() == null ? other.getCreateBy() == null : this.getCreateBy().equals(other.getCreateBy()))
-            && (this.getUpdateDate() == null ? other.getUpdateDate() == null : this.getUpdateDate().equals(other.getUpdateDate()))
-            && (this.getUpdateBy() == null ? other.getUpdateBy() == null : this.getUpdateBy().equals(other.getUpdateBy()))
-            && (this.getDelFlag() == null ? other.getDelFlag() == null : this.getDelFlag().equals(other.getDelFlag()));
+            && (this.getBlackFlag() == null ? other.getBlackFlag() == null : this.getBlackFlag().equals(other.getBlackFlag()));
     }
 
     @Override
@@ -268,6 +244,10 @@ public class Person implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+        result = prime * result + ((getUsername() == null) ? 0 : getUsername().hashCode());
+        result = prime * result + ((getPassword() == null) ? 0 : getPassword().hashCode());
+        result = prime * result + ((getRefId() == null) ? 0 : getRefId().hashCode());
+        result = prime * result + ((getPhotoUrl() == null) ? 0 : getPhotoUrl().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
         result = prime * result + ((getRoleName() == null) ? 0 : getRoleName().hashCode());
@@ -283,12 +263,6 @@ public class Person implements Serializable {
         result = prime * result + ((getItemName() == null) ? 0 : getItemName().hashCode());
         result = prime * result + ((getProfessionalUnit() == null) ? 0 : getProfessionalUnit().hashCode());
         result = prime * result + ((getBlackFlag() == null) ? 0 : getBlackFlag().hashCode());
-        result = prime * result + ((getRemark() == null) ? 0 : getRemark().hashCode());
-        result = prime * result + ((getCreateDate() == null) ? 0 : getCreateDate().hashCode());
-        result = prime * result + ((getCreateBy() == null) ? 0 : getCreateBy().hashCode());
-        result = prime * result + ((getUpdateDate() == null) ? 0 : getUpdateDate().hashCode());
-        result = prime * result + ((getUpdateBy() == null) ? 0 : getUpdateBy().hashCode());
-        result = prime * result + ((getDelFlag() == null) ? 0 : getDelFlag().hashCode());
         return result;
     }
 
@@ -299,6 +273,10 @@ public class Person implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", username=").append(username);
+        sb.append(", password=").append(password);
+        sb.append(", refId=").append(refId);
+        sb.append(", photoUrl=").append(photoUrl);
         sb.append(", name=").append(name);
         sb.append(", type=").append(type);
         sb.append(", roleName=").append(roleName);
@@ -314,12 +292,6 @@ public class Person implements Serializable {
         sb.append(", itemName=").append(itemName);
         sb.append(", professionalUnit=").append(professionalUnit);
         sb.append(", blackFlag=").append(blackFlag);
-        sb.append(", remark=").append(remark);
-        sb.append(", createDate=").append(createDate);
-        sb.append(", createBy=").append(createBy);
-        sb.append(", updateDate=").append(updateDate);
-        sb.append(", updateBy=").append(updateBy);
-        sb.append(", delFlag=").append(delFlag);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

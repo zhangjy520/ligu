@@ -6,11 +6,13 @@ package cc.ligu.mvc.controller;
 
 import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.utils.DWZResponseUtil;
+import cc.ligu.common.utils.DicUtil;
 import cc.ligu.common.utils.excel.ExportExcel;
 import cc.ligu.common.utils.excel.ImportExcel;
 import cc.ligu.mvc.modelView.DWZResponse;
 import cc.ligu.mvc.persistence.entity.Person;
 import cc.ligu.mvc.persistence.entity.Question;
+import cc.ligu.mvc.persistence.entity.UserView;
 import cc.ligu.mvc.service.ItemService;
 import cc.ligu.mvc.service.PersonService;
 import cc.ligu.mvc.service.QuestionService;
@@ -41,6 +43,7 @@ public class PersonController extends BasicController {
         String name = getParamVal(request, "name");
         Person person = new Person();
         person.setName(name);
+        person.setType(5);//查询普通人员
         PageInfo<Person> pageInfo = personService.listAllPerson(getPageSize(request), getPageNum(request), person);
         model.addAttribute("pageInfo", pageInfo);
 
@@ -63,7 +66,10 @@ public class PersonController extends BasicController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public DWZResponse savePerson(Model model, Person person) {
         try {
-            personService.savePerson(person);
+            //施工人员
+            person.setRoleName(DicUtil.getValueByKeyAndFlag(5,"roles"));
+            person.setRolePermisson(DicUtil.getValueByKeyAndFlag(5,"permissions"));
+            personService.savePerson(person,getLoginUser());
         } catch (Exception e) {
             return DWZResponseUtil.callbackFail("500", "保存失败", "");
         }
@@ -100,7 +106,7 @@ public class PersonController extends BasicController {
         }
     }
 
-    //题库导入页面
+    //施工人员导入页面
     @RequestMapping("/pop/upload")
     public String popUpload(Model model, HttpServletRequest request) {
         return "person/pop/uploadPerson";
@@ -114,11 +120,11 @@ public class PersonController extends BasicController {
 
         ImportExcel importExcel = new ImportExcel(file, 2, 0);
         List<Person> list = importExcel.getDataList(Person.class, 1);
-
+        UserView loginUser = getLoginUser();
         for (Person person : list) {
             try {
                 //先循环入库吧，到时候定了再加个批量插入
-                personService.savePerson(person);
+                personService.savePerson(person,loginUser);
             } catch (Exception e) {
                 e.printStackTrace();
                 continue;

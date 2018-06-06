@@ -1,10 +1,10 @@
 <%@ include file="../../common/common.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <div class="pageContent">
-    <form id="inputForm" action="${ctx}/question/import/save" class="pageForm required-validate" method="post" enctype="multipart/form-data" onsubmit="return validateCallback(this, dialogAjaxDone)">
+    <form id="inputForm" action="${ctx}/person/import/save" class="pageForm required-validate" method="post" enctype="multipart/form-data" onsubmit="return validateCallback(this, dialogAjaxDone)">
         <div class="pageFormContent" layoutH="58">
             <div class="unit">
-                <label>题目类别：</label>
+                <label>上传文件：</label>
                 <input type="file" name="file" value="请选择上传文件"/>
             </div>
 
@@ -32,7 +32,7 @@
     <script type="">
         function doSubmit(par) {
             $.ajax({
-                url: '${ctx}/question/import/save',
+                url: '${ctx}/person/import/save',
                 type: 'POST',
                 cache: false,
                 data: new FormData($('#inputForm')[0]),

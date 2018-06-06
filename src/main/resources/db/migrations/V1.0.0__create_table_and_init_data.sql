@@ -44,7 +44,7 @@ CREATE TABLE `doc_question` (
   `update_by` int(10) DEFAULT NULL COMMENT '修改人',
   `del_flag` int(5) DEFAULT '0' COMMENT '逻辑删除标记[0正常,1已删除]',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8 COMMENT='题库表';
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8 COMMENT='题库表';
 
 /*Data for the table `doc_question` */
 
@@ -114,15 +114,20 @@ DROP TABLE IF EXISTS `oa_person`;
 CREATE TABLE `oa_person` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(50) DEFAULT NULL COMMENT '姓名',
-  `type` int(10) DEFAULT NULL COMMENT '人员类别：1管理员 2施工人员',
+  `type` int(10) DEFAULT '5' COMMENT '人员角色类别:1超级管理员 2人员审核管理员(主任) 3项目管理员(移动公司项目经理) 4施工管理员(施工方项目经理) 5施工工人',
+  `role_name` varchar(100) DEFAULT NULL COMMENT '角色名称',
+  `role_permisson` varchar(100) DEFAULT NULL COMMENT '角色权限',
   `gender` varchar(5) DEFAULT NULL COMMENT '性别',
   `contact` varchar(50) DEFAULT NULL COMMENT '联系方式',
   `identity_num` varchar(50) DEFAULT NULL COMMENT '身份证号码',
-  `insurance_purchases` varbinary(10) DEFAULT NULL COMMENT '保险情况',
+  `insurance_purchases` varchar(100) DEFAULT NULL COMMENT '保险情况',
   `salary_details` varchar(100) DEFAULT NULL COMMENT '薪资情况',
   `address` varchar(100) DEFAULT NULL COMMENT '现住址',
+  `status` int(5) DEFAULT '0' COMMENT '审核状态[0未审核 1已审核]',
   `item_id` int(10) DEFAULT NULL COMMENT '所在项目id,关联oa_item主键',
   `item_name` varchar(100) DEFAULT NULL COMMENT '项目名称',
+  `professional_unit` varchar(100) DEFAULT NULL COMMENT '施工单位专业',
+  `black_flag` int(5) DEFAULT '0' COMMENT '黑名单状态[0正常 1黑名单人员]',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建日期(时间戳格式)',
   `create_by` int(10) DEFAULT NULL COMMENT '创建人',
@@ -130,11 +135,11 @@ CREATE TABLE `oa_person` (
   `update_by` int(10) DEFAULT NULL COMMENT '修改人',
   `del_flag` int(5) DEFAULT '0' COMMENT '逻辑删除标记[0正常,1已删除,2黑名单]',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*Data for the table `oa_person` */
 
-insert  into `oa_person`(`id`,`name`,`type`,`gender`,`contact`,`identity_num`,`insurance_purchases`,`salary_details`,`address`,`item_id`,`item_name`,`remark`,`create_date`,`create_by`,`update_date`,`update_by`,`del_flag`) values (1,'姓名：',NULL,'性别：','联系方式：','身份证号码：',NULL,'薪资情况','现住址：',7,'项目名称sss',NULL,1527842687443,9999,1527844238986,9999,0);
+insert  into `oa_person`(`id`,`name`,`type`,`role_name`,`role_permisson`,`gender`,`contact`,`identity_num`,`insurance_purchases`,`salary_details`,`address`,`status`,`item_id`,`item_name`,`professional_unit`,`black_flag`,`remark`,`create_date`,`create_by`,`update_date`,`update_by`,`del_flag`) values (1,'root',1,'root','per:all:*','男',NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,0),(2,'张三',5,'worker','per:common:*','男','110','420','泰康已交','1000已发','湖北武汉',0,NULL,NULL,'计算机科学',0,NULL,1528249604213,9999,1528255088756,9999,0),(3,'李四',5,'worker','per:common:*','女','112','432','保险123','123','湖北武汉',0,NULL,NULL,'计算机',0,NULL,1528250544020,9999,1528255091467,9999,0),(4,'王五',5,'worker','per:common:*','女','113','444','保险234','234','湖北襄阳',0,NULL,NULL,'电信',0,NULL,1528250544127,9999,1528255093386,9999,0);
 
 /*Table structure for table `ref_role_menu` */
 
@@ -220,49 +225,19 @@ CREATE TABLE `sys_menu` (
 
 insert  into `sys_menu`(`id`,`parent_id`,`parent_ids`,`name`,`sort`,`href`,`target`,`icon`,`is_show`,`permission`,`create_by`,`create_date`,`update_by`,`update_date`,`remarks`,`del_flag`) values (1,0,'','添加学生',0,'student/add',NULL,NULL,0,'student:add',2,20160808084312,1,20160809021248,'<p>这个菜单能添加学生</p>',0),(2,0,'','教程管理',0,'jc/*',NULL,NULL,0,'jc:manage:*',1,20160809021947,NULL,NULL,'<p>教程管理</p>',0),(3,2,'','数学管理',0,'jc/shuxu',NULL,NULL,0,'jc:shuxu',1,20160809074410,NULL,NULL,'<p>数学管理</p>',0),(4,0,'','天津展会',0,'device/tj-index',NULL,NULL,0,'tjzh:admin',1,20160809074410,NULL,NULL,NULL,0);
 
-/*Table structure for table `sys_role` */
-
-DROP TABLE IF EXISTS `sys_role`;
-
-CREATE TABLE `sys_role` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
-  `name` varchar(100) NOT NULL COMMENT '角色名称',
-  `enname` varchar(255) DEFAULT NULL COMMENT '英文名称',
-  `role_identify` varchar(255) DEFAULT NULL COMMENT '角色标识',
-  `role_type` int(10) DEFAULT NULL COMMENT '角色类型',
-  `useable` varchar(64) DEFAULT NULL COMMENT '是否可用',
-  `create_by` int(11) NOT NULL COMMENT '创建者',
-  `create_date` bigint(20) NOT NULL COMMENT '创建时间',
-  `update_by` int(11) DEFAULT NULL COMMENT '更新者',
-  `update_date` bigint(20) DEFAULT '0' COMMENT '更新时间',
-  `remarks` varchar(255) DEFAULT NULL COMMENT '备注信息',
-  `del_flag` int(10) NOT NULL DEFAULT '0' COMMENT '逻辑删除标记（0：显示；1：隐藏）',
-  PRIMARY KEY (`id`),
-  KEY `sys_role_del_flag` (`del_flag`),
-  KEY `sys_role_enname` (`enname`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='角色表';
-
-/*Data for the table `sys_role` */
-
-insert  into `sys_role`(`id`,`name`,`enname`,`role_identify`,`role_type`,`useable`,`create_by`,`create_date`,`update_by`,`update_date`,`remarks`,`del_flag`) values (1,'超级管理员','root','root',0,'1',1,20160808083942,1,20160809022433,'<p>我是校长.</p>',0),(2,'区级管理员','admin','admin',1,'1',1,20160809021736,1,20160809022413,'<p>教务处主任，主管学籍.</p>',0),(3,'老师','teacher','teacher',2,'1',1,20160809021736,NULL,0,NULL,0),(4,'学生','student','student',3,'1',1,20160809021736,NULL,0,NULL,0),(5,'加上','patriarch','patriarch',4,'1',1,20160809021736,NULL,0,NULL,0),(6,'班牌绑定管理员','board_user','board_user',5,'1',1,20160810181036,NULL,0,NULL,0);
-
 /*Table structure for table `sys_user` */
 
 DROP TABLE IF EXISTS `sys_user`;
 
 CREATE TABLE `sys_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `school_id` int(11) DEFAULT NULL COMMENT '机构ID',
   `username` varchar(100) DEFAULT NULL COMMENT '登录名',
   `password` varchar(100) DEFAULT NULL COMMENT '密码',
   `name` varchar(100) DEFAULT NULL COMMENT '姓名',
-  `ref_id` int(11) NOT NULL COMMENT '用户引用ID',
-  `user_type` int(10) NOT NULL COMMENT '用户类型[0:root, 1:教师, 2:学生, 3:家长]',
+  `ref_id` int(11) NOT NULL COMMENT '关联oa_person的主键',
   `photo_url` varchar(1000) DEFAULT NULL COMMENT '用户头像',
-  `login_flag` int(10) DEFAULT NULL COMMENT '是否可登录',
-  `login_mark` varchar(64) DEFAULT NULL COMMENT '用于单点登录的随机字符串验证',
-  `create_by` int(10) NOT NULL COMMENT '创建者',
-  `create_date` bigint(20) NOT NULL COMMENT '创建时间',
+  `create_by` int(10) DEFAULT NULL COMMENT '创建者',
+  `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间',
   `update_by` int(10) DEFAULT NULL COMMENT '更新者',
   `update_date` bigint(20) DEFAULT NULL COMMENT '更新时间',
   `remarks` varchar(255) DEFAULT NULL COMMENT '备注信息',
@@ -275,7 +250,44 @@ CREATE TABLE `sys_user` (
 
 /*Data for the table `sys_user` */
 
-insert  into `sys_user`(`id`,`school_id`,`username`,`password`,`name`,`ref_id`,`user_type`,`photo_url`,`login_flag`,`login_mark`,`create_by`,`create_date`,`update_by`,`update_date`,`remarks`,`del_flag`) values (1,0,'root','1V9pPSvWhG5yBSXo/9JNGw==','超级管理员',1,0,'',1,NULL,0,20130527080000,1,20160615134945,'',0),(2,1,'admin','1V9pPSvWhG5yBSXo/9JNGw==','管理员',1,1,NULL,1,NULL,0,20160805162304,1,20160805162313,'',0),(3,2,'teacher','1V9pPSvWhG5yBSXo/9JNGw==','老师',1,2,'',1,NULL,0,20160805162304,1,20160805162313,'',0),(4,2,'student','1V9pPSvWhG5yBSXo/9JNGw==','学生',1,3,'',1,NULL,0,20160805162304,1,20160805162313,'',0),(5,2,'patriarch','1V9pPSvWhG5yBSXo/9JNGw==','学生家长',1,4,'',1,NULL,0,20160805162304,1,20160805162313,'',0),(6,0,'user1','1V9pPSvWhG5yBSXo/9JNGw==','天津展会',1,5,NULL,1,NULL,0,20160805162304,NULL,NULL,NULL,0),(7,0,'user2','1V9pPSvWhG5yBSXo/9JNGw==','天津展会',1,5,NULL,1,NULL,0,20160805162304,NULL,NULL,NULL,0),(8,0,'user3','1V9pPSvWhG5yBSXo/9JNGw==','天津展会',1,5,NULL,1,NULL,0,20160805162304,NULL,NULL,NULL,0),(9,0,'user4','1V9pPSvWhG5yBSXo/9JNGw==','天津展会',1,5,NULL,1,NULL,0,20160805162304,NULL,NULL,NULL,0),(10,0,'user5','1V9pPSvWhG5yBSXo/9JNGw==','天津展会',1,5,NULL,1,NULL,0,20160805162304,NULL,NULL,NULL,0),(11,0,'user6','1V9pPSvWhG5yBSXo/9JNGw==','天津展会',1,5,NULL,1,NULL,0,20160805162304,NULL,NULL,NULL,0),(12,0,'user7','1V9pPSvWhG5yBSXo/9JNGw==','天津展会',1,5,NULL,1,NULL,0,20160805162304,NULL,NULL,NULL,0),(13,0,'kunming','1V9pPSvWhG5yBSXo/9JNGw==','云南昆明',1,5,NULL,1,NULL,0,20160805162304,NULL,NULL,NULL,0);
+insert  into `sys_user`(`id`,`username`,`password`,`name`,`ref_id`,`photo_url`,`create_by`,`create_date`,`update_by`,`update_date`,`remarks`,`del_flag`) values (1,'root','OE43szSeXws9orNa6ooYsQ==','超级管理员',1,'',0,20130527080000,1,20160615134945,'',0);
+
+/*Table structure for table `v_user` */
+
+DROP TABLE IF EXISTS `v_user`;
+
+/*!50001 DROP VIEW IF EXISTS `v_user` */;
+/*!50001 DROP TABLE IF EXISTS `v_user` */;
+
+/*!50001 CREATE TABLE  `v_user`(
+ `id` int(11) ,
+ `username` varchar(100) ,
+ `password` varchar(100) ,
+ `ref_id` int(11) ,
+ `photo_url` varchar(1000) ,
+ `name` varchar(50) ,
+ `type` int(10) ,
+ `role_name` varchar(100) ,
+ `role_permisson` varchar(100) ,
+ `gender` varchar(5) ,
+ `contact` varchar(50) ,
+ `identity_num` varchar(50) ,
+ `insurance_purchases` varchar(100) ,
+ `salary_details` varchar(100) ,
+ `address` varchar(100) ,
+ `status` int(5) ,
+ `item_id` int(10) ,
+ `item_name` varchar(100) ,
+ `professional_unit` varchar(100) ,
+ `black_flag` int(5) 
+)*/;
+
+/*View structure for view v_user */
+
+/*!50001 DROP TABLE IF EXISTS `v_user` */;
+/*!50001 DROP VIEW IF EXISTS `v_user` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `v_user` AS (select `s`.`id` AS `id`,`s`.`username` AS `username`,`s`.`password` AS `password`,`s`.`ref_id` AS `ref_id`,`s`.`photo_url` AS `photo_url`,`o`.`name` AS `name`,`o`.`type` AS `type`,`o`.`role_name` AS `role_name`,`o`.`role_permisson` AS `role_permisson`,`o`.`gender` AS `gender`,`o`.`contact` AS `contact`,`o`.`identity_num` AS `identity_num`,`o`.`insurance_purchases` AS `insurance_purchases`,`o`.`salary_details` AS `salary_details`,`o`.`address` AS `address`,`o`.`status` AS `status`,`o`.`item_id` AS `item_id`,`o`.`item_name` AS `item_name`,`o`.`professional_unit` AS `professional_unit`,`o`.`black_flag` AS `black_flag` from (`sys_user` `s` left join `oa_person` `o` on((`s`.`ref_id` = `o`.`id`)))) */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

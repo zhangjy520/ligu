@@ -14,21 +14,15 @@ public interface PersonMapper {
 
     int insertSelective(Person record);
 
-    List<Person> selectByExampleWithBLOBs(PersonExample example);
-
     List<Person> selectByExample(PersonExample example);
 
     Person selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") Person record, @Param("example") PersonExample example);
 
-    int updateByExampleWithBLOBs(@Param("record") Person record, @Param("example") PersonExample example);
-
     int updateByExample(@Param("record") Person record, @Param("example") PersonExample example);
 
     int updateByPrimaryKeySelective(Person record);
-
-    int updateByPrimaryKeyWithBLOBs(Person record);
 
     int updateByPrimaryKey(Person record);
 }

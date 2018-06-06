@@ -1,4 +1,4 @@
-<%@ include file="../common/common.jsp"%>
+<%@ include file="common/common.jsp"%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -36,7 +36,7 @@
     <script type="text/javascript">
         $(function(){
             DWZ.init("${ctxStatic}/dwz/dwz.frag.xml", {
-                loginUrl:"login_dialog.html", loginTitle:"登录",	// 弹出登录对话框
+                loginUrl:"${ctx}/login", loginTitle:"登录",	// 弹出登录对话框login_dialog
                 statusCode:{ok:200, error:300, timeout:301}, //【可选】
                 pageInfo:{pageNum:"pageNum", numPerPage:"numPerPage", orderField:"orderField", orderDirection:"orderDirection"}, //【可选】
                 debug:false,	// 调试模式 【true|false】
@@ -57,14 +57,14 @@
         <div class="headerNav">
             <a class="logo" href="http://j-ui.com">标志</a>
             <ul class="nav">
-                <li id="switchEnvBox"><a href="javascript:">（<span>项目大庆油田</span>）切换项目</a>
+                <%--<li id="switchEnvBox"><a href="javascript:">（<span>项目大庆油田</span>）切换项目</a>
                     <ul>
                         <li><a href="${ctxStatic}/dwz/sidebar_1.html">高铁建设</a></li>
                         <li><a href="${ctxStatic}/dwz/sidebar_2.html">房地产建设</a></li>
                     </ul>
-                </li>
+                </li>--%>
                 <li><a href="changepwd.html" target="dialog" width="600">设置</a></li>
-                <li><a href="login.html">退出</a></li>
+                <li><a href="${ctx}/doLogout">退出</a></li>
             </ul>
            <%-- <ul class="themeList" id="themeList">
                 <li theme="default"><div class="selected">蓝色</div></li>
@@ -118,6 +118,14 @@
                                 <li><a href="${ctx}/person/index" target="navTab">施工人员管理</a></li>
                             </ul>
                         </li>
+                        <li><a>人员安排</a>
+                            <ul>
+                                <li><a href="${ctx}/person/index" target="navTab">人工审核管理员安排</a></li>
+                                <li><a href="${ctx}/person/index" target="navTab">项目经理安排</a></li>
+                                <li><a href="${ctx}/person/index" target="navTab">施工管理员安排</a></li>
+                            </ul>
+                        </li>
+
 
                     </ul>
                 </div>

@@ -26,7 +26,7 @@ public class LoginController extends BasicController {
 
     @RequestMapping(value = "/login")
     public String toLogin(HttpServletRequest request, HttpServletResponse response) {
-        return "login/login";
+        return "login";
     }
 
     @RequestMapping(value = "/index")
@@ -69,7 +69,7 @@ public class LoginController extends BasicController {
             if (StringUtils.isEmpty(errmsg)) {
                 errmsg = "验证出错,请联系管理员";
             }
-            throw new ErrcodeException(errmsg);
+            return ResultEntity.newErrEntity(errmsg);
         }
 
         WebUtils.getSavedRequest(request);
@@ -77,7 +77,7 @@ public class LoginController extends BasicController {
 
         if (loginUser.isAuthenticated()) {
             if (loginUser.hasRole(UserRoleType.ROLE_ROOT)) {
-                url = "device/index";
+                url = "index";
             }
         }
         return ResultEntity.newResultEntity(url);

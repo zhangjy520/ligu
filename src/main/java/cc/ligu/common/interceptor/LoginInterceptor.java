@@ -1,9 +1,5 @@
 package cc.ligu.common.interceptor;
 
-import cc.ligu.common.exception.PermissionException;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;

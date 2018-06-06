@@ -10,6 +10,7 @@ import cc.ligu.common.utils.excel.ExportExcel;
 import cc.ligu.common.utils.excel.ImportExcel;
 import cc.ligu.mvc.modelView.DWZResponse;
 import cc.ligu.mvc.persistence.entity.Question;
+import cc.ligu.mvc.persistence.entity.UserView;
 import cc.ligu.mvc.service.QuestionService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class QuestionController extends BasicController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public DWZResponse saveQuestion(Model model, Question question) {
         try {
-            questionService.saveQuestion(question);
+            questionService.saveQuestion(question,getLoginUser());
         } catch (Exception e) {
             return DWZResponseUtil.callbackFail("500", "保存题目失败", "");
         }
@@ -108,11 +109,11 @@ public class QuestionController extends BasicController {
 
         ImportExcel importExcel = new ImportExcel(file, 2, 0);
         List<Question> list = importExcel.getDataList(Question.class, 1);
-
+        UserView loginUser = getLoginUser();
         for (Question question : list) {
             try {
                 //先循环入库吧，到时候定了再加个批量插入
-                questionService.saveQuestion(question);
+                questionService.saveQuestion(question,loginUser);
             } catch (Exception e) {
                 e.printStackTrace();
                 continue;

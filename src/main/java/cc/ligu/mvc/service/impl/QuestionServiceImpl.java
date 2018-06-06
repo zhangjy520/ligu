@@ -4,6 +4,7 @@ import cc.ligu.common.service.BasicService;
 import cc.ligu.mvc.persistence.dao.QuestionMapper;
 import cc.ligu.mvc.persistence.entity.Question;
 import cc.ligu.mvc.persistence.entity.QuestionExample;
+import cc.ligu.mvc.persistence.entity.UserView;
 import cc.ligu.mvc.service.QuestionService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -39,14 +40,14 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     }
 
     @Override
-    public int saveQuestion(Question question) {
+    public int saveQuestion(Question question, UserView userView) {
         if (StringUtils.isEmpty(question.getId())) {
-            question.setCreateBy(9999);//创建人
+            question.setCreateBy(userView.getId());//创建人
             question.setCreateDate(System.currentTimeMillis());//创建时间
             questionMapper.insertSelective(question);
         } else {
-            question.setUpdateBy(9999);
             question.setUpdateDate(System.currentTimeMillis());
+            question.setUpdateBy(userView.getId());
             questionMapper.updateByPrimaryKeySelective(question);
         }
         return 1;

@@ -12,7 +12,7 @@
             <table class="searchContent">
                 <tr>
                     <td>
-                        人员姓名：<input type="text" name="content" value="${chooseName}"/>
+                        人员姓名：<input type="text" name="name" value="${chooseName}"/>
                     </td>
                 </tr>
             </table>
@@ -43,9 +43,11 @@
             <th width="120">gender</th>
             <th width="40">contact</th>
             <th width="80" align="center">identityNum</th>
+            <th width="80">insurancePurchases</th>
             <th width="80">salaryDetails</th>
             <th width="80">address</th>
-            <th width="80">itemName</th>
+            <th width="80">professionalUnit</th>
+            <th width="80">status</th>
             <th width="80" align="center">caozuo</th>
         </tr>
         </thead>
@@ -58,9 +60,11 @@
                 <td>${person.gender}</td>
                 <td>${person.contact}</td>
                 <td>${person.identityNum}</td>
+                <td>${person.insurancePurchases}</td>
                 <td>${person.salaryDetails}</td>
                 <td>${person.address}</td>
-                <td>${person.itemName}</td>
+                <td>${person.professionalUnit}</td>
+                <td>${ligu:getValueByKeyAndFlag(person.status,'personStatus')}</td>
                 <td>
                     <div>
                         <a target="ajaxTodo" title="确认删除？" href="${ctx}/person/delete/${person.id}" class="">删除</a>

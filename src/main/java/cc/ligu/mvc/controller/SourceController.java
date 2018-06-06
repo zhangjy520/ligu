@@ -64,7 +64,7 @@ public class SourceController extends BasicController {
                 url = getParamVal(request, "fileUrl");
                 source.setUrl(request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + url);
             }
-            sourceService.saveSource(source);
+            sourceService.saveSource(source,getLoginUser());
         } catch (Exception e) {
             return DWZResponseUtil.callbackFail("500", "保存资源失败", "");
         }

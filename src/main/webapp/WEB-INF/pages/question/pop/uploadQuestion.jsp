@@ -4,7 +4,7 @@
     <form id="inputForm" action="${ctx}/question/import/save" class="pageForm required-validate" method="post" enctype="multipart/form-data" onsubmit="return validateCallback(this, dialogAjaxDone)">
         <div class="pageFormContent" layoutH="58">
             <div class="unit">
-                <label>题目类别：</label>
+                <label>上传文件：</label>
                 <input type="file" name="file" value="请选择上传文件"/>
             </div>
 
