@@ -35,11 +35,9 @@
 
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/teacher/**"/>
-            <mvc:mapping path="/admin/**"/>
-            <mvc:mapping path="/index/**"/>
-            <mvc:exclude-mapping path="/receive"/>
-            <mvc:exclude-mapping path="/receive/temp"/>
+            <mvc:mapping path="/index"/>
+            <mvc:mapping path="/"/>
+            <mvc:exclude-mapping path="/login"/>
             <bean class="cc.ligu.common.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

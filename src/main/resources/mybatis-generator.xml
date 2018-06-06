@@ -24,11 +24,11 @@
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
 
         <!-- 抑制生成代码的注释 -->
-        <commentGenerator>
+        <!--<commentGenerator>
             <property name="suppressAllComments" value="true" />
-        </commentGenerator>
-       <!-- <commentGenerator type="cc.ligu.mvc.common.MyCommentGenerator">
         </commentGenerator>-->
+        <commentGenerator type="cc.ligu.mvc.common.MyCommentGenerator">
+        </commentGenerator>
 
 
 
@@ -86,7 +86,43 @@
         </table>-->
 
         <!-- 登录用户[sys_user 人员表] -->
-        <table schema="ligu" tableName="v_user" domainObjectName="UserView"
+        <!--<table schema="ligu" tableName="v_user" domainObjectName="UserView"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+
+        <table schema="ligu" tableName="pm_work_group" domainObjectName="PmWorkGroup"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="ligu" tableName="pm_role" domainObjectName="PmRole"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="ligu" tableName="pm_matrix" domainObjectName="PmMatrix"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="ligu" tableName="pm_job" domainObjectName="PmJob"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
