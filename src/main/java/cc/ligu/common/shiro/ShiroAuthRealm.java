@@ -60,6 +60,11 @@ public class ShiroAuthRealm extends AuthorizingRealm {
                     }
                 }
             }*/
+            simpleAuthorInfo.addRole("root");
+            simpleAuthorInfo.addRole("checker");
+            simpleAuthorInfo.addRole("item_er");
+            simpleAuthorInfo.addRole("worker_er");
+            simpleAuthorInfo.addRole("worker");
 
             simpleAuthorInfo.addStringPermissions(permissions);
         } else {

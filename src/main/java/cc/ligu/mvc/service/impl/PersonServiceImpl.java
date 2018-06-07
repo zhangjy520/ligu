@@ -53,6 +53,10 @@ public class PersonServiceImpl extends BasicService implements PersonService {
     @Transactional
     @Override
     public int savePerson(Person person, UserView userView) {
+        if (person.getType()!=5){
+            //其他管理员设置，默认已审核！审核未审核只针对施工人员
+            person.setStatus(1);
+        }
         if (StringUtils.isEmpty(person.getId())) {
             person.setCreateBy(userView.getId());//创建人
             person.setCreateDate(System.currentTimeMillis());//创建时间

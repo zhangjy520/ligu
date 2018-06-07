@@ -75,7 +75,7 @@
 
         <div id="navMenu">
             <ul>
-                <li class="selected"><a><span>力谷后台管理</span></a></li>
+                <li class="selected"><a><span>后台管理</span></a></li>
                 <%--<li><a href="${ctxStatic}/dwz/sidebar_1.html"><span>资源管理</span></a></li>
                 <li><a href="${ctxStatic}/dwz/sidebar_2.html"><span>会员管理</span></a></li>
                 <li><a href="${ctxStatic}/dwz/sidebar_1.html"><span>服务管理</span></a></li>
@@ -113,16 +113,13 @@
                             <li><a href="${ctx}/item/index" target="navTab">项目管理</a></li>
                         </ul>
                        </li>
-                        <li><a>信息模块</a>
-                            <ul>
-                                <li><a href="${ctx}/person/index" target="navTab">施工人员管理</a></li>
-                            </ul>
-                        </li>
                         <li><a>人员安排</a>
                             <ul>
-                                <li><a href="${ctx}/person/index" target="navTab">人工审核管理员安排</a></li>
-                                <li><a href="${ctx}/person/index" target="navTab">项目经理安排</a></li>
-                                <li><a href="${ctx}/person/index" target="navTab">施工管理员安排</a></li>
+                                <li><a href="${ctx}/person/index?roleType=5" target="navTab">施工人员安排</a></li>
+                                <li><a href="${ctx}/person/index?roleType=2" target="navTab">人工审核管理员安排</a></li>
+                                <li><a href="${ctx}/person/index?roleType=3" target="navTab">项目经理安排</a></li>
+                                <li><a href="${ctx}/person/index?roleType=4" target="navTab">施工管理员安排</a></li>
+                                <li><a href="${ctx}/person/index?roleType=5" target="navTab">施工人员审核</a></li>
                             </ul>
                         </li>
 

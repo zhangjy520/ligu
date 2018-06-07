@@ -11,11 +11,9 @@ import cc.ligu.common.utils.excel.ExportExcel;
 import cc.ligu.common.utils.excel.ImportExcel;
 import cc.ligu.mvc.modelView.DWZResponse;
 import cc.ligu.mvc.persistence.entity.Person;
-import cc.ligu.mvc.persistence.entity.Question;
 import cc.ligu.mvc.persistence.entity.UserView;
 import cc.ligu.mvc.service.ItemService;
 import cc.ligu.mvc.service.PersonService;
-import cc.ligu.mvc.service.QuestionService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,35 +39,47 @@ public class PersonController extends BasicController {
     @RequestMapping(value = "/index")
     public String personIndex(HttpServletRequest request, Model model) {
         String name = getParamVal(request, "name");
+        String roleType = getParamVal(request, "roleType");
+        int _type = StringUtils.isEmpty(roleType) ? 5 : Integer.valueOf(roleType);
         Person person = new Person();
         person.setName(name);
-        person.setType(5);//查询普通人员
+        person.setType(_type);
         PageInfo<Person> pageInfo = personService.listAllPerson(getPageSize(request), getPageNum(request), person);
         model.addAttribute("pageInfo", pageInfo);
 
         model.addAttribute("chooseName", name);
+        model.addAttribute("roleType", _type);//区别施工人员管理，人工审核管理员管理，项目经理管理，施工管理员管理
         return "person/index";
     }
 
     @RequestMapping("/pop/modify")
     public String popAdd(Model model, HttpServletRequest request) {
         String id = getParamVal(request, "id");
+        String roleType = getParamVal(request,"roleType");
+        String check = getParamVal(request,"check");
         if (!StringUtils.isEmpty(id)) {
             Person person = personService.selectPersonByPrimary(Integer.parseInt(id));
             model.addAttribute("person", person);
         }
+        if(!StringUtils.isEmpty(check)){
+            //如果审核选择不为空，只显示修改页面的审核选择，并把其他可修改的文本框置为不可修改！
+            model.addAttribute("check","check");
+            model.addAttribute("disabled","disabled");
+        }
         model.addAttribute("itemList", itemService.listAllItem());
+        model.addAttribute("roleType", roleType);
         return "person/pop/editPerson";
     }
 
     @ResponseBody
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public DWZResponse savePerson(Model model, Person person) {
+    public DWZResponse savePerson(Model model, Person person, HttpServletRequest request) {
         try {
+            int roleType = (person.getType() == 0 ? 5 : person.getType());
             //施工人员
-            person.setRoleName(DicUtil.getValueByKeyAndFlag(5,"roles"));
-            person.setRolePermisson(DicUtil.getValueByKeyAndFlag(5,"permissions"));
-            personService.savePerson(person,getLoginUser());
+            person.setRoleName(DicUtil.getValueByKeyAndFlag(roleType, "roles"));
+            person.setRolePermisson(DicUtil.getValueByKeyAndFlag(roleType, "permissions"));
+            personService.savePerson(person, getLoginUser());
         } catch (Exception e) {
             return DWZResponseUtil.callbackFail("500", "保存失败", "");
         }
@@ -90,7 +100,7 @@ public class PersonController extends BasicController {
         return DWZResponseUtil.callbackSuccess("删除成功", "");
     }
 
-    //问题库模版下载
+    //人员模版下载
     @ResponseBody
     @RequestMapping(value = "/template/download")
     public void exportMoban(HttpServletResponse response) {
@@ -112,7 +122,7 @@ public class PersonController extends BasicController {
         return "person/pop/uploadPerson";
     }
 
-    //导入问题库数据页面提交
+    //导入人员库数据页面提交
     @ResponseBody
     @RequestMapping(value = "/import/save", method = RequestMethod.POST)
     public DWZResponse importExcel(@RequestParam(value = "file") MultipartFile file) throws Exception {
@@ -124,7 +134,7 @@ public class PersonController extends BasicController {
         for (Person person : list) {
             try {
                 //先循环入库吧，到时候定了再加个批量插入
-                personService.savePerson(person,loginUser);
+                personService.savePerson(person, loginUser);
             } catch (Exception e) {
                 e.printStackTrace();
                 continue;
@@ -135,4 +145,5 @@ public class PersonController extends BasicController {
         return DWZResponseUtil.callbackSuccess("导入成功，耗时" + (end - begin) / 1000 + "秒", "_blank");
 
     }
+
 }
