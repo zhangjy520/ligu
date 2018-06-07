@@ -1,0 +1,88 @@
+资料管理 
+题库管理 
+施工人员管理 
+
+人工审核管理员安排
+项目经理安排
+施工管理员安排
+
+审核施工人员信息
+1超级管理员 2人员审核管理员(主任) 3项目管理员(移动公司项目经理) 4施工管理员(施工方项目经理) 5施工工人
+
+
+
+用户登录：施工人员和管理员两种
+
+施工人员主页：
+
+		培训模块
+			
+			安全生产
+				视频课程
+				培训文档
+				安全原则(文档)
+			
+			重点工艺
+				视频课程
+				培训文档
+				工艺示例(图)
+
+		认证模块
+			
+			日常练习（题目，答案）
+				
+				模拟测试
+				错题库
+				本月考试
+				
+				
+			考试认证
+			
+				模拟测试
+				错题库
+				本月考试
+				
+				
+管理员主页
+		施工人员信息录入
+		施工信息查询
+		
+		
+		假如后台接口给你的题库列表(多选的到时候看例如这样：correctAnswer:A/C)
+		{  code:200
+			data:[
+				{questionId:1,questionContent:你好题目1,answerA:A,answerB:B,answerC:C,correctAnswer:C},
+				{questionId:2,questionContent:你好题目2,answerA:A,answerB:B,answerC:C,correctAnswer:C},
+				{questionId:3,questionContent:你好题目3,answerA:A,answerB:B,answerC:C,correctAnswer:C},
+				{questionId:4,questionContent:你好题目4,answerA:A,answerB:B,answerC:C,correctAnswer:C}
+				]
+		
+		}
+		
+		前端答题完 提交后安卓这边能判断得到错题列表吗，或者把前端的答案提交到后台来算错题也行。
+		
+		
+		
+		
+		CREATE TABLE `doc_question` (
+		  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+		  `type` int(10) DEFAULT NULL COMMENT '题目类别：1单选题 2多选题 3其他',
+		  `name` varchar(50) DEFAULT NULL COMMENT '题目名称',
+		  `content` varchar(255) DEFAULT NULL COMMENT '题目内容',
+		  `answerA` varchar(100) DEFAULT NULL COMMENT '答案A',
+		  `answerB` varchar(100) DEFAULT NULL COMMENT '答案B',
+		  `answerC` varchar(100) DEFAULT NULL COMMENT '答案C',
+		  `answerD` varchar(100) DEFAULT NULL COMMENT '答案D',
+		  `answerE` varchar(100) DEFAULT NULL COMMENT '答案E',
+		  `answerF` varchar(100) DEFAULT NULL COMMENT '答案F',
+		  `answerG` varchar(100) DEFAULT NULL COMMENT '答案G', 
+		  `answerO` varchar(100) DEFAULT NULL COMMENT '其他答案', 
+		  `answer_correct` varchar(100) DEFAULT NULL COMMENT '正确答案(单选：A,多选：A!B!C)', 
+		  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+		  `create_date` bigint(20) DEFAULT NULL COMMENT '创建日期(时间戳格式)',
+		  `create_by` int(10) DEFAULT NULL COMMENT '创建人',
+		  `update_date` bigint(20) DEFAULT NULL COMMENT '修改日期(时间戳格式)',
+		  `update_by` int(10) DEFAULT NULL COMMENT '修改人',
+		  `del_flag` int(5) DEFAULT NULL COMMENT '逻辑删除标记[0正常,1已删除,2黑名单]',
+		  PRIMARY KEY (`id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;

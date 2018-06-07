@@ -40,7 +40,7 @@ public class ShiroAuthRealm extends AuthorizingRealm {
 
             UserView userView = userService.selectUserViewByPrimary(user.getRefId());
             if (null != userView) {
-                permissions.add(userView.getRolePermisson());
+                permissions.add(userView.getRolePermission());
                 simpleAuthorInfo.addRole(userView.getRoleName());
             }
             //添加菜单的permisssion字段，jc:manage:*,jc:manage:ab
@@ -60,11 +60,11 @@ public class ShiroAuthRealm extends AuthorizingRealm {
                     }
                 }
             }*/
-            simpleAuthorInfo.addRole("root");
+            /*simpleAuthorInfo.addRole("root");
             simpleAuthorInfo.addRole("checker");
             simpleAuthorInfo.addRole("item_er");
             simpleAuthorInfo.addRole("worker_er");
-            simpleAuthorInfo.addRole("worker");
+            simpleAuthorInfo.addRole("worker");*/
 
             simpleAuthorInfo.addStringPermissions(permissions);
         } else {

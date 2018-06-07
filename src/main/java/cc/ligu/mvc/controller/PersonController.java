@@ -78,7 +78,7 @@ public class PersonController extends BasicController {
             int roleType = (person.getType() == 0 ? 5 : person.getType());
             //施工人员
             person.setRoleName(DicUtil.getValueByKeyAndFlag(roleType, "roles"));
-            person.setRolePermisson(DicUtil.getValueByKeyAndFlag(roleType, "permissions"));
+            person.setRolePermission(DicUtil.getValueByKeyAndFlag(roleType, "permissions"));
             personService.savePerson(person, getLoginUser());
         } catch (Exception e) {
             return DWZResponseUtil.callbackFail("500", "保存失败", "");

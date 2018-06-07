@@ -64,7 +64,6 @@
         <servlet-name>springMVC</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
-
     <!-- Character Encoding  -->
     <filter>
         <filter-name>characterEncodingFilter</filter-name>

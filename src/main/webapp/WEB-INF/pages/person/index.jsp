@@ -41,8 +41,12 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
+            <shiro:lacksRole name="worker">
+                <%--非管理员无法新增施工人员--%>
             <li><a class="add" href="${ctx}/person/pop/modify?roleType=${roleType}" target="dialog"
                    mask="true"><span>新增</span></a></li>
+            </shiro:lacksRole>
+
             <shiro:hasRole name="worker_er">
                 <%--施工管理员才能录入施工人员--%>
                 <li class="line">line</li>

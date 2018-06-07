@@ -10,7 +10,7 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="role_name" property="roleName" jdbcType="VARCHAR" />
-    <result column="role_permisson" property="rolePermisson" jdbcType="VARCHAR" />
+    <result column="role_permission" property="rolePermission" jdbcType="VARCHAR" />
     <result column="gender" property="gender" jdbcType="VARCHAR" />
     <result column="contact" property="contact" jdbcType="VARCHAR" />
     <result column="identity_num" property="identityNum" jdbcType="VARCHAR" />
@@ -82,7 +82,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, username, password, ref_id, photo_url, name, type, role_name, role_permisson, 
+    id, username, password, ref_id, photo_url, name, type, role_name, role_permission, 
     gender, contact, identity_num, insurance_purchases, salary_details, address, status, 
     item_id, item_name, professional_unit, black_flag
   </sql>
@@ -110,14 +110,14 @@
   <insert id="insert" parameterType="cc.ligu.mvc.persistence.entity.UserView" >
     insert into v_user (id, username, password, 
       ref_id, photo_url, name, 
-      type, role_name, role_permisson, 
+      type, role_name, role_permission, 
       gender, contact, identity_num, 
       insurance_purchases, salary_details, address, 
       status, item_id, item_name, 
       professional_unit, black_flag)
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{refId,jdbcType=INTEGER}, #{photoUrl,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{type,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{rolePermisson,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{rolePermission,jdbcType=VARCHAR}, 
       #{gender,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{identityNum,jdbcType=VARCHAR}, 
       #{insurancePurchases,jdbcType=VARCHAR}, #{salaryDetails,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, 
@@ -150,8 +150,8 @@
       <if test="roleName != null" >
         role_name,
       </if>
-      <if test="rolePermisson != null" >
-        role_permisson,
+      <if test="rolePermission != null" >
+        role_permission,
       </if>
       <if test="gender != null" >
         gender,
@@ -212,8 +212,8 @@
       <if test="roleName != null" >
         #{roleName,jdbcType=VARCHAR},
       </if>
-      <if test="rolePermisson != null" >
-        #{rolePermisson,jdbcType=VARCHAR},
+      <if test="rolePermission != null" >
+        #{rolePermission,jdbcType=VARCHAR},
       </if>
       <if test="gender != null" >
         #{gender,jdbcType=VARCHAR},
@@ -277,8 +277,8 @@
       <if test="record.roleName != null" >
         role_name = #{record.roleName,jdbcType=VARCHAR},
       </if>
-      <if test="record.rolePermisson != null" >
-        role_permisson = #{record.rolePermisson,jdbcType=VARCHAR},
+      <if test="record.rolePermission != null" >
+        role_permission = #{record.rolePermission,jdbcType=VARCHAR},
       </if>
       <if test="record.gender != null" >
         gender = #{record.gender,jdbcType=VARCHAR},
@@ -328,7 +328,7 @@
       name = #{record.name,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=INTEGER},
       role_name = #{record.roleName,jdbcType=VARCHAR},
-      role_permisson = #{record.rolePermisson,jdbcType=VARCHAR},
+      role_permission = #{record.rolePermission,jdbcType=VARCHAR},
       gender = #{record.gender,jdbcType=VARCHAR},
       contact = #{record.contact,jdbcType=VARCHAR},
       identity_num = #{record.identityNum,jdbcType=VARCHAR},

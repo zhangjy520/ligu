@@ -73,13 +73,7 @@ public class LoginController extends BasicController {
         }
 
         WebUtils.getSavedRequest(request);
-        String url = "/";
 
-        if (loginUser.isAuthenticated()) {
-            if (loginUser.hasRole(UserRoleType.ROLE_ROOT)) {
-                url = "index";
-            }
-        }
-        return ResultEntity.newResultEntity(url);
+        return ResultEntity.newResultEntity("index");
     }
 }

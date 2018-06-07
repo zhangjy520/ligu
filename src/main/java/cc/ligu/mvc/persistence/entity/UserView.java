@@ -19,7 +19,7 @@ public class UserView implements Serializable {
 
     private String roleName;
 
-    private String rolePermisson;
+    private String rolePermission;
 
     private String gender;
 
@@ -109,12 +109,12 @@ public class UserView implements Serializable {
         this.roleName = roleName == null ? null : roleName.trim();
     }
 
-    public String getRolePermisson() {
-        return rolePermisson;
+    public String getRolePermission() {
+        return rolePermission;
     }
 
-    public void setRolePermisson(String rolePermisson) {
-        this.rolePermisson = rolePermisson == null ? null : rolePermisson.trim();
+    public void setRolePermission(String rolePermission) {
+        this.rolePermission = rolePermission == null ? null : rolePermission.trim();
     }
 
     public String getGender() {
@@ -225,7 +225,7 @@ public class UserView implements Serializable {
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
             && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()))
             && (this.getRoleName() == null ? other.getRoleName() == null : this.getRoleName().equals(other.getRoleName()))
-            && (this.getRolePermisson() == null ? other.getRolePermisson() == null : this.getRolePermisson().equals(other.getRolePermisson()))
+            && (this.getRolePermission() == null ? other.getRolePermission() == null : this.getRolePermission().equals(other.getRolePermission()))
             && (this.getGender() == null ? other.getGender() == null : this.getGender().equals(other.getGender()))
             && (this.getContact() == null ? other.getContact() == null : this.getContact().equals(other.getContact()))
             && (this.getIdentityNum() == null ? other.getIdentityNum() == null : this.getIdentityNum().equals(other.getIdentityNum()))
@@ -251,7 +251,7 @@ public class UserView implements Serializable {
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
         result = prime * result + ((getRoleName() == null) ? 0 : getRoleName().hashCode());
-        result = prime * result + ((getRolePermisson() == null) ? 0 : getRolePermisson().hashCode());
+        result = prime * result + ((getRolePermission() == null) ? 0 : getRolePermission().hashCode());
         result = prime * result + ((getGender() == null) ? 0 : getGender().hashCode());
         result = prime * result + ((getContact() == null) ? 0 : getContact().hashCode());
         result = prime * result + ((getIdentityNum() == null) ? 0 : getIdentityNum().hashCode());
@@ -280,7 +280,7 @@ public class UserView implements Serializable {
         sb.append(", name=").append(name);
         sb.append(", type=").append(type);
         sb.append(", roleName=").append(roleName);
-        sb.append(", rolePermisson=").append(rolePermisson);
+        sb.append(", rolePermission=").append(rolePermission);
         sb.append(", gender=").append(gender);
         sb.append(", contact=").append(contact);
         sb.append(", identityNum=").append(identityNum);
