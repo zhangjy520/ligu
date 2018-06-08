@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by zjy on 2018/5/22.
  */
-@Controller
 public abstract class BasicController extends LoggerWrapper {
 
     protected int getPageNum(HttpServletRequest request) {

@@ -11,25 +11,28 @@ import cc.ligu.mvc.persistence.entity.Item;
 import cc.ligu.mvc.persistence.entity.Source;
 import cc.ligu.mvc.service.ItemService;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-@RequestMapping("/item")
-@Controller
+@RequestMapping(value = "/item")
+@Api(value="common", tags={"公共接口"})
+@RestController
 public class ItemController extends BasicController {
 
     @Autowired
     ItemService itemService;
 
     @RequestMapping(value = "/index")
+    @ApiOperation(value="test", notes="test,每个国家最多返回8条数据")
     public String itemIndex(HttpServletRequest request, Model model) {
         String name = getParamVal(request, "name");//项目名称模糊查询
 

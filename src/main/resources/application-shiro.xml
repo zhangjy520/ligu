@@ -27,7 +27,10 @@
                 /login = anon
                 /doLogin = anon
                 /doLogout = logout
-
+                /swagger-resources/** = anon
+                /v2/api-docs = anon
+                /**/springfox-swagger-ui/** = anon
+                /** = anon
                 <!-- authc -->
                 /root/** = role[root]
                 /admin/** = role[admin]

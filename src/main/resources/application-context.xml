@@ -20,5 +20,6 @@
     </bean>
 
     <import resource="application-shiro.xml"/>
+    <bean class="cc.ligu.mvc.common.SwaggerConfig" id="swagger2Config"/>
 
 </beans>

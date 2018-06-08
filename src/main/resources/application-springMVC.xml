@@ -31,14 +31,14 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <mvc:interceptors>
+   <!-- <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/index"/>
             <mvc:mapping path="/"/>
             <mvc:exclude-mapping path="/login"/>
             <bean class="cc.ligu.common.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
-    </mvc:interceptors>
+    </mvc:interceptors>-->
 
     <!-- veiew resolver -->
     <bean id="viewResolver0" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -73,5 +73,6 @@
     <mvc:default-servlet-handler/>
     <!-- 静态资源映射 -->
     <mvc:resources mapping="/assets/**" location="/assets/" cache-period="31536000"/>
-
+    <mvc:resources location="classpath:/META-INF/resources/" mapping="swagger-ui.html"/>
+    <mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/>
 </beans>
