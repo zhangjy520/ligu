@@ -10,6 +10,7 @@ import cc.ligu.mvc.modelView.DWZResponse;
 import cc.ligu.mvc.persistence.entity.Item;
 import cc.ligu.mvc.persistence.entity.Source;
 import cc.ligu.mvc.service.ItemService;
+import cc.ligu.mvc.service.impl.ItemServiceImpl;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -29,10 +30,10 @@ import javax.servlet.http.HttpServletRequest;
 public class ItemController extends BasicController {
 
     @Autowired
-    ItemService itemService;
+    ItemServiceImpl itemService;
 
     @RequestMapping(value = "/index")
-    @ApiOperation(value="test", notes="test,每个国家最多返回8条数据")
+    @ApiOperation(value="test", notes="test,swagge")
     public String itemIndex(HttpServletRequest request, Model model) {
         String name = getParamVal(request, "name");//项目名称模糊查询
 

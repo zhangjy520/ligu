@@ -1,6 +1,7 @@
 package cc.ligu.mvc.common;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -29,10 +30,8 @@ public class SwaggerConfig extends WebMvcConfigurationSupport{
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("common")
-                .apiInfo(apiInfo())
                 .select()
-                .paths(PathSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("cc.ligu.mvc.common"))
                 .build();
     }
 
@@ -40,7 +39,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport{
         return new ApiInfoBuilder()
                 .title("test")
                 .description("")
-                .termsOfServiceUrl("").contact("zjs-").version("1.8")
+                .termsOfServiceUrl("http://localhost:8081/ligu").contact("zjs-").version("1.8")
                 .build();
     }
 }
