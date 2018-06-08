@@ -8,32 +8,27 @@ import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.utils.DWZResponseUtil;
 import cc.ligu.mvc.modelView.DWZResponse;
 import cc.ligu.mvc.persistence.entity.Item;
-import cc.ligu.mvc.persistence.entity.Source;
-import cc.ligu.mvc.service.ItemService;
 import cc.ligu.mvc.service.impl.ItemServiceImpl;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-@RequestMapping(value = "/item")
-@Api(value="common", tags={"公共接口"})
 @RestController
+@RequestMapping(value = "/item")
+@Api(value = "ces",description = "sssss")
 public class ItemController extends BasicController {
 
-    @Autowired
+    @Resource
     ItemServiceImpl itemService;
 
-    @RequestMapping(value = "/index")
-    @ApiOperation(value="test", notes="test,swagge")
+    @RequestMapping(value = "/api")
+    @ApiOperation(value = "根据用户名获取用户对象", httpMethod = "GET", response = String.class, notes = "根据用户名获取用户对象")
     public String itemIndex(HttpServletRequest request, Model model) {
         String name = getParamVal(request, "name");//项目名称模糊查询
 

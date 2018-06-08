@@ -29,6 +29,7 @@
                 /doLogout = logout
                 /swagger-resources/** = anon
                 /v2/api-docs = anon
+                /api-docs = anon
                 /**/springfox-swagger-ui/** = anon
                 /** = anon
                 <!-- authc -->

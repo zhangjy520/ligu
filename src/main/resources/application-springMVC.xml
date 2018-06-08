@@ -30,7 +30,10 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
-
+    <!-- 将 springSwaggerConfig加载到spring容器 -->
+    <bean class="com.mangofactory.swagger.configuration.SpringSwaggerConfig" />
+    <!-- 将自定义的swagger配置类加载到spring容器 -->
+    <bean class="cc.ligu.mvc.common.SwaggerConfig" />
    <!-- <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/index"/>
@@ -73,6 +76,4 @@
     <mvc:default-servlet-handler/>
     <!-- 静态资源映射 -->
     <mvc:resources mapping="/assets/**" location="/assets/" cache-period="31536000"/>
-    <mvc:resources location="classpath:/META-INF/resources/" mapping="swagger-ui.html"/>
-    <mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/>
 </beans>

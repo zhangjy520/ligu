@@ -25,6 +25,7 @@
         <constructor-arg>
             <value>
                 /assets/** = anon
+                /swagger/** = anon
                 /login = anon
                 /doLogin = anon
                 /doLogout = logout
