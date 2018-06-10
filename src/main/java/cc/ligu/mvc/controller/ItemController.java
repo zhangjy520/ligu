@@ -5,13 +5,16 @@
 package cc.ligu.mvc.controller;
 
 import cc.ligu.common.controller.BasicController;
+import cc.ligu.common.entity.ResultEntity;
+import cc.ligu.common.security.AESencryptor;
 import cc.ligu.common.utils.DWZResponseUtil;
 import cc.ligu.mvc.modelView.DWZResponse;
 import cc.ligu.mvc.persistence.entity.Item;
+import cc.ligu.mvc.persistence.entity.UserView;
+import cc.ligu.mvc.service.UserService;
 import cc.ligu.mvc.service.impl.ItemServiceImpl;
 import com.github.pagehelper.PageInfo;
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.*;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +24,33 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "/item")
-@Api(value = "ces",description = "sssss")
+@Api(value = "ces", description = "sssss")
 public class ItemController extends BasicController {
 
     @Resource
     ItemServiceImpl itemService;
 
-    @RequestMapping(value = "/api")
+    @Resource
+    UserService userService;
+
+    @ApiOperation(value = "用户信息验证接口", httpMethod = "POST", notes = "验证登录账号密码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "username", value = "用户名", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "password", value = "密码", required = true),
+    })
+    @RequestMapping("/api/login")
+    public ResultEntity test(HttpServletRequest request) {
+        String username = getParamVal(request, "username");
+        String password = getParamVal(request, "password");
+        UserView user = userService.selectUserViewByUsernameAndPassword(username, AESencryptor.encryptCBCPKCS5Padding(password));
+        if (null == user) {
+            return ResultEntity.newErrEntity("用户名或密码错误");
+        } else {
+            return ResultEntity.newResultEntity(user);
+        }
+    }
+
+    @RequestMapping(value = "/apaai")
     @ApiOperation(value = "根据用户名获取用户对象", httpMethod = "GET", response = String.class, notes = "根据用户名获取用户对象")
     public String itemIndex(HttpServletRequest request, Model model) {
         String name = getParamVal(request, "name");//项目名称模糊查询

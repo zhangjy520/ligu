@@ -39,8 +39,8 @@ public class SwaggerConfig {
     private ApiInfo apiInfo()
     {
         ApiInfo apiInfo = new ApiInfo(
-                "springmvc搭建swagger",
-                "spring-API swagger测试",
+                "力谷app端api",
+                "调用方法：项目地址/接口地址",
                 "My Apps API terms of service",
                 "534560449@qq.com",
                 "web app",
