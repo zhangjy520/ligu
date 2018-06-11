@@ -13,7 +13,7 @@
        http://www.springframework.org/schema/task
        http://www.springframework.org/schema/task/spring-task.xsd">
 
-    <context:component-scan base-package="cc.ligu.common.controller,
+    <context:component-scan base-package="cc.ligu.mvc.api,cc.ligu.common.controller,
                                              cc.ligu.common.service,
                                              cc.ligu.mvc.controller,
                                              cc.ligu.mvc.service"/>
@@ -34,14 +34,14 @@
     <bean class="com.mangofactory.swagger.configuration.SpringSwaggerConfig" />
     <!-- 将自定义的swagger配置类加载到spring容器 -->
     <bean class="cc.ligu.mvc.common.SwaggerConfig" />
-   <!-- <mvc:interceptors>
+    <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/index"/>
             <mvc:mapping path="/"/>
             <mvc:exclude-mapping path="/login"/>
             <bean class="cc.ligu.common.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
-    </mvc:interceptors>-->
+    </mvc:interceptors>
 
     <!-- veiew resolver -->
     <bean id="viewResolver0" class="org.springframework.web.servlet.view.InternalResourceViewResolver">

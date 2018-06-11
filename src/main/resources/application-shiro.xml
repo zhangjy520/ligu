@@ -31,17 +31,8 @@
                 /v2/api-docs = anon
                 /api-docs = anon
                 /**/springfox-swagger-ui/** = anon
-                /** = anon
+                /api = anon
                 <!-- authc -->
-                /root/** = role[root]
-                /admin/** = role[admin]
-                /teacher/** = orRole[teacher, student]
-                /student/** = orRole[student, teacher]
-                /class/** = orRole[teacher, student]
-                /device/fetchRings/** = anon
-                /device/index = orRole[root,board_user]
-                /device/station/** = orRole[root,board_user]
-                /device/ring/** = orRole[root,board_user]
             </value>
         </constructor-arg>
     </bean>

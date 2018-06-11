@@ -33,7 +33,7 @@ public class SwaggerConfig {
     {
         return new SwaggerSpringMvcPlugin(this.springSwaggerConfig)
                 .apiInfo(apiInfo())
-                .includePatterns(".*api.*").swaggerGroup("ss");
+                .includePatterns(".*api.*");
     }
 
     private ApiInfo apiInfo()

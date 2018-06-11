@@ -115,10 +115,10 @@
                        </li>
                         <li><a>人员安排</a>
                             <ul>
-                                <li><a href="${ctx}/person/index?roleType=5" target="navTab">施工人员安排</a></li>
-                                <li><a href="${ctx}/person/index?roleType=2" target="navTab">人工审核管理员安排</a></li>
-                                <li><a href="${ctx}/person/index?roleType=3" target="navTab">项目经理安排</a></li>
-                                <li><a href="${ctx}/person/index?roleType=4" target="navTab">施工管理员安排</a></li>
+                                <li><a href="${ctx}/person/index?roleType=5" target="navTab">施工人员管理</a></li>
+                                <li><a href="${ctx}/person/index?roleType=2" target="navTab">人工审核管理员管理</a></li>
+                                <li><a href="${ctx}/person/index?roleType=3" target="navTab">项目经理管理</a></li>
+                                <li><a href="${ctx}/person/index?roleType=4" target="navTab">施工管理员管理</a></li>
                                 <li><a href="${ctx}/person/index?roleType=5" target="navTab">施工人员审核</a></li>
                             </ul>
                         </li>

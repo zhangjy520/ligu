@@ -33,10 +33,10 @@
                 <textarea name="content" class="required textInput" cols="80" rows="2">${question.content}</textarea>
             </div>
 
-            <div class="unit">
+            <%--<div class="unit">
                 <label>题目分值：</label>
                 <input type="text" name="score" value="${question.score}" class="digits textInput valid">
-            </div>
+            </div>--%>
 
             <div class="unit">
                 <label>选项A：</label>
