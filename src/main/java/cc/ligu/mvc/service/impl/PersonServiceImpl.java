@@ -58,7 +58,7 @@ public class PersonServiceImpl extends BasicService implements PersonService {
     @Transactional
     @Override
     public int savePerson(Person person, UserView userView) {
-        if (person.getType() != 5) {
+        if (null!=person.getType()&&person.getType() != 5) {
             //管理员设置，默认已审核！审核未审核只针对施工人员
             person.setStatus(1);
         }

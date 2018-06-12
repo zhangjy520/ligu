@@ -33,6 +33,9 @@ public class DicUtil {
     //人员状态 审核状态[0未审核 1已审核]
     public static List<KVEntity> personStatusList = new ArrayList<>();
 
+    //黑名单状态[0正常 1黑名单人员]
+    public static List<KVEntity> personBlackList = new ArrayList<>();
+
 
     public static Map<String, Object> map = new HashMap<String, Object>();
 
@@ -102,6 +105,11 @@ public class DicUtil {
         entry = new KVEntity("5", "per:common:*");
         rolePermissionList.add(entry);
 
+        entry = new KVEntity("0", "正常");
+        personBlackList.add(entry);
+        entry = new KVEntity("1", "黑名单");
+        personBlackList.add(entry);
+
         map.put("questionType", questionTypeList);
         map.put("questionLevel", questionLevelList);
         map.put("documentType", documentTypeList);
@@ -110,6 +118,7 @@ public class DicUtil {
         map.put("personStatus", personStatusList);
         map.put("roles", roleList);
         map.put("permissions", rolePermissionList);
+        map.put("personBlack", personBlackList);
     }
 
 

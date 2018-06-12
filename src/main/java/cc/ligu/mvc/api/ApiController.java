@@ -36,11 +36,11 @@ public class ApiController extends BasicController {
 
     @ApiOperation(value = "通过客户端id判断是否需要登录", httpMethod = "POST", notes = "验证是否需要登录,不需要登录返回用户信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", dataType = "String", name = "client", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
     })
     @RequestMapping("/getUser")
     public ResultEntity checkIfLogin(HttpServletRequest request) {
-        String clientId = getParamVal(request, "client");
+        String clientId = getParamVal(request, "clientId");
         Object user = SessionTool.getUserInfoFromSession(request, clientId);
 
         if (null == user) {
@@ -52,11 +52,11 @@ public class ApiController extends BasicController {
 
     @ApiOperation(value = "退出登录", httpMethod = "POST", notes = "退出登录，清除服务端session")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", dataType = "String", name = "client", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
     })
     @RequestMapping("/logout")
     public ResultEntity applogOut(HttpServletRequest request) {
-        String clientId = getParamVal(request, "client");
+        String clientId = getParamVal(request, "clientId");
         try {
             request.getSession().removeAttribute(clientId);
         } catch (Exception e) {
@@ -69,14 +69,13 @@ public class ApiController extends BasicController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "username", value = "用户名", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "password", value = "密码", required = true),
-            @ApiImplicitParam(paramType = "query", dataType = "String", name = "client", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
     })
     @RequestMapping("/login")
     public ResultEntity login(HttpServletRequest request) {
         String username = getParamVal(request, "username");
         String password = getParamVal(request, "password");
-        String clientId = getParamVal(request, "client");
-        SessionTool.getUserInfoFromSession(request, clientId);
+        String clientId = getParamVal(request, "clientId");
         UserView user = userService.selectUserViewByUsernameAndPassword(username, AESencryptor.encryptCBCPKCS5Padding(password));
         if (null == user) {
             return ResultEntity.newErrEntity("用户名或密码错误");
@@ -84,5 +83,11 @@ public class ApiController extends BasicController {
             SessionTool.setUserInfo2Session(request, clientId, user);//将clientId作为key,
             return ResultEntity.newResultEntity(user);
         }
+    }
+
+    @ApiOperation(value = "未登录返回", httpMethod = "GET", notes = "未登录返回json")
+    @RequestMapping("/permissionDeny")
+    public ResultEntity unLogin(HttpServletRequest request) {
+        return ResultEntity.newErrEntity("您需要登录，请重新登录");
     }
 }

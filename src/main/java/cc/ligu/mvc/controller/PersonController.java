@@ -84,11 +84,31 @@ public class PersonController extends BasicController {
     @RequestMapping(value = "/save_black", method = RequestMethod.POST)
     public DWZResponse savePersonBlack(Model model, Person person, HttpServletRequest request) {
         try {
+            person.setBlackFlag(1);//设置黑名单状态
+            int roleType = (person.getType() == 0 ? 5 : person.getType());
+            //施工人员
+            person.setRoleName(DicUtil.getValueByKeyAndFlag(roleType, "roles"));
+            person.setRolePermission(DicUtil.getValueByKeyAndFlag(roleType, "permissions"));
             personService.savePerson(person, getLoginUser());
         } catch (Exception e) {
             return DWZResponseUtil.callbackFail("500", "保存失败", "");
         }
         return DWZResponseUtil.callbackSuccess("保存成功", "_blank");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/delete_black/{id}", method = RequestMethod.POST)
+    public DWZResponse deletePersonBlack(Model model, @PathVariable("id") int id,HttpServletRequest request) {
+        try {
+
+            Person person = new Person();
+            person.setId(id);
+            person.setBlackFlag(Integer.valueOf(getParamVal(request,"black","0")));
+            personService.savePerson(person,getLoginUser());
+        } catch (Exception e) {
+            return DWZResponseUtil.callbackFail("500", "操作失败", "");
+        }
+        return DWZResponseUtil.callbackSuccess("操作成功", "");
     }
 
     @RequestMapping("/pop/modify")

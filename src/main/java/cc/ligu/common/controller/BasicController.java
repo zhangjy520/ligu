@@ -7,7 +7,6 @@ import cc.ligu.mvc.common.ProjectConfig;
 import cc.ligu.mvc.persistence.entity.UserView;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +15,10 @@ import javax.servlet.http.HttpServletRequest;
  * Created by zjy on 2018/5/22.
  */
 public abstract class BasicController extends LoggerWrapper {
+
+    protected void validateClient(HttpServletRequest request,String clientId){
+        Object userView = request.getSession().getAttribute(clientId);
+    }
 
     protected int getPageNum(HttpServletRequest request) {
 

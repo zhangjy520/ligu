@@ -41,7 +41,7 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a class="add" href="${ctx}/person/pop/modify?roleType=${roleType}" target="dialog"
+            <li><a class="add" href="${ctx}/person/pop/modify_black?roleType=${roleType}" target="dialog"
                    mask="true"><span>新增黑名单</span></a></li>
         </ul>
     </div>
@@ -59,9 +59,8 @@
             <th width="80">address</th>
             <th width="80">professionalUnit</th>
             <th width="80">status</th>
-            <shiro:hasAnyRoles name="worker_er,checker">
-                <th width="80" align="center">caozuo</th>
-            </shiro:hasAnyRoles>
+            <th width="80">blackFlag</th>
+            <th width="80" align="center">caozuo</th>
         </tr>
         </thead>
         <tbody>
@@ -78,9 +77,15 @@
                 <td>${person.address}</td>
                 <td>${person.professionalUnit}</td>
                 <td>${ligu:getValueByKeyAndFlag(person.status,'personStatus')}</td>
+                <td>${ligu:getValueByKeyAndFlag(person.blackFlag,'personBlack')}</td>
                     <td>
                         <div>
-                            <a target="ajaxTodo" title="加入黑名单？" href="${ctx}/person/delete/${person.id}" class="">加入黑名单</a>
+                            <c:if test="${person.blackFlag eq '0'}">
+                                <a target="ajaxTodo" title="加入黑名单？" href="${ctx}/person/delete_black/${person.id}?black=1" class="">加入黑名单</a>
+                            </c:if>
+                            <c:if test="${person.blackFlag eq '1'}">
+                                <a target="ajaxTodo" title="解除黑名单？" href="${ctx}/person/delete_black/${person.id}?black=0" class="">解除黑名单</a>
+                            </c:if>
                         </div>
                     </td>
             </tr>

@@ -41,6 +41,13 @@
             <mvc:exclude-mapping path="/login"/>
             <bean class="cc.ligu.common.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/api/*"/>
+            <mvc:exclude-mapping path="/api/login"/>
+            <mvc:exclude-mapping path="/api/permissionDeny"/>
+            <mvc:exclude-mapping path="/api/logout"/>
+            <bean class="cc.ligu.common.interceptor.AppLoginInterceptor"/>
+        </mvc:interceptor>
     </mvc:interceptors>
 
     <!-- veiew resolver -->
