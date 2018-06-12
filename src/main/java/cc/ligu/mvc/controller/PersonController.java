@@ -52,6 +52,45 @@ public class PersonController extends BasicController {
         return "person/index";
     }
 
+    @RequestMapping(value = "/index_black")
+    public String personIndexBlack(HttpServletRequest request, Model model) {
+        String name = getParamVal(request, "name");
+        String roleType = getParamVal(request, "roleType");
+        int _type = StringUtils.isEmpty(roleType) ? 5 : Integer.valueOf(roleType);
+        Person person = new Person();
+        person.setName(name);
+        person.setType(_type);
+        PageInfo<Person> pageInfo = personService.listAllPerson(getPageSize(request), getPageNum(request), person);
+        model.addAttribute("pageInfo", pageInfo);
+
+        model.addAttribute("chooseName", name);
+        model.addAttribute("roleType", _type);//区别施工人员管理，人工审核管理员管理，项目经理管理，施工管理员管理
+        return "person/index_black";
+    }
+
+    @RequestMapping("/pop/modify_black")
+    public String popAddBlack(Model model, HttpServletRequest request) {
+        String id = getParamVal(request, "id");
+
+        if (!StringUtils.isEmpty(id)) {
+            Person person = personService.selectPersonByPrimary(Integer.parseInt(id));
+            model.addAttribute("person", person);
+        }
+
+        return "person/pop/blackPerson";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/save_black", method = RequestMethod.POST)
+    public DWZResponse savePersonBlack(Model model, Person person, HttpServletRequest request) {
+        try {
+            personService.savePerson(person, getLoginUser());
+        } catch (Exception e) {
+            return DWZResponseUtil.callbackFail("500", "保存失败", "");
+        }
+        return DWZResponseUtil.callbackSuccess("保存成功", "_blank");
+    }
+
     @RequestMapping("/pop/modify")
     public String popAdd(Model model, HttpServletRequest request) {
         String id = getParamVal(request, "id");
