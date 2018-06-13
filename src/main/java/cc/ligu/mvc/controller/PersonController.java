@@ -85,7 +85,7 @@ public class PersonController extends BasicController {
     public DWZResponse savePersonBlack(Model model, Person person, HttpServletRequest request) {
         try {
             person.setBlackFlag(1);//设置黑名单状态
-            int roleType = (person.getType() == 0 ? 5 : person.getType());
+            int roleType = (StringUtils.isEmpty(person.getType())||person.getType() == 0 ? 5 : person.getType());
             //施工人员
             person.setRoleName(DicUtil.getValueByKeyAndFlag(roleType, "roles"));
             person.setRolePermission(DicUtil.getValueByKeyAndFlag(roleType, "permissions"));

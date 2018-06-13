@@ -3,6 +3,7 @@ package cc.ligu.common.controller;
 import cc.ligu.common.exception.ErrcodeException;
 import cc.ligu.common.utils.LoggerWrapper;
 import cc.ligu.common.utils.NumberConvertUtil;
+import cc.ligu.common.utils.SessionTool;
 import cc.ligu.mvc.common.ProjectConfig;
 import cc.ligu.mvc.persistence.entity.UserView;
 import org.apache.shiro.SecurityUtils;
@@ -109,6 +110,11 @@ public abstract class BasicController extends LoggerWrapper {
             throw new ErrcodeException("登录超时，请重新登录");
         }
         return user;
+    }
+
+    protected UserView getAppLoginUser(HttpServletRequest request) {
+        UserView UserView = (UserView) SessionTool.getUserInfoFromSession(request, request.getParameter("clientId"));
+        return UserView;
     }
 
     protected Subject getSubject() {

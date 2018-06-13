@@ -38,6 +38,12 @@ public class SourceServiceImpl extends BasicService implements SourceService {
         PageHelper.startPage(pageNum, pageSize);
         List<Source> questionList = sourceMapper.selectByExample(sourceExample);
         PageInfo<Source> page = new PageInfo<Source>(questionList);
+
+        //查询文档，设置该文档请求数+1;
+        for (Source sourceUpdate :questionList) {
+            sourceUpdate.setApplyTime(sourceUpdate.getApplyTime()+1);
+            sourceMapper.updateByPrimaryKeySelective(sourceUpdate);
+        }
         return page;
     }
 

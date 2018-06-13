@@ -21,8 +21,8 @@ public class AppLoginInterceptor extends HandlerInterceptorAdapter {
         Object userView = SessionTool.getUserInfoFromSession(request, request.getParameter("clientId"));
         if (userView != null)
             return true;
-        response.sendRedirect("api/permissionDeny");
-        return true;
+        response.sendRedirect(request.getContextPath()+"/api/permissionDeny");
+        return false;
     }
 
 }

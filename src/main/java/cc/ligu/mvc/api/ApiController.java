@@ -11,10 +11,15 @@ import cc.ligu.common.utils.DWZResponseUtil;
 import cc.ligu.common.utils.SessionTool;
 import cc.ligu.mvc.modelView.DWZResponse;
 import cc.ligu.mvc.persistence.entity.Item;
+import cc.ligu.mvc.persistence.entity.Person;
+import cc.ligu.mvc.persistence.entity.Source;
 import cc.ligu.mvc.persistence.entity.UserView;
+import cc.ligu.mvc.service.PersonService;
+import cc.ligu.mvc.service.SourceService;
 import cc.ligu.mvc.service.UserService;
 import cc.ligu.mvc.service.impl.ItemServiceImpl;
 import com.github.pagehelper.PageInfo;
+import com.mangofactory.swagger.annotations.ApiIgnore;
 import com.wordnik.swagger.annotations.*;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -23,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -30,10 +36,14 @@ public class ApiController extends BasicController {
 
     @Resource
     ItemServiceImpl itemService;
-
+    @Resource
+    SourceService sourceService;
     @Resource
     UserService userService;
+    @Resource
+    PersonService personService;
 
+    @ApiIgnore
     @ApiOperation(value = "通过客户端id判断是否需要登录", httpMethod = "POST", notes = "验证是否需要登录,不需要登录返回用户信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
@@ -85,9 +95,64 @@ public class ApiController extends BasicController {
         }
     }
 
+    @ApiIgnore
     @ApiOperation(value = "未登录返回", httpMethod = "GET", notes = "未登录返回json")
     @RequestMapping("/permissionDeny")
     public ResultEntity unLogin(HttpServletRequest request) {
         return ResultEntity.newErrEntity("您需要登录，请重新登录");
+    }
+
+
+    //--------------------------------------------以下是业务接口 需要登录----------------------
+    @ApiOperation(value = "获取资源媒体文件", httpMethod = "POST", notes = "根据分页条件获取媒体资源")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "pageNum", value = "页码", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "pageSize", value = "条数", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "sourceType", value = "0全部 1培训文档 2安全原则 3视频课程"),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping("/source")
+    public ResultEntity loginT(HttpServletRequest request) {
+        int pageSize = getPageSize(request);
+        int pageNum = getPageNum(request);
+        String sourceType = getParamVal(request,"sourceType");
+        int type = StringUtils.isEmpty(sourceType)?0:Integer.valueOf(sourceType);
+        Source source = new Source();
+        source.setType(type);
+
+        PageInfo<Source> pageInfo = sourceService.listAllSource(pageSize,pageNum,source);
+        return ResultEntity.newResultEntity(pageInfo);
+    }
+
+
+    @ApiOperation(value = "添加黑名单", httpMethod = "POST", notes = "添加人员到黑名单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String",name = "name", value = "姓名", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String",name = "num", value = "身份证号码", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping("/add/black")
+    public ResultEntity addToBlack(HttpServletRequest request) {
+        String name = getParamVal(request,"name");
+        String num = getParamVal(request,"num");
+        Person person = new Person();
+        person.setName(name);
+        person.setIdentityNum(num);
+        person.setBlackFlag(1);
+
+        int size = personService.savePerson(person,getAppLoginUser(request));
+        return ResultEntity.newResultEntity("添加成功");
+    }
+
+    @ApiOperation(value = "查看黑名单列表", httpMethod = "POST", notes = "查询黑名单人员列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping("/query/black")
+    public ResultEntity queryBlack(HttpServletRequest request) {
+        Person person = new Person();
+        person.setBlackFlag(1);
+        List<Person> pageInfo = personService.listAllPerson(person);
+        return ResultEntity.newResultEntity(pageInfo);
     }
 }

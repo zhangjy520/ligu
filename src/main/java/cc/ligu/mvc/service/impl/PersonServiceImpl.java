@@ -49,9 +49,13 @@ public class PersonServiceImpl extends BasicService implements PersonService {
     }
 
     @Override
-    public List<Person> listAllPerson() {
+    public List<Person> listAllPerson(Person person) {
         PersonExample example = new PersonExample();
-        example.createCriteria().andDelFlagEqualTo(0);
+        PersonExample.Criteria criteria = example.createCriteria().andDelFlagEqualTo(0);
+        if(StringUtils.isEmpty(person.getBlackFlag())||person.getBlackFlag()!=0){
+            criteria.andBlackFlagEqualTo(person.getBlackFlag());
+        }
+
         return personMapper.selectByExample(example);
     }
 
@@ -62,6 +66,18 @@ public class PersonServiceImpl extends BasicService implements PersonService {
             //管理员设置，默认已审核！审核未审核只针对施工人员
             person.setStatus(1);
         }
+
+        if (!StringUtils.isEmpty(person.getName())&&!StringUtils.isEmpty(person.getIdentityNum())){
+            //如果用户的姓名+身份证不为空，到库里查该人员，如果有该人员，做修改，否则进行下面的操作
+            PersonExample example = new PersonExample();
+            example.createCriteria().andNameEqualTo(person.getName()).andIdentityNumEqualTo(person.getIdentityNum());
+
+            List<Person> personLis = personMapper.selectByExample(example);
+            if(personLis.size()>0){
+                person.setId(personLis.get(0).getId());
+            }
+        }
+
         if (StringUtils.isEmpty(person.getId())) {
             person.setCreateBy(userView.getId());//创建人
             person.setCreateDate(System.currentTimeMillis());//创建时间

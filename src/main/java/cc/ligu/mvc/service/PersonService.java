@@ -9,7 +9,7 @@ import java.util.List;
 public interface PersonService {
     PageInfo<Person> listAllPerson(int pageSize, int pageNum, Person person);
 
-    List<Person> listAllPerson();
+    List<Person> listAllPerson(Person person);
 
     int savePerson(Person person, UserView userView);
 
