@@ -61,7 +61,7 @@ public class ApiController extends BasicController {
         }
     }
 
-    @ApiOperation(value = "退出登录", httpMethod = "POST", notes = "退出登录，清除服务端session")
+    @ApiOperation(value = "退出登录", httpMethod = "POST", notes = "退出登录，清除服务端session",position = 1)
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
     })
@@ -76,7 +76,7 @@ public class ApiController extends BasicController {
         return ResultEntity.newResultEntity("操作成功");
     }
 
-    @ApiOperation(value = "登录接口", httpMethod = "POST", notes = "验证登录账号密码,登录成功返回该用户的个人信息")
+    @ApiOperation(value = "登录接口", httpMethod = "POST", notes = "验证登录账号密码,登录成功返回该用户的个人信息",position = 1)
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "username", value = "用户名", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "password", value = "密码", required = true),
@@ -126,7 +126,7 @@ public class ApiController extends BasicController {
     }
 
 
-    @ApiOperation(value = "添加黑名单", httpMethod = "POST", notes = "添加人员到黑名单")
+    @ApiOperation(value = "添加黑名单", httpMethod = "POST", notes = "添加人员到黑名单",position = 2)
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String",name = "name", value = "姓名", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String",name = "num", value = "身份证号码", required = true),
