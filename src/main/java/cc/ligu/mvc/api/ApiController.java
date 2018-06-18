@@ -157,7 +157,7 @@ public class ApiController extends BasicController {
         return ResultEntity.newResultEntity(pageInfo);
     }
 
-    @ApiOperation(value = "自定义个人头像",httpMethod = "POST",notes = "根据用户Id,客户端id，图片设置该用户的头像")
+    @ApiOperation(value = "自定义个人头像",httpMethod = "POST",notes = "根据用户Id,客户端id，设置该用户的头像")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "userId", value = "用户id", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
