@@ -8,12 +8,11 @@ import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.entity.ResultEntity;
 import cc.ligu.common.security.AESencryptor;
 import cc.ligu.common.utils.DWZResponseUtil;
+import cc.ligu.common.utils.PropertiesUtil;
 import cc.ligu.common.utils.SessionTool;
+import cc.ligu.mvc.controller.FileController;
 import cc.ligu.mvc.modelView.DWZResponse;
-import cc.ligu.mvc.persistence.entity.Item;
-import cc.ligu.mvc.persistence.entity.Person;
-import cc.ligu.mvc.persistence.entity.Source;
-import cc.ligu.mvc.persistence.entity.UserView;
+import cc.ligu.mvc.persistence.entity.*;
 import cc.ligu.mvc.service.PersonService;
 import cc.ligu.mvc.service.SourceService;
 import cc.ligu.mvc.service.UserService;
@@ -24,11 +23,13 @@ import com.wordnik.swagger.annotations.*;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -75,7 +76,7 @@ public class ApiController extends BasicController {
         return ResultEntity.newResultEntity("操作成功");
     }
 
-    @ApiOperation(value = "登录接口", httpMethod = "POST", notes = "验证登录账号密码")
+    @ApiOperation(value = "登录接口", httpMethod = "POST", notes = "验证登录账号密码,登录成功返回该用户的个人信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "username", value = "用户名", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "password", value = "密码", required = true),
@@ -154,5 +155,25 @@ public class ApiController extends BasicController {
         person.setBlackFlag(1);
         List<Person> pageInfo = personService.listAllPerson(person);
         return ResultEntity.newResultEntity(pageInfo);
+    }
+
+    @ApiOperation(value = "自定义个人头像",httpMethod = "POST",notes = "根据用户Id,客户端id，图片设置该用户的头像")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "userId", value = "用户id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping(value = "/upload/headpic",consumes = "multipart/*",headers = "content-type=multipart/form-data")
+    public ResultEntity uploadHeadPic(@ApiParam(value = "上传头像", required = true)MultipartFile multipartFile,
+                                      HttpServletRequest request){
+        try {
+            Map uploads = (Map) new FileController().uploads(multipartFile,request).getData();
+            User user = userService.selectUserViewByUserId(Integer.valueOf(request.getParameter("userId")));
+            user.setPhotoUrl(request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") +uploads.get("fileRequestPath"));
+            UserView userView = getAppLoginUser(request);
+            userService.saveUser(user,userView);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResultEntity.newResultEntity("设置成功");
     }
 }

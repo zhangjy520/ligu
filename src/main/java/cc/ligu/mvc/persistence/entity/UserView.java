@@ -43,6 +43,12 @@ public class UserView implements Serializable {
 
     private Integer blackFlag;
 
+    private String createUserName;
+
+    private Integer createBy;
+
+    private Long createDate;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -205,6 +211,30 @@ public class UserView implements Serializable {
         this.blackFlag = blackFlag;
     }
 
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName == null ? null : createUserName.trim();
+    }
+
+    public Integer getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(Integer createBy) {
+        this.createBy = createBy;
+    }
+
+    public Long getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Long createDate) {
+        this.createDate = createDate;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -236,7 +266,10 @@ public class UserView implements Serializable {
             && (this.getItemId() == null ? other.getItemId() == null : this.getItemId().equals(other.getItemId()))
             && (this.getItemName() == null ? other.getItemName() == null : this.getItemName().equals(other.getItemName()))
             && (this.getProfessionalUnit() == null ? other.getProfessionalUnit() == null : this.getProfessionalUnit().equals(other.getProfessionalUnit()))
-            && (this.getBlackFlag() == null ? other.getBlackFlag() == null : this.getBlackFlag().equals(other.getBlackFlag()));
+            && (this.getBlackFlag() == null ? other.getBlackFlag() == null : this.getBlackFlag().equals(other.getBlackFlag()))
+            && (this.getCreateUserName() == null ? other.getCreateUserName() == null : this.getCreateUserName().equals(other.getCreateUserName()))
+            && (this.getCreateBy() == null ? other.getCreateBy() == null : this.getCreateBy().equals(other.getCreateBy()))
+            && (this.getCreateDate() == null ? other.getCreateDate() == null : this.getCreateDate().equals(other.getCreateDate()));
     }
 
     @Override
@@ -263,6 +296,9 @@ public class UserView implements Serializable {
         result = prime * result + ((getItemName() == null) ? 0 : getItemName().hashCode());
         result = prime * result + ((getProfessionalUnit() == null) ? 0 : getProfessionalUnit().hashCode());
         result = prime * result + ((getBlackFlag() == null) ? 0 : getBlackFlag().hashCode());
+        result = prime * result + ((getCreateUserName() == null) ? 0 : getCreateUserName().hashCode());
+        result = prime * result + ((getCreateBy() == null) ? 0 : getCreateBy().hashCode());
+        result = prime * result + ((getCreateDate() == null) ? 0 : getCreateDate().hashCode());
         return result;
     }
 
@@ -292,6 +328,9 @@ public class UserView implements Serializable {
         sb.append(", itemName=").append(itemName);
         sb.append(", professionalUnit=").append(professionalUnit);
         sb.append(", blackFlag=").append(blackFlag);
+        sb.append(", createUserName=").append(createUserName);
+        sb.append(", createBy=").append(createBy);
+        sb.append(", createDate=").append(createDate);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

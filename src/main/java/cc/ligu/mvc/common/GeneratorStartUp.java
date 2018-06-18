@@ -25,7 +25,8 @@ public class GeneratorStartUp {
         try {
             List<String> warnings = new ArrayList<String>();
             boolean overwrite = true;
-            File configFile = new File("D:\\zjywork\\ligu\\src\\main\\resources\\mybatis-generator.xml");
+//            File configFile = new File("D:\\zjywork\\ligu\\src\\main\\resources\\mybatis-generator.xml");
+            File configFile = new File("D:\\java\\ligu\\src\\main\\resources\\mybatis-generator.xml");
             ConfigurationParser cp = new ConfigurationParser(warnings);
             Configuration config = cp.parseConfiguration(configFile);
             DefaultShellCallback callback = new DefaultShellCallback(overwrite);

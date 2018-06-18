@@ -70,7 +70,7 @@ public class PersonServiceImpl extends BasicService implements PersonService {
         if (!StringUtils.isEmpty(person.getName())&&!StringUtils.isEmpty(person.getIdentityNum())){
             //如果用户的姓名+身份证不为空，到库里查该人员，如果有该人员，做修改，否则进行下面的操作
             PersonExample example = new PersonExample();
-            example.createCriteria().andNameEqualTo(person.getName()).andIdentityNumEqualTo(person.getIdentityNum());
+            example.createCriteria().andIdentityNumEqualTo(person.getIdentityNum());
 
             List<Person> personLis = personMapper.selectByExample(example);
             if(personLis.size()>0){

@@ -4,6 +4,7 @@ import cc.ligu.common.service.BasicService;
 import cc.ligu.mvc.persistence.dao.UserMapper;
 import cc.ligu.mvc.persistence.dao.UserViewMapper;
 import cc.ligu.mvc.persistence.entity.User;
+import cc.ligu.mvc.persistence.entity.UserExample;
 import cc.ligu.mvc.persistence.entity.UserView;
 import cc.ligu.mvc.persistence.entity.UserViewExample;
 import cc.ligu.mvc.service.UserService;
@@ -35,6 +36,12 @@ public class UserServiceImpl extends BasicService implements UserService {
         if (res.size() > 0)
             return res.get(0);
         return null;
+    }
+
+    @Override
+    public User selectUserViewByUserId(int userId) {
+
+        return userMapper.selectByPrimaryKey(userId);
     }
 
     @Override

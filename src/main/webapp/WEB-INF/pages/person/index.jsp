@@ -71,9 +71,10 @@
             <th width="80">address</th>
             <th width="80">professionalUnit</th>
             <th width="80">status</th>
-            <shiro:hasAnyRoles name="worker_er,checker">
+            <%--<shiro:hasAnyRoles name="worker_er,checker">--%>
                 <th width="80" align="center">caozuo</th>
-            </shiro:hasAnyRoles>
+                <th width="80" align="center">caozuo2</th>
+            <%--</shiro:hasAnyRoles>--%>
         </tr>
         </thead>
         <tbody>
@@ -90,7 +91,7 @@
                 <td>${person.address}</td>
                 <td>${person.professionalUnit}</td>
                 <td>${ligu:getValueByKeyAndFlag(person.status,'personStatus')}</td>
-                <shiro:hasRole name="worker_er">
+                <%--<shiro:hasRole name="worker_er">--%>
                     <%--施工管理员能操作--%>
                     <td>
                         <div>
@@ -99,8 +100,8 @@
                                class="">修改</a>
                         </div>
                     </td>
-                </shiro:hasRole>
-                <shiro:hasRole name="checker">
+                <%--</shiro:hasRole>--%>
+                <%--<shiro:hasRole name="checker">--%>
                     <td>
                         <div>
                             <a target="dialog"
@@ -108,7 +109,7 @@
                                class="">审核</a>
                         </div>
                     </td>
-                </shiro:hasRole>
+                <%--</shiro:hasRole>--%>
 
             </tr>
         </c:forEach>
