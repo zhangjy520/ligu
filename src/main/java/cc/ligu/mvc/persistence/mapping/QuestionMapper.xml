@@ -469,4 +469,23 @@
       del_flag = #{delFlag,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectRandomQuestionByCount" resultMap="java.util.Map">
+    SELECT
+          *
+      FROM
+          `doc_question`
+      WHERE
+          id >= (
+              SELECT
+                  FLOOR(
+                      RAND() * (SELECT MAX(id) FROM `doc_question`)
+                  )
+          )
+      ORDER BY
+          id
+    <if test="delFlag != null" >
+      LIMIT #{count,jdbcType=INTEGER}
+    </if>
+  </select>
 </mapper>

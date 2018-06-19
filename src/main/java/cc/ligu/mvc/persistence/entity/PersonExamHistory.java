@@ -3,6 +3,8 @@ package cc.ligu.mvc.persistence.entity;
 import java.io.Serializable;
 
 public class PersonExamHistory implements Serializable {
+    private Integer id;
+
     private Integer personId;
 
     private String fullScore;
@@ -14,6 +16,14 @@ public class PersonExamHistory implements Serializable {
     private Integer examType;
 
     private static final long serialVersionUID = 1L;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getPersonId() {
         return personId;
@@ -67,7 +77,8 @@ public class PersonExamHistory implements Serializable {
             return false;
         }
         PersonExamHistory other = (PersonExamHistory) that;
-        return (this.getPersonId() == null ? other.getPersonId() == null : this.getPersonId().equals(other.getPersonId()))
+        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
+            && (this.getPersonId() == null ? other.getPersonId() == null : this.getPersonId().equals(other.getPersonId()))
             && (this.getFullScore() == null ? other.getFullScore() == null : this.getFullScore().equals(other.getFullScore()))
             && (this.getObtainScore() == null ? other.getObtainScore() == null : this.getObtainScore().equals(other.getObtainScore()))
             && (this.getExamTime() == null ? other.getExamTime() == null : this.getExamTime().equals(other.getExamTime()))
@@ -78,6 +89,7 @@ public class PersonExamHistory implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getPersonId() == null) ? 0 : getPersonId().hashCode());
         result = prime * result + ((getFullScore() == null) ? 0 : getFullScore().hashCode());
         result = prime * result + ((getObtainScore() == null) ? 0 : getObtainScore().hashCode());
@@ -92,6 +104,7 @@ public class PersonExamHistory implements Serializable {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
         sb.append(", personId=").append(personId);
         sb.append(", fullScore=").append(fullScore);
         sb.append(", obtainScore=").append(obtainScore);

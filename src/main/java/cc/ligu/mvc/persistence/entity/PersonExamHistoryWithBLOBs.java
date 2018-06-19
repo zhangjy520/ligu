@@ -37,7 +37,8 @@ public class PersonExamHistoryWithBLOBs extends PersonExamHistory implements Ser
             return false;
         }
         PersonExamHistoryWithBLOBs other = (PersonExamHistoryWithBLOBs) that;
-        return (this.getPersonId() == null ? other.getPersonId() == null : this.getPersonId().equals(other.getPersonId()))
+        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
+            && (this.getPersonId() == null ? other.getPersonId() == null : this.getPersonId().equals(other.getPersonId()))
             && (this.getFullScore() == null ? other.getFullScore() == null : this.getFullScore().equals(other.getFullScore()))
             && (this.getObtainScore() == null ? other.getObtainScore() == null : this.getObtainScore().equals(other.getObtainScore()))
             && (this.getExamTime() == null ? other.getExamTime() == null : this.getExamTime().equals(other.getExamTime()))
@@ -50,6 +51,7 @@ public class PersonExamHistoryWithBLOBs extends PersonExamHistory implements Ser
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getPersonId() == null) ? 0 : getPersonId().hashCode());
         result = prime * result + ((getFullScore() == null) ? 0 : getFullScore().hashCode());
         result = prime * result + ((getObtainScore() == null) ? 0 : getObtainScore().hashCode());

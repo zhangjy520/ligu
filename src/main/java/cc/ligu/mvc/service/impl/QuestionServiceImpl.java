@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zjy on 2018/5/21.
@@ -61,5 +62,10 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     @Override
     public int deleteQuestion(Question question) {
         return questionMapper.deleteByPrimaryKey(question.getId());
+    }
+
+    @Override
+    public List<Map> selectRandomQuestionByCount(int count) {
+        return questionMapper.selectRandomQuestionByCount(count);
     }
 }

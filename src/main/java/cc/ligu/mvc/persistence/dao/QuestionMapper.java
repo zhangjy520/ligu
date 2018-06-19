@@ -3,6 +3,8 @@ package cc.ligu.mvc.persistence.dao;
 import cc.ligu.mvc.persistence.entity.Question;
 import cc.ligu.mvc.persistence.entity.QuestionExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface QuestionMapper {
@@ -25,4 +27,6 @@ public interface QuestionMapper {
     int updateByPrimaryKeySelective(Question record);
 
     int updateByPrimaryKey(Question record);
+
+    List<Map> selectRandomQuestionByCount(@Param("count") int count);
 }

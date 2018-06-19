@@ -104,24 +104,25 @@
             <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>-->
-        <table schema="ligu" tableName="v_user" domainObjectName="UserView"
+        <!--<table schema="ligu" tableName="v_user" domainObjectName="UserView"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
                enableSelectByExample="true"
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
-        </table>
-        <!--<table schema="ligu" tableName="ref_person_exam_history" domainObjectName="PersonExamHistory"
+        </table>-->
+        <table schema="ligu" tableName="ref_person_exam_history" domainObjectName="PersonExamHistory"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
                enableSelectByExample="true"
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
 
-        <table schema="ligu" tableName="ref_person_wrong_question" domainObjectName="PersonWrongQuestion"
+       <!-- <table schema="ligu" tableName="ref_person_wrong_question" domainObjectName="PersonWrongQuestion"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"

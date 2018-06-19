@@ -4,6 +4,9 @@ import cc.ligu.mvc.persistence.entity.Question;
 import cc.ligu.mvc.persistence.entity.UserView;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+import java.util.Map;
+
 public interface QuestionService {
     PageInfo<Question> listAllQuestion(int pageSize, int pageNum, Question question);
 
@@ -12,4 +15,6 @@ public interface QuestionService {
     Question selectQuestionByPrimary(int questionId);
 
     int deleteQuestion(Question question);
+
+    List<Map> selectRandomQuestionByCount(int count);
 }

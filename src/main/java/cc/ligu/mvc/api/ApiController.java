@@ -14,6 +14,7 @@ import cc.ligu.mvc.controller.FileController;
 import cc.ligu.mvc.modelView.DWZResponse;
 import cc.ligu.mvc.persistence.entity.*;
 import cc.ligu.mvc.service.PersonService;
+import cc.ligu.mvc.service.QuestionService;
 import cc.ligu.mvc.service.SourceService;
 import cc.ligu.mvc.service.UserService;
 import cc.ligu.mvc.service.impl.ItemServiceImpl;
@@ -43,6 +44,8 @@ public class ApiController extends BasicController {
     UserService userService;
     @Resource
     PersonService personService;
+    @Resource
+    QuestionService questionService;
 
     @ApiIgnore
     @ApiOperation(value = "通过客户端id判断是否需要登录", httpMethod = "POST", notes = "验证是否需要登录,不需要登录返回用户信息")
@@ -175,5 +178,17 @@ public class ApiController extends BasicController {
             e.printStackTrace();
         }
         return ResultEntity.newResultEntity("设置成功");
+    }
+
+
+    @ApiOperation(value = "查询试卷",httpMethod = "POST",notes = "根据用户Id,客户端id，随机生成一套试卷，题目数量接口传")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "userId", value = "用户id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "count", value = "题目数量", required = true)
+    })
+    @RequestMapping(value = "/getExam")
+    public ResultEntity getExam(HttpServletRequest request,String userId,String clientId,int count){
+        List<Map> questionList = questionService.selectRandomQuestionByCount(count);
     }
 }
