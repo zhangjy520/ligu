@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +65,7 @@ public class ApiController extends BasicController {
         }
     }
 
-    @ApiOperation(value = "退出登录", httpMethod = "POST", notes = "退出登录，清除服务端session",position = 1)
+    @ApiOperation(value = "退出登录", httpMethod = "POST", notes = "退出登录，清除服务端session", position = 1)
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
     })
@@ -79,7 +80,7 @@ public class ApiController extends BasicController {
         return ResultEntity.newResultEntity("操作成功");
     }
 
-    @ApiOperation(value = "登录接口", httpMethod = "POST", notes = "验证登录账号密码,登录成功返回该用户的个人信息",position = 1)
+    @ApiOperation(value = "登录接口", httpMethod = "POST", notes = "验证登录账号密码,登录成功返回该用户的个人信息", position = 1)
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "username", value = "用户名", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "password", value = "密码", required = true),
@@ -119,32 +120,32 @@ public class ApiController extends BasicController {
     public ResultEntity loginT(HttpServletRequest request) {
         int pageSize = getPageSize(request);
         int pageNum = getPageNum(request);
-        String sourceType = getParamVal(request,"sourceType");
-        int type = StringUtils.isEmpty(sourceType)?0:Integer.valueOf(sourceType);
+        String sourceType = getParamVal(request, "sourceType");
+        int type = StringUtils.isEmpty(sourceType) ? 0 : Integer.valueOf(sourceType);
         Source source = new Source();
         source.setType(type);
 
-        PageInfo<Source> pageInfo = sourceService.listAllSource(pageSize,pageNum,source);
+        PageInfo<Source> pageInfo = sourceService.listAllSource(pageSize, pageNum, source);
         return ResultEntity.newResultEntity(pageInfo);
     }
 
 
-    @ApiOperation(value = "添加黑名单", httpMethod = "POST", notes = "添加人员到黑名单",position = 2)
+    @ApiOperation(value = "添加黑名单", httpMethod = "POST", notes = "添加人员到黑名单", position = 2)
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", dataType = "String",name = "name", value = "姓名", required = true),
-            @ApiImplicitParam(paramType = "query", dataType = "String",name = "num", value = "身份证号码", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "name", value = "姓名", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "num", value = "身份证号码", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
     })
     @RequestMapping("/add/black")
     public ResultEntity addToBlack(HttpServletRequest request) {
-        String name = getParamVal(request,"name");
-        String num = getParamVal(request,"num");
+        String name = getParamVal(request, "name");
+        String num = getParamVal(request, "num");
         Person person = new Person();
         person.setName(name);
         person.setIdentityNum(num);
         person.setBlackFlag(1);
 
-        int size = personService.savePerson(person,getAppLoginUser(request));
+        int size = personService.savePerson(person, getAppLoginUser(request));
         return ResultEntity.newResultEntity("添加成功");
     }
 
@@ -160,20 +161,20 @@ public class ApiController extends BasicController {
         return ResultEntity.newResultEntity(pageInfo);
     }
 
-    @ApiOperation(value = "自定义个人头像",httpMethod = "POST",notes = "根据用户Id,客户端id，设置该用户的头像")
+    @ApiOperation(value = "自定义个人头像", httpMethod = "POST", notes = "根据用户Id,客户端id，设置该用户的头像")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "userId", value = "用户id", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
     })
-    @RequestMapping(value = "/upload/headpic",consumes = "multipart/*",headers = "content-type=multipart/form-data")
-    public ResultEntity uploadHeadPic(@ApiParam(value = "上传头像", required = true)MultipartFile multipartFile,
-                                      HttpServletRequest request){
+    @RequestMapping(value = "/upload/headpic", consumes = "multipart/*", headers = "content-type=multipart/form-data")
+    public ResultEntity uploadHeadPic(@ApiParam(value = "上传头像", required = true) MultipartFile multipartFile,
+                                      HttpServletRequest request) {
         try {
-            Map uploads = (Map) new FileController().uploads(multipartFile,request).getData();
+            Map uploads = (Map) new FileController().uploads(multipartFile, request).getData();
             User user = userService.selectUserViewByUserId(Integer.valueOf(request.getParameter("userId")));
-            user.setPhotoUrl(request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") +uploads.get("fileRequestPath"));
+            user.setPhotoUrl(request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath"));
             UserView userView = getAppLoginUser(request);
-            userService.saveUser(user,userView);
+            userService.saveUser(user, userView);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -181,14 +182,34 @@ public class ApiController extends BasicController {
     }
 
 
-    @ApiOperation(value = "查询试卷",httpMethod = "POST",notes = "根据用户Id,客户端id，随机生成一套试卷，题目数量接口传")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", dataType = "String", name = "userId", value = "用户id", required = true),
+    @ApiOperation(value = "获取试卷", httpMethod = "POST", notes = "根据用户Id,客户端id，随机生成一套试卷，题目数量调用者提供，试卷类型调用者提供[1:平时练习,2:月份考试]")
+    @ApiImplicitParams({ 
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
-            @ApiImplicitParam(paramType = "query", dataType = "int", name = "count", value = "题目数量", required = true)
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "count", value = "题目数量", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "type", value = "试卷类型", required = true),
     })
     @RequestMapping(value = "/getExam")
-    public ResultEntity getExam(HttpServletRequest request,String userId,String clientId,int count){
+    public ResultEntity getExam(HttpServletRequest request) {
+        int count = getParamInt(request,"count");
+        int type = getParamInt(request,"type");
+
         List<Map> questionList = questionService.selectRandomQuestionByCount(count);
+        UserView userView = getAppLoginUser(request);
+        StringBuilder questionIds = new StringBuilder();
+        for (Map question: questionList) {
+            questionIds.append(question.get("id") + ",");
+        }
+        PersonExamHistoryWithBLOBs record = new PersonExamHistoryWithBLOBs();
+        record.setPersonId(userView.getRefId());
+        record.setFullScore("100");
+        record.setExamTime(String.valueOf(System.currentTimeMillis()));
+        record.setExamType(type);
+        record.setQuestionIds(questionIds.toString());
+
+        questionService.saveExam(record);
+        Map map = new HashMap();
+        map.put("exam", record);
+        map.put("questionList", questionList);
+        return ResultEntity.newResultEntity(map);
     }
 }

@@ -49,7 +49,10 @@ public abstract class BasicController extends LoggerWrapper {
 
         return _pageSize;
     }
-
+    protected int getParamInt(HttpServletRequest request,String key){
+        String value = getParamVal(request,key,"0");
+        return Integer.valueOf(value);
+    }
     protected String getParamVal(HttpServletRequest request, String key) {
         return getParamVal(request, key, "");
     }

@@ -470,7 +470,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="selectRandomQuestionByCount" resultMap="java.util.Map">
+  <select id="selectRandomQuestionByCount" resultType="java.util.Map">
     SELECT
           *
       FROM
@@ -484,7 +484,7 @@
           )
       ORDER BY
           id
-    <if test="delFlag != null" >
+    <if test="count != null" >
       LIMIT #{count,jdbcType=INTEGER}
     </if>
   </select>

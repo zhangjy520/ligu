@@ -1,10 +1,9 @@
 package cc.ligu.mvc.service.impl;
 
 import cc.ligu.common.service.BasicService;
+import cc.ligu.mvc.persistence.dao.PersonExamHistoryMapper;
 import cc.ligu.mvc.persistence.dao.QuestionMapper;
-import cc.ligu.mvc.persistence.entity.Question;
-import cc.ligu.mvc.persistence.entity.QuestionExample;
-import cc.ligu.mvc.persistence.entity.UserView;
+import cc.ligu.mvc.persistence.entity.*;
 import cc.ligu.mvc.service.QuestionService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -24,6 +23,8 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     @Autowired
     QuestionMapper questionMapper;
 
+    @Autowired
+    PersonExamHistoryMapper personExamHistoryMapper;
 
     @Override
     public PageInfo<Question> listAllQuestion(int pageSize, int pageNum, Question question) {
@@ -67,5 +68,11 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     @Override
     public List<Map> selectRandomQuestionByCount(int count) {
         return questionMapper.selectRandomQuestionByCount(count);
+    }
+
+    @Override
+    public int saveExam(PersonExamHistoryWithBLOBs personExamHistoryWithBLOBs) {
+        personExamHistoryMapper.insertSelective(personExamHistoryWithBLOBs);
+        return personExamHistoryWithBLOBs.getId();
     }
 }
