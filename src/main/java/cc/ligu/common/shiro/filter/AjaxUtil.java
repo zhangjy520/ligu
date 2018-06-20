@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * Created by conn on 2016/7/29.
+ * Created by zjy on 2018/5/22.
  */
 public class AjaxUtil {
 

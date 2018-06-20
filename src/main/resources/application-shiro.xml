@@ -6,7 +6,6 @@
 
     <!-- 给ShiroAuthRealm使用 -->
     <bean id="userService" class="cc.ligu.mvc.service.impl.UserServiceImpl"></bean>
-
     <!-- 項目自定义的Realm -->
     <bean id="shiroAuthRealm" class="cc.ligu.common.shiro.ShiroAuthRealm">
         <property name="userService" ref="userService"/>
@@ -28,17 +27,12 @@
                 /login = anon
                 /doLogin = anon
                 /doLogout = logout
-
+                /swagger-resources/** = anon
+                /v2/api-docs = anon
+                /api-docs = anon
+                /**/springfox-swagger-ui/** = anon
+                /api = anon
                 <!-- authc -->
-                /root/** = role[root]
-                /admin/** = role[admin]
-                /teacher/** = orRole[teacher, student]
-                /student/** = orRole[student, teacher]
-                /class/** = orRole[teacher, student]
-                /device/fetchRings/** = anon
-                /device/index = orRole[root,board_user]
-                /device/station/** = orRole[root,board_user]
-                /device/ring/** = orRole[root,board_user]
             </value>
         </constructor-arg>
     </bean>
@@ -57,6 +51,7 @@
         <property name="realm" ref="shiroAuthRealm"/>
         <property name="sessionManager" ref="sessionManager"/>
         <property name="cacheManager" ref="shiroCacheManager"/>
+        <property name="rememberMeManager" ref="rememberMeManager"/>
     </bean>
 
     <!-- 定义授权缓存管理器 -->
@@ -96,6 +91,19 @@
         <constructor-arg value="sid"/>
         <property name="httpOnly" value="true"/>
         <property name="maxAge" value="1800"/>
+    </bean>
+
+    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="rememberMe"/>
+        <property name="httpOnly" value="true"/>
+        <property name="maxAge" value="2592000"/><!-- 30天 -->
+    </bean>
+
+    <!-- rememberMe管理器 -->
+    <bean id="rememberMeManager"
+          class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <!--  <property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}"/>-->
+        <property name="cookie" ref="rememberMeCookie"/>
     </bean>
 
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>

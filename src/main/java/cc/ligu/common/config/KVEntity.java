@@ -3,7 +3,7 @@ package cc.ligu.common.config;
 import java.io.Serializable;
 
 /**
- * Created by conn on 2016/9/12.
+ * Created by zjy on 2018/5/22.
  */
 public class KVEntity implements Serializable{
     private String key;

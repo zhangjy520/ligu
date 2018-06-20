@@ -1,43 +1,50 @@
 package cc.ligu.common.shiro;
 
-import cc.ligu.mvc.modelView.MenuView;
-import cc.ligu.mvc.modelView.RoleView;
 import cc.ligu.mvc.persistence.entity.User;
+import cc.ligu.mvc.persistence.entity.UserView;
 import cc.ligu.mvc.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.*;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by conn on 2016/7/29.
+ * Created by zjy on 2018/5/22.
  */
 public class ShiroAuthRealm extends AuthorizingRealm {
 
-    UserService userService;
+    private UserService userService;
 
     /**
      * 授权
+     *
      * @param principalCollection
      * @return
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
-        User user = (User) super.getAvailablePrincipal(principalCollection);
+        UserView user = (UserView) super.getAvailablePrincipal(principalCollection);
 
         SimpleAuthorizationInfo simpleAuthorInfo = null;
-        if (null != user) {
+        if (null != "") {
 
             simpleAuthorInfo = new SimpleAuthorizationInfo();
 
             List<String> permissions = new ArrayList<String>();
 
-            List<RoleView> roleViews = userService.selectRoleViewByUserId(user.getId());
+            UserView userView = userService.selectUserViewByPrimary(user.getRefId());
+            if (null != userView) {
+                permissions.add(userView.getRolePermission());
+                simpleAuthorInfo.addRole(userView.getRoleName());
+            }
+            //添加菜单的permisssion字段，jc:manage:*,jc:manage:ab
+            /*List<RoleView> roleViews = userService.selectRoleViewByUserId(user.getId());
             for (RoleView roleView : roleViews) {
                 String role = roleView.getRoleIdentify();
                 if (!StringUtils.isEmpty(role)) {
@@ -52,7 +59,12 @@ public class ShiroAuthRealm extends AuthorizingRealm {
                         }
                     }
                 }
-            }
+            }*/
+            /*simpleAuthorInfo.addRole("root");
+            simpleAuthorInfo.addRole("checker");
+            simpleAuthorInfo.addRole("item_er");
+            simpleAuthorInfo.addRole("worker_er");
+            simpleAuthorInfo.addRole("worker");*/
 
             simpleAuthorInfo.addStringPermissions(permissions);
         } else {
@@ -64,6 +76,7 @@ public class ShiroAuthRealm extends AuthorizingRealm {
 
     /**
      * 认证
+     *
      * @param authenticationToken
      * @return
      * @throws AuthenticationException
@@ -78,7 +91,7 @@ public class ShiroAuthRealm extends AuthorizingRealm {
             return null;
         }
 
-        User user = userService.getByAccountAndPwd(username, pwd);
+        UserView user = userService.selectUserViewByUsernameAndPassword(username, pwd);
 
         if (user != null) {
             return new SimpleAuthenticationInfo(user,

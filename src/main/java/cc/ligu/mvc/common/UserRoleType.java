@@ -1,7 +1,7 @@
 package cc.ligu.mvc.common;
 
 /**
- * Created by conn on 2016/8/19.
+ * Created by zjy on 2018/5/22.
  */
 public enum UserRoleType {
 

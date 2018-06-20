@@ -1,7 +1,7 @@
 package cc.ligu.common.exception;
 
 /**
- * Created by conn on 2016/8/5.
+ * Created by zjy on 2018/5/22.
  */
 public class LoginException extends CustomException {
 }

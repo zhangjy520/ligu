@@ -1,5 +1,6 @@
 package cc.ligu.common.utils;
 
+import cc.ligu.common.exception.FileOperationException;
 import com.github.pagehelper.StringUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

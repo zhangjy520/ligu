@@ -10,7 +10,7 @@ import javax.servlet.ServletRequest;
 import java.io.Serializable;
 
 /**
- * Created by conn on 2016/7/29.
+ * Created by zjy on 2018/5/22.
  */
 public class WebSessionManager extends DefaultWebSessionManager {
 

@@ -3,15 +3,11 @@
 <mapper namespace="cc.ligu.mvc.persistence.dao.UserMapper" >
   <resultMap id="BaseResultMap" type="cc.ligu.mvc.persistence.entity.User" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="school_id" property="schoolId" jdbcType="INTEGER" />
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="ref_id" property="refId" jdbcType="INTEGER" />
-    <result column="user_type" property="userType" jdbcType="INTEGER" />
     <result column="photo_url" property="photoUrl" jdbcType="VARCHAR" />
-    <result column="login_flag" property="loginFlag" jdbcType="INTEGER" />
-    <result column="login_mark" property="loginMark" jdbcType="VARCHAR" />
     <result column="create_by" property="createBy" jdbcType="INTEGER" />
     <result column="create_date" property="createDate" jdbcType="BIGINT" />
     <result column="update_by" property="updateBy" jdbcType="INTEGER" />
@@ -78,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, school_id, username, password, name, ref_id, user_type, photo_url, login_flag, 
-    login_mark, create_by, create_date, update_by, update_date, remarks, del_flag
+    id, username, password, name, ref_id, photo_url, create_by, create_date, update_by, 
+    update_date, remarks, del_flag
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cc.ligu.mvc.persistence.entity.UserExample" >
     select
@@ -113,27 +109,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cc.ligu.mvc.persistence.entity.User" >
-    insert into sys_user (id, school_id, username, 
-      password, name, ref_id, 
-      user_type, photo_url, login_flag, 
-      login_mark, create_by, create_date, 
-      update_by, update_date, remarks, 
-      del_flag)
-    values (#{id,jdbcType=INTEGER}, #{schoolId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{refId,jdbcType=INTEGER}, 
-      #{userType,jdbcType=INTEGER}, #{photoUrl,jdbcType=VARCHAR}, #{loginFlag,jdbcType=INTEGER}, 
-      #{loginMark,jdbcType=VARCHAR}, #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=BIGINT}, 
-      #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=BIGINT}, #{remarks,jdbcType=VARCHAR}, 
-      #{delFlag,jdbcType=INTEGER})
+    insert into sys_user (id, username, password, 
+      name, ref_id, photo_url, 
+      create_by, create_date, update_by, 
+      update_date, remarks, del_flag
+      )
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{refId,jdbcType=INTEGER}, #{photoUrl,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=BIGINT}, #{updateBy,jdbcType=INTEGER}, 
+      #{updateDate,jdbcType=BIGINT}, #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="cc.ligu.mvc.persistence.entity.User" >
     insert into sys_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
-      </if>
-      <if test="schoolId != null" >
-        school_id,
       </if>
       <if test="username != null" >
         username,
@@ -147,17 +138,8 @@
       <if test="refId != null" >
         ref_id,
       </if>
-      <if test="userType != null" >
-        user_type,
-      </if>
       <if test="photoUrl != null" >
         photo_url,
-      </if>
-      <if test="loginFlag != null" >
-        login_flag,
-      </if>
-      <if test="loginMark != null" >
-        login_mark,
       </if>
       <if test="createBy != null" >
         create_by,
@@ -182,9 +164,6 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="schoolId != null" >
-        #{schoolId,jdbcType=INTEGER},
-      </if>
       <if test="username != null" >
         #{username,jdbcType=VARCHAR},
       </if>
@@ -197,17 +176,8 @@
       <if test="refId != null" >
         #{refId,jdbcType=INTEGER},
       </if>
-      <if test="userType != null" >
-        #{userType,jdbcType=INTEGER},
-      </if>
       <if test="photoUrl != null" >
         #{photoUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="loginFlag != null" >
-        #{loginFlag,jdbcType=INTEGER},
-      </if>
-      <if test="loginMark != null" >
-        #{loginMark,jdbcType=VARCHAR},
       </if>
       <if test="createBy != null" >
         #{createBy,jdbcType=INTEGER},
@@ -235,9 +205,6 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.schoolId != null" >
-        school_id = #{record.schoolId,jdbcType=INTEGER},
-      </if>
       <if test="record.username != null" >
         username = #{record.username,jdbcType=VARCHAR},
       </if>
@@ -250,17 +217,8 @@
       <if test="record.refId != null" >
         ref_id = #{record.refId,jdbcType=INTEGER},
       </if>
-      <if test="record.userType != null" >
-        user_type = #{record.userType,jdbcType=INTEGER},
-      </if>
       <if test="record.photoUrl != null" >
         photo_url = #{record.photoUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="record.loginFlag != null" >
-        login_flag = #{record.loginFlag,jdbcType=INTEGER},
-      </if>
-      <if test="record.loginMark != null" >
-        login_mark = #{record.loginMark,jdbcType=VARCHAR},
       </if>
       <if test="record.createBy != null" >
         create_by = #{record.createBy,jdbcType=INTEGER},
@@ -288,15 +246,11 @@
   <update id="updateByExample" parameterType="map" >
     update sys_user
     set id = #{record.id,jdbcType=INTEGER},
-      school_id = #{record.schoolId,jdbcType=INTEGER},
       username = #{record.username,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       ref_id = #{record.refId,jdbcType=INTEGER},
-      user_type = #{record.userType,jdbcType=INTEGER},
       photo_url = #{record.photoUrl,jdbcType=VARCHAR},
-      login_flag = #{record.loginFlag,jdbcType=INTEGER},
-      login_mark = #{record.loginMark,jdbcType=VARCHAR},
       create_by = #{record.createBy,jdbcType=INTEGER},
       create_date = #{record.createDate,jdbcType=BIGINT},
       update_by = #{record.updateBy,jdbcType=INTEGER},
@@ -310,9 +264,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="cc.ligu.mvc.persistence.entity.User" >
     update sys_user
     <set >
-      <if test="schoolId != null" >
-        school_id = #{schoolId,jdbcType=INTEGER},
-      </if>
       <if test="username != null" >
         username = #{username,jdbcType=VARCHAR},
       </if>
@@ -325,17 +276,8 @@
       <if test="refId != null" >
         ref_id = #{refId,jdbcType=INTEGER},
       </if>
-      <if test="userType != null" >
-        user_type = #{userType,jdbcType=INTEGER},
-      </if>
       <if test="photoUrl != null" >
         photo_url = #{photoUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="loginFlag != null" >
-        login_flag = #{loginFlag,jdbcType=INTEGER},
-      </if>
-      <if test="loginMark != null" >
-        login_mark = #{loginMark,jdbcType=VARCHAR},
       </if>
       <if test="createBy != null" >
         create_by = #{createBy,jdbcType=INTEGER},
@@ -360,15 +302,11 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="cc.ligu.mvc.persistence.entity.User" >
     update sys_user
-    set school_id = #{schoolId,jdbcType=INTEGER},
-      username = #{username,jdbcType=VARCHAR},
+    set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       ref_id = #{refId,jdbcType=INTEGER},
-      user_type = #{userType,jdbcType=INTEGER},
       photo_url = #{photoUrl,jdbcType=VARCHAR},
-      login_flag = #{loginFlag,jdbcType=INTEGER},
-      login_mark = #{loginMark,jdbcType=VARCHAR},
       create_by = #{createBy,jdbcType=INTEGER},
       create_date = #{createDate,jdbcType=BIGINT},
       update_by = #{updateBy,jdbcType=INTEGER},

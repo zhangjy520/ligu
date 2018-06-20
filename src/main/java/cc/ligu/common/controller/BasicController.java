@@ -3,20 +3,23 @@ package cc.ligu.common.controller;
 import cc.ligu.common.exception.ErrcodeException;
 import cc.ligu.common.utils.LoggerWrapper;
 import cc.ligu.common.utils.NumberConvertUtil;
+import cc.ligu.common.utils.SessionTool;
 import cc.ligu.mvc.common.ProjectConfig;
-import cc.ligu.mvc.persistence.entity.User;
+import cc.ligu.mvc.persistence.entity.UserView;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by conn on 2016/8/5.
+ * Created by zjy on 2018/5/22.
  */
-@Controller
 public abstract class BasicController extends LoggerWrapper {
+
+    protected void validateClient(HttpServletRequest request,String clientId){
+        Object userView = request.getSession().getAttribute(clientId);
+    }
 
     protected int getPageNum(HttpServletRequest request) {
 
@@ -36,7 +39,7 @@ public abstract class BasicController extends LoggerWrapper {
         int _pageSize = ProjectConfig.DEFAULT_PAGE_SIZE;
         if (null == request) return _pageSize;
 
-        String pageSize = getParamVal(request, "pageSize");
+        String pageSize = getParamVal(request, "numPerPage");
         if (StringUtils.isEmpty(pageSize)) return _pageSize;
 
         _pageSize = NumberConvertUtil.convertS2I(pageSize);
@@ -46,7 +49,6 @@ public abstract class BasicController extends LoggerWrapper {
 
         return _pageSize;
     }
-
 
     protected String getParamVal(HttpServletRequest request, String key) {
         return getParamVal(request, key, "");
@@ -101,13 +103,18 @@ public abstract class BasicController extends LoggerWrapper {
         return ip;
     }
 
-    protected User getLoginUser() {
+    protected UserView getLoginUser() {
         Subject subject = SecurityUtils.getSubject();
-        User user = (User) subject.getPrincipal();
+        UserView user = (UserView) subject.getPrincipal();
         if (null == user || StringUtils.isEmpty(user.getId())) {
             throw new ErrcodeException("登录超时，请重新登录");
         }
         return user;
+    }
+
+    protected UserView getAppLoginUser(HttpServletRequest request) {
+        UserView UserView = (UserView) SessionTool.getUserInfoFromSession(request, request.getParameter("clientId"));
+        return UserView;
     }
 
     protected Subject getSubject() {

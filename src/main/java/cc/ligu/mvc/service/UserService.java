@@ -1,20 +1,16 @@
 package cc.ligu.mvc.service;
 
-import cc.ligu.mvc.modelView.MenuView;
-import cc.ligu.mvc.modelView.RoleView;
-import cc.ligu.mvc.persistence.entity.User;
 
-import java.util.List;
+import cc.ligu.mvc.persistence.entity.User;
+import cc.ligu.mvc.persistence.entity.UserView;
 
 public interface UserService {
 
-	User saveUser(User user);
+    UserView selectUserViewByPrimary(int refId);
 
-	User getByAccountAndPwd(String account, String pwd);
+    User selectUserViewByUserId(int userId);
 
-	User getUserById(Integer userId);
+    UserView selectUserViewByUsernameAndPassword(String username,String password);
 
-	List<RoleView> selectRoleViewByUserId(Integer userId);
-
-	List<MenuView> selectMenusByRoleId(Integer roleId);
+    int saveUser(User user,UserView userView);
 }

@@ -1,13 +1,12 @@
 package cc.ligu.mvc.service.impl;
 
 import cc.ligu.common.service.BasicService;
-import cc.ligu.mvc.modelView.MenuView;
-import cc.ligu.mvc.modelView.RoleView;
-import cc.ligu.mvc.persistence.dao.A_MenuExtensionMapper;
-import cc.ligu.mvc.persistence.dao.A_RoleExtensionMapper;
 import cc.ligu.mvc.persistence.dao.UserMapper;
+import cc.ligu.mvc.persistence.dao.UserViewMapper;
 import cc.ligu.mvc.persistence.entity.User;
 import cc.ligu.mvc.persistence.entity.UserExample;
+import cc.ligu.mvc.persistence.entity.UserView;
+import cc.ligu.mvc.persistence.entity.UserViewExample;
 import cc.ligu.mvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,70 +14,58 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+
 /**
- * Created by conn on 2016/7/27.
+ * Created by zjy on 2018/5/21.
  */
 @Service
 public class UserServiceImpl extends BasicService implements UserService {
 
     @Autowired
+    UserViewMapper userViewMapper;
+
+    @Autowired
     UserMapper userMapper;
 
-    @Autowired
-    A_RoleExtensionMapper roleExtensionMapper;
+    @Override
+    public UserView selectUserViewByPrimary(int refId) {
+        UserViewExample example = new UserViewExample();
+        example.createCriteria().andRefIdEqualTo(refId);
 
-    @Autowired
-    A_MenuExtensionMapper menuExtensionMapper;
+        List<UserView> res = userViewMapper.selectByExample(example);
+        if (res.size() > 0)
+            return res.get(0);
+        return null;
+    }
 
     @Override
-    public User saveUser(User user) {
-        User u = null;
+    public User selectUserViewByUserId(int userId) {
+
+        return userMapper.selectByPrimaryKey(userId);
+    }
+
+    @Override
+    public UserView selectUserViewByUsernameAndPassword(String username, String password) {
+        UserViewExample example = new UserViewExample();
+        example.createCriteria().andUsernameEqualTo(username).andPasswordEqualTo(password);
+
+        List<UserView> res = userViewMapper.selectByExample(example);
+        if (res.size() > 0)
+            return res.get(0);
+        return null;
+    }
+
+    @Override
+    public int saveUser(User user, UserView userView) {
         if (StringUtils.isEmpty(user.getId())) {
-            user.setCreateDate(System.currentTimeMillis());
-            int count = userMapper.insertSelective(user);
-            System.out.print("ret num ======: " + count);
-            u = user;
+            user.setCreateDate(System.currentTimeMillis());//创建时间
+            user.setCreateBy(userView.getId());//创建人
+            userMapper.insertSelective(user);
         } else {
-            userMapper.updateByPrimaryKey(user);
+            user.setUpdateDate(System.currentTimeMillis());
+            user.setUpdateBy(userView.getId());
+            userMapper.updateByPrimaryKeySelective(user);
         }
-        logger.info("save user username: {} and createTime: {}", user.getUsername(), user.getCreateDate());
-        return u;
-    }
-
-    @Override
-    public User getByAccountAndPwd(String username, String pwd) {
-        UserExample example = new UserExample();
-        example.createCriteria().andUsernameEqualTo(username).andPasswordEqualTo(pwd);
-        List<User> users = (List<User>) userMapper.selectByExample(example);
-
-        User user = null;
-        if (null != users && users.size() > 0) {
-            user = users.get(0);
-            logger.info("login with username: {} and createTime: {}", user.getUsername(), user.getCreateDate());
-        }
-        return user;
-    }
-
-    @Override
-    public User getUserById(Integer userId) {
-
-        User user = userMapper.selectByPrimaryKey(userId);
-        return user;
-    }
-
-    @Override
-    public List<RoleView> selectRoleViewByUserId(Integer userId) {
-
-        List<RoleView> roleViews = roleExtensionMapper.selectRoleViewByUserId(userId);
-
-        return roleViews;
-    }
-
-    @Override
-    public List<MenuView> selectMenusByRoleId(Integer roleId) {
-
-        List<MenuView> menuViews = menuExtensionMapper.selectMenusByRoleId(roleId);
-
-        return menuViews;
+        return 1;
     }
 }

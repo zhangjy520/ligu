@@ -4,7 +4,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 /**
- * Created by conn on 2016/7/29.
+ * Created by zjy on 2018/5/22.
  */
 public interface AjaxFilter {
 

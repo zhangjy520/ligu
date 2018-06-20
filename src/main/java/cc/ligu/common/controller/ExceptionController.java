@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 import java.util.regex.Pattern;
 
 /**
- * Created by conn on 2016/8/9.
+ * Created by zjy on 2018/5/22.
  */
 @ControllerAdvice
 public class ExceptionController extends LoggerWrapper {

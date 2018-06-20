@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by conn on 16-10-12.
+ * Created by zjy on 2018/5/22.
  */
 public class ConfigData {
 

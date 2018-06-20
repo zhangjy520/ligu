@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Created by conn on 2016/8/2.
+ * Created by zjy on 2018/5/22.
  */
 public class DBMigrate {
 

@@ -55,16 +55,40 @@
 
     <!-- spring-MyBatis -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <!--<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">-->
         <property name="dataSource" ref="dataSource"/>
         <!-- scan xml file -->
-        <property name="mapperLocations" value="classpath:cc/ligu/mvc/persistence/mapping/*.xml"></property>
-        <property name="typeAliasesPackage" value="cc.ligu.mvc.persistence.entity"/>
+        <property name="mapperLocations" value="classpath:cc/ligu/**/persistence/mapping/*.xml"></property>
+        <property name="typeAliasesPackage" value="cc.ligu.**.persistence.entity"/>
         <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <!--<property name="globalConfig" ref="globalConfig" />-->
+        <!--<property name="plugins">
+            <array>
+                &lt;!&ndash; 分页插件配置 &ndash;&gt;
+                <bean id="paginationInterceptor"
+                      class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
+                    <property name="dialectType" value="mysql" />
+                </bean>
+                <bean id="performanceInterceptor"
+                      class="com.baomidou.mybatisplus.plugins.PerformanceInterceptor" >
+                    &lt;!&ndash; 超过自动停止运行，有助于发现问题。 &ndash;&gt;
+                    <property name="maxTime" value="100" />
+                    &lt;!&ndash;SQL是否格式化 默认false&ndash;&gt;
+                    <property name="format" value="true" />
+                </bean>
+            </array>
+        </property>-->
     </bean>
+
+    <!--<bean id="globalConfig" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
+        <property name="idType" value="2" />
+        <property name="dbColumnUnderline" value="true" />
+        <property name="dbType" value="mysql"/>
+    </bean>-->
 
     <!-- mysql mapping scan -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="cc.ligu.mvc.persistence.dao"/>
+        <property name="basePackage" value="cc.ligu.**.persistence.dao"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 

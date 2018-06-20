@@ -8,7 +8,7 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 
 /**
- * Created by conn on 2016/8/26.
+ * Created by zjy on 2018/5/22.
  */
 public class CnToPyUtils {
     //将汉字转换为全拼

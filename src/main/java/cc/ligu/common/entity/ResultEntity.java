@@ -1,7 +1,7 @@
 package cc.ligu.common.entity;
 
 /**
- * Created by conn on 16/3/1.
+ * Created by zjy on 2018/5/22.
  */
 public class ResultEntity {
 

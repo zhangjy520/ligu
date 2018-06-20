@@ -13,11 +13,10 @@
        http://www.springframework.org/schema/task
        http://www.springframework.org/schema/task/spring-task.xsd">
 
-    <context:component-scan base-package="cc.ligu.common.controller,
+    <context:component-scan base-package="cc.ligu.mvc.api,cc.ligu.common.controller,
                                              cc.ligu.common.service,
                                              cc.ligu.mvc.controller,
                                              cc.ligu.mvc.service"/>
-
     <mvc:annotation-driven>
         <mvc:message-converters>
             <bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
@@ -31,15 +30,24 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
-
+    <!-- 将 springSwaggerConfig加载到spring容器 -->
+    <bean class="com.mangofactory.swagger.configuration.SpringSwaggerConfig" />
+    <!-- 将自定义的swagger配置类加载到spring容器 -->
+    <bean class="cc.ligu.mvc.common.SwaggerConfig" />
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/teacher/**"/>
-            <mvc:mapping path="/admin/**"/>
-            <mvc:mapping path="/index/**"/>
-            <mvc:exclude-mapping path="/receive"/>
-            <mvc:exclude-mapping path="/receive/temp"/>
+            <mvc:mapping path="/index"/>
+            <mvc:mapping path="/"/>
+            <mvc:exclude-mapping path="/login"/>
             <bean class="cc.ligu.common.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/api/*"/>
+            <mvc:mapping path="/api/**"/>
+            <mvc:exclude-mapping path="/api/login"/>
+            <mvc:exclude-mapping path="/api/permissionDeny"/>
+            <mvc:exclude-mapping path="/api/logout"/>
+            <bean class="cc.ligu.common.interceptor.AppLoginInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 
@@ -50,7 +58,9 @@
         <property name="suffix" value=".jsp"/>
     </bean>
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="2097152"/>
+        <property name="defaultEncoding" value="utf-8"></property>
+        <!--1024*1024*5即5M-->
+        <property name="maxUploadSize" value="52428800"></property>
     </bean>
 
     <!--添加shrio对controller方法的aop安全控制-->
@@ -74,5 +84,4 @@
     <mvc:default-servlet-handler/>
     <!-- 静态资源映射 -->
     <mvc:resources mapping="/assets/**" location="/assets/" cache-period="31536000"/>
-
 </beans>

@@ -1,5 +1,6 @@
 package cc.ligu.common.utils.excel;
 
+import cc.ligu.common.utils.DicUtil;
 import cc.ligu.common.utils.Reflections;
 import cc.ligu.common.utils.excel.annotation.ExcelField;
 import com.google.common.collect.Lists;
@@ -299,10 +300,11 @@ public class ImportExcel {
 				if (val != null&&!"".equals(val)){/////aaaaa
 					ExcelField ef = (ExcelField)os[0];
 					// If is dict type, get dict value
-//					if (StringUtils.isNotBlank(ef.dictType())){
+					if (StringUtils.isNotBlank(ef.dictType())){
 //						val = DictUtils.getDictValue(val.toString(), ef.dictType(), "");
-//						//log.debug("Dictionary type value: ["+i+","+colunm+"] " + val);
-//					}
+						val = DicUtil.getKeyByValueAndFlag(val.toString(),ef.dictType());
+						//log.debug("Dictionary type value: ["+i+","+colunm+"] " + val);
+					}
 					// Get param type and type cast
 					Class<?> valType = Class.class;
 					if (os[1] instanceof Field){
@@ -394,6 +396,8 @@ public class ImportExcel {
 			return  false;
 		}
 	}
+
+
 //	/**
 //	 * 导入测试
 //	 */
