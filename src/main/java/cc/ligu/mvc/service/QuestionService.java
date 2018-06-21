@@ -21,4 +21,10 @@ public interface QuestionService {
     List<Map> selectRandomQuestionByCount(int count);
 
     int saveExam(PersonExamHistoryWithBLOBs personExamHistoryWithBLOBs);
+
+    PersonExamHistoryWithBLOBs getExamById(int examId);
+
+    List<Question> getQuestionListByIds(String ids);
+
+    int saveWrongExam(String json);
 }

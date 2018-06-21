@@ -166,7 +166,7 @@ public class ApiController extends BasicController {
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "userId", value = "用户id", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
     })
-    @RequestMapping(value = "/upload/headpic", consumes = "multipart/*", headers = "content-type=multipart/form-data")
+    @RequestMapping(value = "/upload/headpic", consumes = "multipart/*", ` `)
     public ResultEntity uploadHeadPic(@ApiParam(value = "上传头像", required = true) MultipartFile multipartFile,
                                       HttpServletRequest request) {
         try {
@@ -183,15 +183,15 @@ public class ApiController extends BasicController {
 
 
     @ApiOperation(value = "获取试卷", httpMethod = "POST", notes = "根据用户Id,客户端id，随机生成一套试卷，题目数量调用者提供，试卷类型调用者提供[1:平时练习,2:月份考试]")
-    @ApiImplicitParams({ 
+    @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "int", name = "count", value = "题目数量", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "int", name = "type", value = "试卷类型", required = true),
     })
     @RequestMapping(value = "/getExam")
     public ResultEntity getExam(HttpServletRequest request) {
-        int count = getParamInt(request,"count");
-        int type = getParamInt(request,"type");
+        int count = getParamInt(request, "count");
+        int type = getParamInt(request, "type");
 
         List<Map> questionList = questionService.selectRandomQuestionByCount(count);
         UserView userView = getAppLoginUser(request);
@@ -211,5 +211,36 @@ public class ApiController extends BasicController {
         map.put("exam", record);
         map.put("questionList", questionList);
         return ResultEntity.newResultEntity(map);
+    }
+
+
+    @ApiOperation(value = "根据试卷id获取试卷内容", httpMethod = "POST", notes = "根据客户端id，试卷id获取试卷信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "examId", value = "试卷id", required = true),
+    })
+    @RequestMapping(value = "/getExamById")
+    public ResultEntity getExamById(HttpServletRequest request) {
+        int examId = getParamInt(request, "examId");
+        PersonExamHistoryWithBLOBs exam = questionService.getExamById(examId);
+        List<Question> questionList = questionService.getQuestionListByIds(exam.getQuestionIds());
+
+        Map map = new HashMap();
+        map.put("exam", exam);
+        map.put("questionList", questionList);
+        return ResultEntity.newResultEntity(map);
+    }
+
+
+    @ApiOperation(value = "提交错题列表", httpMethod = "POST", notes = "根据客户端id，错题id，正确答案，你的答案的json串来提交错题！格式参见文档")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "jsonStr", value = "错题json[{questionId:123,yourAnswer:A,correctAnswer:D}]", required = true),
+    })
+    @RequestMapping(value = "/uploadWrongExam")
+    public ResultEntity uploadWrongExam(HttpServletRequest request) {
+        String json = getParamVal(request,"jsonStr");
+        questionService.saveWrongExam(json);
+        return ResultEntity.newResultEntity("提交成功");
     }
 }

@@ -1,6 +1,7 @@
 package cc.ligu.mvc.service.impl;
 
 import cc.ligu.common.service.BasicService;
+import cc.ligu.common.utils.DicUtil;
 import cc.ligu.mvc.persistence.dao.PersonExamHistoryMapper;
 import cc.ligu.mvc.persistence.dao.QuestionMapper;
 import cc.ligu.mvc.persistence.entity.*;
@@ -10,7 +11,10 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import net.sf.json.JSONArray;
+import net.sf.json.JsonConfig;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -74,5 +78,34 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     public int saveExam(PersonExamHistoryWithBLOBs personExamHistoryWithBLOBs) {
         personExamHistoryMapper.insertSelective(personExamHistoryWithBLOBs);
         return personExamHistoryWithBLOBs.getId();
+    }
+
+    @Override
+    public PersonExamHistoryWithBLOBs getExamById(int examId) {
+        return personExamHistoryMapper.selectByPrimaryKey(examId);
+    }
+
+    @Override
+    public List<Question> getQuestionListByIds(String ids) {
+        List<String> idList = DicUtil.splitWithOutNull(ids);
+        if(idList.size()>0){
+            List<Integer> idIntegerList = new ArrayList<>();
+            for (String id :idList) {
+                idIntegerList.add(Integer.valueOf(id));
+            }
+           QuestionExample example = new QuestionExample();
+           example.createCriteria().andIdIn(idIntegerList);
+           return questionMapper.selectByExample(example);
+        }
+        return null;
+    }
+
+    @Override
+    public int saveWrongExam(String json) {
+        JSONArray array = JSONArray.fromObject("[{'name':'hehe','age':22}]");
+        List<Person> list = JSONArray.toList(array, Person.class);// 过时方法
+        System.out.println(list.get(0).getName());
+
+        return 0;
     }
 }
