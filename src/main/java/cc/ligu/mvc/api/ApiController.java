@@ -113,7 +113,7 @@ public class ApiController extends BasicController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "int", name = "pageNum", value = "页码", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "int", name = "pageSize", value = "条数", required = true),
-            @ApiImplicitParam(paramType = "query", dataType = "int", name = "sourceType", value = "0全部 1培训文档 2安全原则 3视频课程"),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "sourceType", value = "0全部 1安全生产视频课程 2安全生产培训文档 3安全生产安全守则 4施工工艺视频课程 5施工工艺培训文档 6施工工艺工艺示例"),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
     })
     @RequestMapping("/source")

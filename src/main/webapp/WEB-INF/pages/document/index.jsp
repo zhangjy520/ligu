@@ -13,13 +13,16 @@
                     <td>
                         文档名称：<input type="text" name="name" value="${chooseName}"/>
                     </td>
-                    <td>
+                    <td>//0全部 1  2  3  4  5  6
                         文档类型：
                         <select class="" name="type">
                             <option value="0" >请选择</option>
-                            <option value="1" <c:if test="${chooseType eq'1'}">selected</c:if> >培训文档</option>
-                            <option value="2" <c:if test="${chooseType eq '2'}">selected</c:if> >安全原则</option>
-                            <option value="3" <c:if test="${chooseType eq '3'}">selected</c:if> >视频课程</option>
+                            <option value="1" <c:if test="${chooseType eq'1'}">selected</c:if> >安全生产视频课程</option>
+                            <option value="2" <c:if test="${chooseType eq '2'}">selected</c:if> >安全生产培训文档</option>
+                            <option value="3" <c:if test="${chooseType eq '3'}">selected</c:if> >安全生产安全守则</option>
+                            <option value="4" <c:if test="${chooseType eq '4'}">selected</c:if> >施工工艺视频课程</option>
+                            <option value="5" <c:if test="${chooseType eq '5'}">selected</c:if> >施工工艺培训文档</option>
+                            <option value="6" <c:if test="${chooseType eq '6'}">selected</c:if> >施工工艺工艺示例</option>
                         </select>
                     </td>
                 </tr>

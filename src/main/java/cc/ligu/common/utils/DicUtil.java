@@ -14,7 +14,7 @@ public class DicUtil {
     //题目难度：1简单 2一般 3困难
     public static List<KVEntity> questionLevelList = new ArrayList<KVEntity>();
 
-    //文档类别：1培训文档 2安全原则 3视频课程
+    //文档类别：0全部1安全生产视频课程2安全生产培训文档3安全生产安全守则4施工工艺视频课程5施工工艺培训文档6施工工艺工艺示例
     public static List<KVEntity> documentTypeList = new ArrayList<KVEntity>();
 
     //性别：1男 2女
@@ -54,11 +54,18 @@ public class DicUtil {
         entry = new KVEntity("3", "困难");
         questionLevelList.add(entry);
 
-        entry = new KVEntity("1", "培训文档");
+        //0全部 1 安全生产视频课程 2 安全生产培训文档 3 安全生产安全守则 4 施工工艺视频课程 5 施工工艺培训文档 6 施工工艺工艺示例
+        entry = new KVEntity("1", "安全生产视频课程");
         documentTypeList.add(entry);
-        entry = new KVEntity("2", "安全原则");
+        entry = new KVEntity("2", "安全生产培训文档");
         documentTypeList.add(entry);
-        entry = new KVEntity("3", "视频课程");
+        entry = new KVEntity("3", "安全生产安全守则");
+        documentTypeList.add(entry);
+        entry = new KVEntity("4", "施工工艺视频课程");
+        documentTypeList.add(entry);
+        entry = new KVEntity("5", "施工工艺培训文档");
+        documentTypeList.add(entry);
+        entry = new KVEntity("6", "施工工艺工艺示例");
         documentTypeList.add(entry);
 
         entry = new KVEntity("1", "男");

@@ -30,7 +30,7 @@ public class SourceController extends BasicController {
     @RequestMapping(value = "/index")
     public String souceIndex(HttpServletRequest request, Model model) {
         String name = getParamVal(request, "name");//文档名称模糊查询
-        String docType = getParamVal(request, "type", "0");//文档类型精确查询 文档类别：1培训文档 2安全原则 3视频课程
+        String docType = getParamVal(request, "type", "0");//文档类型精确查询 文档类别：0全部 1安全生产视频课程 2安全生产培训文档 3安全生产安全守则 4施工工艺视频课程 5施工工艺培训文档 6施工工艺工艺示例
 
         Source source = new Source();
         source.setName(name);
