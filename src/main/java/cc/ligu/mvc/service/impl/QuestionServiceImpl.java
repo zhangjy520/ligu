@@ -3,6 +3,7 @@ package cc.ligu.mvc.service.impl;
 import cc.ligu.common.service.BasicService;
 import cc.ligu.common.utils.DicUtil;
 import cc.ligu.mvc.persistence.dao.PersonExamHistoryMapper;
+import cc.ligu.mvc.persistence.dao.PersonWrongQuestionMapper;
 import cc.ligu.mvc.persistence.dao.QuestionMapper;
 import cc.ligu.mvc.persistence.entity.*;
 import cc.ligu.mvc.service.QuestionService;
@@ -10,6 +11,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
@@ -29,6 +31,9 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
 
     @Autowired
     PersonExamHistoryMapper personExamHistoryMapper;
+
+    @Autowired
+    PersonWrongQuestionMapper personWrongQuestionMapper;
 
     @Override
     public PageInfo<Question> listAllQuestion(int pageSize, int pageNum, Question question) {
@@ -101,11 +106,14 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     }
 
     @Override
-    public int saveWrongExam(String json) {
-        JSONArray array = JSONArray.fromObject("[{'name':'hehe','age':22}]");
-        List<Person> list = JSONArray.toList(array, Person.class);// 过时方法
-        System.out.println(list.get(0).getName());
+    @Transactional
+    public int saveWrongExam(String json) throws Exception{
+        JSONArray array = JSONArray.fromObject(json);
+        List<PersonWrongQuestion> list = JSONArray.toList(array, PersonWrongQuestion.class);// 过时方法
 
+        for (PersonWrongQuestion personWrongQuestion : list) {
+            personWrongQuestionMapper.insertSelective(personWrongQuestion);
+        }
         return 0;
     }
 }

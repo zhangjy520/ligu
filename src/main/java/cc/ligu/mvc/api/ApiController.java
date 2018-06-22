@@ -118,35 +118,47 @@ public class ApiController extends BasicController {
     })
     @RequestMapping("/source")
     public ResultEntity loginT(HttpServletRequest request) {
-        int pageSize = getPageSize(request);
-        int pageNum = getPageNum(request);
-        String sourceType = getParamVal(request, "sourceType");
-        int type = StringUtils.isEmpty(sourceType) ? 0 : Integer.valueOf(sourceType);
-        Source source = new Source();
-        source.setType(type);
+        try {
+            int pageSize = getPageSize(request);
+            int pageNum = getPageNum(request);
+            String sourceType = getParamVal(request, "sourceType");
+            int type = StringUtils.isEmpty(sourceType) ? 0 : Integer.valueOf(sourceType);
+            Source source = new Source();
+            source.setType(type);
 
-        PageInfo<Source> pageInfo = sourceService.listAllSource(pageSize, pageNum, source);
-        return ResultEntity.newResultEntity(pageInfo);
+            PageInfo<Source> pageInfo = sourceService.listAllSource(pageSize, pageNum, source);
+            return ResultEntity.newResultEntity(pageInfo);
+        } catch (Exception e) {
+            return ResultEntity.newErrEntity("操作失败");
+        }
     }
 
 
-    @ApiOperation(value = "添加黑名单", httpMethod = "POST", notes = "添加人员到黑名单", position = 2)
+    @ApiOperation(value = "申请添加人员黑名单", httpMethod = "POST", notes = "申请添加人员到黑名单，管理员审核后才入真正被拉黑", position = 2)
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "name", value = "姓名", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "num", value = "身份证号码", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "remark", value = "拉黑原因", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
     })
     @RequestMapping("/add/black")
     public ResultEntity addToBlack(HttpServletRequest request) {
-        String name = getParamVal(request, "name");
-        String num = getParamVal(request, "num");
-        Person person = new Person();
-        person.setName(name);
-        person.setIdentityNum(num);
-        person.setBlackFlag(1);
+        try {
+            String name = getParamVal(request, "name");
+            String num = getParamVal(request, "num");
+            String remark = getParamVal(request, "remark");
+            Person person = new Person();
+            person.setName(name);
+            person.setIdentityNum(num);
+            person.setBlackFlag(1);//[0正常 ,1黑名单待审，2黑名单人员]
+            person.setRemark(remark);//申请拉黑原因
 
-        int size = personService.savePerson(person, getAppLoginUser(request));
-        return ResultEntity.newResultEntity("添加成功");
+            int size = personService.savePerson(person, getAppLoginUser(request));
+            return ResultEntity.newResultEntity("添加成功");
+        }catch (Exception e){
+            return ResultEntity.newErrEntity("操作失败");
+        }
+
     }
 
     @ApiOperation(value = "查看黑名单列表", httpMethod = "POST", notes = "查询黑名单人员列表")
@@ -156,9 +168,13 @@ public class ApiController extends BasicController {
     @RequestMapping("/query/black")
     public ResultEntity queryBlack(HttpServletRequest request) {
         Person person = new Person();
-        person.setBlackFlag(1);
-        List<Person> pageInfo = personService.listAllPerson(person);
-        return ResultEntity.newResultEntity(pageInfo);
+        person.setBlackFlag(2);
+        try {
+            List<Person> pageInfo = personService.listAllPerson(person);
+            return ResultEntity.newResultEntity(pageInfo);
+        }catch (Exception e){
+            return ResultEntity.newErrEntity("发生异常");
+        }
     }
 
     @ApiOperation(value = "自定义个人头像", httpMethod = "POST", notes = "根据用户Id,客户端id，设置该用户的头像")
@@ -166,7 +182,7 @@ public class ApiController extends BasicController {
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "userId", value = "用户id", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
     })
-    @RequestMapping(value = "/upload/headpic", consumes = "multipart/*", ` `)
+    @RequestMapping(value = "/upload/headpic", consumes = "multipart/*", headers = "content-type=multipart/form-data")
     public ResultEntity uploadHeadPic(@ApiParam(value = "上传头像", required = true) MultipartFile multipartFile,
                                       HttpServletRequest request) {
         try {
@@ -177,6 +193,7 @@ public class ApiController extends BasicController {
             userService.saveUser(user, userView);
         } catch (Exception e) {
             e.printStackTrace();
+            return ResultEntity.newErrEntity("设置异常");
         }
         return ResultEntity.newResultEntity("设置成功");
     }
@@ -190,27 +207,31 @@ public class ApiController extends BasicController {
     })
     @RequestMapping(value = "/getExam")
     public ResultEntity getExam(HttpServletRequest request) {
-        int count = getParamInt(request, "count");
-        int type = getParamInt(request, "type");
+        try {
+            int count = getParamInt(request, "count");
+            int type = getParamInt(request, "type");
 
-        List<Map> questionList = questionService.selectRandomQuestionByCount(count);
-        UserView userView = getAppLoginUser(request);
-        StringBuilder questionIds = new StringBuilder();
-        for (Map question: questionList) {
-            questionIds.append(question.get("id") + ",");
+            List<Map> questionList = questionService.selectRandomQuestionByCount(count);
+            UserView userView = getAppLoginUser(request);
+            StringBuilder questionIds = new StringBuilder();
+            for (Map question: questionList) {
+                questionIds.append(question.get("id") + ",");
+            }
+            PersonExamHistoryWithBLOBs record = new PersonExamHistoryWithBLOBs();
+            record.setPersonId(userView.getRefId());
+            record.setFullScore("100");
+            record.setExamTime(String.valueOf(System.currentTimeMillis()));
+            record.setExamType(type);
+            record.setQuestionIds(questionIds.toString());
+
+            questionService.saveExam(record);
+            Map map = new HashMap();
+            map.put("exam", record);
+            map.put("questionList", questionList);
+            return ResultEntity.newResultEntity(map);
+        } catch (Exception e) {
+            return ResultEntity.newErrEntity("操作失败");
         }
-        PersonExamHistoryWithBLOBs record = new PersonExamHistoryWithBLOBs();
-        record.setPersonId(userView.getRefId());
-        record.setFullScore("100");
-        record.setExamTime(String.valueOf(System.currentTimeMillis()));
-        record.setExamType(type);
-        record.setQuestionIds(questionIds.toString());
-
-        questionService.saveExam(record);
-        Map map = new HashMap();
-        map.put("exam", record);
-        map.put("questionList", questionList);
-        return ResultEntity.newResultEntity(map);
     }
 
 
@@ -221,14 +242,18 @@ public class ApiController extends BasicController {
     })
     @RequestMapping(value = "/getExamById")
     public ResultEntity getExamById(HttpServletRequest request) {
-        int examId = getParamInt(request, "examId");
-        PersonExamHistoryWithBLOBs exam = questionService.getExamById(examId);
-        List<Question> questionList = questionService.getQuestionListByIds(exam.getQuestionIds());
+        try {
+            int examId = getParamInt(request, "examId");
+            PersonExamHistoryWithBLOBs exam = questionService.getExamById(examId);
+            List<Question> questionList = questionService.getQuestionListByIds(exam.getQuestionIds());
 
-        Map map = new HashMap();
-        map.put("exam", exam);
-        map.put("questionList", questionList);
-        return ResultEntity.newResultEntity(map);
+            Map map = new HashMap();
+            map.put("exam", exam);
+            map.put("questionList", questionList);
+            return ResultEntity.newResultEntity(map);
+        } catch (Exception e) {
+            return ResultEntity.newErrEntity("操作失败");
+        }
     }
 
 
@@ -240,7 +265,11 @@ public class ApiController extends BasicController {
     @RequestMapping(value = "/uploadWrongExam")
     public ResultEntity uploadWrongExam(HttpServletRequest request) {
         String json = getParamVal(request,"jsonStr");
-        questionService.saveWrongExam(json);
+        try {
+            questionService.saveWrongExam(json);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return ResultEntity.newResultEntity("提交成功");
     }
 }

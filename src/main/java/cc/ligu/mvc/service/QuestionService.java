@@ -26,5 +26,5 @@ public interface QuestionService {
 
     List<Question> getQuestionListByIds(String ids);
 
-    int saveWrongExam(String json);
+    int saveWrongExam(String json) throws Exception;
 }
