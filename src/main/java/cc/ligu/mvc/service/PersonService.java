@@ -16,4 +16,6 @@ public interface PersonService {
     Person selectPersonByPrimary(int personId);
 
     int deletePerson(Person person);
+
+    List<String> getAllSelect(int type);
 }

@@ -5,6 +5,7 @@ import cc.ligu.common.utils.DicUtil;
 import cc.ligu.mvc.persistence.dao.PersonExamHistoryMapper;
 import cc.ligu.mvc.persistence.dao.PersonWrongQuestionMapper;
 import cc.ligu.mvc.persistence.dao.QuestionMapper;
+import cc.ligu.mvc.persistence.dao.QuestionVersionMapper;
 import cc.ligu.mvc.persistence.entity.*;
 import cc.ligu.mvc.service.QuestionService;
 import com.github.pagehelper.PageHelper;
@@ -35,6 +36,9 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     @Autowired
     PersonWrongQuestionMapper personWrongQuestionMapper;
 
+    @Autowired
+    QuestionVersionMapper questionVersionMapper;
+
     @Override
     public PageInfo<Question> listAllQuestion(int pageSize, int pageNum, Question question) {
         QuestionExample questionExample = new QuestionExample();
@@ -61,6 +65,28 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
             question.setUpdateBy(userView.getId());
             questionMapper.updateByPrimaryKeySelective(question);
         }
+
+
+        List<QuestionVersion> versionList = questionVersionMapper.selectByExample(new QuestionVersionExample());
+        if (versionList.size()>0){
+            QuestionVersion questionVersion = versionList.get(0);
+            questionVersion.setVersion(questionVersion.getVersion()+1);
+            questionVersion.setUpdateTime(System.currentTimeMillis());
+            questionVersion.setUpdateBy(userView.getId());
+            questionVersion.setUpdateUserName(userView.getName());
+
+            questionVersionMapper.updateByPrimaryKeySelective(questionVersion);
+        }else{
+            //如果题库版本号不存在，新增一个默认题库版本号
+            QuestionVersion defaultVersion = new QuestionVersion();
+            defaultVersion.setVersion(1);
+            defaultVersion.setUpdateTime(System.currentTimeMillis());
+            defaultVersion.setUpdateBy(userView.getId());
+            defaultVersion.setUpdateUserName(userView.getName());
+
+            questionVersionMapper.insertSelective(defaultVersion);
+        }
+
         return 1;
     }
 
@@ -107,13 +133,24 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
 
     @Override
     @Transactional
-    public int saveWrongExam(String json) throws Exception{
+    public int saveWrongExam(String json,UserView userView) throws Exception{
         JSONArray array = JSONArray.fromObject(json);
         List<PersonWrongQuestion> list = JSONArray.toList(array, PersonWrongQuestion.class);// 过时方法
 
         for (PersonWrongQuestion personWrongQuestion : list) {
+            personWrongQuestion.setPersonId(userView.getRefId());
             personWrongQuestionMapper.insertSelective(personWrongQuestion);
         }
         return 0;
+    }
+
+    @Override
+    public QuestionVersion selectVersion() {
+        List<QuestionVersion> questionVersion = questionVersionMapper.selectByExample(new QuestionVersionExample());
+        if(questionVersion.size()>0){
+            return questionVersion.get(0);
+        }else{
+            return new QuestionVersion();
+        }
     }
 }

@@ -13,9 +13,12 @@
             <div class="unit">
                 <label>资源类型：</label>
                 <select class="combox" name="type">
-                    <option value="1" <c:if test="${source.type==1}">selected</c:if> >培训文档</option>
-                    <option value="2" <c:if test="${source.type==2}">selected</c:if> >安全原则</option>
-                    <option value="3" <c:if test="${source.type==3}">selected</c:if> >视频课程</option>
+                    <option value="1" <c:if test="${source.type eq'1'}">selected</c:if> >安全生产视频课程</option>
+                    <option value="2" <c:if test="${source.type eq '2'}">selected</c:if> >安全生产培训文档</option>
+                    <option value="3" <c:if test="${source.type eq '3'}">selected</c:if> >安全生产安全守则</option>
+                    <option value="4" <c:if test="${source.type eq '4'}">selected</c:if> >施工工艺视频课程</option>
+                    <option value="5" <c:if test="${source.type eq '5'}">selected</c:if> >施工工艺培训文档</option>
+                    <option value="6" <c:if test="${source.type eq '6'}">selected</c:if> >施工工艺工艺示例</option>
                 </select>
             </div>
 

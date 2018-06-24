@@ -56,6 +56,22 @@ public class UserServiceImpl extends BasicService implements UserService {
     }
 
     @Override
+    public List<UserView> selectUserViewByUserView(UserView userView) {
+        UserViewExample example = new UserViewExample();
+        UserViewExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(userView.getIdentityNum())){
+            criteria.andIdentityNumEqualTo(userView.getIdentityNum());
+        }
+        if (!StringUtils.isEmpty(userView.getName())){
+            criteria.andNameLike("%"+userView.getName()+"%");
+        }
+
+        List<UserView> res = userViewMapper.selectByExample(example);
+        return res;
+    }
+
+    @Override
     public int saveUser(User user, UserView userView) {
         if (StringUtils.isEmpty(user.getId())) {
             user.setCreateDate(System.currentTimeMillis());//创建时间

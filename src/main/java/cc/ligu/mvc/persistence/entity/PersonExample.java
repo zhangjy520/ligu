@@ -914,6 +914,76 @@ public class PersonExample {
             return (Criteria) this;
         }
 
+        public Criteria andCompanyIsNull() {
+            addCriterion("company is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyIsNotNull() {
+            addCriterion("company is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyEqualTo(String value) {
+            addCriterion("company =", value, "company");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyNotEqualTo(String value) {
+            addCriterion("company <>", value, "company");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyGreaterThan(String value) {
+            addCriterion("company >", value, "company");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyGreaterThanOrEqualTo(String value) {
+            addCriterion("company >=", value, "company");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyLessThan(String value) {
+            addCriterion("company <", value, "company");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyLessThanOrEqualTo(String value) {
+            addCriterion("company <=", value, "company");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyLike(String value) {
+            addCriterion("company like", value, "company");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyNotLike(String value) {
+            addCriterion("company not like", value, "company");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyIn(List<String> values) {
+            addCriterion("company in", values, "company");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyNotIn(List<String> values) {
+            addCriterion("company not in", values, "company");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyBetween(String value1, String value2) {
+            addCriterion("company between", value1, value2, "company");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyNotBetween(String value1, String value2) {
+            addCriterion("company not between", value1, value2, "company");
+            return (Criteria) this;
+        }
+
         public Criteria andItemIdIsNull() {
             addCriterion("item_id is null");
             return (Criteria) this;
@@ -1586,6 +1656,11 @@ public class PersonExample {
 
         public Criteria andAddressLikeInsensitive(String value) {
             addCriterion("upper(address) like", value.toUpperCase(), "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyLikeInsensitive(String value) {
+            addCriterion("upper(company) like", value.toUpperCase(), "company");
             return (Criteria) this;
         }
 

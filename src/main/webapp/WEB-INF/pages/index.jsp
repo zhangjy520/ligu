@@ -47,6 +47,8 @@
                     // setTimeout(function() {$("#sidebar .toggleCollapse div").trigger("click");}, 10);
                 }
             });
+
+//            document.getElementById("homePage").click();
         });
     </script>
 </head>
@@ -108,13 +110,13 @@
                                 <li><a href="${ctx}/question/index" target="navTab">题库管理</a></li>
                             </ul>
                         </li>
-                        <li><a>项目模块</a>
+                        <%--<li><a>项目模块</a>
                         <ul>
                             <li><a href="${ctx}/item/index" target="navTab">项目管理</a></li>
                         </ul>
-                       </li>
+                       </li>--%>
                         <li><a>人员安排</a>
-                            <ul>
+                            <ul><%--//1 超级管理员 2 人员审核管理员(主任) 3 项目管理员(移动公司项目经理) 4 施工管理员(施工方项目经理) 5 施工工人--%>
                                 <li><a href="${ctx}/person/index?roleType=5" target="navTab">施工人员管理</a></li>
                                 <li><a href="${ctx}/person/index?roleType=2" target="navTab">人工审核管理员管理</a></li>
                                 <li><a href="${ctx}/person/index?roleType=3" target="navTab">项目经理管理</a></li>

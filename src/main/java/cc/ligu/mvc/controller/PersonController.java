@@ -9,12 +9,14 @@ import cc.ligu.common.utils.DWZResponseUtil;
 import cc.ligu.common.utils.DicUtil;
 import cc.ligu.common.utils.excel.ExportExcel;
 import cc.ligu.common.utils.excel.ImportExcel;
+import cc.ligu.mvc.modelView.BaoXianView;
 import cc.ligu.mvc.modelView.DWZResponse;
 import cc.ligu.mvc.persistence.entity.Person;
 import cc.ligu.mvc.persistence.entity.UserView;
 import cc.ligu.mvc.service.ItemService;
 import cc.ligu.mvc.service.PersonService;
 import com.github.pagehelper.PageInfo;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -104,6 +106,12 @@ public class PersonController extends BasicController {
             Person person = new Person();
             person.setId(id);
             person.setBlackFlag(Integer.valueOf(getParamVal(request,"black","0")));
+
+            if(person.getBlackFlag()==0){
+                //如果是解除黑名单操作，需要把拉入黑名单原因清空。
+                person.setRemark("");
+            }
+
             personService.savePerson(person,getLoginUser());
         } catch (Exception e) {
             return DWZResponseUtil.callbackFail("500", "操作失败", "");
@@ -134,6 +142,14 @@ public class PersonController extends BasicController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public DWZResponse savePerson(Model model, Person person, HttpServletRequest request) {
         try {
+            String insurancePurchasesNum = getParamVal(request,"insurancePurchasesNum");
+            String insurancePurchasesCompany = getParamVal(request,"insurancePurchasesCompany");
+
+            BaoXianView baoXianView = new BaoXianView();
+            baoXianView.setCompany(insurancePurchasesCompany);
+            baoXianView.setOrder_num(insurancePurchasesNum);
+            person.setInsurancePurchases(new Gson().toJson(baoXianView));
+
             int roleType = (person.getType() == 0 ? 5 : person.getType());
             //施工人员
             person.setRoleName(DicUtil.getValueByKeyAndFlag(roleType, "roles"));

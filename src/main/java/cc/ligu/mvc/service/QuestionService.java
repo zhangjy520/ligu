@@ -1,9 +1,6 @@
 package cc.ligu.mvc.service;
 
-import cc.ligu.mvc.persistence.entity.PersonExamHistory;
-import cc.ligu.mvc.persistence.entity.PersonExamHistoryWithBLOBs;
-import cc.ligu.mvc.persistence.entity.Question;
-import cc.ligu.mvc.persistence.entity.UserView;
+import cc.ligu.mvc.persistence.entity.*;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -26,5 +23,7 @@ public interface QuestionService {
 
     List<Question> getQuestionListByIds(String ids);
 
-    int saveWrongExam(String json) throws Exception;
+    int saveWrongExam(String json,UserView userView) throws Exception;
+
+    QuestionVersion selectVersion();
 }

@@ -39,9 +39,14 @@
                 <input ${disabled} type="text" name="address" value="${person.address}" size="30"/>
             </div>
             <div class="unit">
-                <label>保险情况：</label>
-                <input ${disabled} type="text" name="insurancePurchases" value="${person.insurancePurchases}"
+                <label>保单号：</label>
+                <input ${disabled} type="text" name="insurancePurchasesNum" value="${ligu:getValueFromJson(person.insurancePurchases,'order_num')}"
                        size="30"/>
+            </div>
+            <div class="unit">
+                <label>保险公司：</label>
+                <input ${disabled} type="text" name="insurancePurchasesCompany" value="${ligu:getValueFromJson(person.insurancePurchases,'company')}"
+                                   size="30"/>
             </div>
             <div class="unit">
                 <label>薪资情况：</label>

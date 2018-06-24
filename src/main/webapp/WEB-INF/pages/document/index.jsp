@@ -13,7 +13,7 @@
                     <td>
                         文档名称：<input type="text" name="name" value="${chooseName}"/>
                     </td>
-                    <td>//0全部 1  2  3  4  5  6
+                    <td>
                         文档类型：
                         <select class="" name="type">
                             <option value="0" >请选择</option>

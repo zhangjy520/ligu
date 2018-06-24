@@ -7,11 +7,9 @@ package cc.ligu.mvc.api;
 import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.entity.ResultEntity;
 import cc.ligu.common.security.AESencryptor;
-import cc.ligu.common.utils.DWZResponseUtil;
+import cc.ligu.mvc.service.CacheService;
 import cc.ligu.common.utils.PropertiesUtil;
-import cc.ligu.common.utils.SessionTool;
 import cc.ligu.mvc.controller.FileController;
-import cc.ligu.mvc.modelView.DWZResponse;
 import cc.ligu.mvc.persistence.entity.*;
 import cc.ligu.mvc.service.PersonService;
 import cc.ligu.mvc.service.QuestionService;
@@ -21,14 +19,13 @@ import cc.ligu.mvc.service.impl.ItemServiceImpl;
 import com.github.pagehelper.PageInfo;
 import com.mangofactory.swagger.annotations.ApiIgnore;
 import com.wordnik.swagger.annotations.*;
-import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +44,8 @@ public class ApiController extends BasicController {
     PersonService personService;
     @Resource
     QuestionService questionService;
+    @Resource
+    CacheService cacheService;
 
     @ApiIgnore
     @ApiOperation(value = "通过客户端id判断是否需要登录", httpMethod = "POST", notes = "验证是否需要登录,不需要登录返回用户信息")
@@ -56,8 +55,8 @@ public class ApiController extends BasicController {
     @RequestMapping("/getUser")
     public ResultEntity checkIfLogin(HttpServletRequest request) {
         String clientId = getParamVal(request, "clientId");
-        Object user = SessionTool.getUserInfoFromSession(request, clientId);
-
+//        Object user = SessionTool.getUserInfoFromSession(request, clientId);
+        Object user = cacheService.getCacheByKey(clientId);
         if (null == user) {
             return ResultEntity.newErrEntity("您需要登录，请重新登录");
         } else {
@@ -95,7 +94,8 @@ public class ApiController extends BasicController {
         if (null == user) {
             return ResultEntity.newErrEntity("用户名或密码错误");
         } else {
-            SessionTool.setUserInfo2Session(request, clientId, user);//将clientId作为key,
+            //SessionTool.setUserInfo2Session(request, clientId, user);//将clientId作为key,
+            cacheService.addCache(clientId,user);
             return ResultEntity.newResultEntity(user);
         }
     }
@@ -144,9 +144,9 @@ public class ApiController extends BasicController {
     @RequestMapping("/add/black")
     public ResultEntity addToBlack(HttpServletRequest request) {
         try {
-            String name = getParamVal(request, "name");
-            String num = getParamVal(request, "num");
-            String remark = getParamVal(request, "remark");
+            String name = new String(getParamVal(request, "name").getBytes("ISO-8859-1"),"utf-8");
+            String num = new String(getParamVal(request, "num").getBytes("ISO-8859-1"),"utf-8");
+            String remark = new String(getParamVal(request, "remark").getBytes("ISO-8859-1"),"utf-8");
             Person person = new Person();
             person.setName(name);
             person.setIdentityNum(num);
@@ -155,7 +155,7 @@ public class ApiController extends BasicController {
 
             int size = personService.savePerson(person, getAppLoginUser(request));
             return ResultEntity.newResultEntity("添加成功");
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResultEntity.newErrEntity("操作失败");
         }
 
@@ -172,7 +172,7 @@ public class ApiController extends BasicController {
         try {
             List<Person> pageInfo = personService.listAllPerson(person);
             return ResultEntity.newResultEntity(pageInfo);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResultEntity.newErrEntity("发生异常");
         }
     }
@@ -214,7 +214,7 @@ public class ApiController extends BasicController {
             List<Map> questionList = questionService.selectRandomQuestionByCount(count);
             UserView userView = getAppLoginUser(request);
             StringBuilder questionIds = new StringBuilder();
-            for (Map question: questionList) {
+            for (Map question : questionList) {
                 questionIds.append(question.get("id") + ",");
             }
             PersonExamHistoryWithBLOBs record = new PersonExamHistoryWithBLOBs();
@@ -264,12 +264,142 @@ public class ApiController extends BasicController {
     })
     @RequestMapping(value = "/uploadWrongExam")
     public ResultEntity uploadWrongExam(HttpServletRequest request) {
-        String json = getParamVal(request,"jsonStr");
+        String json = getParamVal(request, "jsonStr");
+
         try {
-            questionService.saveWrongExam(json);
+            UserView userView = getAppLoginUser(request);
+            questionService.saveWrongExam(json,userView);
+
+            return ResultEntity.newResultEntity("提交成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultEntity.newErrEntity("提交成功");
+        }
+    }
+
+
+    @ApiOperation(value = "信息录入", httpMethod = "POST", notes = "根据客户端id，录入人员信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "personName", value = "人员姓名", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "identity", value = "身份证号", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "proUnit", value = "隶属单位", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "baoNum", value = "保险单号", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "company", value = "承包公司", required = true),
+    })
+    @RequestMapping(value = "/saveInfo")
+    public ResultEntity saveInfo(HttpServletRequest request) throws UnsupportedEncodingException {
+        String personName = new String(getParamVal(request, "personName").getBytes("ISO-8859-1"),"utf-8");
+        String identify = new String(getParamVal(request, "identity").getBytes("ISO-8859-1"),"utf-8");
+        String proUnit = new String(getParamVal(request, "proUnit").getBytes("ISO-8859-1"),"utf-8");
+        String baoNum = new String(getParamVal(request, "baoNum").getBytes("ISO-8859-1"),"utf-8");
+        String company = new String(getParamVal(request, "company").getBytes("ISO-8859-1"),"utf-8");
+        UserView userView = getAppLoginUser(request);
+        try {
+            Person person = new Person();
+            person.setName(personName);
+            person.setIdentityNum(identify);
+            person.setProfessionalUnit(proUnit);
+            person.setInsurancePurchases(baoNum);
+            person.setCompany(company);
+
+            personService.savePerson(person, userView);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return ResultEntity.newResultEntity("提交成功");
+    }
+
+
+
+    @ApiOperation(value = "信息查询", httpMethod = "POST", notes = "根据客户端id，身份证号来查询人员信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "identify", value = "身份证号码", required = true),
+    })
+    @RequestMapping(value = "/queryPerson")
+    public ResultEntity queryPerson(HttpServletRequest request) throws UnsupportedEncodingException {
+        String identify = new String(getParamVal(request, "identify").getBytes("ISO-8859-1"),"utf-8");
+        try {
+            UserView userView = new UserView();
+            userView.setIdentityNum(identify);
+
+            List<UserView> res = userService.selectUserViewByUserView(userView);
+
+            return ResultEntity.newResultEntity(res);
+        } catch (Exception e) {
+            return ResultEntity.newErrEntity("操作失败");
+        }
+    }
+
+
+    @ApiOperation(value = "下拉列表数据获取", httpMethod = "POST", notes = "根据客户端id，下拉字典获取下拉数据集合selectId 0承包公司下拉集合/ 1隶属单位集合")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "selectId", value = "下拉列表selectId", required = true),
+    })
+    @RequestMapping(value = "/getSelectList")
+    public ResultEntity getSelectList(HttpServletRequest request) throws UnsupportedEncodingException {
+
+        try {
+            int selectId = getParamInt(request,"selectId");
+            List<String> res = personService.getAllSelect(selectId);
+            return ResultEntity.newResultEntity(res);
+        } catch (Exception e) {
+            return ResultEntity.newErrEntity("获取失败");
+        }
+
+    }
+
+
+
+    @ApiOperation(value = "获取当前题库版本号", httpMethod = "POST", notes = "根据客户端id，获取题库版本号")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping(value = "/getPracticeVersion")
+    public ResultEntity getVersion(HttpServletRequest request) throws UnsupportedEncodingException {
+        try {
+            QuestionVersion version = questionService.selectVersion();
+            return ResultEntity.newResultEntity(version.getVersion());
+        } catch (Exception e) {
+            return ResultEntity.newErrEntity("获取题库版本号失败");
+        }
+    }
+
+
+    @ApiOperation(value = "分页取所有题目，有序的！", httpMethod = "POST", notes = "根据客户端id，分页参数取题库题目")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "pageNum", value = "页码", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "pageSize", value = "条数", required = true),
+    })
+    @RequestMapping(value = "/getPractice")
+    public ResultEntity getPractice(HttpServletRequest request) throws UnsupportedEncodingException {
+
+        try {
+            int pageSize = getPageSize(request);
+            int pageNum = getPageNum(request);
+
+            PageInfo<Question> res = questionService.listAllQuestion(pageSize,pageNum,new Question());//查询所有的题库集合。
+            QuestionVersion version = questionService.selectVersion();
+
+            Map r = new HashMap();
+            r.put("version",version.getVersion());
+            r.put("list",res.getList());
+            r.put("total",res.getTotal());
+
+            return ResultEntity.newResultEntity(r);
+
+        } catch (Exception e) {
+            return ResultEntity.newErrEntity("获取失败");
+        }
+
+    }
+
+
+    protected UserView getAppLoginUser(HttpServletRequest request) {
+        UserView UserView = (UserView) cacheService.getCacheByKey(request.getParameter("clientId"));
+        return UserView;
     }
 }

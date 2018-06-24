@@ -68,4 +68,12 @@
         <example>${ligu:getKeyByValueAndFlag(java.lang.String,java.lang.String)}</example>
     </function>
 
+    <function>
+        <description>json中取value</description>
+        <name>getValueFromJson</name>
+        <function-class>cc.ligu.common.utils.DicUtil</function-class>
+        <function-signature>java.lang.String getValueFromJson(java.lang.String,java.lang.String)</function-signature>
+        <example>${ligu:getValueFromJson(java.lang.String,java.lang.String)}</example>
+    </function>
+
 </taglib>

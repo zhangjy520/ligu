@@ -48,43 +48,48 @@
     <table class="table" width="100%" layoutH="138">
         <thead>
         <tr>
-            <th width="20">id</th>
-            <th width="40">name</th>
-            <th width="60">type</th>
-            <th width="120">gender</th>
-            <th width="40">contact</th>
-            <th width="80" align="center">identityNum</th>
-            <th width="80">insurancePurchases</th>
-            <th width="80">salaryDetails</th>
-            <th width="80">address</th>
-            <th width="80">professionalUnit</th>
-            <th width="80">status</th>
-            <th width="80">blackFlag</th>
-            <th width="80" align="center">caozuo</th>
+            <th width="40">姓名</th>
+            <th width="60">角色</th>
+            <th width="120">性别</th>
+            <th width="40">联系方式</th>
+            <th width="80" align="center">身份证号码</th>
+            <th width="80">保险公司</th>
+            <th width="80">保险单号</th>
+            <th width="80">薪资情况</th>
+            <th width="80">现住址</th>
+            <th width="80">施工单位专业</th>
+            <th width="80">人员状态</th>
+            <th width="80">黑名单原因</th>
+            <th width="80">黑名单状态</th>
+            <th width="80" align="center">操作</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${pageInfo.list}" var="person">
             <tr>
-                <td>${person.id}</td>
                 <td>${person.name}</td>
                 <td>${ligu:getValueByKeyAndFlag(person.type,'personType')}</td>
                 <td>${person.gender}</td>
                 <td>${person.contact}</td>
                 <td>${person.identityNum}</td>
-                <td>${person.insurancePurchases}</td>
+                <td>${ligu:getValueFromJson(person.insurancePurchases,'company')}</td>
+                <td>${ligu:getValueFromJson(person.insurancePurchases,'order_num')}</td>
                 <td>${person.salaryDetails}</td>
                 <td>${person.address}</td>
                 <td>${person.professionalUnit}</td>
                 <td>${ligu:getValueByKeyAndFlag(person.status,'personStatus')}</td>
+                <td>${person.remark}</td>
                 <td>${ligu:getValueByKeyAndFlag(person.blackFlag,'personBlack')}</td>
                     <td>
                         <div>
                             <c:if test="${person.blackFlag eq '0'}">
-                                <a target="ajaxTodo" title="加入黑名单？" href="${ctx}/person/delete_black/${person.id}?black=1" class="">加入黑名单</a>
+                                <a target="ajaxTodo" title="加入黑名单？" href="${ctx}/person/delete_black/${person.id}?black=2" class="">加入黑名单</a>
+                            </c:if>
+                            <c:if test="${person.blackFlag eq '2'}">
+                                <a target="ajaxTodo" title="解除黑名单？" href="${ctx}/person/delete_black/${person.id}?black=0" class="">解除黑名单</a>
                             </c:if>
                             <c:if test="${person.blackFlag eq '1'}">
-                                <a target="ajaxTodo" title="解除黑名单？" href="${ctx}/person/delete_black/${person.id}?black=0" class="">解除黑名单</a>
+                                <a target="ajaxTodo" title="审核确认？" href="${ctx}/person/delete_black/${person.id}?black=2" class="">审核确认</a>
                             </c:if>
                         </div>
                     </td>

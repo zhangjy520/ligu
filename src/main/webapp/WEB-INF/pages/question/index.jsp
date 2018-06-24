@@ -37,30 +37,28 @@
     <table class="table" width="100%" layoutH="138">
         <thead>
         <tr>
-            <th width="20">id</th>
-            <th width="40">type</th>
-            <th width="60">name</th>
-            <th width="120">content</th>
-            <th width="40">level</th>
-            <th width="80" align="center">score</th>
-            <th width="80">a</th>
-            <th width="80">b</th>
-            <th width="80">c</th>
-            <th width="80">d</th>
-            <th width="120">answerCorrect</th>
-            <th width="120" align="center">answerExplain</th>
-            <th width="80" align="center">caozuo</th>
+            <th width="40">题目类型</th>
+            <th width="60">题目简称</th>
+            <th width="120">题目内容</th>
+            <th width="40">题目难度</th>
+            <%--<th width="80" align="center">score</th>--%>
+            <th width="80">A选项</th>
+            <th width="80">B选项</th>
+            <th width="80">C选项</th>
+            <th width="80">D选项</th>
+            <th width="120">正确选项</th>
+            <th width="120" align="center">答案解析</th>
+            <th width="80" align="center">操作</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${pageInfo.list}" var="question">
             <tr target="sid_user" rel="1">
-                <td>${question.id}</td>
                 <td>${ligu:getValueByKeyAndFlag(question.type,'questionType')}</td>
                 <td>${question.name}</td>
                 <td>${question.content}</td>
                 <td>${ligu:getValueByKeyAndFlag(question.level,'questionLevel')}</td>
-                <td>${question.score}</td>
+                <%--<td>${question.score}</td>--%>
                 <td>${question.a}</td>
                 <td>${question.b}</td>
                 <td>${question.c}</td>

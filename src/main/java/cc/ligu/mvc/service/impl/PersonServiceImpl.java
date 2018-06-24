@@ -2,6 +2,7 @@ package cc.ligu.mvc.service.impl;
 
 import cc.ligu.common.security.AESencryptor;
 import cc.ligu.common.service.BasicService;
+import cc.ligu.mvc.persistence.dao.ApiMapper;
 import cc.ligu.mvc.persistence.dao.PersonMapper;
 import cc.ligu.mvc.persistence.dao.UserMapper;
 import cc.ligu.mvc.persistence.entity.Person;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,6 +31,8 @@ public class PersonServiceImpl extends BasicService implements PersonService {
     PersonMapper personMapper;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    ApiMapper apiMapper;
 
     @Override
     public PageInfo<Person> listAllPerson(int pageSize, int pageNum, Person person) {
@@ -109,5 +113,17 @@ public class PersonServiceImpl extends BasicService implements PersonService {
     @Override
     public int deletePerson(Person person) {
         return personMapper.deleteByPrimaryKey(person.getId());
+    }
+
+    @Override
+    public List<String> getAllSelect(int type) {
+        List<String> selectList = apiMapper.getAllSelect(type);
+        List<String> res = new ArrayList<>();
+        for (String select:selectList) {
+            if(!StringUtils.isEmpty(select)){
+                res.add(select);
+            }
+        }
+        return res;
     }
 }

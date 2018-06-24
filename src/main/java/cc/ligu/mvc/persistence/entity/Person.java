@@ -29,6 +29,8 @@ public class Person implements Serializable {
 
     private Integer status;
 
+    private String company;
+
     private Integer itemId;
 
     private String itemName;
@@ -58,6 +60,7 @@ public class Person implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+
     @ExcelField(title = "姓名", align = 2, sort = 1, groups = {1, 2})
     public String getName() {
         return name;
@@ -145,6 +148,14 @@ public class Person implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+    @ExcelField(title = "承包公司", align = 2, sort = 9, groups = {1, 2})
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company == null ? null : company.trim();
     }
 
     public Integer getItemId() {
@@ -251,6 +262,7 @@ public class Person implements Serializable {
             && (this.getSalaryDetails() == null ? other.getSalaryDetails() == null : this.getSalaryDetails().equals(other.getSalaryDetails()))
             && (this.getAddress() == null ? other.getAddress() == null : this.getAddress().equals(other.getAddress()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
+            && (this.getCompany() == null ? other.getCompany() == null : this.getCompany().equals(other.getCompany()))
             && (this.getItemId() == null ? other.getItemId() == null : this.getItemId().equals(other.getItemId()))
             && (this.getItemName() == null ? other.getItemName() == null : this.getItemName().equals(other.getItemName()))
             && (this.getProfessionalUnit() == null ? other.getProfessionalUnit() == null : this.getProfessionalUnit().equals(other.getProfessionalUnit()))
@@ -279,6 +291,7 @@ public class Person implements Serializable {
         result = prime * result + ((getSalaryDetails() == null) ? 0 : getSalaryDetails().hashCode());
         result = prime * result + ((getAddress() == null) ? 0 : getAddress().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
+        result = prime * result + ((getCompany() == null) ? 0 : getCompany().hashCode());
         result = prime * result + ((getItemId() == null) ? 0 : getItemId().hashCode());
         result = prime * result + ((getItemName() == null) ? 0 : getItemName().hashCode());
         result = prime * result + ((getProfessionalUnit() == null) ? 0 : getProfessionalUnit().hashCode());
@@ -310,6 +323,7 @@ public class Person implements Serializable {
         sb.append(", salaryDetails=").append(salaryDetails);
         sb.append(", address=").append(address);
         sb.append(", status=").append(status);
+        sb.append(", company=").append(company);
         sb.append(", itemId=").append(itemId);
         sb.append(", itemName=").append(itemName);
         sb.append(", professionalUnit=").append(professionalUnit);

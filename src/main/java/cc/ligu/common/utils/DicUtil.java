@@ -1,5 +1,8 @@
 package cc.ligu.common.utils;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import net.sf.json.JSONObject;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
@@ -114,7 +117,9 @@ public class DicUtil {
 
         entry = new KVEntity("0", "正常");
         personBlackList.add(entry);
-        entry = new KVEntity("1", "黑名单");
+        entry = new KVEntity("1", "黑名单待审");
+        personBlackList.add(entry);
+        entry = new KVEntity("2", "已列入黑名单");
         personBlackList.add(entry);
 
         map.put("questionType", questionTypeList);
@@ -173,6 +178,14 @@ public class DicUtil {
         return resL;
     }
 
+    public static String getValueFromJson(String json, String key) {
+        try {
+            JSONObject data = JSONObject.fromObject(json);
+            return data.get(key).toString();
+        }catch (Exception e){
+            return "";
+        }
+    }
 
     public static void main(String[] args) {
     }

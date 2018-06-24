@@ -39,7 +39,7 @@ public abstract class BasicController extends LoggerWrapper {
         int _pageSize = ProjectConfig.DEFAULT_PAGE_SIZE;
         if (null == request) return _pageSize;
 
-        String pageSize = getParamVal(request, "numPerPage");
+        String pageSize = getParamVal(request, "pageSize");
         if (StringUtils.isEmpty(pageSize)) return _pageSize;
 
         _pageSize = NumberConvertUtil.convertS2I(pageSize);
@@ -115,7 +115,7 @@ public abstract class BasicController extends LoggerWrapper {
         return user;
     }
 
-    protected UserView getAppLoginUser(HttpServletRequest request) {
+    protected UserView getAppLoginUsers(HttpServletRequest request) {
         UserView UserView = (UserView) SessionTool.getUserInfoFromSession(request, request.getParameter("clientId"));
         return UserView;
     }

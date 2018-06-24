@@ -60,33 +60,33 @@
     <table class="table" width="100%" layoutH="138">
         <thead>
         <tr>
-            <th width="20">id</th>
-            <th width="40">name</th>
-            <th width="60">type</th>
-            <th width="120">gender</th>
-            <th width="40">contact</th>
-            <th width="80" align="center">identityNum</th>
-            <th width="80">insurancePurchases</th>
-            <th width="80">salaryDetails</th>
-            <th width="80">address</th>
-            <th width="80">professionalUnit</th>
-            <th width="80">status</th>
+            <th width="40">姓名</th>
+            <th width="60">角色</th>
+            <th width="120">性别</th>
+            <th width="40">联系方式</th>
+            <th width="80" align="center">身份证号码</th>
+            <th width="80">保险公司</th>
+            <th width="80">保险单号</th>
+            <th width="80">薪资情况</th>
+            <th width="80">现住址</th>
+            <th width="80">施工单位专业</th>
+            <th width="80">人员状态</th>
             <%--<shiro:hasAnyRoles name="worker_er,checker">--%>
-                <th width="80" align="center">caozuo</th>
-                <th width="80" align="center">caozuo2</th>
+                <th width="80" align="center">操作</th>
+                <th width="80" align="center">操作</th>
             <%--</shiro:hasAnyRoles>--%>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${pageInfo.list}" var="person">
             <tr>
-                <td>${person.id}</td>
                 <td>${person.name}</td>
                 <td>${ligu:getValueByKeyAndFlag(person.type,'personType')}</td>
                 <td>${person.gender}</td>
                 <td>${person.contact}</td>
                 <td>${person.identityNum}</td>
-                <td>${person.insurancePurchases}</td>
+                <td>${ligu:getValueFromJson(person.insurancePurchases,'company')}</td>
+                <td>${ligu:getValueFromJson(person.insurancePurchases,'order_num')}</td>
                 <td>${person.salaryDetails}</td>
                 <td>${person.address}</td>
                 <td>${person.professionalUnit}</td>
