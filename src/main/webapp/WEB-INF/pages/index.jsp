@@ -110,11 +110,11 @@
                                 <li><a href="${ctx}/question/index" target="navTab">题库管理</a></li>
                             </ul>
                         </li>
-                        <%--<li><a>项目模块</a>
+                        <li><a>保险公司</a>
                         <ul>
-                            <li><a href="${ctx}/item/index" target="navTab">项目管理</a></li>
+                            <li><a href="${ctx}/iCompany/index" target="navTab">保险公司管理</a></li>
                         </ul>
-                       </li>--%>
+                       </li>
                         <li><a>人员安排</a>
                             <ul><%--//1 超级管理员 2 人员审核管理员(主任) 3 项目管理员(移动公司项目经理) 4 施工管理员(施工方项目经理) 5 施工工人--%>
                                 <li><a href="${ctx}/person/index?roleType=5" target="navTab">施工人员管理</a></li>

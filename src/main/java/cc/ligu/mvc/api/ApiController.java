@@ -7,6 +7,7 @@ package cc.ligu.mvc.api;
 import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.entity.ResultEntity;
 import cc.ligu.common.security.AESencryptor;
+import cc.ligu.mvc.modelView.BaoXianView;
 import cc.ligu.mvc.service.CacheService;
 import cc.ligu.common.utils.PropertiesUtil;
 import cc.ligu.mvc.controller.FileController;
@@ -17,6 +18,7 @@ import cc.ligu.mvc.service.SourceService;
 import cc.ligu.mvc.service.UserService;
 import cc.ligu.mvc.service.impl.ItemServiceImpl;
 import com.github.pagehelper.PageInfo;
+import com.google.gson.Gson;
 import com.mangofactory.swagger.annotations.ApiIgnore;
 import com.wordnik.swagger.annotations.*;
 import org.springframework.util.StringUtils;
@@ -285,6 +287,8 @@ public class ApiController extends BasicController {
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "identity", value = "身份证号", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "proUnit", value = "隶属单位", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "baoNum", value = "保险单号", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "baoCompany", value = "保险公司", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "baoTime", value = "保险期限", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "company", value = "承包公司", required = true),
     })
     @RequestMapping(value = "/saveInfo")
@@ -294,16 +298,27 @@ public class ApiController extends BasicController {
         String proUnit = new String(getParamVal(request, "proUnit").getBytes("ISO-8859-1"),"utf-8");
         String baoNum = new String(getParamVal(request, "baoNum").getBytes("ISO-8859-1"),"utf-8");
         String company = new String(getParamVal(request, "company").getBytes("ISO-8859-1"),"utf-8");
+        String baoCompany = new String(getParamVal(request, "baoCompany").getBytes("ISO-8859-1"),"utf-8");
+        String baoTime = new String(getParamVal(request, "baoTime").getBytes("ISO-8859-1"),"utf-8");
         UserView userView = getAppLoginUser(request);
         try {
             Person person = new Person();
             person.setName(personName);
             person.setIdentityNum(identify);
             person.setProfessionalUnit(proUnit);
-            person.setInsurancePurchases(baoNum);
+
+            BaoXianView baoXianView = new BaoXianView();
+            baoXianView.setCompany(baoCompany);
+            baoXianView.setOrder_num(baoNum);
+            baoXianView.setOrder_time(baoTime);
+
+            person.setInsurancePurchases(new Gson().toJson(baoXianView));
             person.setCompany(company);
 
-            personService.savePerson(person, userView);
+            int res = personService.savePerson(person, userView);
+            if(-2==res){
+                return ResultEntity.newResultEntity("该用户已经录入过，信息已经更新");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

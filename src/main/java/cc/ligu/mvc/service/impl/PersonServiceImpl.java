@@ -66,6 +66,7 @@ public class PersonServiceImpl extends BasicService implements PersonService {
     @Transactional
     @Override
     public int savePerson(Person person, UserView userView) {
+        int flag = 0;
         if (null!=person.getType()&&person.getType() != 5) {
             //管理员设置，默认已审核！审核未审核只针对施工人员
             person.setStatus(1);
@@ -79,6 +80,7 @@ public class PersonServiceImpl extends BasicService implements PersonService {
             List<Person> personLis = personMapper.selectByExample(example);
             if(personLis.size()>0){
                 person.setId(personLis.get(0).getId());
+                flag = -2;
             }
         }
 
@@ -102,7 +104,7 @@ public class PersonServiceImpl extends BasicService implements PersonService {
             person.setUpdateDate(System.currentTimeMillis());
             personMapper.updateByPrimaryKeySelective(person);
         }
-        return 1;
+        return flag;
     }
 
     @Override
