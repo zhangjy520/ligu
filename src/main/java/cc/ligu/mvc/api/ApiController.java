@@ -8,14 +8,10 @@ import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.entity.ResultEntity;
 import cc.ligu.common.security.AESencryptor;
 import cc.ligu.mvc.modelView.BaoXianView;
-import cc.ligu.mvc.service.CacheService;
+import cc.ligu.mvc.service.*;
 import cc.ligu.common.utils.PropertiesUtil;
 import cc.ligu.mvc.controller.FileController;
 import cc.ligu.mvc.persistence.entity.*;
-import cc.ligu.mvc.service.PersonService;
-import cc.ligu.mvc.service.QuestionService;
-import cc.ligu.mvc.service.SourceService;
-import cc.ligu.mvc.service.UserService;
 import cc.ligu.mvc.service.impl.ItemServiceImpl;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
@@ -46,6 +42,8 @@ public class ApiController extends BasicController {
     PersonService personService;
     @Resource
     QuestionService questionService;
+    @Resource
+    ICompanyService iCompanyService;
     @Resource
     CacheService cacheService;
 
@@ -262,7 +260,7 @@ public class ApiController extends BasicController {
     @ApiOperation(value = "提交错题列表", httpMethod = "POST", notes = "根据客户端id，错题id，正确答案，你的答案的json串来提交错题！格式参见文档")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
-            @ApiImplicitParam(paramType = "query", dataType = "int", name = "jsonStr", value = "错题json[{questionId:123,yourAnswer:A,correctAnswer:D}]", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "jsonStr", value = "错题json[{questionId:123,yourAnswer:A,correctAnswer:D}]", required = true),
     })
     @RequestMapping(value = "/uploadWrongExam")
     public ResultEntity uploadWrongExam(HttpServletRequest request) {
@@ -275,7 +273,42 @@ public class ApiController extends BasicController {
             return ResultEntity.newResultEntity("提交成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultEntity.newErrEntity("提交成功");
+            return ResultEntity.newErrEntity("提交失败，请检查参数格式");
+        }
+    }
+
+    @ApiOperation(value = "获取错题列表", httpMethod = "POST", notes = "根据客户端id，获取当前登录用户的错题列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping(value = "/getAllWrongQuestion")
+    public ResultEntity getAllWrongQuestion(HttpServletRequest request) {
+
+        try {
+            UserView userView = getAppLoginUser(request);
+            List<Question> wrongQuestionList = questionService.wrongQuestionList(userView.getRefId());
+            return ResultEntity.newResultEntity(wrongQuestionList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultEntity.newErrEntity("获取异常");
+        }
+    }
+
+    @ApiOperation(value = "根据错题id集合，将错题从错题库移除", httpMethod = "POST", notes = "根据客户端id，questionIds将错题从错题库移除。questionids格式：id1,id2")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "questionIds", value = "错题id格式：id1，id2,多个错题id逗号分开，单个错题提交错题id即可", required = true),
+    })
+    @RequestMapping(value = "/removeWrongQuestion")
+    public ResultEntity removeWrongQuestion(HttpServletRequest request) {
+        String  questionIds = getParamVal(request, "questionIds");
+        UserView user = getAppLoginUser(request);
+
+        try {
+            questionService.removeWrongQuestion(questionIds,user.getRefId());
+            return ResultEntity.newResultEntity("移除成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultEntity.newErrEntity("移除异常");
         }
     }
 
@@ -405,6 +438,23 @@ public class ApiController extends BasicController {
             r.put("total",res.getTotal());
 
             return ResultEntity.newResultEntity(r);
+
+        } catch (Exception e) {
+            return ResultEntity.newErrEntity("获取失败");
+        }
+
+    }
+
+    @ApiOperation(value = "查询所有保险公司列表", httpMethod = "POST", notes = "根据客户端id，查询所有保险公司列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping(value = "/getBaoXianCompany")
+    public ResultEntity getBaoXianCompany(HttpServletRequest request) throws UnsupportedEncodingException {
+
+        try {
+            List<InsuranceCompany> res = iCompanyService.listAllInsuranceCompany();
+            return ResultEntity.newResultEntity(res);
 
         } catch (Exception e) {
             return ResultEntity.newErrEntity("获取失败");

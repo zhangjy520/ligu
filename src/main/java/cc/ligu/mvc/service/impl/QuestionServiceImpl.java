@@ -68,15 +68,15 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
 
 
         List<QuestionVersion> versionList = questionVersionMapper.selectByExample(new QuestionVersionExample());
-        if (versionList.size()>0){
+        if (versionList.size() > 0) {
             QuestionVersion questionVersion = versionList.get(0);
-            questionVersion.setVersion(questionVersion.getVersion()+1);
+            questionVersion.setVersion(questionVersion.getVersion() + 1);
             questionVersion.setUpdateTime(System.currentTimeMillis());
             questionVersion.setUpdateBy(userView.getId());
             questionVersion.setUpdateUserName(userView.getName());
 
             questionVersionMapper.updateByPrimaryKeySelective(questionVersion);
-        }else{
+        } else {
             //如果题库版本号不存在，新增一个默认题库版本号
             QuestionVersion defaultVersion = new QuestionVersion();
             defaultVersion.setVersion(1);
@@ -119,21 +119,21 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     @Override
     public List<Question> getQuestionListByIds(String ids) {
         List<String> idList = DicUtil.splitWithOutNull(ids);
-        if(idList.size()>0){
+        if (idList.size() > 0) {
             List<Integer> idIntegerList = new ArrayList<>();
-            for (String id :idList) {
+            for (String id : idList) {
                 idIntegerList.add(Integer.valueOf(id));
             }
-           QuestionExample example = new QuestionExample();
-           example.createCriteria().andIdIn(idIntegerList);
-           return questionMapper.selectByExample(example);
+            QuestionExample example = new QuestionExample();
+            example.createCriteria().andIdIn(idIntegerList);
+            return questionMapper.selectByExample(example);
         }
         return null;
     }
 
     @Override
     @Transactional
-    public int saveWrongExam(String json,UserView userView) throws Exception{
+    public int saveWrongExam(String json, UserView userView) throws Exception {
         JSONArray array = JSONArray.fromObject(json);
         List<PersonWrongQuestion> list = JSONArray.toList(array, PersonWrongQuestion.class);// 过时方法
 
@@ -145,11 +145,41 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     }
 
     @Override
+    public List<Question> wrongQuestionList(int personId) {
+        PersonWrongQuestionExample example = new PersonWrongQuestionExample();
+        example.createCriteria().andPersonIdEqualTo(personId);
+
+        List<PersonWrongQuestion> wrongList = personWrongQuestionMapper.selectByExample(example);
+        List<Integer> questionIdList = new ArrayList<>();
+        for (PersonWrongQuestion wrongQuestion : wrongList) {
+            questionIdList.add(wrongQuestion.getQuestionId());
+        }
+        if (questionIdList.size() > 0) {
+            QuestionExample quExample = new QuestionExample();
+            quExample.createCriteria().andIdIn(questionIdList);
+            return questionMapper.selectByExample(quExample);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public int removeWrongQuestion(String questionIds,int personId) {
+        List<String> questionIdList = DicUtil.splitWithOutNull(questionIds);
+        for (String questionId : questionIdList) {
+            PersonWrongQuestionExample example = new PersonWrongQuestionExample();
+            example.createCriteria().andPersonIdEqualTo(personId).andQuestionIdEqualTo(Integer.valueOf(questionId));
+            personWrongQuestionMapper.deleteByExample(example);
+        }
+        return 1;
+    }
+
+    @Override
     public QuestionVersion selectVersion() {
         List<QuestionVersion> questionVersion = questionVersionMapper.selectByExample(new QuestionVersionExample());
-        if(questionVersion.size()>0){
+        if (questionVersion.size() > 0) {
             return questionVersion.get(0);
-        }else{
+        } else {
             return new QuestionVersion();
         }
     }
