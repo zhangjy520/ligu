@@ -319,9 +319,10 @@ public class ApiController extends BasicController {
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "personName", value = "人员姓名", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "identity", value = "身份证号", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "proUnit", value = "隶属单位", required = true),
-            @ApiImplicitParam(paramType = "query", dataType = "String", name = "baoNum", value = "保险单号", required = true),
-            @ApiImplicitParam(paramType = "query", dataType = "String", name = "baoCompany", value = "保险公司", required = true),
-            @ApiImplicitParam(paramType = "query", dataType = "String", name = "baoTime", value = "保险期限", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "baoNum", value = "保险单号"),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "baoCompany", value = "保险公司"),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "baoHowMuch", value = "保险额度"),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "baoTime", value = "保险期限"),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "company", value = "承包公司", required = true),
     })
     @RequestMapping(value = "/saveInfo")
@@ -333,6 +334,7 @@ public class ApiController extends BasicController {
         String company = new String(getParamVal(request, "company").getBytes("ISO-8859-1"),"utf-8");
         String baoCompany = new String(getParamVal(request, "baoCompany").getBytes("ISO-8859-1"),"utf-8");
         String baoTime = new String(getParamVal(request, "baoTime").getBytes("ISO-8859-1"),"utf-8");
+        String baoHowMuch = new String(getParamVal(request, "baoHowMuch").getBytes("ISO-8859-1"),"utf-8");
         UserView userView = getAppLoginUser(request);
         try {
             Person person = new Person();
@@ -344,6 +346,7 @@ public class ApiController extends BasicController {
             baoXianView.setCompany(baoCompany);
             baoXianView.setOrder_num(baoNum);
             baoXianView.setOrder_time(baoTime);
+            baoXianView.setHow_much(baoHowMuch);
 
             person.setInsurancePurchases(new Gson().toJson(baoXianView));
             person.setCompany(company);

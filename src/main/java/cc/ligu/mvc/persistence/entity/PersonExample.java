@@ -4,10 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PersonExample {
+    /**
+     * oa_person
+     */
     protected String orderByClause;
 
+    /**
+     * oa_person
+     */
     protected boolean distinct;
 
+    /**
+     * oa_person
+     */
     protected List<Criteria> oredCriteria;
 
     public PersonExample() {
@@ -63,6 +72,9 @@ public class PersonExample {
         distinct = false;
     }
 
+    /**
+     * oa_person 2018-07-02
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -571,6 +583,76 @@ public class PersonExample {
 
         public Criteria andContactNotBetween(String value1, String value2) {
             addCriterion("contact not between", value1, value2, "contact");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeIsNull() {
+            addCriterion("identity_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeIsNotNull() {
+            addCriterion("identity_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeEqualTo(String value) {
+            addCriterion("identity_type =", value, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeNotEqualTo(String value) {
+            addCriterion("identity_type <>", value, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeGreaterThan(String value) {
+            addCriterion("identity_type >", value, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("identity_type >=", value, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeLessThan(String value) {
+            addCriterion("identity_type <", value, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeLessThanOrEqualTo(String value) {
+            addCriterion("identity_type <=", value, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeLike(String value) {
+            addCriterion("identity_type like", value, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeNotLike(String value) {
+            addCriterion("identity_type not like", value, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeIn(List<String> values) {
+            addCriterion("identity_type in", values, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeNotIn(List<String> values) {
+            addCriterion("identity_type not in", values, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeBetween(String value1, String value2) {
+            addCriterion("identity_type between", value1, value2, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeNotBetween(String value1, String value2) {
+            addCriterion("identity_type not between", value1, value2, "identityType");
             return (Criteria) this;
         }
 
@@ -1639,6 +1721,11 @@ public class PersonExample {
             return (Criteria) this;
         }
 
+        public Criteria andIdentityTypeLikeInsensitive(String value) {
+            addCriterion("upper(identity_type) like", value.toUpperCase(), "identityType");
+            return (Criteria) this;
+        }
+
         public Criteria andIdentityNumLikeInsensitive(String value) {
             addCriterion("upper(identity_num) like", value.toUpperCase(), "identityNum");
             return (Criteria) this;
@@ -1680,6 +1767,9 @@ public class PersonExample {
         }
     }
 
+    /**
+     * oa_person
+     */
     public static class Criteria extends GeneratedCriteria {
 
         protected Criteria() {
@@ -1687,6 +1777,9 @@ public class PersonExample {
         }
     }
 
+    /**
+     * oa_person 2018-07-02
+     */
     public static class Criterion {
         private String condition;
 

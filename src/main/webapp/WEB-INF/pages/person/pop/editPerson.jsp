@@ -17,7 +17,11 @@
                 </select>
             </div>
             <div class="unit">
-                <label>身份证号码：</label>
+                <label>证件类型：</label>
+                <input ${disabled} type="text" name="identityType" value="${person.identityType}" size="30"/>
+            </div>
+            <div class="unit">
+                <label>证件号码：</label>
                 <input ${disabled} type="text" name="identityNum" value="${person.identityNum}" size="30"/>
             </div>
             <div class="unit">
@@ -46,6 +50,16 @@
             <div class="unit">
                 <label>保险公司：</label>
                 <input ${disabled} type="text" name="insurancePurchasesCompany" value="${ligu:getValueFromJson(person.insurancePurchases,'company')}"
+                                   size="30"/>
+            </div>
+            <div class="unit">
+                <label>保险时限：</label>
+                <input ${disabled} type="text" name="insurancePurchasesTime" value="${ligu:getValueFromJson(person.insurancePurchases,'order_time')}"
+                                   size="30"/>
+            </div>
+            <div class="unit">
+                <label>保险额度：</label>
+                <input ${disabled} type="text" name="insurancePurchasesHowMuch" value="${ligu:getValueFromJson(person.insurancePurchases,'how_much')}"
                                    size="30"/>
             </div>
             <div class="unit">

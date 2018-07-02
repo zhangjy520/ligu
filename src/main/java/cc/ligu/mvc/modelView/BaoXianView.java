@@ -10,6 +10,7 @@ public class BaoXianView implements Serializable{
 	private String company;//保险信息
 	private String order_num;//单号
 	private String order_time;//保险期限
+	private String how_much;//保额
 
 	public static long getSerialVersionUID() {
 		return serialVersionUID;
@@ -39,12 +40,21 @@ public class BaoXianView implements Serializable{
 		this.order_time = order_time;
 	}
 
+	public String getHow_much() {
+		return how_much;
+	}
+
+	public void setHow_much(String how_much) {
+		this.how_much = how_much;
+	}
+
 	@Override
 	public String toString() {
 		return "BaoXianView{" +
 				"company='" + company + '\'' +
 				", order_num='" + order_num + '\'' +
 				", order_time='" + order_time + '\'' +
+				", how_much='" + how_much + '\'' +
 				'}';
 	}
 }

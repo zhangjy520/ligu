@@ -144,10 +144,15 @@ public class PersonController extends BasicController {
         try {
             String insurancePurchasesNum = getParamVal(request,"insurancePurchasesNum");
             String insurancePurchasesCompany = getParamVal(request,"insurancePurchasesCompany");
+            String insurancePurchasesTime = getParamVal(request,"insurancePurchasesTime");
+            String insurancePurchasesHowMuch = getParamVal(request,"insurancePurchasesHowMuch");
 
             BaoXianView baoXianView = new BaoXianView();
             baoXianView.setCompany(insurancePurchasesCompany);
             baoXianView.setOrder_num(insurancePurchasesNum);
+            baoXianView.setOrder_time(insurancePurchasesTime);
+            baoXianView.setHow_much(insurancePurchasesHowMuch);
+
             person.setInsurancePurchases(new Gson().toJson(baoXianView));
 
             int roleType = (person.getType() == 0 ? 5 : person.getType());
@@ -182,7 +187,8 @@ public class PersonController extends BasicController {
         try {
             String fileName = "施工人员导入模板.xlsx";
             String anno = "注释：橙色字段为必填项\n" +
-                    "1.";
+                    "1.保险信息格式：保险公司,保险单号,保险额度,保险期限;" +
+                    "必须按照该格式填写，若该项没有则填无，例如：泰康人寿,无,1000元,已到期";
 
             new ExportExcel("施工人员导入模板", Person.class, 2, 50, anno, 1).setDataList(new ArrayList()).write(response, fileName).dispose();
 
@@ -208,6 +214,20 @@ public class PersonController extends BasicController {
         UserView loginUser = getLoginUser();
         for (Person person : list) {
             try {
+                List<String> baoXianList = DicUtil.splitWithOutNull(person.getInsurancePurchases());
+                if (null!=baoXianList&&baoXianList.size()>0){
+                    BaoXianView baoXianView =  new BaoXianView();;
+                    try {
+                        baoXianView.setCompany(baoXianList.get(0));
+                        baoXianView.setOrder_num(baoXianList.get(1));
+                        baoXianView.setHow_much(baoXianList.get(2));
+                        baoXianView.setOrder_time(baoXianList.get(3));
+                    } catch (Exception e) {
+                        //有的人员没有这些信息
+                    }
+
+                    person.setInsurancePurchases(new Gson().toJson(baoXianView));
+                }
                 //先循环入库吧，到时候定了再加个批量插入
                 personService.savePerson(person, loginUser);
             } catch (Exception e) {
