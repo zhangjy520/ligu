@@ -87,7 +87,7 @@ public class PersonController extends BasicController {
     public DWZResponse savePersonBlack(Model model, Person person, HttpServletRequest request) {
         try {
             person.setBlackFlag(1);//设置黑名单状态
-            int roleType = (StringUtils.isEmpty(person.getType())||person.getType() == 0 ? 5 : person.getType());
+            int roleType = (StringUtils.isEmpty(person.getType()) || person.getType() == 0 ? 5 : person.getType());
             //施工人员
             person.setRoleName(DicUtil.getValueByKeyAndFlag(roleType, "roles"));
             person.setRolePermission(DicUtil.getValueByKeyAndFlag(roleType, "permissions"));
@@ -100,19 +100,19 @@ public class PersonController extends BasicController {
 
     @ResponseBody
     @RequestMapping(value = "/delete_black/{id}", method = RequestMethod.POST)
-    public DWZResponse deletePersonBlack(Model model, @PathVariable("id") int id,HttpServletRequest request) {
+    public DWZResponse deletePersonBlack(Model model, @PathVariable("id") int id, HttpServletRequest request) {
         try {
 
             Person person = new Person();
             person.setId(id);
-            person.setBlackFlag(Integer.valueOf(getParamVal(request,"black","0")));
+            person.setBlackFlag(Integer.valueOf(getParamVal(request, "black", "0")));
 
-            if(person.getBlackFlag()==0){
+            if (person.getBlackFlag() == 0) {
                 //如果是解除黑名单操作，需要把拉入黑名单原因清空。
                 person.setRemark("");
             }
 
-            personService.savePerson(person,getLoginUser());
+            personService.savePerson(person, getLoginUser());
         } catch (Exception e) {
             return DWZResponseUtil.callbackFail("500", "操作失败", "");
         }
@@ -122,16 +122,16 @@ public class PersonController extends BasicController {
     @RequestMapping("/pop/modify")
     public String popAdd(Model model, HttpServletRequest request) {
         String id = getParamVal(request, "id");
-        String roleType = getParamVal(request,"roleType");
-        String check = getParamVal(request,"check");
+        String roleType = getParamVal(request, "roleType");
+        String check = getParamVal(request, "check");
         if (!StringUtils.isEmpty(id)) {
             Person person = personService.selectPersonByPrimary(Integer.parseInt(id));
             model.addAttribute("person", person);
         }
-        if(!StringUtils.isEmpty(check)){
+        if (!StringUtils.isEmpty(check)) {
             //如果审核选择不为空，只显示修改页面的审核选择，并把其他可修改的文本框置为不可修改！
-            model.addAttribute("check","check");
-            model.addAttribute("disabled","disabled");
+            model.addAttribute("check", "check");
+            model.addAttribute("disabled", "disabled");
         }
         model.addAttribute("itemList", itemService.listAllItem());
         model.addAttribute("roleType", roleType);
@@ -142,10 +142,10 @@ public class PersonController extends BasicController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public DWZResponse savePerson(Model model, Person person, HttpServletRequest request) {
         try {
-            String insurancePurchasesNum = getParamVal(request,"insurancePurchasesNum");
-            String insurancePurchasesCompany = getParamVal(request,"insurancePurchasesCompany");
-            String insurancePurchasesTime = getParamVal(request,"insurancePurchasesTime");
-            String insurancePurchasesHowMuch = getParamVal(request,"insurancePurchasesHowMuch");
+            String insurancePurchasesNum = getParamVal(request, "insurancePurchasesNum");
+            String insurancePurchasesCompany = getParamVal(request, "insurancePurchasesCompany");
+            String insurancePurchasesTime = getParamVal(request, "insurancePurchasesTime");
+            String insurancePurchasesHowMuch = getParamVal(request, "insurancePurchasesHowMuch");
 
             BaoXianView baoXianView = new BaoXianView();
             baoXianView.setCompany(insurancePurchasesCompany);
@@ -212,11 +212,12 @@ public class PersonController extends BasicController {
         ImportExcel importExcel = new ImportExcel(file, 2, 0);
         List<Person> list = importExcel.getDataList(Person.class, 1);
         UserView loginUser = getLoginUser();
-        for (Person person : list) {
+        for (Person person: list) {
             try {
                 List<String> baoXianList = DicUtil.splitWithOutNull(person.getInsurancePurchases());
-                if (null!=baoXianList&&baoXianList.size()>0){
-                    BaoXianView baoXianView =  new BaoXianView();;
+                if (null != baoXianList && baoXianList.size() > 0) {
+                    BaoXianView baoXianView = new BaoXianView();
+                    ;
                     try {
                         baoXianView.setCompany(baoXianList.get(0));
                         baoXianView.setOrder_num(baoXianList.get(1));
@@ -228,6 +229,14 @@ public class PersonController extends BasicController {
 
                     person.setInsurancePurchases(new Gson().toJson(baoXianView));
                 }
+
+                String typeName = person.getTypeName();
+                int roleType = DicUtil.getKeyByValueAndFlag(typeName, "personType");
+                roleType = (roleType == 0 ? 5 : roleType);
+
+                person.setType(roleType);
+                person.setRoleName(DicUtil.getValueByKeyAndFlag(roleType, "roles"));
+                person.setRolePermission(DicUtil.getValueByKeyAndFlag(roleType, "permissions"));
                 //先循环入库吧，到时候定了再加个批量插入
                 personService.savePerson(person, loginUser);
             } catch (Exception e) {

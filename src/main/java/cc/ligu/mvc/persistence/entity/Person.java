@@ -19,6 +19,8 @@ public class Person implements Serializable {
      * 人员角色类别:1超级管理员 2人员审核管理员(主任) 3项目管理员(移动公司项目经理) 4施工管理员(施工方项目经理) 5施工工人
      */
     private Integer type;
+    private String typeName;
+
 
     /**
      * 角色名称
@@ -71,7 +73,7 @@ public class Person implements Serializable {
     private Integer status;
 
     /**
-     * 承包公司
+     * 承保公司
      */
     private String company;
 
@@ -165,10 +167,19 @@ public class Person implements Serializable {
 
     /**
      * 获取人员角色类别:1超级管理员 2人员审核管理员(主任) 3项目管理员(移动公司项目经理) 4施工管理员(施工方项目经理) 5施工工人
-     * @return type 人员角色类别:1超级管理员 2人员审核管理员(主任) 3项目管理员(移动公司项目经理) 4施工管理员(施工方项目经理) 5施工工人
+     * @return type 人员角色类别:1 超级管理员 2 人员审核管理员(主任) 3 项目管理员(移动公司项目经理) 4 施工管理员(施工方项目经理) 5 施工工人
      */
     public Integer getType() {
         return type;
+    }
+
+    @ExcelField(title = "人员身份", align = 2, sort = 9, groups = {1, 2},isnull=1,isDropDown = 1,dropDownList = {"人员审核管理员","项目管理员","施工管理员","施工工人"})
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
     /**
@@ -347,17 +358,16 @@ public class Person implements Serializable {
     }
 
     /**
-     * 获取承包公司
-     * @return company 承包公司
+     * 获取承保公司
+     * @return company 承保公司
      */
-    @ExcelField(title = "承包公司", align = 2, sort = 9, groups = {1, 2})
     public String getCompany() {
         return company;
     }
 
     /**
-     * 设置承包公司
-     * @param company 承包公司
+     * 设置承保公司
+     * @param company 承保公司
      */
     public void setCompany(String company) {
         this.company = company == null ? null : company.trim();

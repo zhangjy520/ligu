@@ -384,7 +384,7 @@ public class ApiController extends BasicController {
     }
 
 
-    @ApiOperation(value = "下拉列表数据获取", httpMethod = "POST", notes = "根据客户端id，下拉字典获取下拉数据集合selectId 0承包公司下拉集合/ 1隶属单位集合")
+    @ApiOperation(value = "下拉列表数据获取", httpMethod = "POST", notes = "根据客户端id，下拉字典获取下拉数据集合selectId 0承保公司下拉集合/ 1隶属单位集合")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "int", name = "selectId", value = "下拉列表selectId", required = true),
