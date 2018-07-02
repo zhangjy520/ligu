@@ -25,5 +25,9 @@ public interface QuestionService {
 
     int saveWrongExam(String json,UserView userView) throws Exception;
 
+    List<Question> wrongQuestionList(int personId);
+
+    int removeWrongQuestion(String questionIds,int personId);
+
     QuestionVersion selectVersion();
 }
