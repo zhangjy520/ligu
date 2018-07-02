@@ -47,14 +47,14 @@
                    mask="true"><span>新增</span></a></li>
             </shiro:lacksRole>
 
-            <shiro:hasRole name="worker_er">
+            <%--<shiro:hasRole name="worker_er">--%>
                 <%--施工管理员才能录入施工人员--%>
                 <li class="line">line</li>
                 <li><a class="icon" href="${ctx}/person/template/download" target="dwzExport" targetType="navTab"
                        title="下载导入模版?"><span>下载导入模版</span></a></li>
                 <li><a class="icon" href="${ctx}/person/pop/upload" target="dialog" title="导入人员?"><span>导入人员</span></a>
                 </li>
-            </shiro:hasRole>
+            <%--</shiro:hasRole>--%>
         </ul>
     </div>
     <table class="table" width="100%" layoutH="138">

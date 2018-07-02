@@ -24,11 +24,11 @@
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
 
         <!-- 抑制生成代码的注释 -->
-        <commentGenerator>
+        <!--<commentGenerator>
             <property name="suppressAllComments" value="true" />
-        </commentGenerator>
-        <!--commentGenerator type="cc.ligu.mvc.common.MyCommentGenerator">
         </commentGenerator>-->
+        <commentGenerator type="cc.ligu.mvc.common.MyCommentGenerator">
+        </commentGenerator>
 
 
 
@@ -130,7 +130,7 @@
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
         </table>-->
-        <table schema="ligu" tableName="doc_question_version" domainObjectName="QuestionVersion"
+        <!--<table schema="ligu" tableName="doc_question_version" domainObjectName="QuestionVersion"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
@@ -138,6 +138,119 @@
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>-->
+       <!-- <table schema="it_control" tableName="om_operations_manage_plan" domainObjectName="OmPlan"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="it_control" tableName="om_content" domainObjectName="OmContent"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="it_control" tableName="om_attach_a_service_person" domainObjectName="OmServicePerson"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="it_control" tableName="om_attach_a_supply_person" domainObjectName="OmSupplyPerson"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="it_control" tableName="om_attach_a_service_user" domainObjectName="OmServiceUser"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="it_control" tableName="om_attach_b_docs" domainObjectName="OmDocs"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="it_control" tableName="om_attach_b_interface_deploy" domainObjectName="OmInterfaceDeploy"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="it_control" tableName="om_attach_b_medium_location" domainObjectName="OmMediumLocation"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <!--<table schema="it_control" tableName="om_content" domainObjectName="OmContent"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <!--<table schema="it_control" tableName="om_attach_b_attr" domainObjectName="OmAttachAttr"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <table schema="it_control" tableName="om_attach_b_docs" domainObjectName="OmDocs"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="it_control" tableName="om_attach_b_interface_deploy" domainObjectName="OmInterfaceDeploy"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="it_control" tableName="om_attach_b_medium_location" domainObjectName="OmMediumLocation"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+        <property name="useActualColumnNames" value="false"/>
         </table>
     </context>
 </generatorConfiguration>
