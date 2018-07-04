@@ -465,6 +465,38 @@ public class ApiController extends BasicController {
 
     }
 
+    @ApiOperation(value = "上传资源文件工艺示例图片到资源库", httpMethod = "POST", notes = "上传工艺示例图片需要的参数是clientId，图片，以及图片描述")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "remark", value = "该图片描述"),
+    })
+    @RequestMapping(value = "/upload/picExample", consumes = "multipart/*", headers = "content-type=multipart/form-data")
+    public ResultEntity uploadPicExample(@ApiParam(value = "上传工艺示例", required = true) MultipartFile multipartFile,
+                                      HttpServletRequest request) {
+        String url="";
+        try {
+            String remark = getParamVal(request,"remark");
+            Map uploads = (Map) new FileController().uploads(multipartFile, request).getData();
+
+            url = request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath");
+            UserView userView = getAppLoginUser(request);
+            Source source = new Source();
+            source.setApplyTime(0);
+            source.setType(6);
+            source.setName(uploads.get("fileName").toString());
+            source.setCreateBy(userView.getId());
+            source.setCreateDate(System.currentTimeMillis());
+            source.setSuffix(uploads.get("suffix").toString());
+            source.setUrl(url);
+            source.setRemark(remark);
+
+            sourceService.saveSource(source,userView);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultEntity.newErrEntity("上传异常");
+        }
+        return ResultEntity.newResultEntity("上传成功",url);
+    }
 
     protected UserView getAppLoginUser(HttpServletRequest request) {
         UserView UserView = (UserView) cacheService.getCacheByKey(request.getParameter("clientId"));
