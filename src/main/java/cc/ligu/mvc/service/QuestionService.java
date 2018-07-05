@@ -25,9 +25,17 @@ public interface QuestionService {
 
     int saveWrongExam(String json,UserView userView) throws Exception;
 
+    int saveWrongQuestion(PersonWrongQuestion personWrongQuestion) throws Exception;
+
     List<Question> wrongQuestionList(int personId);
 
     int removeWrongQuestion(String questionIds,int personId);
 
     QuestionVersion selectVersion();
+
+    int saveExamHistory(PersonExamHistoryWithBLOBs personExamHistory);
+
+    List<PersonExamHistoryWithBLOBs> getHistoryScore(UserView userView);
+
+    List<Map> getMonthScoreList(int year,int month);
 }

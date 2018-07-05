@@ -2,24 +2,20 @@ package cc.ligu.mvc.service.impl;
 
 import cc.ligu.common.service.BasicService;
 import cc.ligu.common.utils.DicUtil;
-import cc.ligu.mvc.persistence.dao.PersonExamHistoryMapper;
-import cc.ligu.mvc.persistence.dao.PersonWrongQuestionMapper;
-import cc.ligu.mvc.persistence.dao.QuestionMapper;
-import cc.ligu.mvc.persistence.dao.QuestionVersionMapper;
+import cc.ligu.mvc.persistence.dao.*;
 import cc.ligu.mvc.persistence.entity.*;
 import cc.ligu.mvc.service.QuestionService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import net.sf.json.JSONArray;
-import net.sf.json.JsonConfig;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by zjy on 2018/5/21.
@@ -29,6 +25,9 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
 
     @Autowired
     QuestionMapper questionMapper;
+
+    @Autowired
+    PersonMapper personMapper;
 
     @Autowired
     PersonExamHistoryMapper personExamHistoryMapper;
@@ -121,7 +120,7 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
         List<String> idList = DicUtil.splitWithOutNull(ids);
         if (idList.size() > 0) {
             List<Integer> idIntegerList = new ArrayList<>();
-            for (String id : idList) {
+            for (String id: idList) {
                 idIntegerList.add(Integer.valueOf(id));
             }
             QuestionExample example = new QuestionExample();
@@ -137,11 +136,16 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
         JSONArray array = JSONArray.fromObject(json);
         List<PersonWrongQuestion> list = JSONArray.toList(array, PersonWrongQuestion.class);// 过时方法
 
-        for (PersonWrongQuestion personWrongQuestion : list) {
+        for (PersonWrongQuestion personWrongQuestion: list) {
             personWrongQuestion.setPersonId(userView.getRefId());
             personWrongQuestionMapper.insertSelective(personWrongQuestion);
         }
         return 0;
+    }
+
+    @Override
+    public int saveWrongQuestion(PersonWrongQuestion personWrongQuestion) throws Exception {
+        return personWrongQuestionMapper.insertSelective(personWrongQuestion);
     }
 
     @Override
@@ -151,7 +155,7 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
 
         List<PersonWrongQuestion> wrongList = personWrongQuestionMapper.selectByExample(example);
         List<Integer> questionIdList = new ArrayList<>();
-        for (PersonWrongQuestion wrongQuestion : wrongList) {
+        for (PersonWrongQuestion wrongQuestion: wrongList) {
             questionIdList.add(wrongQuestion.getQuestionId());
         }
         if (questionIdList.size() > 0) {
@@ -164,9 +168,9 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     }
 
     @Override
-    public int removeWrongQuestion(String questionIds,int personId) {
+    public int removeWrongQuestion(String questionIds, int personId) {
         List<String> questionIdList = DicUtil.splitWithOutNull(questionIds);
-        for (String questionId : questionIdList) {
+        for (String questionId: questionIdList) {
             PersonWrongQuestionExample example = new PersonWrongQuestionExample();
             example.createCriteria().andPersonIdEqualTo(personId).andQuestionIdEqualTo(Integer.valueOf(questionId));
             personWrongQuestionMapper.deleteByExample(example);
@@ -183,4 +187,58 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
             return new QuestionVersion();
         }
     }
+
+    @Override
+    public int saveExamHistory(PersonExamHistoryWithBLOBs personExamHistory) {
+        if (StringUtils.isEmpty(personExamHistory.getId())) {
+            //TODO 保存考试成绩
+            //questionMapper.insertSelective(question);
+            return 1;
+        } else {
+            return personExamHistoryMapper.updateByPrimaryKeySelective(personExamHistory);
+        }
+    }
+
+    @Override
+    public List<PersonExamHistoryWithBLOBs> getHistoryScore(UserView userView) {
+        PersonExamHistoryExample examHistoryExample = new PersonExamHistoryExample();
+        examHistoryExample.setOrderByClause("exam_time");
+        examHistoryExample.createCriteria().andPersonIdEqualTo(userView.getRefId()).andObtainScoreIsNotNull().andExamTypeEqualTo(2);//该人成绩不为空的数据记录
+
+        List<PersonExamHistoryWithBLOBs> res = personExamHistoryMapper.selectByExampleWithBLOBs(examHistoryExample);
+        DateFormat formatter = new SimpleDateFormat("MM");
+        Calendar calendar = Calendar.getInstance();
+        for (PersonExamHistoryWithBLOBs bloBs: res) {
+
+            calendar.setTimeInMillis(Long.valueOf(bloBs.getExamTime()));
+            bloBs.setMonth(formatter.format(calendar.getTime()));
+        }
+        return res;
+    }
+
+    @Override
+    public List<Map> getMonthScoreList(int year, int month) {
+        long begin = DicUtil.getBeginTime(year, month).getTime();
+        long end = DicUtil.getEndTime(year, month).getTime();
+
+        PersonExamHistoryExample examHistoryExample = new PersonExamHistoryExample();
+        examHistoryExample.setOrderByClause("obtain_score DESC");
+        examHistoryExample.createCriteria().andExamTimeBetween(String.valueOf(begin), String.valueOf(end)).andObtainScoreIsNotNull().andExamTypeEqualTo(2);
+        List<PersonExamHistoryWithBLOBs> bloBsList = personExamHistoryMapper.selectByExampleWithBLOBs(examHistoryExample);
+
+        List<Map> mapList = new ArrayList<>();
+        for (PersonExamHistoryWithBLOBs bloBs: bloBsList) {
+            Person person = personMapper.selectByPrimaryKey(bloBs.getPersonId());
+            Map re = new HashMap();
+            re.put("person", person.getName());
+            re.put("score", bloBs.getObtainScore());
+
+            mapList.add(re);
+        }
+
+        return mapList;
+
+    }
+
+
 }

@@ -1,10 +1,9 @@
 package cc.ligu.common.utils;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import net.sf.json.JSONObject;
 import org.springframework.util.StringUtils;
 
+import java.time.*;
 import java.util.*;
 
 /**
@@ -137,7 +136,7 @@ public class DicUtil {
     public static String getValueByKeyAndFlag(int key, String which) {
         String val = "";
         List<KVEntity> kvEntityList = (List<KVEntity>) map.get(which);
-        for (KVEntity entity : kvEntityList) {
+        for (KVEntity entity: kvEntityList) {
             if (entity.getKey().equals(String.valueOf(key))) {
                 val = entity.getValue();
                 break;
@@ -149,7 +148,7 @@ public class DicUtil {
     public static Integer getKeyByValueAndFlag(String value, String which) {
         int val = 0;
         List<KVEntity> kvEntityList = (List<KVEntity>) map.get(which);
-        for (KVEntity entity : kvEntityList) {
+        for (KVEntity entity: kvEntityList) {
             if (entity.getValue().equals(value)) {
                 val = Integer.parseInt(entity.getKey());
                 break;
@@ -161,7 +160,7 @@ public class DicUtil {
     public static List<String> splitWithOutNull(String param) {
         String[] res = param.split(",");
         List<String> out = new ArrayList<>();
-        for (String v : res) {
+        for (String v: res) {
             if (!StringUtils.isEmpty(v))
                 out.add(v);
         }
@@ -182,11 +181,32 @@ public class DicUtil {
         try {
             JSONObject data = JSONObject.fromObject(json);
             return data.get(key).toString();
-        }catch (Exception e){
+        } catch (Exception e) {
             return "";
         }
     }
 
+
+    public static Date getBeginTime(int year, int month) {
+        YearMonth yearMonth = YearMonth.of(year, month);
+        LocalDate localDate = yearMonth.atDay(1);
+        LocalDateTime startOfDay = localDate.atStartOfDay();
+        ZonedDateTime zonedDateTime = startOfDay.atZone(ZoneId.of("Asia/Shanghai"));
+
+        return Date.from(zonedDateTime.toInstant());
+    }
+
+    public static Date getEndTime(int year, int month) {
+        YearMonth yearMonth = YearMonth.of(year, month);
+        LocalDate endOfMonth = yearMonth.atEndOfMonth();
+        LocalDateTime localDateTime = endOfMonth.atTime(23, 59, 59, 999);
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of("Asia/Shanghai"));
+        return Date.from(zonedDateTime.toInstant());
+    }
+
+
     public static void main(String[] args) {
+        System.out.println(getBeginTime(2015,2).getTime());
+        System.out.println(getEndTime(2016,2).getTime());
     }
 }

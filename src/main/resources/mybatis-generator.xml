@@ -76,7 +76,7 @@
         </table>-->
 
         <!-- 人员库[oa_person 人员表] -->
-        <table schema="ligu" tableName="oa_person" domainObjectName="Person"
+       <!-- <table schema="ligu" tableName="oa_person" domainObjectName="Person"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
@@ -84,7 +84,7 @@
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+        </table>-->
 
         <!-- 登录用户[sys_user 人员表] -->
         <!--<table schema="ligu" tableName="v_user" domainObjectName="UserView"
@@ -252,5 +252,21 @@
                selectByExampleQueryId="true">
         <property name="useActualColumnNames" value="false"/>
         </table>-->
+        <!--<table schema="it_control" tableName="om_attach_f_modify_history" domainObjectName="OmModifyHistory"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <table schema="it_control" tableName="om_operations_manage_plan" domainObjectName="OmPlan"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
     </context>
 </generatorConfiguration>
