@@ -7,6 +7,7 @@ package cc.ligu.mvc.api;
 import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.entity.ResultEntity;
 import cc.ligu.common.security.AESencryptor;
+import cc.ligu.common.utils.DicUtil;
 import cc.ligu.mvc.modelView.BaoXianView;
 import cc.ligu.mvc.service.*;
 import cc.ligu.common.utils.PropertiesUtil;
@@ -146,9 +147,9 @@ public class ApiController extends BasicController {
     @RequestMapping("/add/black")
     public ResultEntity addToBlack(HttpServletRequest request) {
         try {
-            String name = new String(getParamVal(request, "name").getBytes("ISO-8859-1"), "utf-8");
-            String num = new String(getParamVal(request, "num").getBytes("ISO-8859-1"), "utf-8");
-            String remark = new String(getParamVal(request, "remark").getBytes("ISO-8859-1"), "utf-8");
+            String name = getParamVal(request, "name");
+            String num = getParamVal(request, "num");
+            String remark = getParamVal(request, "remark");
 
             if (StringUtil.isEmpty(num) || StringUtil.isEmpty(name)) {
                 return ResultEntity.newErrEntity("操作失败，身份证和姓名是必填项！");
@@ -367,22 +368,21 @@ public class ApiController extends BasicController {
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "identity", value = "身份证号", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "proUnit", value = "隶属单位", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "baoNum", value = "保险单号"),
-            @ApiImplicitParam(paramType = "query", dataType = "String", name = "baoCompany", value = "保险公司"),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "baoCompany", value = "保险公司/承保公司"),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "baoHowMuch", value = "保险额度"),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "baoTime", value = "保险期限"),
-            @ApiImplicitParam(paramType = "query", dataType = "String", name = "company", value = "承包公司", required = true),
     })
     @RequestMapping(value = "/saveInfo")
     public ResultEntity saveInfo(HttpServletRequest request) throws UnsupportedEncodingException {
-        String personName = new String(getParamVal(request, "personName").getBytes("ISO-8859-1"), "utf-8");
-        String identify = new String(getParamVal(request, "identity").getBytes("ISO-8859-1"), "utf-8");
-        String proUnit = new String(getParamVal(request, "proUnit").getBytes("ISO-8859-1"), "utf-8");
-        String baoNum = new String(getParamVal(request, "baoNum").getBytes("ISO-8859-1"), "utf-8");
-        String company = new String(getParamVal(request, "company").getBytes("ISO-8859-1"), "utf-8");
-        String baoCompany = new String(getParamVal(request, "baoCompany").getBytes("ISO-8859-1"), "utf-8");
-        String baoTime = new String(getParamVal(request, "baoTime").getBytes("ISO-8859-1"), "utf-8");
-        String baoHowMuch = new String(getParamVal(request, "baoHowMuch").getBytes("ISO-8859-1"), "utf-8");
-
+//        String personName = new String(getParamVal(request, "personName").getBytes("ISO-8859-1"), "utf-8");
+        String personName = getParamVal(request, "personName");
+        String identify = getParamVal(request, "identity");
+        String proUnit = getParamVal(request, "proUnit");
+        String baoNum = getParamVal(request, "baoNum");
+        String baoCompany = getParamVal(request, "baoCompany");
+        String baoTime = getParamVal(request, "baoTime");
+        String baoHowMuch = getParamVal(request, "baoHowMuch");
+        System.out.println("这次接受到的数据是"+personName);
         if (StringUtil.isEmpty(identify) || StringUtil.isEmpty(personName)) {
             return ResultEntity.newErrEntity("操作失败，身份证和姓名是必填项！");
         }
@@ -400,7 +400,11 @@ public class ApiController extends BasicController {
             baoXianView.setHow_much(baoHowMuch);
 
             person.setInsurancePurchases(new Gson().toJson(baoXianView));
-            person.setCompany(company);
+
+            person.setType(5);//施工人员
+            //施工人员
+            person.setRoleName(DicUtil.getValueByKeyAndFlag(5, "roles"));
+            person.setRolePermission(DicUtil.getValueByKeyAndFlag(5, "permissions"));
 
             int res = personService.savePerson(person, userView);
             if (-2 == res) {
@@ -420,7 +424,7 @@ public class ApiController extends BasicController {
     })
     @RequestMapping(value = "/queryPerson")
     public ResultEntity queryPerson(HttpServletRequest request) throws UnsupportedEncodingException {
-        String identify = new String(getParamVal(request, "identify").getBytes("ISO-8859-1"), "utf-8");
+        String identify = getParamVal(request, "identify");
         try {
             UserView userView = new UserView();
             userView.setIdentityNum(identify);
@@ -524,7 +528,7 @@ public class ApiController extends BasicController {
                                          HttpServletRequest request) {
         String url = "";
         try {
-            String remark = new String(getParamVal(request, "remark").getBytes("ISO-8859-1"), "utf-8");
+            String remark = getParamVal(request, "remark");
 
             Map uploads = (Map) new FileController().uploads(multipartFile, request).getData();
 
