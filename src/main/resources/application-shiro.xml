@@ -32,6 +32,8 @@
                 /api-docs = anon
                 /**/springfox-swagger-ui/** = anon
                 /api = anon
+                /api/* = anon
+                /api/** = anon
                 <!-- authc -->
             </value>
         </constructor-arg>
@@ -102,7 +104,7 @@
     <!-- rememberMe管理器 -->
     <bean id="rememberMeManager"
           class="org.apache.shiro.web.mgt.CookieRememberMeManager">
-        <!--  <property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}"/>-->
+          <property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}"/>
         <property name="cookie" ref="rememberMeCookie"/>
     </bean>
 

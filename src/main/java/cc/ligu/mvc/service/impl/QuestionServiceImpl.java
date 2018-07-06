@@ -218,8 +218,8 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
 
     @Override
     public List<Map> getMonthScoreList(int year, int month) {
-        long begin = DicUtil.getBeginTime(year, month).getTime();
-        long end = DicUtil.getEndTime(year, month).getTime();
+        long begin = DicUtil.getBeginTime(year, month);
+        long end = DicUtil.getEndTime(year, month);
 
         PersonExamHistoryExample examHistoryExample = new PersonExamHistoryExample();
         examHistoryExample.setOrderByClause("obtain_score DESC");

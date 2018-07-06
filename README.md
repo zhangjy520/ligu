@@ -1,7 +1,7 @@
 # 1 部署说明：
 ## 1.1 需要部署的软件
     mysql5.7
-    jdk1.8
+    jdk1.7
     tomcat
     nginx
     
@@ -29,3 +29,15 @@
         
    ###  tomcat/bin/catalina.bat   
      set "JAVA_OPTS=%JAVA_OPTS% %LOGGING_MANAGER% -Dfile.encoding="UTF-8""
+     
+     
+  如果开发工具idea出现了乱码，解决办法如下：
+  ##第一步:修改intellij idea配置文件：
+  
+  找到intellij idea安装目录，bin文件夹下面idea64.exe.vmoptions和idea.exe.vmoptions这两个文件，分别在这两个文件中添加：-Dfile.encoding=UTF-8
+  
+  ##第二步：找到intellij idea的file---settings---Editor---FileEncodings的GlobalEncoding和ProjectEncoding和Default encoding for properties都配置成UTF-8
+  
+  ##第三步：在部署Tomcat的VM options项中添加：-Dfile.encoding=UTF-8
+  
+  ##第四步：重启Intellij idea即可解决乱码问题

@@ -3,7 +3,8 @@ package cc.ligu.common.utils;
 import net.sf.json.JSONObject;
 import org.springframework.util.StringUtils;
 
-import java.time.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -187,26 +188,56 @@ public class DicUtil {
     }
 
 
-    public static Date getBeginTime(int year, int month) {
-        YearMonth yearMonth = YearMonth.of(year, month);
-        LocalDate localDate = yearMonth.atDay(1);
-        LocalDateTime startOfDay = localDate.atStartOfDay();
-        ZonedDateTime zonedDateTime = startOfDay.atZone(ZoneId.of("Asia/Shanghai"));
-
-        return Date.from(zonedDateTime.toInstant());
+    public static long getBeginTime(int year, int month) {
+        Date d= null;
+        try {
+            d = new SimpleDateFormat("yyyyMM").parse(year+""+month);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        //设置为1号,当前日期既为本月第一天
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        //将小时至0
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        //将分钟至0
+        c.set(Calendar.MINUTE, 0);
+        //将秒至0
+        c.set(Calendar.SECOND,0);
+        //将毫秒至0
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTimeInMillis();
     }
 
-    public static Date getEndTime(int year, int month) {
-        YearMonth yearMonth = YearMonth.of(year, month);
-        LocalDate endOfMonth = yearMonth.atEndOfMonth();
-        LocalDateTime localDateTime = endOfMonth.atTime(23, 59, 59, 999);
-        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of("Asia/Shanghai"));
-        return Date.from(zonedDateTime.toInstant());
+    public static long getEndTime(int year, int month){
+        Date d= null;
+        try {
+            d = new SimpleDateFormat("yyyyMM").parse(year+""+month);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+
+        //设置为当月最后一天
+        c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+        //将小时至23
+        c.set(Calendar.HOUR_OF_DAY, 23);
+        //将分钟至59
+        c.set(Calendar.MINUTE, 59);
+        //将秒至59
+        c.set(Calendar.SECOND,59);
+        //将毫秒至999
+        c.set(Calendar.MILLISECOND, 999);
+        // 获取本月最后一天的时间戳
+        return c.getTimeInMillis();
+
     }
 
 
     public static void main(String[] args) {
-        System.out.println(getBeginTime(2015,2).getTime());
-        System.out.println(getEndTime(2016,2).getTime());
+        System.out.println(getBeginTime(2015,1));
+        System.out.println(getEndTime(2015,1));
     }
 }
