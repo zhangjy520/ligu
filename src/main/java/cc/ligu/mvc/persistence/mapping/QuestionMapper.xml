@@ -470,8 +470,10 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="selectRandomQuestionByCount" resultType="java.util.Map">
-    SELECT * FROM doc_question ORDER BY RAND()
+  <select id="selectRandomQuestionByCount" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    FROM doc_question ORDER BY RAND()
     <if test="count != null" >
       LIMIT #{count,jdbcType=INTEGER}
     </if>

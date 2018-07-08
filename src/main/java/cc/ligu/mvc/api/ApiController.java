@@ -77,6 +77,7 @@ public class ApiController extends BasicController {
         try {
             request.getSession().removeAttribute(clientId);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResultEntity.newErrEntity("服务器内部异常");
         }
         return ResultEntity.newResultEntity("操作成功");
@@ -132,6 +133,7 @@ public class ApiController extends BasicController {
             PageInfo<Source> pageInfo = sourceService.listAllSource(pageSize, pageNum, source);
             return ResultEntity.newResultEntity(pageInfo);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResultEntity.newErrEntity("操作失败");
         }
     }
@@ -164,6 +166,7 @@ public class ApiController extends BasicController {
             int size = personService.savePerson(person, getAppLoginUser(request));
             return ResultEntity.newResultEntity("添加成功");
         } catch (Exception e) {
+            e.printStackTrace();
             return ResultEntity.newErrEntity("操作失败");
         }
 
@@ -181,6 +184,7 @@ public class ApiController extends BasicController {
             List<Person> pageInfo = personService.listAllPerson(person);
             return ResultEntity.newResultEntity(pageInfo);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResultEntity.newErrEntity("发生异常");
         }
     }
@@ -219,11 +223,11 @@ public class ApiController extends BasicController {
             int count = getParamInt(request, "count");
             int type = getParamInt(request, "type");
 
-            List<Map> questionList = questionService.selectRandomQuestionByCount(count);
+            List<Question> questionList = questionService.selectRandomQuestionByCount(count);
             UserView userView = getAppLoginUser(request);
             StringBuilder questionIds = new StringBuilder();
-            for (Map question: questionList) {
-                questionIds.append(question.get("id") + ",");
+            for (Question question: questionList) {
+                questionIds.append(question.getId() + ",");
             }
             PersonExamHistoryWithBLOBs record = new PersonExamHistoryWithBLOBs();
             record.setPersonId(userView.getRefId());
@@ -238,7 +242,8 @@ public class ApiController extends BasicController {
             map.put("questionList", questionList);
             return ResultEntity.newResultEntity(map);
         } catch (Exception e) {
-            return ResultEntity.newErrEntity("操作失败");
+            e.printStackTrace();
+            return ResultEntity.newErrEntity("获取失败");
         }
     }
 
@@ -260,7 +265,8 @@ public class ApiController extends BasicController {
             map.put("questionList", questionList);
             return ResultEntity.newResultEntity(map);
         } catch (Exception e) {
-            return ResultEntity.newErrEntity("操作失败");
+            e.printStackTrace();
+            return ResultEntity.newErrEntity("获取失败");
         }
     }
 
@@ -433,6 +439,7 @@ public class ApiController extends BasicController {
 
             return ResultEntity.newResultEntity(res);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResultEntity.newErrEntity("操作失败");
         }
     }
@@ -451,6 +458,7 @@ public class ApiController extends BasicController {
             List<String> res = personService.getAllSelect(selectId);
             return ResultEntity.newResultEntity(res);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResultEntity.newErrEntity("获取失败");
         }
 
@@ -467,6 +475,7 @@ public class ApiController extends BasicController {
             QuestionVersion version = questionService.selectVersion();
             return ResultEntity.newResultEntity(version.getVersion());
         } catch (Exception e) {
+            e.printStackTrace();
             return ResultEntity.newErrEntity("获取题库版本号失败");
         }
     }
@@ -496,6 +505,7 @@ public class ApiController extends BasicController {
             return ResultEntity.newResultEntity(r);
 
         } catch (Exception e) {
+            e.printStackTrace();
             return ResultEntity.newErrEntity("获取失败");
         }
 
@@ -513,6 +523,7 @@ public class ApiController extends BasicController {
             return ResultEntity.newResultEntity(res);
 
         } catch (Exception e) {
+            e.printStackTrace();
             return ResultEntity.newErrEntity("获取失败");
         }
 

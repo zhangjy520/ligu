@@ -28,5 +28,5 @@ public interface QuestionMapper {
 
     int updateByPrimaryKey(Question record);
 
-    List<Map> selectRandomQuestionByCount(@Param("count") int count);
+    List<Question> selectRandomQuestionByCount(@Param("count") int count);
 }

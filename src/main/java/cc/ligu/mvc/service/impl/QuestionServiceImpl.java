@@ -100,7 +100,7 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     }
 
     @Override
-    public List<Map> selectRandomQuestionByCount(int count) {
+    public List<Question> selectRandomQuestionByCount(int count) {
         return questionMapper.selectRandomQuestionByCount(count);
     }
 

@@ -15,7 +15,7 @@ public interface QuestionService {
 
     int deleteQuestion(Question question);
 
-    List<Map> selectRandomQuestionByCount(int count);
+    List<Question> selectRandomQuestionByCount(int count);
 
     int saveExam(PersonExamHistoryWithBLOBs personExamHistoryWithBLOBs);
 
