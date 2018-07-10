@@ -10,7 +10,7 @@
         <if test="type == 1" >
             SELECT DISTINCT
             professional_unit
-            FROM oa_person
+            FROM oa_person WHERE professional_unit IS NOT NULL
         </if>
     </select>
 
