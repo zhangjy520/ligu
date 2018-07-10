@@ -39,20 +39,24 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
+            <shiro:hasAnyRoles name="root">
             <li><a class="add" href="${ctx}/doc/pop/modify" target="dialog" mask="true"><span>新增</span></a></li>
+            </shiro:hasAnyRoles>
         </ul>
     </div>
     <table class="table" width="100%" layoutH="138">
         <thead>
         <tr>
-            <th width="20">id</th>
-            <th width="60">name</th>
-            <th width="40">type</th>
-            <th width="40">url</th>
-            <th width="80">size</th>
-            <th width="80">apply_time</th>
-            <th width="80">remark</th>
-            <th width="80" align="center">caozuo</th>
+            <th width="20">文档编号</th>
+            <th width="60">文档名称</th>
+            <th width="40">文档类型</th>
+            <th width="40">文档下载地址</th>
+            <th width="80">文档大小</th>
+            <th width="80">文档访问次数</th>
+            <th width="80">文档说明</th>
+            <shiro:hasAnyRoles name="root">
+            <th width="80" align="center">操作</th>
+            </shiro:hasAnyRoles>
         </tr>
         </thead>
         <tbody>
@@ -69,12 +73,14 @@
                 <td>${doc.size}</td>
                 <td>${doc.applyTime}</td>
                 <td>${doc.remark}</td>
+                <shiro:hasAnyRoles name="root">
                 <td>
                     <div>
                         <a target="ajaxTodo" title="确认删除？" href="${ctx}/doc/delete/${doc.id}" class="">删除</a>
                         <a target="dialog"  href="${ctx}/doc/pop/modify?id=${doc.id}" class="">修改</a>
                     </div>
                 </td>
+                </shiro:hasAnyRoles>
             </tr>
         </c:forEach>
         </tbody>

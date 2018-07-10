@@ -1,10 +1,10 @@
-<%@ include file="common/common.jsp"%>
+<%@ include file="common/common.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=7"/>
     <title>力谷后台界面框架</title>
 
     <link href="${ctxStatic}/dwz/themes/default/style.css" rel="stylesheet" type="text/css" media="screen"/>
@@ -15,8 +15,13 @@
     <link href="${ctxStatic}/dwz/themes/css/ieHack.css" rel="stylesheet" type="text/css" media="screen"/>
     <![endif]-->
     <style type="text/css">
-        #header{height:85px}
-        #leftside, #container, #splitBar, #splitBarProxy{top:90px}
+        #header {
+            height: 85px
+        }
+
+        #leftside, #container, #splitBar, #splitBarProxy {
+            top: 90px
+        }
     </style>
 
     <!--[if lte IE 9]>
@@ -34,15 +39,20 @@
     <script src="${ctxStatic}/dwz/js/dwz.regional.zh.js" type="text/javascript"></script>
 
     <script type="text/javascript">
-        $(function(){
+        $(function () {
             DWZ.init("${ctxStatic}/dwz/dwz.frag.xml", {
-                loginUrl:"${ctx}/login", loginTitle:"登录",	// 弹出登录对话框login_dialog
-                statusCode:{ok:200, error:300, timeout:301}, //【可选】
-                pageInfo:{pageNum:"pageNum", numPerPage:"numPerPage", orderField:"orderField", orderDirection:"orderDirection"}, //【可选】
-                debug:false,	// 调试模式 【true|false】
-                callback:function(){
+                loginUrl: "${ctx}/login", loginTitle: "登录",	// 弹出登录对话框login_dialog
+                statusCode: {ok: 200, error: 300, timeout: 301}, //【可选】
+                pageInfo: {
+                    pageNum: "pageNum",
+                    numPerPage: "numPerPage",
+                    orderField: "orderField",
+                    orderDirection: "orderDirection"
+                }, //【可选】
+                debug: false,	// 调试模式 【true|false】
+                callback: function () {
                     initEnv();
-                    $("#themeList").theme({themeBase:"themes"});
+                    $("#themeList").theme({themeBase: "themes"});
                     //默认收缩
                     // setTimeout(function() {$("#sidebar .toggleCollapse div").trigger("click");}, 10);
                 }
@@ -68,11 +78,11 @@
                 <li><a href="changepwd.html" target="dialog" width="600">设置</a></li>
                 <li><a href="${ctx}/doLogout">退出</a></li>
             </ul>
-           <%-- <ul class="themeList" id="themeList">
-                <li theme="default"><div class="selected">蓝色</div></li>
-                <li theme="green"><div>绿色</div></li>
-                <li theme="red"><div>红色</div></li>
-            </ul>--%>
+            <%-- <ul class="themeList" id="themeList">
+                 <li theme="default"><div class="selected">蓝色</div></li>
+                 <li theme="green"><div>绿色</div></li>
+                 <li theme="red"><div>红色</div></li>
+             </ul>--%>
         </div>
 
         <div id="navMenu">
@@ -89,61 +99,65 @@
     <div id="leftside">
         <div id="sidebar_s">
             <div class="collapse">
-                <div class="toggleCollapse"><div></div></div>
+                <div class="toggleCollapse">
+                    <div></div>
+                </div>
             </div>
         </div>
         <div id="sidebar">
-            <div class="toggleCollapse"><h2>主菜单</h2><div>收缩</div></div>
+            <div class="toggleCollapse"><h2>主菜单</h2>
+                <div>收缩</div>
+            </div>
             <div class="accordion" fillSpace="sidebar">
                 <div class="accordionHeader">
                     <h2><span>Folder</span>管理模块</h2>
                 </div>
                 <div class="accordionContent">
                     <ul class="tree">
-                        <li><a>培训模块</a>
+                        <li><a>文档资料</a>
                             <ul>
                                 <li><a href="${ctx}/doc/index" target="navTab">培训文档</a></li>
                             </ul>
                         </li>
-                        <li><a>认证模块</a>
+                        <li><a>题库认证</a>
                             <ul>
                                 <li><a href="${ctx}/question/index" target="navTab">题库管理</a></li>
                             </ul>
                         </li>
                         <li><a>保险公司</a>
-                        <ul>
-                            <li><a href="${ctx}/iCompany/index" target="navTab">保险公司管理</a></li>
-                        </ul>
-                       </li>
-                        <li><a>人员安排</a>
-                            <ul><%--//1 超级管理员 2 人员审核管理员(主任) 3 项目管理员(移动公司项目经理) 4 施工管理员(施工方项目经理) 5 施工工人--%>
-                                <li><a href="${ctx}/person/index?roleType=5" target="navTab">施工人员管理</a></li>
-                                <li><a href="${ctx}/person/index?roleType=2" target="navTab">人工审核管理员管理</a></li>
-                                <li><a href="${ctx}/person/index?roleType=3" target="navTab">项目经理管理</a></li>
-                                <li><a href="${ctx}/person/index?roleType=4" target="navTab">施工管理员管理</a></li>
-                                <li><a href="${ctx}/person/index?roleType=5" target="navTab">施工人员审核</a></li>
-                                <li><a href="${ctx}/person/index_black" target="navTab">黑名单管理</a></li>
+                            <ul>
+                                <li><a href="${ctx}/iCompany/index" target="navTab">保险公司管理</a></li>
                             </ul>
                         </li>
+                        <shiro:hasAnyRoles name="root,checker,item_er,worker_er">
+
+                            <li><a>人员安排</a>
+                                <ul><%--//1 超级管理员 2 人员审核管理员(主任) 3 项目管理员(移动公司项目经理) 4 施工管理员(施工方项目经理) 5 施工工人--%>
+                                    <li><a href="${ctx}/person/index?roleType=5" target="navTab">施工人员管理</a></li>
+
+                                    <shiro:hasAnyRoles name="root,item_er,checker">
+                                        <li><a href="${ctx}/person/index?roleType=4" target="navTab">施工管理员管理</a></li>
+                                    </shiro:hasAnyRoles>
+
+                                    <shiro:hasAnyRoles name="root">
+                                        <li><a href="${ctx}/person/index?roleType=3" target="navTab">项目经理管理</a></li>
+                                    </shiro:hasAnyRoles>
+
+                                    <shiro:hasAnyRoles name="root">
+                                        <li><a href="${ctx}/person/index?roleType=2" target="navTab">人工审核管理员管理</a></li>
+                                    </shiro:hasAnyRoles>
+
+                                    <shiro:hasAnyRoles name="root,checker,item_er">
+                                        <li><a href="${ctx}/person/index_black" target="navTab">黑名单管理</a></li>
+                                    </shiro:hasAnyRoles>
+
+                                </ul>
+                            </li>
+                        </shiro:hasAnyRoles>
 
 
                     </ul>
                 </div>
-                <%--<div class="accordionHeader">
-                    <h2><span>Folder</span>典型页面</h2>
-                </div>
-                <div class="accordionContent">
-                    <ul class="tree treeFolder">
-
-                    </ul>
-                </div>
-                <div class="accordionHeader">
-                    <h2><span>Folder</span>流程演示</h2>
-                </div>
-                <div class="accordionContent">
-                    <ul class="tree">
-                    </ul>
-                </div>--%>
             </div>
         </div>
     </div>

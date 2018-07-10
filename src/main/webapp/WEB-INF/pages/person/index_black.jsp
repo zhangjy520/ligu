@@ -41,8 +41,10 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
+            <shiro:hasAnyRoles name="worker_er,root">
             <li><a class="add" href="${ctx}/person/pop/modify_black?roleType=${roleType}" target="dialog"
                    mask="true"><span>新增黑名单</span></a></li>
+            </shiro:hasAnyRoles>
         </ul>
     </div>
     <table class="table" width="100%" layoutH="138">
@@ -61,7 +63,9 @@
             <th width="80">人员状态</th>
             <th width="80">黑名单原因</th>
             <th width="80">黑名单状态</th>
-            <th width="80" align="center">操作</th>
+            <shiro:hasAnyRoles name="root,checker,item_er">
+                <th width="80" align="center">操作</th>
+            </shiro:hasAnyRoles>
         </tr>
         </thead>
         <tbody>
@@ -80,19 +84,24 @@
                 <td>${ligu:getValueByKeyAndFlag(person.status,'personStatus')}</td>
                 <td>${person.remark}</td>
                 <td>${ligu:getValueByKeyAndFlag(person.blackFlag,'personBlack')}</td>
+                <shiro:hasAnyRoles name="root,checker,item_er">
                     <td>
                         <div>
                             <c:if test="${person.blackFlag eq '0'}">
-                                <a target="ajaxTodo" title="加入黑名单？" href="${ctx}/person/delete_black/${person.id}?black=2" class="">加入黑名单</a>
+                                <a target="ajaxTodo" title="加入黑名单？"
+                                   href="${ctx}/person/delete_black/${person.id}?black=2" class="">加入黑名单</a>
                             </c:if>
                             <c:if test="${person.blackFlag eq '2'}">
-                                <a target="ajaxTodo" title="解除黑名单？" href="${ctx}/person/delete_black/${person.id}?black=0" class="">解除黑名单</a>
+                                <a target="ajaxTodo" title="解除黑名单？"
+                                   href="${ctx}/person/delete_black/${person.id}?black=0" class="">解除黑名单</a>
                             </c:if>
                             <c:if test="${person.blackFlag eq '1'}">
-                                <a target="ajaxTodo" title="审核确认？" href="${ctx}/person/delete_black/${person.id}?black=2" class="">审核确认</a>
+                                <a target="ajaxTodo" title="审核确认？"
+                                   href="${ctx}/person/delete_black/${person.id}?black=2" class="">审核确认</a>
                             </c:if>
                         </div>
                     </td>
+                </shiro:hasAnyRoles>
             </tr>
         </c:forEach>
         </tbody>
