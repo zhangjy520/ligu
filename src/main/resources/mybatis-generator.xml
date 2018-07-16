@@ -260,7 +260,27 @@
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
         </table>-->
-        <table schema="it_control" tableName="om_operations_manage_plan" domainObjectName="OmPlan"
+
+        <!--人员巡检内容与要求-->
+       <!-- <table schema="it_control" tableName="om_attach_d_person_inspection_content" domainObjectName="OmPersonInspectionContent"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="exception_standard" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
+        <!--<table schema="itsm-gzsh-0605" tableName="om_attach_a_supply_person" domainObjectName="OmSupplyPerson"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <table schema="itsm-gzsh-0605" tableName="om_attach_d_rel_inspection_plan" domainObjectName="OmRelInspectPlan"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"

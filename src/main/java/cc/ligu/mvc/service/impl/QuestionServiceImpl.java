@@ -2,6 +2,7 @@ package cc.ligu.mvc.service.impl;
 
 import cc.ligu.common.service.BasicService;
 import cc.ligu.common.utils.DicUtil;
+import cc.ligu.mvc.modelView.ScoreView;
 import cc.ligu.mvc.persistence.dao.*;
 import cc.ligu.mvc.persistence.entity.*;
 import cc.ligu.mvc.service.QuestionService;
@@ -37,6 +38,9 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
 
     @Autowired
     QuestionVersionMapper questionVersionMapper;
+
+    @Autowired
+    ApiMapper apiMapper;
 
     @Override
     public PageInfo<Question> listAllQuestion(int pageSize, int pageNum, Question question) {
@@ -120,7 +124,7 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
         List<String> idList = DicUtil.splitWithOutNull(ids);
         if (idList.size() > 0) {
             List<Integer> idIntegerList = new ArrayList<>();
-            for (String id: idList) {
+            for (String id : idList) {
                 idIntegerList.add(Integer.valueOf(id));
             }
             QuestionExample example = new QuestionExample();
@@ -136,7 +140,7 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
         JSONArray array = JSONArray.fromObject(json);
         List<PersonWrongQuestion> list = JSONArray.toList(array, PersonWrongQuestion.class);// 过时方法
 
-        for (PersonWrongQuestion personWrongQuestion: list) {
+        for (PersonWrongQuestion personWrongQuestion : list) {
             personWrongQuestion.setPersonId(userView.getRefId());
             personWrongQuestionMapper.insertSelective(personWrongQuestion);
         }
@@ -155,7 +159,7 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
 
         List<PersonWrongQuestion> wrongList = personWrongQuestionMapper.selectByExample(example);
         List<Integer> questionIdList = new ArrayList<>();
-        for (PersonWrongQuestion wrongQuestion: wrongList) {
+        for (PersonWrongQuestion wrongQuestion : wrongList) {
             questionIdList.add(wrongQuestion.getQuestionId());
         }
         if (questionIdList.size() > 0) {
@@ -170,7 +174,7 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     @Override
     public int removeWrongQuestion(String questionIds, int personId) {
         List<String> questionIdList = DicUtil.splitWithOutNull(questionIds);
-        for (String questionId: questionIdList) {
+        for (String questionId : questionIdList) {
             PersonWrongQuestionExample example = new PersonWrongQuestionExample();
             example.createCriteria().andPersonIdEqualTo(personId).andQuestionIdEqualTo(Integer.valueOf(questionId));
             personWrongQuestionMapper.deleteByExample(example);
@@ -208,7 +212,7 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
         List<PersonExamHistoryWithBLOBs> res = personExamHistoryMapper.selectByExampleWithBLOBs(examHistoryExample);
         DateFormat formatter = new SimpleDateFormat("MM");
         Calendar calendar = Calendar.getInstance();
-        for (PersonExamHistoryWithBLOBs bloBs: res) {
+        for (PersonExamHistoryWithBLOBs bloBs : res) {
 
             calendar.setTimeInMillis(Long.valueOf(bloBs.getExamTime()));
             bloBs.setMonth(formatter.format(calendar.getTime()));
@@ -217,27 +221,59 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     }
 
     @Override
-    public List<Map> getMonthScoreList(int year, int month) {
+    public List<ScoreView> getMonthScoreList(int year, int month) {
         long begin = DicUtil.getBeginTime(year, month);
         long end = DicUtil.getEndTime(year, month);
 
         PersonExamHistoryExample examHistoryExample = new PersonExamHistoryExample();
-        examHistoryExample.setOrderByClause("obtain_score DESC");
         examHistoryExample.createCriteria().andExamTimeBetween(String.valueOf(begin), String.valueOf(end)).andObtainScoreIsNotNull().andExamTypeEqualTo(2);
         List<PersonExamHistoryWithBLOBs> bloBsList = personExamHistoryMapper.selectByExampleWithBLOBs(examHistoryExample);
 
-        List<Map> mapList = new ArrayList<>();
-        for (PersonExamHistoryWithBLOBs bloBs: bloBsList) {
+        List<ScoreView> mapList = new ArrayList<>();
+        for (PersonExamHistoryWithBLOBs bloBs : bloBsList) {
             Person person = personMapper.selectByPrimaryKey(bloBs.getPersonId());
-            Map re = new HashMap();
-            re.put("person", person.getName());
-            re.put("score", bloBs.getObtainScore());
+            ScoreView re = new ScoreView();
+            if (null != person) {
+                re.setPersonName(person.getName());
+                re.setPersonId(bloBs.getPersonId());
+                re.setPersonIdentity(person.getIdentityNum());
+            }
+            re.setMonth(month);
+            re.setScore(bloBs.getObtainScore());
 
             mapList.add(re);
         }
+        //将同一人同月多次成绩排除低的
+        List<ScoreView> resList = new ArrayList<>();
+        for (ScoreView scoreView : mapList) {
+            if (resList.contains(scoreView)) {//这里重写scoreView equals 方法，月份+身份证相同视为
+                if (scoreView.getScore().compareTo(resList.get(resList.indexOf(scoreView)).getScore()) > 0) {
+                    //如果当前的成绩大于已录入集合的成绩，刷新成绩
+                    resList.get(resList.indexOf(scoreView)).setScore(scoreView.getScore());
+                }else {
+                    continue;
+                }
+            }else {
+                resList.add(scoreView);
+            }
+        }
+        Collections.sort(resList);
+        for (int i = 0; i < resList.size(); i++) {
+            resList.get(i).setOrder(i+1);
+        }
+        return resList;
 
-        return mapList;
+    }
 
+    @Override
+    public ScoreView personMonthScoreDetail(int personId, int year, int month) {
+        List<ScoreView> res = getMonthScoreList(year,month);
+        for (ScoreView scoreView : res) {
+            if (scoreView.getPersonId() == personId){
+                return scoreView;
+            }
+        }
+        return null;
     }
 
 

@@ -237,7 +237,15 @@ public class DicUtil {
 
 
     public static void main(String[] args) {
-        System.out.println(getBeginTime(2015,1));
-        System.out.println(getEndTime(2015,1));
+        System.out.println(getBeginTime(2018,7));
+        System.out.println(getEndTime(2018,7));
+
+        String s = "1data,2data,5data,6data".replaceAll("[5-9]data","");
+        System.out.println("sss");
+        System.out.println("32".compareTo("22"));
+        System.out.println("32".compareTo("32"));
+        System.out.println("32".compareTo("33"));
+        System.out.println("77".compareTo("100"));
+        System.out.println("72".compareTo("7"));
     }
 }

@@ -9,6 +9,7 @@ import cc.ligu.common.entity.ResultEntity;
 import cc.ligu.common.security.AESencryptor;
 import cc.ligu.common.utils.DicUtil;
 import cc.ligu.mvc.modelView.BaoXianView;
+import cc.ligu.mvc.modelView.ScoreView;
 import cc.ligu.mvc.service.*;
 import cc.ligu.common.utils.PropertiesUtil;
 import cc.ligu.mvc.controller.FileController;
@@ -357,6 +358,9 @@ public class ApiController extends BasicController {
         String questionIds = getParamVal(request, "questionIds");
         UserView user = getAppLoginUser(request);
 
+        if (StringUtil.isEmpty(questionIds)) {
+            return ResultEntity.newErrEntity("参数格式错误");
+        }
         try {
             questionService.removeWrongQuestion(questionIds, user.getRefId());
             return ResultEntity.newResultEntity("移除成功");
@@ -388,7 +392,7 @@ public class ApiController extends BasicController {
         String baoCompany = getParamVal(request, "baoCompany");
         String baoTime = getParamVal(request, "baoTime");
         String baoHowMuch = getParamVal(request, "baoHowMuch");
-        System.out.println("这次接受到的数据是"+personName);
+        System.out.println("这次接受到的数据是" + personName);
         if (StringUtil.isEmpty(identify) || StringUtil.isEmpty(personName)) {
             return ResultEntity.newErrEntity("操作失败，身份证和姓名是必填项！");
         }
@@ -579,24 +583,49 @@ public class ApiController extends BasicController {
         }
     }
 
-    @ApiOperation(value = "获取某月考试排名列表", httpMethod = "POST", notes = "根据clientId 获取某月份的所有人的开始成绩排名")
+    @ApiOperation(value = "获取某月考试排名列表", httpMethod = "POST", notes = "根据clientId 获取某月份的所有人的成绩情况,如果多次考试，取最高分作为当月最终成绩")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
-            @ApiImplicitParam(paramType = "query", dataType = "int", name = "year", value = "年份", required = true),
-            @ApiImplicitParam(paramType = "query", dataType = "int", name = "month", value = "月份", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "year", value = "年份例如：2018", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "month", value = "月份例如：7", required = true),
     })
     @RequestMapping(value = "/getMonthScoreList")
     public ResultEntity getMonthScoreList(HttpServletRequest request) throws UnsupportedEncodingException {
         try {
             int month = getParamInt(request, "month");
             int year = getParamInt(request, "year");
-            List<Map> res = questionService.getMonthScoreList(year, month);
+            List<ScoreView> res = questionService.getMonthScoreList(year, month);
             return ResultEntity.newResultEntity(res);
         } catch (Exception e) {
             e.printStackTrace();
             return ResultEntity.newErrEntity("获取异常");
         }
     }
+
+    @ApiOperation(value = "获取当前登录用户月考试情况，包括所占名次", httpMethod = "POST", notes = "根据clientId 获取指定月份的clientId对应的人的成绩情况")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "year", value = "年份例如：2018", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "month", value = "月份例如：7", required = true),
+    })
+    @RequestMapping(value = "/personMonthScoreDetail")
+    public ResultEntity personMonthScoreDetail(HttpServletRequest request) throws UnsupportedEncodingException {
+        try {
+            int month = getParamInt(request, "month");
+            int year = getParamInt(request, "year");
+            UserView userView = getAppLoginUser(request);
+            ScoreView res = questionService.personMonthScoreDetail(userView.getRefId(),year, month);
+            if (res==null){
+                return ResultEntity.newErrEntity("您本月暂时未参加考试，无成绩详情");
+            }
+            return ResultEntity.newResultEntity(res);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultEntity.newErrEntity("获取异常");
+        }
+    }
+
+
 
     protected UserView getAppLoginUser(HttpServletRequest request) {
         UserView UserView = (UserView) cacheService.getCacheByKey(request.getParameter("clientId"));

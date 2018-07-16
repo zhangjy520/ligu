@@ -1,10 +1,10 @@
 package cc.ligu.mvc.service;
 
+import cc.ligu.mvc.modelView.ScoreView;
 import cc.ligu.mvc.persistence.entity.*;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
-import java.util.Map;
 
 public interface QuestionService {
     PageInfo<Question> listAllQuestion(int pageSize, int pageNum, Question question);
@@ -37,5 +37,7 @@ public interface QuestionService {
 
     List<PersonExamHistoryWithBLOBs> getHistoryScore(UserView userView);
 
-    List<Map> getMonthScoreList(int year,int month);
+    List<ScoreView> getMonthScoreList(int year, int month);
+
+     ScoreView personMonthScoreDetail(int personId, int year, int month);
 }
