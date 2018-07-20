@@ -13,6 +13,10 @@
                 <label>身份证号码：</label>
                 <input ${disabled} type="text" name="identityNum" value="${person.identityNum}" size="30"/>
             </div>
+            <div class="unit">
+                <label>拉黑原因：</label>
+                <textarea ${disabled} name="remark" class="textInput" cols="80" rows="2">${person.remark}</textarea>
+            </div>
 
         </div>
         <div class="formBar">

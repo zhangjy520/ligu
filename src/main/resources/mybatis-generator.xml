@@ -280,7 +280,8 @@
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
         </table>-->
-        <table schema="itsm-gzsh-0605" tableName="om_attach_d_rel_inspection_plan" domainObjectName="OmRelInspectPlan"
+
+        <table schema="itsm-gzsh-0716" tableName="om_attach_a_supply_person" domainObjectName="OmSupplyPerson"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"

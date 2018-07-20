@@ -5,7 +5,7 @@ import cc.ligu.mvc.modelView.DWZResponse;
 public final class DWZResponseUtil {
 
 	private DWZResponseUtil() {}
-	
+
 	private static DWZResponse callback(String code, String message, String navTabId, String callbackType,String forwardUrl) {
 		DWZResponse response = new DWZResponse();
 		response.setStatusCode(code);

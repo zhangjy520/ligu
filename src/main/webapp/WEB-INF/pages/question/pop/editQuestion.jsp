@@ -40,19 +40,19 @@
 
             <div class="unit">
                 <label>选项A：</label>
-                <input type="text" class="required" name="a" value="${question.a}" size="30"/>
+                <input type="text" name="a" value="${question.a}" size="30"/>
             </div>
             <div class="unit">
                 <label>选项B：</label>
-                <input type="text" class="required" name="b" value="${question.b}" size="30"/>
+                <input type="text" name="b" value="${question.b}" size="30"/>
             </div>
             <div class="unit">
                 <label>选项C：</label>
-                <input type="text" class="required" name="c" value="${question.c}" size="30"/>
+                <input type="text" name="c" value="${question.c}" size="30"/>
             </div>
             <div class="unit">
                 <label>选项D：</label>
-                <input type="text" class="required" name="d" value="${question.d}" size="30"/>
+                <input type="text" name="d" value="${question.d}" size="30"/>
             </div>
 
             <div class="unit">

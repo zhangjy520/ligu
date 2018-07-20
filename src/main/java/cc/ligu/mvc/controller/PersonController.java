@@ -5,6 +5,7 @@
 package cc.ligu.mvc.controller;
 
 import cc.ligu.common.controller.BasicController;
+import cc.ligu.common.security.AESencryptor;
 import cc.ligu.common.utils.DWZResponseUtil;
 import cc.ligu.common.utils.DicUtil;
 import cc.ligu.common.utils.excel.ExportExcel;
@@ -38,8 +39,33 @@ public class PersonController extends BasicController {
     @Autowired
     ItemService itemService;
 
+
+    @RequestMapping(value = "/changePwdIndex")
+    public String changePwdIndex(HttpServletRequest request, Model model) {
+        return "changepwd";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/changePwdSave", method = RequestMethod.POST)
+    public DWZResponse changePwdSave(HttpServletRequest request, Model model) {
+        String sourcePwd = getParamVal(request, "sourcePwd");
+        String newPwd = getParamVal(request, "newPwd");
+        try {
+            if (getLoginUser().getPassword().equals(AESencryptor.encryptCBCPKCS5Padding(sourcePwd))){
+                personService.changeUserPwd(getLoginUser().getId(), newPwd);
+            }else {
+                return DWZResponseUtil.callbackFail("300", "原密码错误", "_blank");
+            }
+        } catch (Exception e) {
+            return DWZResponseUtil.callbackFail("300", "修改密码失败", "_blank");
+        }
+
+        return DWZResponseUtil.callbackSuccess("修改密码成功，请使用您的新密码重新登录", "_blank");
+    }
+
     @RequestMapping(value = "/index")
     public String personIndex(HttpServletRequest request, Model model) {
+        UserView userView = getLoginUser();
         String name = getParamVal(request, "name");
         String roleType = getParamVal(request, "roleType");
         int _type = StringUtils.isEmpty(roleType) ? 5 : Integer.valueOf(roleType);
@@ -93,7 +119,7 @@ public class PersonController extends BasicController {
             person.setRolePermission(DicUtil.getValueByKeyAndFlag(roleType, "permissions"));
             personService.savePerson(person, getLoginUser());
         } catch (Exception e) {
-            return DWZResponseUtil.callbackFail("500", "保存失败", "");
+            return DWZResponseUtil.callbackFail("300", "保存失败", "");
         }
         return DWZResponseUtil.callbackSuccess("保存成功", "_blank");
     }
@@ -114,7 +140,7 @@ public class PersonController extends BasicController {
 
             personService.savePerson(person, getLoginUser());
         } catch (Exception e) {
-            return DWZResponseUtil.callbackFail("500", "操作失败", "");
+            return DWZResponseUtil.callbackFail("300", "操作失败", "");
         }
         return DWZResponseUtil.callbackSuccess("操作成功", "");
     }
@@ -161,7 +187,7 @@ public class PersonController extends BasicController {
             person.setRolePermission(DicUtil.getValueByKeyAndFlag(roleType, "permissions"));
             personService.savePerson(person, getLoginUser());
         } catch (Exception e) {
-            return DWZResponseUtil.callbackFail("500", "保存失败", "");
+            return DWZResponseUtil.callbackFail("300", "保存失败", "_blank");
         }
         return DWZResponseUtil.callbackSuccess("保存成功", "_blank");
     }
@@ -175,9 +201,9 @@ public class PersonController extends BasicController {
             person.setId(id);
             personService.deletePerson(person);
         } catch (Exception e) {
-            return DWZResponseUtil.callbackFail("500", "删除失败", "");
+            return DWZResponseUtil.callbackFail("300", "删除失败", "_blank");
         }
-        return DWZResponseUtil.callbackSuccess("删除成功", "");
+        return DWZResponseUtil.callbackSuccess("删除成功", "_blank");
     }
 
     //人员模版下载
@@ -212,7 +238,7 @@ public class PersonController extends BasicController {
         ImportExcel importExcel = new ImportExcel(file, 2, 0);
         List<Person> list = importExcel.getDataList(Person.class, 1);
         UserView loginUser = getLoginUser();
-        for (Person person: list) {
+        for (Person person : list) {
             try {
                 List<String> baoXianList = DicUtil.splitWithOutNull(person.getInsurancePurchases());
                 if (null != baoXianList && baoXianList.size() > 0) {

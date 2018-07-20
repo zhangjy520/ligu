@@ -30,7 +30,7 @@
         <input value="登录" style="width:100%;" type="button" onclick="login()">
 
     </div>
-    <div class="copyright">某某有限公司 版权所有©2016-2018 技术支持电话：000-00000000</div>
+    <div class="copyright">版权所有©2016-2018 技术支持电话：000-00000000</div>
 </div>
 <script>
 

@@ -60,7 +60,7 @@ public class QuestionController extends BasicController {
         try {
             questionService.saveQuestion(question,getLoginUser());
         } catch (Exception e) {
-            return DWZResponseUtil.callbackFail("500", "保存题目失败", "");
+            return DWZResponseUtil.callbackFail("300", "保存题目失败", "");
         }
         return DWZResponseUtil.callbackSuccess("保存题目成功", "_blank");
     }
@@ -74,7 +74,7 @@ public class QuestionController extends BasicController {
             question.setId(id);
             questionService.deleteQuestion(question);
         } catch (Exception e) {
-            return DWZResponseUtil.callbackFail("500", "删除题目失败", "");
+            return DWZResponseUtil.callbackFail("300", "删除题目失败", "");
         }
         return DWZResponseUtil.callbackSuccess("删除题目成功", "");
     }

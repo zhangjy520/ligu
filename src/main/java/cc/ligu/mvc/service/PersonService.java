@@ -18,4 +18,6 @@ public interface PersonService {
     int deletePerson(Person person);
 
     List<String> getAllSelect(int type);
+
+    int changeUserPwd(int sysUserId,String pwd);
 }

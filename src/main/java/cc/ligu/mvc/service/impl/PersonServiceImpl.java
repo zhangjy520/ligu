@@ -128,4 +128,14 @@ public class PersonServiceImpl extends BasicService implements PersonService {
         }
         return res;
     }
+
+    @Override
+    public int changeUserPwd(int sysUserId, String pwd) {
+        User user = new User();
+        user.setPassword(AESencryptor.encryptCBCPKCS5Padding(pwd));
+        user.setId(sysUserId);
+        user.setUpdateBy(sysUserId);
+        user.setUpdateDate(System.currentTimeMillis());
+        return userMapper.updateByPrimaryKeySelective(user);
+    }
 }

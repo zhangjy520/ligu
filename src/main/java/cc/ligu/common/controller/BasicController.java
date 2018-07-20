@@ -39,7 +39,7 @@ public abstract class BasicController extends LoggerWrapper {
         int _pageSize = ProjectConfig.DEFAULT_PAGE_SIZE;
         if (null == request) return _pageSize;
 
-        String pageSize = getParamVal(request, "pageSize");
+        String pageSize = getParamVal(request, "numPerPage");
         if (StringUtils.isEmpty(pageSize)) return _pageSize;
 
         _pageSize = NumberConvertUtil.convertS2I(pageSize);

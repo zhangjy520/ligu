@@ -5,7 +5,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=7"/>
-    <title>力谷后台界面框架</title>
+    <title>后台管理</title>
 
     <link href="${ctxStatic}/dwz/themes/default/style.css" rel="stylesheet" type="text/css" media="screen"/>
     <link href="${ctxStatic}/dwz/themes/css/core.css" rel="stylesheet" type="text/css" media="screen"/>
@@ -75,7 +75,7 @@
                         <li><a href="${ctxStatic}/dwz/sidebar_2.html">房地产建设</a></li>
                     </ul>
                 </li>--%>
-                <li><a href="changepwd.html" target="dialog" width="600">设置</a></li>
+                <li><a href="${ctx}/person/changePwdIndex" target="dialog" width="600">修改密码</a></li>
                 <li><a href="${ctx}/doLogout">退出</a></li>
             </ul>
             <%-- <ul class="themeList" id="themeList">
@@ -87,11 +87,7 @@
 
         <div id="navMenu">
             <ul>
-                <li class="selected"><a><span>后台管理</span></a></li>
-                <%--<li><a href="${ctxStatic}/dwz/sidebar_1.html"><span>资源管理</span></a></li>
-                <li><a href="${ctxStatic}/dwz/sidebar_2.html"><span>会员管理</span></a></li>
-                <li><a href="${ctxStatic}/dwz/sidebar_1.html"><span>服务管理</span></a></li>
-                <li><a href="${ctxStatic}/dwz/sidebar_2.html"><span>系统设置</span></a></li>--%>
+                <li class=""><span>后台管理</span></li>
             </ul>
         </div>
     </div>
@@ -135,7 +131,7 @@
                                 <ul><%--//1 超级管理员 2 人员审核管理员(主任) 3 项目管理员(移动公司项目经理) 4 施工管理员(施工方项目经理) 5 施工工人--%>
                                     <li><a href="${ctx}/person/index?roleType=5" target="navTab">施工人员管理</a></li>
 
-                                    <shiro:hasAnyRoles name="root,item_er,checker">
+                                    <shiro:hasAnyRoles name="root,item_er">
                                         <li><a href="${ctx}/person/index?roleType=4" target="navTab">施工管理员管理</a></li>
                                     </shiro:hasAnyRoles>
 
@@ -147,7 +143,7 @@
                                         <li><a href="${ctx}/person/index?roleType=2" target="navTab">人工审核管理员管理</a></li>
                                     </shiro:hasAnyRoles>
 
-                                    <shiro:hasAnyRoles name="root,checker,item_er">
+                                    <shiro:hasAnyRoles name="root,item_er">
                                         <li><a href="${ctx}/person/index_black" target="navTab">黑名单管理</a></li>
                                     </shiro:hasAnyRoles>
 

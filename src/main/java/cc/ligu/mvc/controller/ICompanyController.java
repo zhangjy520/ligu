@@ -59,7 +59,7 @@ public class ICompanyController extends BasicController {
         try {
             iCompanyService.saveInsuranceCompany(insuranceCompany);
         } catch (Exception e) {
-            return DWZResponseUtil.callbackFail("500", "保存失败", "");
+            return DWZResponseUtil.callbackFail("300", "保存失败", "");
         }
         return DWZResponseUtil.callbackSuccess("保存成功", "_blank");
     }
@@ -72,7 +72,7 @@ public class ICompanyController extends BasicController {
             insuranceCompany.setId(id);
             iCompanyService.deleteInsuranceCompany(insuranceCompany);
         } catch (Exception e) {
-            return DWZResponseUtil.callbackFail("500", "删除失败", "");
+            return DWZResponseUtil.callbackFail("300", "删除失败", "");
         }
         return DWZResponseUtil.callbackSuccess("删除成功", "");
     }

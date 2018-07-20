@@ -58,7 +58,7 @@ public class Person implements Serializable {
     private String insurancePurchases;
 
     /**
-     * 薪资情况
+     * 薪资s情况
      */
     private String salaryDetails;
 

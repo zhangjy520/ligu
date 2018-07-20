@@ -4,14 +4,11 @@ import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.entity.ResultEntity;
 import cc.ligu.common.exception.ErrcodeException;
 import cc.ligu.common.security.AESencryptor;
-import cc.ligu.mvc.common.UserRoleType;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.WebUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,7 +33,7 @@ public class LoginController extends BasicController {
 
     @ResponseBody
     @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
-    public ResultEntity login(HttpServletRequest request, HttpServletResponse response, Model model) {
+    public ResultEntity login(HttpServletRequest request) {
 
         String username = getParamVal(request, "username");
         String password = getParamVal(request, "password");

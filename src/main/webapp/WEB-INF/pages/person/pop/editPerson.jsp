@@ -28,7 +28,7 @@
                 <label>人员类别：</label>
                 <select name="typeDisabled" disabled="disabled">
                     <option value="2" <c:if test="${roleType == 2}">selected</c:if>>人员审核管理员</option>
-                    <option value="3" <c:if test="${roleType == 3}">selected</c:if>>项目管理员</option>
+                    <option value="3" <c:if test="${roleType == 3}">selected</c:if>>项目经理</option>
                     <option value="4" <c:if test="${roleType == 4}">selected</c:if>>施工管理员</option>
                     <option value="5" <c:if test="${roleType == 5}">selected</c:if>>施工工人</option>
                 </select>
