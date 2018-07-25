@@ -8,27 +8,35 @@ import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.entity.ResultEntity;
 import cc.ligu.common.security.AESencryptor;
 import cc.ligu.common.utils.DicUtil;
-import cc.ligu.mvc.modelView.BaoXianView;
-import cc.ligu.mvc.modelView.ScoreView;
-import cc.ligu.mvc.service.*;
 import cc.ligu.common.utils.PropertiesUtil;
 import cc.ligu.mvc.controller.FileController;
+import cc.ligu.mvc.modelView.BaoXianView;
+import cc.ligu.mvc.modelView.ScoreView;
 import cc.ligu.mvc.persistence.entity.*;
+import cc.ligu.mvc.service.*;
 import cc.ligu.mvc.service.impl.ItemServiceImpl;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
 import com.google.gson.Gson;
 import com.mangofactory.swagger.annotations.ApiIgnore;
-import com.wordnik.swagger.annotations.*;
+import com.wordnik.swagger.annotations.ApiImplicitParam;
+import com.wordnik.swagger.annotations.ApiImplicitParams;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
 import net.sf.json.JSONArray;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -199,6 +207,21 @@ public class ApiController extends BasicController {
     public ResultEntity uploadHeadPic(@ApiParam(value = "上传头像", required = true) MultipartFile multipartFile,
                                       HttpServletRequest request) {
         try {
+            CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+            if (multipartResolver.isMultipart(request)){
+                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;
+                MultiValueMap<String,MultipartFile> multiFileMap = multiRequest.getMultiFileMap();
+                if(multiFileMap.size()>0){
+                    List<MultipartFile> fileSet = new LinkedList<>();
+                    for(Map.Entry<String, List<MultipartFile>> temp : multiFileMap.entrySet()){
+                        fileSet = temp.getValue();
+                    }
+                    if (fileSet.size()>0){
+                        multipartFile = fileSet.get(0);
+                    }
+                }
+            }
+
             Map uploads = (Map) new FileController().uploads(multipartFile, request).getData();
             User user = userService.selectUserViewByUserId(Integer.valueOf(request.getParameter("userId")));
             user.setPhotoUrl(request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath"));
@@ -543,6 +566,22 @@ public class ApiController extends BasicController {
                                          HttpServletRequest request) {
         String url = "";
         try {
+            CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+            if (multipartResolver.isMultipart(request)){
+                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;
+                MultiValueMap<String,MultipartFile> multiFileMap = multiRequest.getMultiFileMap();
+                if(multiFileMap.size()>0){
+                    List<MultipartFile> fileSet = new LinkedList<>();
+                    for(Map.Entry<String, List<MultipartFile>> temp : multiFileMap.entrySet()){
+                        fileSet = temp.getValue();
+                    }
+                    if (fileSet.size()>0){
+                        multipartFile = fileSet.get(0);
+                    }
+                }
+            }
+
+
             String remark = getParamVal(request, "remark");
 
             Map uploads = (Map) new FileController().uploads(multipartFile, request).getData();

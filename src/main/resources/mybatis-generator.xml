@@ -281,13 +281,90 @@
             <property name="useActualColumnNames" value="false"/>
         </table>-->
 
-        <table schema="itsm-gzsh-0716" tableName="om_attach_a_supply_person" domainObjectName="OmSupplyPerson"
+        <!--<table schema="itsm-gzsh-0716" tableName="om_attach_a_supply_person" domainObjectName="OmSupplyPerson"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
                enableSelectByExample="true"
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
+        </table>-->
+
+        <!--it服务级别管理-->
+        <!--<table schema="it_control" tableName="sl_base_app_service" domainObjectName="BaseAppServiceLevel"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="support_users" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="timeout_strategy_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>
+
+        <table schema="it_control" tableName="sl_business_service_big_type" domainObjectName="BusinessServiceBigType"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="max_interrupt" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="min_back_up" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="performance" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>
+
+        <table schema="it_control" tableName="sl_business_service_small_type" domainObjectName="BusinessServiceSmallType"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="sla_timeout_strategy" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="ola_support_users" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="uc_suppliers" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>
+
+        <table schema="it_control" tableName="sl_manage" domainObjectName="ServiceLevelManage"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="check_describe" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>
+
+        <table schema="it_control" tableName="sl_technical_service" domainObjectName="TechnicalService"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="duty_users" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>
+
+        <table schema="it_control" tableName="sl_timeout_strategy" domainObjectName="TimeOutStrategy"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="notify_special_user_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
+        <table schema="it_control" tableName="sl_business_service_small_type" domainObjectName="BusinessServiceSmallType"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="sla_timeout_strategy" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="ola_support_users" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="uc_suppliers" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>
     </context>
 </generatorConfiguration>
