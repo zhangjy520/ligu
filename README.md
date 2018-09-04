@@ -41,3 +41,7 @@
   ##第三步：在部署Tomcat的VM options项中添加：-Dfile.encoding=UTF-8
   
   ##第四步：重启Intellij idea即可解决乱码问题
+  
+  
+  # mysql默认值修改
+    sys_user 的photo_url的值需要修改：http://47.94.98.20:8085/source/attach/headPic/head_defalut.png

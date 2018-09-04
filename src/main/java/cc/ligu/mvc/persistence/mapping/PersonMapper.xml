@@ -20,6 +20,7 @@
     <result column="item_name" property="itemName" jdbcType="VARCHAR" />
     <result column="professional_unit" property="professionalUnit" jdbcType="VARCHAR" />
     <result column="black_flag" property="blackFlag" jdbcType="INTEGER" />
+    <result column="black_image" property="blackImage" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="create_date" property="createDate" jdbcType="BIGINT" />
     <result column="create_by" property="createBy" jdbcType="INTEGER" />
@@ -88,8 +89,8 @@
   <sql id="Base_Column_List" >
     id, name, type, role_name, role_permission, gender, contact, identity_type, identity_num, 
     insurance_purchases, salary_details, address, status, company, item_id, item_name, 
-    professional_unit, black_flag, remark, create_date, create_by, update_date, update_by, 
-    del_flag
+    professional_unit, black_flag, black_image, remark, create_date, create_by, update_date, 
+    update_by, del_flag
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cc.ligu.mvc.persistence.entity.PersonExample" >
     select
@@ -131,17 +132,19 @@
       identity_type, identity_num, insurance_purchases, 
       salary_details, address, status, 
       company, item_id, item_name, 
-      professional_unit, black_flag, remark, 
-      create_date, create_by, update_date, 
-      update_by, del_flag)
+      professional_unit, black_flag, black_image, 
+      remark, create_date, create_by, 
+      update_date, update_by, del_flag
+      )
     values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, 
       #{rolePermission,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
       #{identityType,jdbcType=VARCHAR}, #{identityNum,jdbcType=VARCHAR}, #{insurancePurchases,jdbcType=VARCHAR}, 
       #{salaryDetails,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{company,jdbcType=VARCHAR}, #{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, 
-      #{professionalUnit,jdbcType=VARCHAR}, #{blackFlag,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
-      #{createDate,jdbcType=BIGINT}, #{createBy,jdbcType=INTEGER}, #{updateDate,jdbcType=BIGINT}, 
-      #{updateBy,jdbcType=INTEGER}, #{delFlag,jdbcType=INTEGER})
+      #{professionalUnit,jdbcType=VARCHAR}, #{blackFlag,jdbcType=INTEGER}, #{blackImage,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{createDate,jdbcType=BIGINT}, #{createBy,jdbcType=INTEGER}, 
+      #{updateDate,jdbcType=BIGINT}, #{updateBy,jdbcType=INTEGER}, #{delFlag,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="cc.ligu.mvc.persistence.entity.Person" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -199,6 +202,9 @@
       </if>
       <if test="blackFlag != null" >
         black_flag,
+      </if>
+      <if test="blackImage != null" >
+        black_image,
       </if>
       <if test="remark != null" >
         remark,
@@ -270,6 +276,9 @@
       </if>
       <if test="blackFlag != null" >
         #{blackFlag,jdbcType=INTEGER},
+      </if>
+      <if test="blackImage != null" >
+        #{blackImage,jdbcType=VARCHAR},
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
@@ -348,6 +357,9 @@
       <if test="record.blackFlag != null" >
         black_flag = #{record.blackFlag,jdbcType=INTEGER},
       </if>
+      <if test="record.blackImage != null" >
+        black_image = #{record.blackImage,jdbcType=VARCHAR},
+      </if>
       <if test="record.remark != null" >
         remark = #{record.remark,jdbcType=VARCHAR},
       </if>
@@ -391,6 +403,7 @@
       item_name = #{record.itemName,jdbcType=VARCHAR},
       professional_unit = #{record.professionalUnit,jdbcType=VARCHAR},
       black_flag = #{record.blackFlag,jdbcType=INTEGER},
+      black_image = #{record.blackImage,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
       create_date = #{record.createDate,jdbcType=BIGINT},
       create_by = #{record.createBy,jdbcType=INTEGER},
@@ -455,6 +468,9 @@
       <if test="blackFlag != null" >
         black_flag = #{blackFlag,jdbcType=INTEGER},
       </if>
+      <if test="blackImage != null" >
+        black_image = #{blackImage,jdbcType=VARCHAR},
+      </if>
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
       </if>
@@ -495,6 +511,7 @@
       item_name = #{itemName,jdbcType=VARCHAR},
       professional_unit = #{professionalUnit,jdbcType=VARCHAR},
       black_flag = #{blackFlag,jdbcType=INTEGER},
+      black_image = #{blackImage,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=BIGINT},
       create_by = #{createBy,jdbcType=INTEGER},

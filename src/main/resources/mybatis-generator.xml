@@ -95,7 +95,7 @@
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
         </table>-->
-        <!--<table schema="ligu" tableName="oa_person" domainObjectName="Person"
+        <table schema="ligu" tableName="oa_person" domainObjectName="Person"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
@@ -103,7 +103,7 @@
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>-->
+        </table>
         <!--<table schema="ligu" tableName="v_user" domainObjectName="UserView"
                enableCountByExample="false"
                enableUpdateByExample="true"
@@ -355,7 +355,7 @@
             <property name="useActualColumnNames" value="false"/>
             <columnOverride column="notify_special_user_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>-->
-        <table schema="it_control" tableName="sl_business_service_small_type" domainObjectName="BusinessServiceSmallType"
+        <!--<table schema="it_control" tableName="sl_business_service_small_type" domainObjectName="BusinessServiceSmallType"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
@@ -365,6 +365,6 @@
             <columnOverride column="sla_timeout_strategy" javaType="java.lang.String" jdbcType="VARCHAR" />
             <columnOverride column="ola_support_users" javaType="java.lang.String" jdbcType="VARCHAR" />
             <columnOverride column="uc_suppliers" javaType="java.lang.String" jdbcType="VARCHAR" />
-        </table>
+        </table>-->
     </context>
 </generatorConfiguration>

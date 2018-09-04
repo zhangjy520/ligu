@@ -20,8 +20,6 @@ public class Person implements Serializable {
      */
     private Integer type;
     private String typeName;
-
-
     /**
      * 角色名称
      */
@@ -58,7 +56,7 @@ public class Person implements Serializable {
     private String insurancePurchases;
 
     /**
-     * 薪资s情况
+     * 薪资情况
      */
     private String salaryDetails;
 
@@ -73,7 +71,7 @@ public class Person implements Serializable {
     private Integer status;
 
     /**
-     * 承保公司
+     * 承包公司
      */
     private String company;
 
@@ -96,6 +94,11 @@ public class Person implements Serializable {
      * 黑名单状态[0正常 ,1黑名单待审，2黑名单人员]
      */
     private Integer blackFlag;
+
+    /**
+     * 黑名单图片描述
+     */
+    private String blackImage;
 
     /**
      * 备注
@@ -152,7 +155,6 @@ public class Person implements Serializable {
      * 获取姓名
      * @return name 姓名
      */
-    @ExcelField(title = "姓名", align = 2, sort = 1, groups = {1, 2})
     public String getName() {
         return name;
     }
@@ -161,25 +163,17 @@ public class Person implements Serializable {
      * 设置姓名
      * @param name 姓名
      */
+    @ExcelField(title = "姓名", align = 2, sort = 1, groups = {1, 2})
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
     }
 
     /**
      * 获取人员角色类别:1超级管理员 2人员审核管理员(主任) 3项目管理员(移动公司项目经理) 4施工管理员(施工方项目经理) 5施工工人
-     * @return type 人员角色类别:1 超级管理员 2 人员审核管理员(主任) 3 项目管理员(移动公司项目经理) 4 施工管理员(施工方项目经理) 5 施工工人
+     * @return type 人员角色类别:1超级管理员 2人员审核管理员(主任) 3项目管理员(移动公司项目经理) 4施工管理员(施工方项目经理) 5施工工人
      */
     public Integer getType() {
         return type;
-    }
-
-    @ExcelField(title = "人员身份", align = 2, sort = 9, groups = {1, 2},isnull=1,isDropDown = 1,dropDownList = {"人员审核管理员","项目管理员","施工管理员","施工工人"})
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
     }
 
     /**
@@ -190,6 +184,14 @@ public class Person implements Serializable {
         this.type = type;
     }
 
+    @ExcelField(title = "人员身份", align = 2, sort = 9, groups = {1, 2},isnull=1,isDropDown = 1,dropDownList = {"人员审核管理员","项目管理员","施工管理员","施工工人"})
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
     /**
      * 获取角色名称
      * @return role_name 角色名称
@@ -358,16 +360,16 @@ public class Person implements Serializable {
     }
 
     /**
-     * 获取承保公司
-     * @return company 承保公司
+     * 获取承包公司
+     * @return company 承包公司
      */
     public String getCompany() {
         return company;
     }
 
     /**
-     * 设置承保公司
-     * @param company 承保公司
+     * 设置承包公司
+     * @param company 承包公司
      */
     public void setCompany(String company) {
         this.company = company == null ? null : company.trim();
@@ -436,6 +438,22 @@ public class Person implements Serializable {
      */
     public void setBlackFlag(Integer blackFlag) {
         this.blackFlag = blackFlag;
+    }
+
+    /**
+     * 获取黑名单图片描述
+     * @return black_image 黑名单图片描述
+     */
+    public String getBlackImage() {
+        return blackImage;
+    }
+
+    /**
+     * 设置黑名单图片描述
+     * @param blackImage 黑名单图片描述
+     */
+    public void setBlackImage(String blackImage) {
+        this.blackImage = blackImage == null ? null : blackImage.trim();
     }
 
     /**
@@ -564,6 +582,7 @@ public class Person implements Serializable {
             && (this.getItemName() == null ? other.getItemName() == null : this.getItemName().equals(other.getItemName()))
             && (this.getProfessionalUnit() == null ? other.getProfessionalUnit() == null : this.getProfessionalUnit().equals(other.getProfessionalUnit()))
             && (this.getBlackFlag() == null ? other.getBlackFlag() == null : this.getBlackFlag().equals(other.getBlackFlag()))
+            && (this.getBlackImage() == null ? other.getBlackImage() == null : this.getBlackImage().equals(other.getBlackImage()))
             && (this.getRemark() == null ? other.getRemark() == null : this.getRemark().equals(other.getRemark()))
             && (this.getCreateDate() == null ? other.getCreateDate() == null : this.getCreateDate().equals(other.getCreateDate()))
             && (this.getCreateBy() == null ? other.getCreateBy() == null : this.getCreateBy().equals(other.getCreateBy()))
@@ -594,6 +613,7 @@ public class Person implements Serializable {
         result = prime * result + ((getItemName() == null) ? 0 : getItemName().hashCode());
         result = prime * result + ((getProfessionalUnit() == null) ? 0 : getProfessionalUnit().hashCode());
         result = prime * result + ((getBlackFlag() == null) ? 0 : getBlackFlag().hashCode());
+        result = prime * result + ((getBlackImage() == null) ? 0 : getBlackImage().hashCode());
         result = prime * result + ((getRemark() == null) ? 0 : getRemark().hashCode());
         result = prime * result + ((getCreateDate() == null) ? 0 : getCreateDate().hashCode());
         result = prime * result + ((getCreateBy() == null) ? 0 : getCreateBy().hashCode());
@@ -627,6 +647,7 @@ public class Person implements Serializable {
         sb.append(", itemName=").append(itemName);
         sb.append(", professionalUnit=").append(professionalUnit);
         sb.append(", blackFlag=").append(blackFlag);
+        sb.append(", blackImage=").append(blackImage);
         sb.append(", remark=").append(remark);
         sb.append(", createDate=").append(createDate);
         sb.append(", createBy=").append(createBy);
