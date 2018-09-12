@@ -51,9 +51,9 @@ public class PersonController extends BasicController {
         String sourcePwd = getParamVal(request, "sourcePwd");
         String newPwd = getParamVal(request, "newPwd");
         try {
-            if (getLoginUser().getPassword().equals(AESencryptor.encryptCBCPKCS5Padding(sourcePwd))){
+            if (getLoginUser().getPassword().equals(AESencryptor.encryptCBCPKCS5Padding(sourcePwd))) {
                 personService.changeUserPwd(getLoginUser().getId(), newPwd);
-            }else {
+            } else {
                 return DWZResponseUtil.callbackFail("300", "原密码错误", "_blank");
             }
         } catch (Exception e) {
@@ -190,6 +190,25 @@ public class PersonController extends BasicController {
             return DWZResponseUtil.callbackFail("300", "保存失败", "_blank");
         }
         return DWZResponseUtil.callbackSuccess("保存成功", "_blank");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/batch_delete", method = RequestMethod.POST)
+    public DWZResponse batchdeletePerson(Model model, HttpServletRequest request) {
+        try {
+            String ids = getParamVal(request, "ids");
+            List<String> idList = DicUtil.splitWithOutNull(ids);
+            for (String id : idList) {
+                try {
+                    deletePerson(model, Integer.parseInt(id));
+                } catch (Exception e) {
+                    continue;
+                }
+            }
+        } catch (Exception e) {
+            return DWZResponseUtil.callbackFail("300", "删除失败", "_blank");
+        }
+        return DWZResponseUtil.callbackSuccess("删除成功", "_blank");
     }
 
 

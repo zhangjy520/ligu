@@ -61,7 +61,7 @@ public class LoginController extends BasicController {
             ae.printStackTrace();
         }
 
-        if (!loginUser.isAuthenticated()) {
+        if (!loginUser.isAuthenticated() || !StringUtils.isEmpty(errmsg)) {
             token.clear();
             if (StringUtils.isEmpty(errmsg)) {
                 errmsg = "验证出错,请联系管理员";

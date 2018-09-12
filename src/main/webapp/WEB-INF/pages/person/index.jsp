@@ -4,6 +4,7 @@
 <form id="pagerForm" method="post" action="${ctx}/person/index">
     <input type="hidden" name="pageNum" value="${pageInfo.pageNum}"/>
     <input type="hidden" name="numPerPage" value="${pageInfo.pageSize}"/>
+    <input type="hidden" name="roleType" value="${roleType}"/>
 </form>
 
 <div class="pageHeader">
@@ -45,8 +46,9 @@
                 <%--非管理员无法新增施工人员--%>
             <li><a class="add" href="${ctx}/person/pop/modify?roleType=${roleType}" target="dialog"
                    mask="true"><span>新增</span></a></li>
-                
+
                 <li class="line">line</li>
+                <li><a title="确实要删除这些人员吗?" target="selectedTodo" postType="string" href="${ctx}/person/batch_delete" class="delete"><span>批量删除</span></a></li>
                 <li><a class="icon" href="${ctx}/person/template/download" target="dwzExport" targetType="navTab"
                        title="下载导入模版?"><span>下载导入模版</span></a></li>
                 <li><a class="icon" href="${ctx}/person/pop/upload" target="dialog" title="导入人员?"><span>导入人员</span></a>
@@ -58,6 +60,7 @@
     <table class="table" width="100%" layoutH="138">
         <thead>
         <tr>
+            <th width="22"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
             <th width="40">姓名</th>
             <th width="60">角色</th>
             <th width="120">性别</th>
@@ -77,6 +80,7 @@
         <tbody>
         <c:forEach items="${pageInfo.list}" var="person">
             <tr>
+                <td><input name="ids" value="${person.id}" type="checkbox"></td>
                 <td>${person.name}</td>
                 <td>${ligu:getValueByKeyAndFlag(person.type,'personType')}</td>
                 <td>${person.gender}</td>
@@ -141,4 +145,9 @@
              pageNumShown="5" currentPage="${pageInfo.pageNum}"></div>
 
     </div>
+    <script>
+        function batchDelete(){
+
+        }
+    </script>
 </div>
