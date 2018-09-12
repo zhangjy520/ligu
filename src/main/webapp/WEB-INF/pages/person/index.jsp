@@ -69,7 +69,7 @@
             <th width="80">现住址</th>
             <th width="80">施工单位专业</th>
             <th width="80">人员状态</th>
-            <shiro:hasAnyRoles name="worker_er,item_er,checker">
+            <shiro:hasAnyRoles name="worker_er,item_er,checker,root">
                 <th width="80" align="center">操作</th>
             </shiro:hasAnyRoles>
         </tr>
@@ -88,7 +88,7 @@
                 <td>${person.address}</td>
                 <td>${person.professionalUnit}</td>
                 <td>${ligu:getValueByKeyAndFlag(person.status,'personStatus')}</td>
-                <shiro:hasAnyRoles name="worker_er,item_er">
+                <shiro:hasAnyRoles name="worker_er,item_er,root">
                     <%--施工管理员能操作--%>
                     <td>
                         <div>
