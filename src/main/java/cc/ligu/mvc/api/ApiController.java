@@ -227,11 +227,11 @@ public class ApiController extends BasicController {
             user.setPhotoUrl(request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath"));
             UserView userView = getAppLoginUser(request);
             userService.saveUser(user, userView);
+            return ResultEntity.newResultEntity("上传成功", user.getPhotoUrl());
         } catch (Exception e) {
             e.printStackTrace();
             return ResultEntity.newErrEntity("设置异常");
         }
-        return ResultEntity.newResultEntity("设置成功");
     }
 
 
@@ -346,7 +346,6 @@ public class ApiController extends BasicController {
             bloBs.setObtainScore(score);
 
             questionService.saveExamHistory(bloBs);//保存考试成绩
-
 
             return ResultEntity.newResultEntity("提交成功");
         } catch (Exception e) {
@@ -599,11 +598,12 @@ public class ApiController extends BasicController {
             source.setRemark(remark);
 
             sourceService.saveSource(source, userView);
+
+            return ResultEntity.newResultEntity("上传成功", url);
         } catch (Exception e) {
             e.printStackTrace();
             return ResultEntity.newErrEntity("上传异常");
         }
-        return ResultEntity.newResultEntity("上传成功", url);
     }
 
 
