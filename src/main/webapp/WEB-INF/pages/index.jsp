@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=7"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=11"/>
     <title>后台管理</title>
 
     <link href="${ctxStatic}/dwz/themes/default/style.css" rel="stylesheet" type="text/css" media="screen"/>
@@ -27,7 +27,7 @@
     <!--[if lte IE 9]>
     <script src="${ctxStatic}/dwz/js/speedup.js" type="text/javascript"></script>
     <![endif]-->
-    <script src="${ctxStatic}/dwz/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+    <script src="${ctxStatic}/dwz/js/jquery-1.7.2.js" type="text/javascript"></script>
     <script src="${ctxStatic}/dwz/js/jquery.cookie.js" type="text/javascript"></script>
     <script src="${ctxStatic}/dwz/js/jquery.validate.js" type="text/javascript"></script>
     <script src="${ctxStatic}/dwz/js/jquery.bgiframe.js" type="text/javascript"></script>
