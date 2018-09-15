@@ -73,7 +73,7 @@ public class PersonExample {
     }
 
     /**
-     * oa_person 2018-07-02
+     * oa_person 2018-09-04
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -1326,6 +1326,76 @@ public class PersonExample {
             return (Criteria) this;
         }
 
+        public Criteria andBlackImageIsNull() {
+            addCriterion("black_image is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageIsNotNull() {
+            addCriterion("black_image is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageEqualTo(String value) {
+            addCriterion("black_image =", value, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageNotEqualTo(String value) {
+            addCriterion("black_image <>", value, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageGreaterThan(String value) {
+            addCriterion("black_image >", value, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageGreaterThanOrEqualTo(String value) {
+            addCriterion("black_image >=", value, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageLessThan(String value) {
+            addCriterion("black_image <", value, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageLessThanOrEqualTo(String value) {
+            addCriterion("black_image <=", value, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageLike(String value) {
+            addCriterion("black_image like", value, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageNotLike(String value) {
+            addCriterion("black_image not like", value, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageIn(List<String> values) {
+            addCriterion("black_image in", values, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageNotIn(List<String> values) {
+            addCriterion("black_image not in", values, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageBetween(String value1, String value2) {
+            addCriterion("black_image between", value1, value2, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageNotBetween(String value1, String value2) {
+            addCriterion("black_image not between", value1, value2, "blackImage");
+            return (Criteria) this;
+        }
+
         public Criteria andRemarkIsNull() {
             addCriterion("remark is null");
             return (Criteria) this;
@@ -1761,6 +1831,11 @@ public class PersonExample {
             return (Criteria) this;
         }
 
+        public Criteria andBlackImageLikeInsensitive(String value) {
+            addCriterion("upper(black_image) like", value.toUpperCase(), "blackImage");
+            return (Criteria) this;
+        }
+
         public Criteria andRemarkLikeInsensitive(String value) {
             addCriterion("upper(remark) like", value.toUpperCase(), "remark");
             return (Criteria) this;
@@ -1778,7 +1853,7 @@ public class PersonExample {
     }
 
     /**
-     * oa_person 2018-07-02
+     * oa_person 2018-09-04
      */
     public static class Criterion {
         private String condition;

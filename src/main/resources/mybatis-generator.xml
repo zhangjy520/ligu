@@ -95,7 +95,7 @@
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
         </table>-->
-        <!--<table schema="ligu" tableName="oa_person" domainObjectName="Person"
+        <table schema="ligu" tableName="oa_person" domainObjectName="Person"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
@@ -103,7 +103,7 @@
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>-->
+        </table>
         <!--<table schema="ligu" tableName="v_user" domainObjectName="UserView"
                enableCountByExample="false"
                enableUpdateByExample="true"

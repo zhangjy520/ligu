@@ -5,10 +5,7 @@ import cc.ligu.common.service.BasicService;
 import cc.ligu.mvc.persistence.dao.ApiMapper;
 import cc.ligu.mvc.persistence.dao.PersonMapper;
 import cc.ligu.mvc.persistence.dao.UserMapper;
-import cc.ligu.mvc.persistence.entity.Person;
-import cc.ligu.mvc.persistence.entity.PersonExample;
-import cc.ligu.mvc.persistence.entity.User;
-import cc.ligu.mvc.persistence.entity.UserView;
+import cc.ligu.mvc.persistence.entity.*;
 import cc.ligu.mvc.service.PersonService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -67,6 +64,7 @@ public class PersonServiceImpl extends BasicService implements PersonService {
     @Override
     public int savePerson(Person person, UserView userView) {
         int flag = 0;
+        List<String> li = new ArrayList<>();
         if (null!=person.getType()&&person.getType() != 5) {
             //管理员设置，默认已审核！审核未审核只针对施工人员
             person.setStatus(1);
@@ -103,6 +101,10 @@ public class PersonServiceImpl extends BasicService implements PersonService {
             person.setUpdateBy(userView.getId());
             person.setUpdateDate(System.currentTimeMillis());
             personMapper.updateByPrimaryKeySelective(person);
+            li.add(person.getName());
+        }
+        for (int i = 0; i < li.size(); i++) {
+            System.out.println(li.get(i));
         }
         return flag;
     }
@@ -112,9 +114,14 @@ public class PersonServiceImpl extends BasicService implements PersonService {
         return personMapper.selectByPrimaryKey(personId);
     }
 
+    @Transactional
     @Override
     public int deletePerson(Person person) {
-        return personMapper.deleteByPrimaryKey(person.getId());
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andRefIdEqualTo(person.getId());
+        userMapper.deleteByExample(userExample);
+        personMapper.deleteByPrimaryKey(person.getId());
+        return 1;
     }
 
     @Override

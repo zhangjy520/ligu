@@ -159,6 +159,8 @@ public class DicUtil {
     }
 
     public static List<String> splitWithOutNull(String param) {
+        if (StringUtils.isEmpty(param))
+            return null;
         String[] res = param.split(",");
         List<String> out = new ArrayList<>();
         for (String v: res) {

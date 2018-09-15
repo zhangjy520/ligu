@@ -155,8 +155,8 @@ public class ApiController extends BasicController {
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "remark", value = "拉黑原因", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
     })
-    @RequestMapping("/add/black")
-    public ResultEntity addToBlack(HttpServletRequest request) {
+    @RequestMapping(value = "/add/black",consumes = "multipart/*", headers = "content-type=multipart/form-data")
+    public ResultEntity addToBlack(@ApiParam(value = "上传身份证图片", required = true) MultipartFile multipartFile,HttpServletRequest request) {
         try {
             String name = getParamVal(request, "name");
             String num = getParamVal(request, "num");
@@ -166,11 +166,29 @@ public class ApiController extends BasicController {
                 return ResultEntity.newErrEntity("操作失败，身份证和姓名是必填项！");
             }
 
+            CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+            if (multipartResolver.isMultipart(request)){
+                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;
+                MultiValueMap<String,MultipartFile> multiFileMap = multiRequest.getMultiFileMap();
+                if(multiFileMap.size()>0){
+                    List<MultipartFile> fileSet = new LinkedList<>();
+                    for(Map.Entry<String, List<MultipartFile>> temp : multiFileMap.entrySet()){
+                        fileSet = temp.getValue();
+                    }
+                    if (fileSet.size()>0){
+                        multipartFile = fileSet.get(0);
+                    }
+                }
+            }
+
+            Map uploads = (Map) new FileController().uploads(multipartFile, request).getData();
+
             Person person = new Person();
             person.setName(name);
             person.setIdentityNum(num);
             person.setBlackFlag(1);//[0正常 ,1黑名单待审，2黑名单人员]
             person.setRemark(remark);//申请拉黑原因
+            person.setBlackImage(request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath"));
 
             int size = personService.savePerson(person, getAppLoginUser(request));
             return ResultEntity.newResultEntity("添加成功");
