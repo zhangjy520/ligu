@@ -11,6 +11,7 @@
     <result column="contact" property="contact" jdbcType="VARCHAR" />
     <result column="identity_type" property="identityType" jdbcType="VARCHAR" />
     <result column="identity_num" property="identityNum" jdbcType="VARCHAR" />
+    <result column="identity_img" property="identityImg" jdbcType="VARCHAR" />
     <result column="insurance_purchases" property="insurancePurchases" jdbcType="VARCHAR" />
     <result column="salary_details" property="salaryDetails" jdbcType="VARCHAR" />
     <result column="address" property="address" jdbcType="VARCHAR" />
@@ -88,9 +89,9 @@
   </sql>
   <sql id="Base_Column_List" >
     id, name, type, role_name, role_permission, gender, contact, identity_type, identity_num, 
-    insurance_purchases, salary_details, address, status, company, item_id, item_name, 
-    professional_unit, black_flag, black_image, remark, create_date, create_by, update_date, 
-    update_by, del_flag
+    identity_img, insurance_purchases, salary_details, address, status, company, item_id, 
+    item_name, professional_unit, black_flag, black_image, remark, create_date, create_by, 
+    update_date, update_by, del_flag
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cc.ligu.mvc.persistence.entity.PersonExample" >
     select
@@ -129,22 +130,22 @@
     </selectKey>
     insert into oa_person (name, type, role_name, 
       role_permission, gender, contact, 
-      identity_type, identity_num, insurance_purchases, 
-      salary_details, address, status, 
-      company, item_id, item_name, 
-      professional_unit, black_flag, black_image, 
-      remark, create_date, create_by, 
-      update_date, update_by, del_flag
-      )
+      identity_type, identity_num, identity_img, 
+      insurance_purchases, salary_details, address, 
+      status, company, item_id, 
+      item_name, professional_unit, black_flag, 
+      black_image, remark, create_date, 
+      create_by, update_date, update_by, 
+      del_flag)
     values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, 
       #{rolePermission,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
-      #{identityType,jdbcType=VARCHAR}, #{identityNum,jdbcType=VARCHAR}, #{insurancePurchases,jdbcType=VARCHAR}, 
-      #{salaryDetails,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{company,jdbcType=VARCHAR}, #{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, 
-      #{professionalUnit,jdbcType=VARCHAR}, #{blackFlag,jdbcType=INTEGER}, #{blackImage,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{createDate,jdbcType=BIGINT}, #{createBy,jdbcType=INTEGER}, 
-      #{updateDate,jdbcType=BIGINT}, #{updateBy,jdbcType=INTEGER}, #{delFlag,jdbcType=INTEGER}
-      )
+      #{identityType,jdbcType=VARCHAR}, #{identityNum,jdbcType=VARCHAR}, #{identityImg,jdbcType=VARCHAR}, 
+      #{insurancePurchases,jdbcType=VARCHAR}, #{salaryDetails,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{company,jdbcType=VARCHAR}, #{itemId,jdbcType=INTEGER}, 
+      #{itemName,jdbcType=VARCHAR}, #{professionalUnit,jdbcType=VARCHAR}, #{blackFlag,jdbcType=INTEGER}, 
+      #{blackImage,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createDate,jdbcType=BIGINT}, 
+      #{createBy,jdbcType=INTEGER}, #{updateDate,jdbcType=BIGINT}, #{updateBy,jdbcType=INTEGER}, 
+      #{delFlag,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="cc.ligu.mvc.persistence.entity.Person" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -175,6 +176,9 @@
       </if>
       <if test="identityNum != null" >
         identity_num,
+      </if>
+      <if test="identityImg != null" >
+        identity_img,
       </if>
       <if test="insurancePurchases != null" >
         insurance_purchases,
@@ -249,6 +253,9 @@
       </if>
       <if test="identityNum != null" >
         #{identityNum,jdbcType=VARCHAR},
+      </if>
+      <if test="identityImg != null" >
+        #{identityImg,jdbcType=VARCHAR},
       </if>
       <if test="insurancePurchases != null" >
         #{insurancePurchases,jdbcType=VARCHAR},
@@ -330,6 +337,9 @@
       <if test="record.identityNum != null" >
         identity_num = #{record.identityNum,jdbcType=VARCHAR},
       </if>
+      <if test="record.identityImg != null" >
+        identity_img = #{record.identityImg,jdbcType=VARCHAR},
+      </if>
       <if test="record.insurancePurchases != null" >
         insurance_purchases = #{record.insurancePurchases,jdbcType=VARCHAR},
       </if>
@@ -394,6 +404,7 @@
       contact = #{record.contact,jdbcType=VARCHAR},
       identity_type = #{record.identityType,jdbcType=VARCHAR},
       identity_num = #{record.identityNum,jdbcType=VARCHAR},
+      identity_img = #{record.identityImg,jdbcType=VARCHAR},
       insurance_purchases = #{record.insurancePurchases,jdbcType=VARCHAR},
       salary_details = #{record.salaryDetails,jdbcType=VARCHAR},
       address = #{record.address,jdbcType=VARCHAR},
@@ -440,6 +451,9 @@
       </if>
       <if test="identityNum != null" >
         identity_num = #{identityNum,jdbcType=VARCHAR},
+      </if>
+      <if test="identityImg != null" >
+        identity_img = #{identityImg,jdbcType=VARCHAR},
       </if>
       <if test="insurancePurchases != null" >
         insurance_purchases = #{insurancePurchases,jdbcType=VARCHAR},
@@ -502,6 +516,7 @@
       contact = #{contact,jdbcType=VARCHAR},
       identity_type = #{identityType,jdbcType=VARCHAR},
       identity_num = #{identityNum,jdbcType=VARCHAR},
+      identity_img = #{identityImg,jdbcType=VARCHAR},
       insurance_purchases = #{insurancePurchases,jdbcType=VARCHAR},
       salary_details = #{salaryDetails,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},

@@ -253,6 +253,42 @@ public class ApiController extends BasicController {
     }
 
 
+    @ApiOperation(value = "上传用户身份证图片", httpMethod = "POST", notes = "根据人员身份证号码,客户端id，设置该用户的头像")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "idNum", value = "人员身份证号码", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping(value = "/upload/idPic", consumes = "multipart/*", headers = "content-type=multipart/form-data")
+    public ResultEntity uploadIdPic(@ApiParam(value = "上传身份证图片", required = true) MultipartFile multipartFile,
+                                      HttpServletRequest request) {
+        try {
+            CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+            if (multipartResolver.isMultipart(request)){
+                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;
+                MultiValueMap<String,MultipartFile> multiFileMap = multiRequest.getMultiFileMap();
+                if(multiFileMap.size()>0){
+                    List<MultipartFile> fileSet = new LinkedList<>();
+                    for(Map.Entry<String, List<MultipartFile>> temp : multiFileMap.entrySet()){
+                        fileSet = temp.getValue();
+                    }
+                    if (fileSet.size()>0){
+                        multipartFile = fileSet.get(0);
+                    }
+                }
+            }
+
+            Map uploads = (Map) new FileController().uploads(multipartFile, request).getData();
+            Person person = personService.selectPersonByIdNum(request.getParameter("idNum"));
+            person.setIdentityImg(request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath"));
+            UserView userView = getAppLoginUser(request);
+            personService.savePerson(person, userView);
+            return ResultEntity.newResultEntity("上传成功", person.getIdentityImg());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultEntity.newErrEntity("设置异常");
+        }
+    }
+
     @ApiOperation(value = "获取试卷", httpMethod = "POST", notes = "根据用户Id,客户端id，随机生成一套试卷，题目数量调用者提供，试卷类型调用者提供[1:平时练习,2:月份考试]")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),

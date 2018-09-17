@@ -53,7 +53,7 @@ public class PersonServiceImpl extends BasicService implements PersonService {
     public List<Person> listAllPerson(Person person) {
         PersonExample example = new PersonExample();
         PersonExample.Criteria criteria = example.createCriteria().andDelFlagEqualTo(0);
-        if(StringUtils.isEmpty(person.getBlackFlag())||person.getBlackFlag()!=0){
+        if (StringUtils.isEmpty(person.getBlackFlag()) || person.getBlackFlag() != 0) {
             criteria.andBlackFlagEqualTo(person.getBlackFlag());
         }
 
@@ -65,18 +65,18 @@ public class PersonServiceImpl extends BasicService implements PersonService {
     public int savePerson(Person person, UserView userView) {
         int flag = 0;
         List<String> li = new ArrayList<>();
-        if (null!=person.getType()&&person.getType() != 5) {
+        if (null != person.getType() && person.getType() != 5) {
             //管理员设置，默认已审核！审核未审核只针对施工人员
             person.setStatus(1);
         }
 
-        if (!StringUtils.isEmpty(person.getName())&&!StringUtils.isEmpty(person.getIdentityNum())){
+        if (!StringUtils.isEmpty(person.getName()) && !StringUtils.isEmpty(person.getIdentityNum())) {
             //如果用户的姓名+身份证不为空，到库里查该人员，如果有该人员，做修改，否则进行下面的操作
             PersonExample example = new PersonExample();
             example.createCriteria().andIdentityNumEqualTo(person.getIdentityNum());
 
             List<Person> personLis = personMapper.selectByExample(example);
-            if(personLis.size()>0){
+            if (personLis.size() > 0) {
                 person.setId(personLis.get(0).getId());
                 flag = -2;
             }
@@ -128,8 +128,8 @@ public class PersonServiceImpl extends BasicService implements PersonService {
     public List<String> getAllSelect(int type) {
         List<String> selectList = apiMapper.getAllSelect(type);
         List<String> res = new ArrayList<>();
-        for (String select:selectList) {
-            if(!StringUtils.isEmpty(select)){
+        for (String select : selectList) {
+            if (!StringUtils.isEmpty(select)) {
                 res.add(select);
             }
         }
@@ -144,5 +144,17 @@ public class PersonServiceImpl extends BasicService implements PersonService {
         user.setUpdateBy(sysUserId);
         user.setUpdateDate(System.currentTimeMillis());
         return userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    public Person selectPersonByIdNum(String idNum) {
+        PersonExample personExample = new PersonExample();
+        personExample.createCriteria().andIdentityNumEqualTo(idNum);
+
+        List<Person> personList = personMapper.selectByExample(personExample);
+        if (personList.size() > 0) {
+            return personList.get(0);
+        }
+        return null;
     }
 }

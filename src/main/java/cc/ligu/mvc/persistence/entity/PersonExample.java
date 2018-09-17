@@ -73,7 +73,7 @@ public class PersonExample {
     }
 
     /**
-     * oa_person 2018-09-04
+     * oa_person 2018-09-17
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -723,6 +723,76 @@ public class PersonExample {
 
         public Criteria andIdentityNumNotBetween(String value1, String value2) {
             addCriterion("identity_num not between", value1, value2, "identityNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgIsNull() {
+            addCriterion("identity_img is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgIsNotNull() {
+            addCriterion("identity_img is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgEqualTo(String value) {
+            addCriterion("identity_img =", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgNotEqualTo(String value) {
+            addCriterion("identity_img <>", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgGreaterThan(String value) {
+            addCriterion("identity_img >", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgGreaterThanOrEqualTo(String value) {
+            addCriterion("identity_img >=", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgLessThan(String value) {
+            addCriterion("identity_img <", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgLessThanOrEqualTo(String value) {
+            addCriterion("identity_img <=", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgLike(String value) {
+            addCriterion("identity_img like", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgNotLike(String value) {
+            addCriterion("identity_img not like", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgIn(List<String> values) {
+            addCriterion("identity_img in", values, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgNotIn(List<String> values) {
+            addCriterion("identity_img not in", values, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgBetween(String value1, String value2) {
+            addCriterion("identity_img between", value1, value2, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgNotBetween(String value1, String value2) {
+            addCriterion("identity_img not between", value1, value2, "identityImg");
             return (Criteria) this;
         }
 
@@ -1801,6 +1871,11 @@ public class PersonExample {
             return (Criteria) this;
         }
 
+        public Criteria andIdentityImgLikeInsensitive(String value) {
+            addCriterion("upper(identity_img) like", value.toUpperCase(), "identityImg");
+            return (Criteria) this;
+        }
+
         public Criteria andInsurancePurchasesLikeInsensitive(String value) {
             addCriterion("upper(insurance_purchases) like", value.toUpperCase(), "insurancePurchases");
             return (Criteria) this;
@@ -1853,7 +1928,7 @@ public class PersonExample {
     }
 
     /**
-     * oa_person 2018-09-04
+     * oa_person 2018-09-17
      */
     public static class Criterion {
         private String condition;
