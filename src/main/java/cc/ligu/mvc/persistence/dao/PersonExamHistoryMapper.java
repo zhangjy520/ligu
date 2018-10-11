@@ -3,8 +3,9 @@ package cc.ligu.mvc.persistence.dao;
 import cc.ligu.mvc.persistence.entity.PersonExamHistory;
 import cc.ligu.mvc.persistence.entity.PersonExamHistoryExample;
 import cc.ligu.mvc.persistence.entity.PersonExamHistoryWithBLOBs;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface PersonExamHistoryMapper {
     int deleteByExample(PersonExamHistoryExample example);
@@ -32,4 +33,6 @@ public interface PersonExamHistoryMapper {
     int updateByPrimaryKeyWithBLOBs(PersonExamHistoryWithBLOBs record);
 
     int updateByPrimaryKey(PersonExamHistory record);
+
+    List<PersonExamHistoryWithBLOBs> getExamReport(@Param("examTime")String examTime,@Param("examType")int examType);
 }

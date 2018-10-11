@@ -3,6 +3,7 @@ package cc.ligu.mvc.service;
 import cc.ligu.mvc.modelView.ScoreView;
 import cc.ligu.mvc.persistence.entity.*;
 import com.github.pagehelper.PageInfo;
+import java.util.Map;
 
 import java.util.List;
 
@@ -23,13 +24,13 @@ public interface QuestionService {
 
     List<Question> getQuestionListByIds(String ids);
 
-    int saveWrongExam(String json,UserView userView) throws Exception;
+    int saveWrongExam(String json, UserView userView) throws Exception;
 
     int saveWrongQuestion(PersonWrongQuestion personWrongQuestion) throws Exception;
 
     List<Question> wrongQuestionList(int personId);
 
-    int removeWrongQuestion(String questionIds,int personId);
+    int removeWrongQuestion(String questionIds, int personId);
 
     QuestionVersion selectVersion();
 
@@ -39,5 +40,7 @@ public interface QuestionService {
 
     List<ScoreView> getMonthScoreList(int year, int month);
 
-     ScoreView personMonthScoreDetail(int personId, int year, int month);
+    ScoreView personMonthScoreDetail(int personId, int year, int month);
+
+    Map getExamReport();
 }

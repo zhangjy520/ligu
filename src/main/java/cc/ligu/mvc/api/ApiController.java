@@ -57,6 +57,8 @@ public class ApiController extends BasicController {
     @Resource
     ICompanyService iCompanyService;
     @Resource
+    LoginLogService loginLogService;
+    @Resource
     CacheService cacheService;
 
     @ApiIgnore
@@ -84,7 +86,18 @@ public class ApiController extends BasicController {
     public ResultEntity applogOut(HttpServletRequest request) {
         String clientId = getParamVal(request, "clientId");
         try {
-            request.getSession().removeAttribute(clientId);
+//            request.getSession().removeAttribute(clientId);
+            UserView userView = (UserView) cacheService.getCacheByKey(clientId);
+
+            cacheService.removeCache(clientId);
+
+            LoginLog loginLog = new LoginLog();
+            loginLog.setSysUserId(userView.getId());
+            loginLog.setRefPersonId(userView.getRefId());
+            loginLog.setLoginStatus(1);//0登录中 1已经退出 2其他
+            loginLog.setLogoutDate(System.currentTimeMillis());
+
+            loginLogService.saveLoginLog(loginLog);
         } catch (Exception e) {
             e.printStackTrace();
             return ResultEntity.newErrEntity("服务器内部异常");
@@ -109,6 +122,18 @@ public class ApiController extends BasicController {
         } else {
             //SessionTool.setUserInfo2Session(request, clientId, user);//将clientId作为key,
             cacheService.addCache(clientId, user);
+            LoginLog loginLog = new LoginLog();
+            loginLog.setLoginSource(0);//0 app  1 pc
+            loginLog.setLoginId(clientId);
+            loginLog.setSysUserId(user.getId());
+            loginLog.setRefPersonId(user.getRefId());
+            loginLog.setUsername(user.getUsername());
+            loginLog.setName(user.getName());
+            loginLog.setLoginStatus(0);//0登录中 1已经退出 2其他
+            loginLog.setLoginDate(System.currentTimeMillis());
+
+            loginLogService.saveLoginLog(loginLog);
+
             return ResultEntity.newResultEntity(user);
         }
     }
@@ -155,8 +180,8 @@ public class ApiController extends BasicController {
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "remark", value = "拉黑原因", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
     })
-    @RequestMapping(value = "/add/black",consumes = "multipart/*", headers = "content-type=multipart/form-data")
-    public ResultEntity addToBlack(@ApiParam(value = "上传身份证图片", required = true) MultipartFile multipartFile,HttpServletRequest request) {
+    @RequestMapping(value = "/add/black", consumes = "multipart/*", headers = "content-type=multipart/form-data")
+    public ResultEntity addToBlack(@ApiParam(value = "上传身份证图片", required = true) MultipartFile multipartFile, HttpServletRequest request) {
         try {
             String name = getParamVal(request, "name");
             String num = getParamVal(request, "num");
@@ -167,15 +192,15 @@ public class ApiController extends BasicController {
             }
 
             CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
-            if (multipartResolver.isMultipart(request)){
-                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;
-                MultiValueMap<String,MultipartFile> multiFileMap = multiRequest.getMultiFileMap();
-                if(multiFileMap.size()>0){
+            if (multipartResolver.isMultipart(request)) {
+                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+                MultiValueMap<String, MultipartFile> multiFileMap = multiRequest.getMultiFileMap();
+                if (multiFileMap.size() > 0) {
                     List<MultipartFile> fileSet = new LinkedList<>();
-                    for(Map.Entry<String, List<MultipartFile>> temp : multiFileMap.entrySet()){
+                    for (Map.Entry<String, List<MultipartFile>> temp : multiFileMap.entrySet()) {
                         fileSet = temp.getValue();
                     }
-                    if (fileSet.size()>0){
+                    if (fileSet.size() > 0) {
                         multipartFile = fileSet.get(0);
                     }
                 }
@@ -226,15 +251,15 @@ public class ApiController extends BasicController {
                                       HttpServletRequest request) {
         try {
             CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
-            if (multipartResolver.isMultipart(request)){
-                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;
-                MultiValueMap<String,MultipartFile> multiFileMap = multiRequest.getMultiFileMap();
-                if(multiFileMap.size()>0){
+            if (multipartResolver.isMultipart(request)) {
+                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+                MultiValueMap<String, MultipartFile> multiFileMap = multiRequest.getMultiFileMap();
+                if (multiFileMap.size() > 0) {
                     List<MultipartFile> fileSet = new LinkedList<>();
-                    for(Map.Entry<String, List<MultipartFile>> temp : multiFileMap.entrySet()){
+                    for (Map.Entry<String, List<MultipartFile>> temp : multiFileMap.entrySet()) {
                         fileSet = temp.getValue();
                     }
-                    if (fileSet.size()>0){
+                    if (fileSet.size() > 0) {
                         multipartFile = fileSet.get(0);
                     }
                 }
@@ -260,18 +285,18 @@ public class ApiController extends BasicController {
     })
     @RequestMapping(value = "/upload/idPic", consumes = "multipart/*", headers = "content-type=multipart/form-data")
     public ResultEntity uploadIdPic(@ApiParam(value = "上传身份证图片", required = true) MultipartFile multipartFile,
-                                      HttpServletRequest request) {
+                                    HttpServletRequest request) {
         try {
             CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
-            if (multipartResolver.isMultipart(request)){
-                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;
-                MultiValueMap<String,MultipartFile> multiFileMap = multiRequest.getMultiFileMap();
-                if(multiFileMap.size()>0){
+            if (multipartResolver.isMultipart(request)) {
+                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+                MultiValueMap<String, MultipartFile> multiFileMap = multiRequest.getMultiFileMap();
+                if (multiFileMap.size() > 0) {
                     List<MultipartFile> fileSet = new LinkedList<>();
-                    for(Map.Entry<String, List<MultipartFile>> temp : multiFileMap.entrySet()){
+                    for (Map.Entry<String, List<MultipartFile>> temp : multiFileMap.entrySet()) {
                         fileSet = temp.getValue();
                     }
-                    if (fileSet.size()>0){
+                    if (fileSet.size() > 0) {
                         multipartFile = fileSet.get(0);
                     }
                 }
@@ -304,7 +329,7 @@ public class ApiController extends BasicController {
             List<Question> questionList = questionService.selectRandomQuestionByCount(count);
             UserView userView = getAppLoginUser(request);
             StringBuilder questionIds = new StringBuilder();
-            for (Question question: questionList) {
+            for (Question question : questionList) {
                 questionIds.append(question.getId() + ",");
             }
             PersonExamHistoryWithBLOBs record = new PersonExamHistoryWithBLOBs();
@@ -388,7 +413,7 @@ public class ApiController extends BasicController {
             JSONArray array = JSONArray.fromObject(jsonStr);
             List<PersonWrongQuestion> list = JSONArray.toList(array, PersonWrongQuestion.class);// 过时方法
             String wrongIds = "";
-            for (PersonWrongQuestion wrongQuestion: list) {
+            for (PersonWrongQuestion wrongQuestion : list) {
                 wrongIds += wrongQuestion.getQuestionId() + ",";
                 wrongQuestion.setPersonId(userView.getRefId());
                 questionService.saveWrongQuestion(wrongQuestion);//将错题添加到错题库
@@ -620,15 +645,15 @@ public class ApiController extends BasicController {
         String url = "";
         try {
             CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
-            if (multipartResolver.isMultipart(request)){
-                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;
-                MultiValueMap<String,MultipartFile> multiFileMap = multiRequest.getMultiFileMap();
-                if(multiFileMap.size()>0){
+            if (multipartResolver.isMultipart(request)) {
+                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+                MultiValueMap<String, MultipartFile> multiFileMap = multiRequest.getMultiFileMap();
+                if (multiFileMap.size() > 0) {
                     List<MultipartFile> fileSet = new LinkedList<>();
-                    for(Map.Entry<String, List<MultipartFile>> temp : multiFileMap.entrySet()){
+                    for (Map.Entry<String, List<MultipartFile>> temp : multiFileMap.entrySet()) {
                         fileSet = temp.getValue();
                     }
-                    if (fileSet.size()>0){
+                    if (fileSet.size() > 0) {
                         multipartFile = fileSet.get(0);
                     }
                 }
@@ -707,8 +732,8 @@ public class ApiController extends BasicController {
             int month = getParamInt(request, "month");
             int year = getParamInt(request, "year");
             UserView userView = getAppLoginUser(request);
-            ScoreView res = questionService.personMonthScoreDetail(userView.getRefId(),year, month);
-            if (res==null){
+            ScoreView res = questionService.personMonthScoreDetail(userView.getRefId(), year, month);
+            if (res == null) {
                 return ResultEntity.newErrEntity("您本月暂时未参加考试，无成绩详情");
             }
             return ResultEntity.newResultEntity(res);
@@ -719,6 +744,37 @@ public class ApiController extends BasicController {
     }
 
 
+    @ApiOperation(value = "查看app用户活跃情况", httpMethod = "POST", notes = "查询app当天的登录过系统用户数和正在使用app的用户数")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping("/query/login/info")
+    public ResultEntity queryLoginInfo(HttpServletRequest request) {
+
+        try {
+            Map res = loginLogService.loginReport();
+            return ResultEntity.newResultEntity(res);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultEntity.newErrEntity("查看app用户活跃情况发生错误");
+        }
+    }
+
+    @ApiOperation(value = "查看当前月考试情况", httpMethod = "POST", notes = "查询当前月的考试情况，返回当前月参加考试的人数,通过考试的人数")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping("/query/exam/info")
+    public ResultEntity queryMonthExamDetail(HttpServletRequest request) {
+
+        try {
+            Map res = questionService.getExamReport();
+            return ResultEntity.newResultEntity(res);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultEntity.newErrEntity("查看当前月考试情况发生错误");
+        }
+    }
 
     protected UserView getAppLoginUser(HttpServletRequest request) {
         UserView UserView = (UserView) cacheService.getCacheByKey(request.getParameter("clientId"));

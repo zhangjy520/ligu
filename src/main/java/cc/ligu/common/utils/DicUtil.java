@@ -12,6 +12,9 @@ import java.util.*;
  */
 public class DicUtil {
 
+    //通过考试分值
+    public static Integer PASS_SCORE = 90;
+
     //题目类别：1单选题 2多选题 3其他
     public static List<KVEntity> questionTypeList = new ArrayList<KVEntity>();
     //题目难度：1简单 2一般 3困难

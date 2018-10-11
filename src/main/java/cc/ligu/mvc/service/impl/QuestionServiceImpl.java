@@ -250,16 +250,16 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
                 if (scoreView.getScore().compareTo(resList.get(resList.indexOf(scoreView)).getScore()) > 0) {
                     //如果当前的成绩大于已录入集合的成绩，刷新成绩
                     resList.get(resList.indexOf(scoreView)).setScore(scoreView.getScore());
-                }else {
+                } else {
                     continue;
                 }
-            }else {
+            } else {
                 resList.add(scoreView);
             }
         }
         Collections.sort(resList);
         for (int i = 0; i < resList.size(); i++) {
-            resList.get(i).setOrder(i+1);
+            resList.get(i).setOrder(i + 1);
         }
         return resList;
 
@@ -267,13 +267,46 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
 
     @Override
     public ScoreView personMonthScoreDetail(int personId, int year, int month) {
-        List<ScoreView> res = getMonthScoreList(year,month);
+        List<ScoreView> res = getMonthScoreList(year, month);
         for (ScoreView scoreView : res) {
-            if (scoreView.getPersonId() == personId){
+            if (scoreView.getPersonId() == personId) {
                 return scoreView;
             }
         }
         return null;
+    }
+
+    @Override
+    public Map getExamReport() {
+        Date monthStart = doGetMonthStart(Calendar.getInstance());
+        //获取当月考试的所有用户考试信息
+        List<PersonExamHistoryWithBLOBs> monthExamResult = personExamHistoryMapper.getExamReport(String.valueOf(monthStart.getTime()), 2);
+
+        List<PersonExamHistoryWithBLOBs> passList = new ArrayList<>();
+        for (PersonExamHistoryWithBLOBs bloBs : monthExamResult) {
+            if (!StringUtils.isEmpty(bloBs.getObtainScore())) {
+                //分值不为空
+                if (Integer.valueOf(bloBs.getObtainScore()) >= DicUtil.PASS_SCORE) {
+                    //获得分数大于设定通过分数
+                    passList.add(bloBs);
+                }
+            }
+        }
+
+        Map result = new HashMap();
+        result.put("examUserS", monthExamResult.size());//今日活跃度
+        result.put("passUsers", passList.size());//当前正在登录的数量
+        return result;
+    }
+
+    private static Date doGetMonthStart(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+
+        return calendar.getTime();
     }
 
 
