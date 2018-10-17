@@ -96,6 +96,6 @@ public class YuGiOh
 
     public static void main ( String[] args )
     {
-        convertSuffix ("C:\\Users\\shenyy\\Desktop\\壁纸\\头像 - 副本", "png|jpg", "png");
+        convertSuffix ("C:\\Users\\shenyy\\Desktop\\壁纸\\头像", "png|jpg|jpeg", "png");
     }
 }

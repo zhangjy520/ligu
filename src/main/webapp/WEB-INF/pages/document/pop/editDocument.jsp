@@ -98,7 +98,7 @@
             fileSingleSizeLimit: 250 * 1024 * 1024,
             accept: {
                 title: "files",
-                extensions: "avi,rmvb,rm,flv,mp4,mov,pdf,wps,rtf,doc,txt,docx,ppt,xlsx,bmp,gif,jpg,pic,png,tif"
+                extensions: "pptx,docx,xlsx,avi,rmvb,rm,flv,mp4,mov,pdf,wps,rtf,doc,txt,docx,ppt,xlsx,bmp,gif,jpg,pic,png,tif"
             },
         });
 

@@ -68,6 +68,7 @@ public class SourceController extends BasicController {
             }
             sourceService.saveSource(source,getLoginUser());
         } catch (Exception e) {
+            e.printStackTrace();
             return DWZResponseUtil.callbackFail("300", "保存资源失败", "");
         }
         return DWZResponseUtil.callbackSuccess("保存资源成功", "_blank");
