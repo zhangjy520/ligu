@@ -412,10 +412,12 @@ public class Person implements Serializable {
     }
 
     /**
-     * 获取承包公司
+     * 获取所属中标单位
      *
-     * @return company 承包公司
+     * @return company 所属中标单位
      */
+
+//    @ExcelField(title = "所属中标单位", align = 2, sort = 11, groups = {1, 2})
     public String getCompany() {
         return company;
     }

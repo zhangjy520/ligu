@@ -35,10 +35,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -58,6 +55,8 @@ public class ApiController extends BasicController {
     ICompanyService iCompanyService;
     @Resource
     LoginLogService loginLogService;
+    @Resource
+    AppConfigService appConfigService;
     @Resource
     CacheService cacheService;
 
@@ -773,6 +772,29 @@ public class ApiController extends BasicController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResultEntity.newErrEntity("查看当前月考试情况发生错误");
+        }
+    }
+
+    @ApiOperation(value = "获取欢迎页面图片", httpMethod = "POST", notes = "获取欢迎页面,不同分辨率的图片")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping("/welcome/pics")
+    public ResultEntity getWelcomePages(HttpServletRequest request) {
+        AppConfig appConfig = new AppConfig();
+        appConfig.setConfigType("welcome_page_pic");
+
+        try {
+            List<AppConfig> configList = appConfigService.configList(appConfig);
+
+            Map map = new HashMap();
+            for (AppConfig config : configList) {
+                map.put(config.getConfigKey(), config.getConfigValue());
+            }
+            return ResultEntity.newResultEntity(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultEntity.newErrEntity("获取欢迎页面图片发生错误");
         }
     }
 

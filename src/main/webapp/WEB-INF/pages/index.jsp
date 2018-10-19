@@ -151,6 +151,12 @@
                             </li>
                         </shiro:hasAnyRoles>
 
+                        <li><a>app个性化设置</a>
+                            <ul>
+                                <li><a href="${ctx}/appConfig/index" target="navTab">app欢迎页</a></li>
+                            </ul>
+                        </li>
+
 
                     </ul>
                 </div>

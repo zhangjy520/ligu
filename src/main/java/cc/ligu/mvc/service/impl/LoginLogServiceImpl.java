@@ -63,7 +63,6 @@ public class LoginLogServiceImpl implements LoginLogService {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        calendar.set(Calendar.DAY_OF_MONTH, 0);
 
         return calendar.getTime();
     }
