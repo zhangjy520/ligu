@@ -49,7 +49,7 @@ public class LoginController extends BasicController {
         try {
             loginUser.login(token);
         } catch (UnknownAccountException uae) {
-            errmsg = "账户不存在";
+            errmsg = "用户名或者密码错误";
         } catch (IncorrectCredentialsException ice) {
             errmsg = "用户名或者密码错误";
         } catch (LockedAccountException lae) {

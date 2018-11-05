@@ -365,7 +365,7 @@
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
         </table>-->
-         <table schema="ip" tableName="app_config" domainObjectName="AppConfig"
+         <!--<table schema="ip" tableName="app_config" domainObjectName="AppConfig"
               enableCountByExample="false"
               enableUpdateByExample="true"
               enableDeleteByExample="true"
@@ -373,6 +373,52 @@
               selectByExampleQueryId="true">
            <property name="useActualColumnNames" value="false"/>
            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-       </table>
+       </table>-->
+        <!--<table schema="gzsm" tableName="pm_managed_object" domainObjectName="PmManagedObject"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+        <table schema="gzsm" tableName="pm_modify_history" domainObjectName="PmModifyHistory"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="edit_desc" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="edit_remark" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
+        <!--<table schema="gzsm" tableName="pm_job" domainObjectName="PmJob"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="role_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
+
+        <table schema="gzsm" tableName="pm_managed_object" domainObjectName="PmManagedObject"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="role_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>
+        <!--<table schema="gzsm" tableName="pm_role" domainObjectName="PmRole"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="group_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
     </context>
 </generatorConfiguration>

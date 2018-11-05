@@ -3,6 +3,7 @@ package cc.ligu.mvc.controller;
 import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.entity.ResultEntity;
 import cc.ligu.common.utils.FileUtils;
+import cc.ligu.common.utils.VFSUtil;
 import cc.ligu.common.utils.ZipUtils;
 import cc.ligu.common.utils.ffmpeg.ConverVideoUtils;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -490,6 +491,48 @@ public class FileController extends BasicController {
 
 
         return null;
+    }
+
+    @RequestMapping(value = "/pic/show", method = RequestMethod.GET)
+    public void showPicture(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String picPath = getParamVal(request, "picPath");
+        File file = null;
+        if (picPath != "") {
+            if (picPath.indexOf(FileUtils.VFS_ROOT_PATH) >= 0) {
+                file = new File(picPath);
+            } else {
+                file = new File(FileUtils.VFS_ROOT_PATH + picPath);
+            }
+        } else {
+            String filePath = request.getSession().getServletContext().getRealPath("/assetsNew/images/uploading-icon.png");
+            file = new File(filePath);
+        }
+
+        if (!file.exists()) return;      //再次判断，避免异常
+        response.setContentType("multipart/form-data");
+        InputStream reader = null;
+        try {
+            reader = VFSUtil.getInputStream(file, true);
+            byte[] buf = new byte[1024];
+            int len = 0;
+
+            OutputStream out = response.getOutputStream();
+
+            while ((len = reader.read(buf)) != -1) {
+                out.write(buf, 0, len);
+            }
+            out.flush();
+        } catch (Exception ex) {
+            logger.error("显示图片时发生错误:" + ex.getMessage(), ex);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (Exception ex) {
+                    logger.error("关闭文件流出错", ex);
+                }
+            }
+        }
     }
 }
 // TODO: 18-4-9  编辑器错误的返回值
