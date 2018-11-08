@@ -6,6 +6,7 @@ import cc.ligu.common.utils.FileUtils;
 import cc.ligu.common.utils.VFSUtil;
 import cc.ligu.common.utils.ZipUtils;
 import cc.ligu.common.utils.ffmpeg.ConverVideoUtils;
+import cc.ligu.mvc.common.QtFastStart;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -46,49 +47,62 @@ public class FileController extends BasicController {
 
     /**
      * 文件上传
+     *
      * @param file
      * @throws Exception
      */
-        @ResponseBody
-        @RequestMapping(value = "/upload", method = RequestMethod.POST)
-        public ResultEntity uploads(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
+    @ResponseBody
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public ResultEntity uploads(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
 
-            FileOutputStream fos = null;
-            InputStream fis = null;
-            try {
-                String fullPath = FileUtils.VFS_ROOT_PATH + FileUtils.SOURCE_ATTACH;
-                File dir = new File(fullPath);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-                String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-                String fileName = System.currentTimeMillis()  + suffix;
-                String absPath = FileUtils.VFS_ROOT_PATH + FileUtils.SOURCE_ATTACH + fileName;
-                String fileRequestPath = FileUtils.SOURCE_ATTACH + fileName;
+        FileOutputStream fos = null;
+        InputStream fis = null;
+        try {
+            String fullPath = FileUtils.VFS_ROOT_PATH + FileUtils.SOURCE_ATTACH;
+            File dir = new File(fullPath);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+            String fileName = System.currentTimeMillis() + suffix;
+            String absPath = FileUtils.VFS_ROOT_PATH + FileUtils.SOURCE_ATTACH + fileName;
+            String fileRequestPath = FileUtils.SOURCE_ATTACH + fileName;
 
-                fis = file.getInputStream();
-                File f = new File(absPath);
-                fos = new FileOutputStream(f);
-                byte[] b = new byte[1024];
-                int nRead = 0;
-                while ((nRead = fis.read(b)) != -1) {
-                    fos.write(b, 0, nRead);
-                }
-                fos.flush();
+            //如果是mp4视频格式，将moov模块移动到视频头部，可以实现边下边播放
+            if (".mp4".equals(suffix) || ".MP4".equals(suffix) || ".Mp4".equals(suffix)) {
+                QtFastStart.fastStart(file.getInputStream(), new FileOutputStream(new File(absPath)));
 
                 Map<String, String> pathMap = new HashMap<>();
                 pathMap.put("fileName", file.getOriginalFilename());
                 pathMap.put("fileRequestPath", fileRequestPath);
                 pathMap.put("suffix", suffix);
                 return ResultEntity.newResultEntity(pathMap);
-            } catch (Exception e) {
-                logger.error("上传文件失败", e);
-            } finally {
-                fos.close();
-                fis.close();
             }
-            return ResultEntity.newErrEntity();
+
+            fis = file.getInputStream();
+            File f = new File(absPath);
+            fos = new FileOutputStream(f);
+            byte[] b = new byte[1024];
+            int nRead = 0;
+            while ((nRead = fis.read(b)) != -1) {
+                fos.write(b, 0, nRead);
+            }
+            fos.flush();
+
+
+            Map<String, String> pathMap = new HashMap<>();
+            pathMap.put("fileName", file.getOriginalFilename());
+            pathMap.put("fileRequestPath", fileRequestPath);
+            pathMap.put("suffix", suffix);
+            return ResultEntity.newResultEntity(pathMap);
+        } catch (Exception e) {
+            logger.error("上传文件失败", e);
+        } finally {
+            fos.close();
+            fis.close();
         }
+        return ResultEntity.newErrEntity();
+    }
 
     @ResponseBody
     @RequestMapping(value = "/delete")
@@ -351,7 +365,7 @@ public class FileController extends BasicController {
 
     @ResponseBody
     @RequestMapping(value = "kindeditor/upload")
-    public Object kindeditorUpload(HttpServletRequest request,HttpServletResponse response){
+    public Object kindeditorUpload(HttpServletRequest request, HttpServletResponse response) {
         String savePath = FileUtils.VFS_ROOT_PATH + "kindeditor/";
         //定义允许上传的文件扩展名
         HashMap<String, String> extMap = new HashMap<String, String>();
@@ -407,26 +421,23 @@ public class FileController extends BasicController {
         } catch (FileUploadException e) {
             e.printStackTrace();
         }
-        long  startTime=System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
         //将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
-        CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver(
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
                 request.getSession().getServletContext());
         //检查form中是否有enctype="multipart/form-data"
-        if(multipartResolver.isMultipart(request))
-        {
+        if (multipartResolver.isMultipart(request)) {
             //将request变成多部分request
-            MultipartHttpServletRequest multiRequest=(MultipartHttpServletRequest)request;
+            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
             //获取multiRequest 中所有的文件名
-            Iterator iter=multiRequest.getFileNames();
+            Iterator iter = multiRequest.getFileNames();
 
-            while(iter.hasNext())
-            {
+            while (iter.hasNext()) {
                 //一次遍历所有文件
-                MultipartFile file=multiRequest.getFile(iter.next().toString());
-                if(file!=null)
-                {
-                    String path=savePath+System.currentTimeMillis()+"_"+file.getOriginalFilename();
-                    File file1=new File(path);
+                MultipartFile file = multiRequest.getFile(iter.next().toString());
+                if (file != null) {
+                    String path = savePath + System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                    File file1 = new File(path);
                     if (!file1.exists()) {
                         file1.mkdirs();
                     }
@@ -438,8 +449,8 @@ public class FileController extends BasicController {
                     }
                     JsonObject obj = new JsonObject();
                     obj.addProperty("error", 0);
-                    obj.addProperty("url", request.getContextPath()+"/file/pic/show?picPath="+path);
-                    try (PrintWriter writer = response.getWriter()){
+                    obj.addProperty("url", request.getContextPath() + "/file/pic/show?picPath=" + path);
+                    try (PrintWriter writer = response.getWriter()) {
                         Gson gson = new Gson();
                         writer.write(gson.toJson(obj));
                         writer.flush();
@@ -455,14 +466,14 @@ public class FileController extends BasicController {
 
     @ResponseBody
     @RequestMapping(value = "downloadzip")
-    public ResultEntity downloadZip(HttpServletRequest request,HttpServletResponse response){
-        String htmlPath= getParamVal(request,"htmlPath");
+    public ResultEntity downloadZip(HttpServletRequest request, HttpServletResponse response) {
+        String htmlPath = getParamVal(request, "htmlPath");
 
 
         /** 1.创建临时文件夹  */
         String rootPath = request.getSession().getServletContext().getRealPath("/");
         File temDir = new File(rootPath + "/" + UUID.randomUUID().toString().replaceAll("-", ""));
-        if(!temDir.exists()){
+        if (!temDir.exists()) {
             temDir.mkdirs();
         }
 
@@ -476,7 +487,7 @@ public class FileController extends BasicController {
         /** 4.调用工具类，下载zip压缩包 */
         // 这里我们不需要保留目录结构
         try {
-            ZipUtils.toZip(htmlPath, response.getOutputStream(),false);
+            ZipUtils.toZip(htmlPath, response.getOutputStream(), false);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -495,6 +506,7 @@ public class FileController extends BasicController {
 
     @RequestMapping(value = "/pic/show", method = RequestMethod.GET)
     public void showPicture(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.setHeader("Access-Control-Allow-Origin", "*");
         String picPath = getParamVal(request, "picPath");
         File file = null;
         if (picPath != "") {

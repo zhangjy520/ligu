@@ -3,6 +3,7 @@ package cc.ligu.common.utils.excel;
 import cc.ligu.common.utils.DicUtil;
 import cc.ligu.common.utils.Reflections;
 import cc.ligu.common.utils.excel.annotation.ExcelField;
+import cc.ligu.mvc.persistence.entity.GongwuYuan;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -397,7 +398,17 @@ public class ImportExcel {
 		}
 	}
 
+	public static void main(String[] args) throws IllegalAccessException, InstantiationException, IOException, InvalidFormatException {
+		ImportExcel importExcel = new ImportExcel("C:\\Users\\shenyy\\Desktop\\hubei.xlsx", 0, 0);
+		List<GongwuYuan> list = importExcel.getDataList(GongwuYuan.class, 1);
 
+		for (GongwuYuan gong : list) {
+			System.out.println(gong);
+		}
+
+
+
+	}
 //	/**
 //	 * 导入测试
 //	 */

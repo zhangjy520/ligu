@@ -402,14 +402,13 @@
             <columnOverride column="role_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>-->
 
-        <table schema="gzsm" tableName="pm_managed_object" domainObjectName="PmManagedObject"
+        <table schema="gzsm" tableName="sl_process_time_record" domainObjectName="ProcessTimeRecord"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
                enableSelectByExample="true"
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
-            <columnOverride column="role_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>
         <!--<table schema="gzsm" tableName="pm_role" domainObjectName="PmRole"
                enableCountByExample="false"
