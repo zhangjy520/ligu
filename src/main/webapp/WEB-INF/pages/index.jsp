@@ -156,7 +156,11 @@
                                 <li><a href="${ctx}/appConfig/index" target="navTab">app欢迎页</a></li>
                             </ul>
                         </li>
-
+                        <li><a>工程完成报告</a>
+                            <ul>
+                                <li><a href="${ctx}/projectReport/index" target="navTab">工程完成报告</a></li>
+                            </ul>
+                        </li>
 
                     </ul>
                 </div>

@@ -402,14 +402,23 @@
             <columnOverride column="role_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>-->
 
-        <table schema="gzsm" tableName="sl_process_time_record" domainObjectName="ProcessTimeRecord"
+        <!--<table schema="gzsm" tableName="sl_process_time_record" domainObjectName="ProcessTimeRecord"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
                enableSelectByExample="true"
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
-        </table>
+        </table>-->
+       <!-- <table schema="gzsm" tableName="sl_overtime_task" domainObjectName="SLAOverTimeTask"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="job_data" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
         <!--<table schema="gzsm" tableName="pm_role" domainObjectName="PmRole"
                enableCountByExample="false"
                enableUpdateByExample="true"
@@ -419,5 +428,17 @@
             <property name="useActualColumnNames" value="false"/>
             <columnOverride column="group_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>-->
+        <table schema="ligu" tableName="project_report" domainObjectName="ProjectReport"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="project_pic" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="project_desc" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="project_attach" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="manager" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>
     </context>
 </generatorConfiguration>

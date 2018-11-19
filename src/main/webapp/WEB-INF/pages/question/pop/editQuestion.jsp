@@ -30,7 +30,7 @@
 
             <div class="unit">
                 <label>题目内容：</label>
-                <textarea name="content" class="required textInput" cols="80" rows="2">${question.content}</textarea>
+                <textarea name="content" class="required textInput" cols="60" rows="2">${question.content}</textarea>
             </div>
 
             <%--<div class="unit">

@@ -15,6 +15,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,7 +55,6 @@ public class FileController extends BasicController {
     @ResponseBody
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public ResultEntity uploads(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
-
         FileOutputStream fos = null;
         InputStream fis = null;
         try {
@@ -102,6 +102,38 @@ public class FileController extends BasicController {
             fis.close();
         }
         return ResultEntity.newErrEntity();
+    }
+
+    /**
+     * 多文件上传
+     *
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "/uploadMuti", method = RequestMethod.POST)
+    public ResultEntity uploadMuti(HttpServletRequest request) throws Exception {
+        List result = new ArrayList();
+        String files = "";
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+        if (multipartResolver.isMultipart(request)) {
+            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+            MultiValueMap<String, MultipartFile> multiFileMap = multiRequest.getMultiFileMap();
+            if (multiFileMap.size() > 0) {
+                List<MultipartFile> fileSet = new LinkedList<>();
+                for (Map.Entry<String, List<MultipartFile>> temp : multiFileMap.entrySet()) {
+                    fileSet = temp.getValue();
+                }
+                if (fileSet.size() > 0) {
+                    for (MultipartFile file : fileSet) {
+                        Map uploads = (Map) uploads(file, request).getData();
+                        result.add(uploads.get("fileRequestPath"));
+                    }
+                    System.out.println();
+                }
+            }
+        }
+        return ResultEntity.newResultEntity(result);
+
     }
 
     @ResponseBody

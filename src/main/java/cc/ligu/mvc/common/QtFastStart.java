@@ -326,7 +326,7 @@ public class QtFastStart {
 
     public static void main(String[] args) {
         try {
-            String path = "C:\\Users\\shenyy\\Desktop\\待转换视频\\1540710345332.mp4";
+            String path = "C:\\Users\\shenyy\\Desktop\\slow.mp4";
             InputStream in = new FileInputStream(path);
             FileOutputStream out = new FileOutputStream(path+"_");
             boolean success = QtFastStart.fastStart(in, out);
