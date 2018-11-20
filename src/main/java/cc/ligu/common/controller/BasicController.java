@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public abstract class BasicController extends LoggerWrapper {
 
-    protected void validateClient(HttpServletRequest request,String clientId){
+    protected void validateClient(HttpServletRequest request, String clientId) {
         Object userView = request.getSession().getAttribute(clientId);
     }
 
@@ -40,7 +40,11 @@ public abstract class BasicController extends LoggerWrapper {
         if (null == request) return _pageSize;
 
         String pageSize = getParamVal(request, "numPerPage");
-        if (StringUtils.isEmpty(pageSize)) return _pageSize;
+        if (StringUtils.isEmpty(pageSize)) {
+            pageSize = getParamVal(request, "pageSize");
+            if (StringUtils.isEmpty(pageSize))
+                return _pageSize;
+        }
 
         _pageSize = NumberConvertUtil.convertS2I(pageSize);
         if (_pageSize == 0) {
@@ -49,10 +53,12 @@ public abstract class BasicController extends LoggerWrapper {
 
         return _pageSize;
     }
-    protected int getParamInt(HttpServletRequest request,String key){
-        String value = getParamVal(request,key,"0");
+
+    protected int getParamInt(HttpServletRequest request, String key) {
+        String value = getParamVal(request, key, "0");
         return Integer.valueOf(value);
     }
+
     protected String getParamVal(HttpServletRequest request, String key) {
         return getParamVal(request, key, "");
     }
