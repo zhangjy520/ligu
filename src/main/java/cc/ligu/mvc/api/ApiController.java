@@ -59,6 +59,8 @@ public class ApiController extends BasicController {
     AppConfigService appConfigService;
     @Resource
     CacheService cacheService;
+    @Resource
+    ProjectReportService projectReportService;
 
     @ApiIgnore
     @ApiOperation(value = "通过客户端id判断是否需要登录", httpMethod = "POST", notes = "验证是否需要登录,不需要登录返回用户信息")
@@ -796,6 +798,53 @@ public class ApiController extends BasicController {
             e.printStackTrace();
             return ResultEntity.newErrEntity("获取欢迎页面图片发生错误");
         }
+    }
+
+    @ApiOperation(value = "添加工程报告", httpMethod = "POST", notes = "添加工程报告信息", position = 2)
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",dataType = "String", name = "name", value = "工程全称", required = true),
+            @ApiImplicitParam(paramType = "query",dataType = "String", name = "simpleName", value = "工程简称", required = true),
+            @ApiImplicitParam(paramType = "query",dataType = "String", name = "desc", value = "工程描述", required = true),
+            @ApiImplicitParam(paramType = "query",dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping(value = "/add/project", consumes = "multipart/*", headers = "content-type=multipart/form-data")
+    public ResultEntity addProject(@ApiParam(value = "上传工程报告图片", required = true) MultipartFile multipartFile, HttpServletRequest request) {
+        try {
+            String itemPath = request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port");
+            CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+            if (multipartResolver.isMultipart(request)) {
+                List<String> uploadList = (List) new FileController().uploadMuti(request).getData();
+                ProjectReport projectReport = new ProjectReport();
+                projectReport.setProjectName(getParamVal(request, "name"));
+                projectReport.setProjectSimpleName(getParamVal(request, "simpleName"));
+                projectReport.setProjectDesc(getParamVal(request, "desc"));
+
+                String urls = "";
+                for (String url : uploadList) {
+                    urls += itemPath + url + ",";
+                }
+                projectReport.setProjectPic(urls);
+
+                projectReportService.saveProjectReport(projectReport, getAppLoginUser(request));
+                return ResultEntity.newResultEntity("上传成功", "");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultEntity.newErrEntity("操作失败，请联系管理员");
+        }
+        return null;
+    }
+
+    @ApiOperation(value = "获取工程报告列表", httpMethod = "POST", notes = "根据分页条件获取工程报告列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "pageNum", value = "页码", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "pageSize", value = "条数", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping("/project/list")
+    public ResultEntity projectList(HttpServletRequest request) {
+        PageInfo<ProjectReport> pageInfo = projectReportService.listAllProjectReport(getPageSize(request), getPageNum(request), null);
+        return ResultEntity.newResultEntity(pageInfo);
     }
 
     protected UserView getAppLoginUser(HttpServletRequest request) {

@@ -1,6 +1,7 @@
 package cc.ligu.mvc.service.impl;
 
 import cc.ligu.common.service.BasicService;
+import cc.ligu.common.utils.DicUtil;
 import cc.ligu.mvc.persistence.dao.ProjectReportMapper;
 import cc.ligu.mvc.persistence.entity.ProjectReport;
 import cc.ligu.mvc.persistence.entity.ProjectReportExample;
@@ -30,6 +31,14 @@ public class ProjectReportServiceImpl extends BasicService implements ProjectRep
 
         PageHelper.startPage(pageNum, pageSize);
         List<ProjectReport> reportList = projectReportMapper.selectByExample(example);
+        for (ProjectReport project : reportList) {
+            if (!StringUtils.isEmpty(project.getProjectAttach())){
+                project.setAttchList(DicUtil.splitWithOutNull(project.getProjectAttach()));
+            }
+            if (!StringUtils.isEmpty(project.getProjectPic())){
+                project.setPicList(DicUtil.splitWithOutNull(project.getProjectPic()));
+            }
+        }
         PageInfo<ProjectReport> page = new PageInfo<ProjectReport>(reportList);
 
         return page;
@@ -51,7 +60,14 @@ public class ProjectReportServiceImpl extends BasicService implements ProjectRep
 
     @Override
     public ProjectReport selectProjectReportByPrimary(int projectReportId) {
-        return projectReportMapper.selectByPrimaryKey(projectReportId);
+        ProjectReport projectR =  projectReportMapper.selectByPrimaryKey(projectReportId);
+        if (!StringUtils.isEmpty(projectR.getProjectAttach())){
+            projectR.setAttchList(DicUtil.splitWithOutNull(projectR.getProjectAttach()));
+        }
+        if (!StringUtils.isEmpty(projectR.getProjectPic())){
+            projectR.setPicList(DicUtil.splitWithOutNull(projectR.getProjectPic()));
+        }
+        return projectR;
     }
 
     @Override
@@ -60,5 +76,10 @@ public class ProjectReportServiceImpl extends BasicService implements ProjectRep
         ProjectReportExample.Criteria cri = example.createCriteria();
 
         return projectReportMapper.selectByExample(example);
+    }
+
+    @Override
+    public int deleteProjectReport(int keyId) {
+        return projectReportMapper.deleteByPrimaryKey(keyId);
     }
 }

@@ -15,4 +15,6 @@ public interface ProjectReportService {
 
     List<ProjectReport> projectReportList(ProjectReport projectReport);
 
+    int deleteProjectReport(int keyId);//根据主键删除
+
 }

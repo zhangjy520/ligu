@@ -128,7 +128,6 @@ public class FileController extends BasicController {
                         Map uploads = (Map) uploads(file, request).getData();
                         result.add(uploads.get("fileRequestPath"));
                     }
-                    System.out.println();
                 }
             }
         }

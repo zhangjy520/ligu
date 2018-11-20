@@ -1,6 +1,7 @@
 package cc.ligu.mvc.persistence.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ProjectReport implements Serializable {
     /**
@@ -67,6 +68,27 @@ public class ProjectReport implements Serializable {
      * project_report
      */
     private static final long serialVersionUID = 1L;
+
+    private List<String> picList;
+    private List<String> attchList;
+
+    public List<String> getPicList() {
+        return picList;
+    }
+
+    public ProjectReport setPicList(List<String> picList) {
+        this.picList = picList;
+        return this;
+    }
+
+    public List<String> getAttchList() {
+        return attchList;
+    }
+
+    public ProjectReport setAttchList(List<String> attchList) {
+        this.attchList = attchList;
+        return this;
+    }
 
     /**
      * 获取主键

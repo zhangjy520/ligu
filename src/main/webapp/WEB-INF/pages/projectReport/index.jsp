@@ -1,5 +1,10 @@
 <%@ include file="../common/common.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<style>
+    td >div{
+        height: auto !important;
+    }
+</style>
 <form id="pagerForm" method="post" action="${ctx}/projectReport/index">
     <input type="hidden" name="pageNum" value="${pageInfo.pageNum}"/>
     <input type="hidden" name="numPerPage" value="${pageInfo.pageSize}"/>
@@ -28,8 +33,8 @@
             <th width="40">简称</th>
             <th width="80">完成描述</th>
             <th width="40">完成报告图片</th>
-            <%--<th width="80">附件文档</th>--%>
-            <th width="80" align="center">操作</th>
+            <th width="80">附件文档</th>
+            <th width="40" align="center">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -39,19 +44,27 @@
                 <td>${report.projectSimpleName}</td>
                 <td>${report.projectDesc}</td>
                 <td>
-                    <div>
-                        <a href="${report.projectPic}" target="view_window">${report.projectPic}</a>
-                    </div>
+                        <ul>
+                            <c:forEach items="${report.picList}" var="pic">
+                                <li><a href="${pic}" target="view_window">${pic}</a></li>
+                            </c:forEach>
+                        </ul>
+                            <%--<a href="${report.projectPic}" target="view_window">${report.projectPic}</a>--%>
                 </td>
-                    <%--<td>--%>
-                    <%--<div>--%>
-                    <%--<a href="${report.projectAttach}" target="view_window">${config.projectAttach}</a>--%>
-                    <%--</div>--%>
-                    <%--</td>--%>
+                <td>
+                    <ul>
+                        <c:forEach items="${report.attchList}" var="attach">
+                            <li><a href="${attach}" target="view_window">${attach}</a></li>
+                        </c:forEach>
+                    </ul>
+                        <%--<a href="${report.projectPic}" target="view_window">${report.projectPic}</a>--%>
+                </td>
                 <td>
                     <div>
-                        <a target="dialog" href="${ctx}/projectReport/pop/modify?id=${report.id}" class="">修改</a>
-                        <a target="dialog" href="${ctx}/projectReport/pop/modify?id=${report.id}&type=view" class="">查看</a>
+                        <a target="ajaxTodo" title="确认删除？" href="${ctx}/projectReport/delete/${report.id}" class="">删除</a>
+                        <a target="dialog" href="${ctx}/projectReport/pop/modify?id=${report.id}" class="" width="650" height="500">修改</a>
+                        <a target="dialog" href="${ctx}/projectReport/pop/modify?id=${report.id}&type=view"
+                           class="">查看</a>
                     </div>
                 </td>
             </tr>

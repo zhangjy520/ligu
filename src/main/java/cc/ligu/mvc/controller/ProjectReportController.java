@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,22 +48,42 @@ public class ProjectReportController extends BasicController {
             model.addAttribute("projectReport", projectReport);
             if ("view".equals(type)) {
                 model.addAttribute("disabled", "disabled");
-                model.addAttribute("type", "view");
             }
+            model.addAttribute("type", type);
         }
         return "projectReport/pop/editReport";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    public DWZResponse deleteProjectReport(Model model, @PathVariable("id") int id) {
+        try {
+            projectReportService.deleteProjectReport(id);
+        } catch (Exception e) {
+            return DWZResponseUtil.callbackFail("300", "删除失败", "_blank");
+        }
+        return DWZResponseUtil.callbackSuccess("删除成功", "_blank");
     }
 
     @ResponseBody
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public DWZResponse saveDocument(HttpServletRequest request, Model model, ProjectReport projectReport) {
         try {
+            String itemPath = request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port");
             List<String> urlList = DicUtil.splitWithOutNull(projectReport.getProjectPic());
             String urls = "";
             for (String url : urlList) {
-                urls += request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + url+",";
+                urls += itemPath + url + ",";
             }
             projectReport.setProjectPic(urls);
+
+            List<String> attachList = DicUtil.splitWithOutNull(projectReport.getProjectAttach());
+            String attachUrls = "";
+            for (String url : attachList) {
+                attachUrls += itemPath + url + ",";
+            }
+            projectReport.setProjectAttach(attachUrls);
+
             projectReportService.saveProjectReport(projectReport, getLoginUser());
         } catch (Exception e) {
             e.printStackTrace();
