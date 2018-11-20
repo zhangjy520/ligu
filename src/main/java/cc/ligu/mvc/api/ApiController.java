@@ -847,6 +847,29 @@ public class ApiController extends BasicController {
         return ResultEntity.newResultEntity(pageInfo);
     }
 
+    @ApiOperation(value = "修改密码", httpMethod = "POST", notes = "根据用户名，修改新密码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "username", value = "用户名", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "oldpass", value = "旧密码", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "newpass", value = "新密码", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping("/modify/pass")
+    public ResultEntity modifyPass(HttpServletRequest request) {
+        String username = getParamVal(request,"username");
+        String oldpass = getParamVal(request,"oldpass");
+        String newpass = getParamVal(request,"newpass");
+        UserView user = userService.selectUserViewByUsernameAndPassword(username,AESencryptor.encryptCBCPKCS5Padding(oldpass));
+        if (user!=null){
+            personService.changeUserPwd(user.getId(),newpass);
+            return ResultEntity.newResultEntity("密码修改成功");
+        }else {
+            return ResultEntity.newErrEntity("旧密码验证错误");
+        }
+
+    }
+
+
     protected UserView getAppLoginUser(HttpServletRequest request) {
         UserView UserView = (UserView) cacheService.getCacheByKey(request.getParameter("clientId"));
         return UserView;
