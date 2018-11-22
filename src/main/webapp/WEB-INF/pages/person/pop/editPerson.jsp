@@ -18,11 +18,11 @@
             </div>
             <div class="unit">
                 <label>证件类型：</label>
-                <input ${disabled} type="text" name="identityType" value="${person.identityType}" size="30"/>
+                <input ${disabled} type="text" <c:if test="${flag}">disabled</c:if> name="identityType" value="${person.identityType}" size="30"/>
             </div>
             <div class="unit">
                 <label>证件号码：</label>
-                <input ${disabled} type="text" name="identityNum" value="${person.identityNum}" size="30"/>
+                <input ${disabled} <c:if test="${flag}">disabled</c:if> type="text" name="identityNum" value="${person.identityNum}" size="30"/>
             </div>
             <div class="unit">
                 <label>人员类别：</label>

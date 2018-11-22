@@ -687,14 +687,23 @@ public class ApiController extends BasicController {
     }
 
 
-    @ApiOperation(value = "获取个人历史考试，每一次的考试试卷详情", httpMethod = "POST", notes = "根据clientId获取该登录用户的个人历史成绩（只针对考试试卷）详情列表,只返回提交过成绩的考试记录。平时练习不计入成绩")
+    @ApiOperation(value = "获取个人历史考试，每一次的考试试卷详情", httpMethod = "POST", notes = "根据clientId获取该登录用户的个人历史成绩（只针对考试试卷）详情列表,只返回提交过成绩的考试记录。平时练习不计入成绩.如果传了身份证，那么返回该身份证对应的人的历史成绩")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "identi", value = "身份证"),
     })
     @RequestMapping(value = "/getHistoryScore")
     public ResultEntity getHistoryScore(HttpServletRequest request) throws UnsupportedEncodingException {
         try {
-            List<PersonExamHistoryWithBLOBs> res = questionService.getHistoryScore(getAppLoginUser(request));
+            List<PersonExamHistoryWithBLOBs> res = new ArrayList<>();
+            String identi = getParamVal(request, "identi");
+            if (StringUtils.isEmpty(identi)) {
+                //没传身份证
+                res = questionService.getHistoryScore(getAppLoginUser(request));
+            } else {
+                //传了身份证
+                res = questionService.getHistoryScore(userService.selectUserViewByIdenti(identi));
+            }
             return ResultEntity.newResultEntity(res);
         } catch (Exception e) {
             e.printStackTrace();
@@ -802,10 +811,10 @@ public class ApiController extends BasicController {
 
     @ApiOperation(value = "添加工程报告", httpMethod = "POST", notes = "添加工程报告信息", position = 2)
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query",dataType = "String", name = "name", value = "工程全称", required = true),
-            @ApiImplicitParam(paramType = "query",dataType = "String", name = "simpleName", value = "工程简称", required = true),
-            @ApiImplicitParam(paramType = "query",dataType = "String", name = "desc", value = "工程描述", required = true),
-            @ApiImplicitParam(paramType = "query",dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "name", value = "工程全称", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "simpleName", value = "工程简称", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "desc", value = "工程描述", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
     })
     @RequestMapping(value = "/add/project", consumes = "multipart/*", headers = "content-type=multipart/form-data")
     public ResultEntity addProject(@ApiParam(value = "上传工程报告图片", required = true) MultipartFile multipartFile, HttpServletRequest request) {
@@ -856,14 +865,14 @@ public class ApiController extends BasicController {
     })
     @RequestMapping("/modify/pass")
     public ResultEntity modifyPass(HttpServletRequest request) {
-        String username = getParamVal(request,"username");
-        String oldpass = getParamVal(request,"oldpass");
-        String newpass = getParamVal(request,"newpass");
-        UserView user = userService.selectUserViewByUsernameAndPassword(username,AESencryptor.encryptCBCPKCS5Padding(oldpass));
-        if (user!=null){
-            personService.changeUserPwd(user.getId(),newpass);
+        String username = getParamVal(request, "username");
+        String oldpass = getParamVal(request, "oldpass");
+        String newpass = getParamVal(request, "newpass");
+        UserView user = userService.selectUserViewByUsernameAndPassword(username, AESencryptor.encryptCBCPKCS5Padding(oldpass));
+        if (user != null) {
+            personService.changeUserPwd(user.getId(), newpass);
             return ResultEntity.newResultEntity("密码修改成功");
-        }else {
+        } else {
             return ResultEntity.newErrEntity("旧密码验证错误");
         }
 

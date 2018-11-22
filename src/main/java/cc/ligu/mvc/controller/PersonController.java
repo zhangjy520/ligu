@@ -153,6 +153,7 @@ public class PersonController extends BasicController {
         if (!StringUtils.isEmpty(id)) {
             Person person = personService.selectPersonByPrimary(Integer.parseInt(id));
             model.addAttribute("person", person);
+            model.addAttribute("flag", true);//修改页面不可修改字段标识
         }
         if (!StringUtils.isEmpty(check)) {
             //如果审核选择不为空，只显示修改页面的审核选择，并把其他可修改的文本框置为不可修改！
@@ -161,6 +162,7 @@ public class PersonController extends BasicController {
         }
         model.addAttribute("itemList", itemService.listAllItem());
         model.addAttribute("roleType", roleType);
+
         return "person/pop/editPerson";
     }
 
