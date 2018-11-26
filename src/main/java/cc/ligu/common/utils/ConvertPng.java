@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.InputStream;
 
-public class YuGiOh
+public class ConvertPng
 {
     public static final String SEPARATOR = System.getProperty ("file.separator");
     public static final String LINE = System.getProperty ("line.separator");

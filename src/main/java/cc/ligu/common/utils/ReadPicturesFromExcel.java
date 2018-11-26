@@ -15,7 +15,7 @@ public class ReadPicturesFromExcel {
             Exception {
 
         InputStream inp = new FileInputStream(
-                "C:\\Users\\shenyy\\Desktop\\壁纸\\444\\111.xls");
+                "D:\\QMDownload\\WeChat Files\\Z1211079133\\Files\\中通服建设施工人员档案11.25.xls");
         HSSFWorkbook workbook = new HSSFWorkbook(inp);
 
         List<HSSFPictureData> pictures = workbook.getAllPictures();
@@ -43,7 +43,7 @@ public class ReadPicturesFromExcel {
     private static void savePic(HSSFSheet sheet, int i, PictureData pic) throws Exception {
 
         HSSFRow s = sheet.getRow(i);
-        HSSFCell d = s.getCell(0);
+        HSSFCell d = s.getCell(5);
         String name = d.getStringCellValue();
 
         String ext = pic.suggestFileExtension();
@@ -51,7 +51,7 @@ public class ReadPicturesFromExcel {
         byte[] data = pic.getData();
 
         FileOutputStream out = new FileOutputStream(
-                "C:\\Users\\shenyy\\Desktop\\壁纸\\头像\\" + name + ".jpg");
+                "C:\\Users\\shenyy\\Desktop\\壁纸\\头像\\" + name + "."+ext);
         out.write(data);
         out.close();
     }
