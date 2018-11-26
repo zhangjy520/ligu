@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+
+        .m {
+            width: 960px;
+            height: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 100px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="m">
+    <input id="fi" type="file" id="fileChoose"/>
+    <input type="button" value="播放" onclick="fileChoose()"/>
+    <video id="my-video" class="video-js" controls preload="auto" width="960" height="400">
+    </video>
+    <script type="text/javascript">
+        function fileChoose() {
+            getPath();
+            setInterval(function () {
+                console.log(document.getElementById("my-video").currentTime);
+            }, 500);
+        }
+
+        //附带不用修改浏览器安全配置的javascript代码，兼容ie， firefox全系列
+        function getPath() {
+            var oFReader = new FileReader();
+            var file = document.getElementById('fi').files[0];
+            oFReader.readAsDataURL(file);
+            oFReader.onloadend = function(oFRevent){
+                var src = oFRevent.target.result;
+                document.getElementById("my-video").innerHTML = '<source src="'+src+'" type="video/mp4">';
+                document.getElementById("my-video").setAttribute("poster", "m.jpg");
+            }
+        }
+
+        //参数obj为input file对象
+
+    </script>
+</div>
+</body>
+</html>
