@@ -221,7 +221,7 @@ public class ConvertVideoUtils {
      */
     private String processAVI(int type) {
         List<String> commend = new java.util.ArrayList<String>();
-        commend.add(Contants.ffmpegPath);
+        commend.add(Contants.mencoderPath);
         commend.add(sourceVideoPath);
         commend.add("-oac");
         commend.add("mp3lame");
@@ -234,7 +234,7 @@ public class ConvertVideoUtils {
         commend.add("-of");
         commend.add("avi");
         commend.add("-o");
-        commend.add(Contants.videoFolder + fileRealname + ".avi");
+        commend.add(targetfolder + fileRealname + ".avi");
         // 命令类型：mencoder 1.rmvb -oac mp3lame -lameopts preset=64 -ovc xvid
         // -xvidencopts bitrate=600 -of avi -o rmvb.avi
         try {
@@ -242,7 +242,7 @@ public class ConvertVideoUtils {
             builder.command(commend);
             Process p = builder.start();
             doWaitFor(p);
-            return Contants.videoFolder + fileRealname + ".avi";
+            return targetfolder + fileRealname + ".avi";
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -343,7 +343,6 @@ public class ConvertVideoUtils {
         InputStream err = null;
         int exitValue = -1; // returned to caller when p is finished
         try {
-            System.out.println("comeing");
             in = p.getInputStream();
             err = p.getErrorStream();
             boolean finished = false; // Set to true when p is finished
@@ -352,11 +351,9 @@ public class ConvertVideoUtils {
                 try {
                     while (in.available() > 0) {
                         Character c = new Character((char) in.read());
-                        System.out.print(c);
                     }
                     while (err.available() > 0) {
                         Character c = new Character((char) err.read());
-                        System.out.print(c);
                     }
 
                     exitValue = p.exitValue();
@@ -375,13 +372,13 @@ public class ConvertVideoUtils {
                 }
 
             } catch (IOException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
             if (err != null) {
                 try {
                     err.close();
                 } catch (IOException e) {
-                    System.out.println(e.getMessage());
+                    e.printStackTrace();
                 }
             }
         }
