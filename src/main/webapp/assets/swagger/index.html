@@ -54,6 +54,7 @@
       var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
       return(localhostPaht+projectName);
     }
+
     $(function () {
       var url = window.location.search.match(/url=([^&]+)/);
       if (url && url.length > 1) {
@@ -72,6 +73,7 @@
       }
       window.swaggerUi = new SwaggerUi({
         url: url,
+        validatorUrl: undefined,
         dom_id: "swagger-ui-container",
         supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
         onComplete: function(swaggerApi, swaggerUi){
@@ -115,7 +117,8 @@
 <div id='header'>
   <div class="swagger-ui-wrap">
 
-    <h1>点击这里下载各个接口的参数解释<a href="http://47.94.98.20:8085/source/attach/api.doc" target="_blank">点击下载</a></h1>
+    <h1>点击这里下载各个接口的参数解释<a href="http://47.104.210.134:8085/source/attach/api.doc" target="_blank">点击下载</a></h1>
+    <h1>点击这里下载后台的操作文档<a href="http://47.104.210.134:8085/source/attach/document201801120v1.0.docx" target="_blank">点击下载</a></h1>
     <!--<a id="logo" href="http://swagger.io"><img class="logo__img" alt="swagger" height="30" width="30" src="images/logo_small.png" /><span class="logo__title">swagger</span></a>-->
     <form id='api_selector'>
       <div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>

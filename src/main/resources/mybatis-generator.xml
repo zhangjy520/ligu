@@ -24,11 +24,11 @@
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
 
         <!-- 抑制生成代码的注释 -->
-        <commentGenerator>
+        <!--<commentGenerator>
             <property name="suppressAllComments" value="true" />
-        </commentGenerator>
-        <!--commentGenerator type="cc.ligu.mvc.common.MyCommentGenerator">
         </commentGenerator>-->
+        <commentGenerator type="cc.ligu.mvc.common.MyCommentGenerator">
+        </commentGenerator>
 
 
 
@@ -76,7 +76,7 @@
         </table>-->
 
         <!-- 人员库[oa_person 人员表] -->
-        <!--<table schema="ligu" tableName="oa_person" domainObjectName="Person"
+       <!-- <table schema="ligu" tableName="oa_person" domainObjectName="Person"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
@@ -94,15 +94,6 @@
                enableSelectByExample="true"
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
-        </table>-->
-        <!--<table schema="ligu" tableName="oa_person" domainObjectName="Person"
-               enableCountByExample="false"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-               selectByExampleQueryId="true">
-            <property name="useActualColumnNames" value="false"/>
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>-->
         <!--<table schema="ligu" tableName="v_user" domainObjectName="UserView"
                enableCountByExample="false"
@@ -130,7 +121,7 @@
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
         </table>-->
-        <table schema="ligu" tableName="doc_question_version" domainObjectName="QuestionVersion"
+        <!--<table schema="ligu" tableName="doc_question_version" domainObjectName="QuestionVersion"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
@@ -138,6 +129,316 @@
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>-->
+       <!-- <table schema="it_control" tableName="om_operations_manage_plan" domainObjectName="OmPlan"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="it_control" tableName="om_content" domainObjectName="OmContent"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="it_control" tableName="om_attach_a_service_person" domainObjectName="OmServicePerson"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="it_control" tableName="om_attach_a_supply_person" domainObjectName="OmSupplyPerson"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="it_control" tableName="om_attach_a_service_user" domainObjectName="OmServiceUser"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="it_control" tableName="om_attach_b_docs" domainObjectName="OmDocs"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="it_control" tableName="om_attach_b_interface_deploy" domainObjectName="OmInterfaceDeploy"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="it_control" tableName="om_attach_b_medium_location" domainObjectName="OmMediumLocation"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <!--<table schema="it_control" tableName="om_content" domainObjectName="OmContent"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <!--<table schema="it_control" tableName="om_attach_b_attr" domainObjectName="OmAttachAttr"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <!--<table schema="it_control" tableName="om_attach_b_docs" domainObjectName="OmDocs"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="it_control" tableName="om_attach_b_interface_deploy" domainObjectName="OmInterfaceDeploy"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+        <table schema="it_control" tableName="om_attach_b_medium_location" domainObjectName="OmMediumLocation"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+        <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <!--<table schema="it_control" tableName="om_attach_f_modify_history" domainObjectName="OmModifyHistory"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+
+        <!--人员巡检内容与要求-->
+       <!-- <table schema="it_control" tableName="om_attach_d_person_inspection_content" domainObjectName="OmPersonInspectionContent"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="exception_standard" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
+        <!--<table schema="itsm-gzsh-0605" tableName="om_attach_a_supply_person" domainObjectName="OmSupplyPerson"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+
+        <!--<table schema="itsm-gzsh-0716" tableName="om_attach_a_supply_person" domainObjectName="OmSupplyPerson"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+
+        <!--it服务级别管理-->
+        <!--<table schema="it_control" tableName="sl_base_app_service" domainObjectName="BaseAppServiceLevel"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="support_users" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="timeout_strategy_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>
+
+        <table schema="it_control" tableName="sl_business_service_big_type" domainObjectName="BusinessServiceBigType"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="max_interrupt" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="min_back_up" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="performance" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>
+
+        <table schema="it_control" tableName="sl_business_service_small_type" domainObjectName="BusinessServiceSmallType"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="sla_timeout_strategy" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="ola_support_users" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="uc_suppliers" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>
+
+        <table schema="it_control" tableName="sl_manage" domainObjectName="ServiceLevelManage"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="check_describe" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>
+
+        <table schema="it_control" tableName="sl_technical_service" domainObjectName="TechnicalService"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="duty_users" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>
+
+        <table schema="it_control" tableName="sl_timeout_strategy" domainObjectName="TimeOutStrategy"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="notify_special_user_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
+        <!--<table schema="it_control" tableName="sl_business_service_small_type" domainObjectName="BusinessServiceSmallType"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="sla_timeout_strategy" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="ola_support_users" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="uc_suppliers" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
+        <!--<table schema="ligu" tableName="login_log" domainObjectName="LoginLog"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+         <!--<table schema="ip" tableName="app_config" domainObjectName="AppConfig"
+              enableCountByExample="false"
+              enableUpdateByExample="true"
+              enableDeleteByExample="true"
+              enableSelectByExample="true"
+              selectByExampleQueryId="true">
+           <property name="useActualColumnNames" value="false"/>
+           <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+       </table>-->
+        <!--<table schema="gzsm" tableName="pm_managed_object" domainObjectName="PmManagedObject"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+        <table schema="gzsm" tableName="pm_modify_history" domainObjectName="PmModifyHistory"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="edit_desc" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="edit_remark" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
+        <!--<table schema="gzsm" tableName="pm_job" domainObjectName="PmJob"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="role_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
+
+        <!--<table schema="gzsm" tableName="sl_process_time_record" domainObjectName="ProcessTimeRecord"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+       <!-- <table schema="gzsm" tableName="sl_overtime_task" domainObjectName="SLAOverTimeTask"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="job_data" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
+        <!--<table schema="gzsm" tableName="pm_role" domainObjectName="PmRole"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="group_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
+        <table schema="ligu" tableName="project_report" domainObjectName="ProjectReport"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="project_pic" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="project_desc" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="project_attach" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="manager" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>
     </context>
 </generatorConfiguration>

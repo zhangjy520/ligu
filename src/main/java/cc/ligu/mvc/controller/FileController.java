@@ -2,36 +2,32 @@ package cc.ligu.mvc.controller;
 
 import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.entity.ResultEntity;
-import cc.ligu.common.tld.GukeerStringUtil;
-import cc.ligu.common.utils.DateUtils;
 import cc.ligu.common.utils.FileUtils;
 import cc.ligu.common.utils.VFSUtil;
 import cc.ligu.common.utils.ZipUtils;
 import cc.ligu.common.utils.ffmpeg.ConverVideoUtils;
+import cc.ligu.mvc.common.QtFastStart;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -52,49 +48,92 @@ public class FileController extends BasicController {
 
     /**
      * 文件上传
+     *
      * @param file
      * @throws Exception
      */
-        @ResponseBody
-        @RequestMapping(value = "/upload", method = RequestMethod.POST)
-        public ResultEntity uploads(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
+    @ResponseBody
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public ResultEntity uploads(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
+        FileOutputStream fos = null;
+        InputStream fis = null;
+        try {
+            String fullPath = FileUtils.VFS_ROOT_PATH + FileUtils.SOURCE_ATTACH;
+            File dir = new File(fullPath);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+            String fileName = System.currentTimeMillis() + suffix;
+            String absPath = FileUtils.VFS_ROOT_PATH + FileUtils.SOURCE_ATTACH + fileName;
+            String fileRequestPath = FileUtils.SOURCE_ATTACH + fileName;
 
-            FileOutputStream fos = null;
-            InputStream fis = null;
-            try {
-                String fullPath = FileUtils.VFS_ROOT_PATH + FileUtils.SOURCE_ATTACH;
-                File dir = new File(fullPath);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-                String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-                String fileName = System.currentTimeMillis()  + suffix;
-                String absPath = FileUtils.VFS_ROOT_PATH + FileUtils.SOURCE_ATTACH + fileName;
-                String fileRequestPath = FileUtils.SOURCE_ATTACH + fileName;
-
-                fis = file.getInputStream();
-                File f = new File(absPath);
-                fos = new FileOutputStream(f);
-                byte[] b = new byte[1024];
-                int nRead = 0;
-                while ((nRead = fis.read(b)) != -1) {
-                    fos.write(b, 0, nRead);
-                }
-                fos.flush();
+            //如果是mp4视频格式，将moov模块移动到视频头部，可以实现边下边播放
+            if (".mp4".equals(suffix) || ".MP4".equals(suffix) || ".Mp4".equals(suffix)) {
+                QtFastStart.fastStart(file.getInputStream(), new FileOutputStream(new File(absPath)));
 
                 Map<String, String> pathMap = new HashMap<>();
                 pathMap.put("fileName", file.getOriginalFilename());
                 pathMap.put("fileRequestPath", fileRequestPath);
                 pathMap.put("suffix", suffix);
                 return ResultEntity.newResultEntity(pathMap);
-            } catch (Exception e) {
-                logger.error("上传文件失败", e);
-            } finally {
-                fos.close();
-                fis.close();
             }
-            return ResultEntity.newErrEntity();
+
+            fis = file.getInputStream();
+            File f = new File(absPath);
+            fos = new FileOutputStream(f);
+            byte[] b = new byte[1024];
+            int nRead = 0;
+            while ((nRead = fis.read(b)) != -1) {
+                fos.write(b, 0, nRead);
+            }
+            fos.flush();
+
+
+            Map<String, String> pathMap = new HashMap<>();
+            pathMap.put("fileName", file.getOriginalFilename());
+            pathMap.put("fileRequestPath", fileRequestPath);
+            pathMap.put("suffix", suffix);
+            return ResultEntity.newResultEntity(pathMap);
+        } catch (Exception e) {
+            logger.error("上传文件失败", e);
+        } finally {
+            fos.close();
+            fis.close();
         }
+        return ResultEntity.newErrEntity();
+    }
+
+    /**
+     * 多文件上传
+     *
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "/uploadMuti", method = RequestMethod.POST)
+    public ResultEntity uploadMuti(HttpServletRequest request) throws Exception {
+        List result = new ArrayList();
+        String files = "";
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+        if (multipartResolver.isMultipart(request)) {
+            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+            MultiValueMap<String, MultipartFile> multiFileMap = multiRequest.getMultiFileMap();
+            if (multiFileMap.size() > 0) {
+                List<MultipartFile> fileSet = new LinkedList<>();
+                for (Map.Entry<String, List<MultipartFile>> temp : multiFileMap.entrySet()) {
+                    fileSet = temp.getValue();
+                }
+                if (fileSet.size() > 0) {
+                    for (MultipartFile file : fileSet) {
+                        Map uploads = (Map) uploads(file, request).getData();
+                        result.add(uploads.get("fileRequestPath"));
+                    }
+                }
+            }
+        }
+        return ResultEntity.newResultEntity(result);
+
+    }
 
     @ResponseBody
     @RequestMapping(value = "/delete")
@@ -357,7 +396,7 @@ public class FileController extends BasicController {
 
     @ResponseBody
     @RequestMapping(value = "kindeditor/upload")
-    public Object kindeditorUpload(HttpServletRequest request,HttpServletResponse response){
+    public Object kindeditorUpload(HttpServletRequest request, HttpServletResponse response) {
         String savePath = FileUtils.VFS_ROOT_PATH + "kindeditor/";
         //定义允许上传的文件扩展名
         HashMap<String, String> extMap = new HashMap<String, String>();
@@ -413,26 +452,23 @@ public class FileController extends BasicController {
         } catch (FileUploadException e) {
             e.printStackTrace();
         }
-        long  startTime=System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
         //将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
-        CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver(
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
                 request.getSession().getServletContext());
         //检查form中是否有enctype="multipart/form-data"
-        if(multipartResolver.isMultipart(request))
-        {
+        if (multipartResolver.isMultipart(request)) {
             //将request变成多部分request
-            MultipartHttpServletRequest multiRequest=(MultipartHttpServletRequest)request;
+            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
             //获取multiRequest 中所有的文件名
-            Iterator iter=multiRequest.getFileNames();
+            Iterator iter = multiRequest.getFileNames();
 
-            while(iter.hasNext())
-            {
+            while (iter.hasNext()) {
                 //一次遍历所有文件
-                MultipartFile file=multiRequest.getFile(iter.next().toString());
-                if(file!=null)
-                {
-                    String path=savePath+System.currentTimeMillis()+"_"+file.getOriginalFilename();
-                    File file1=new File(path);
+                MultipartFile file = multiRequest.getFile(iter.next().toString());
+                if (file != null) {
+                    String path = savePath + System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                    File file1 = new File(path);
                     if (!file1.exists()) {
                         file1.mkdirs();
                     }
@@ -444,8 +480,8 @@ public class FileController extends BasicController {
                     }
                     JsonObject obj = new JsonObject();
                     obj.addProperty("error", 0);
-                    obj.addProperty("url", request.getContextPath()+"/file/pic/show?picPath="+path);
-                    try (PrintWriter writer = response.getWriter()){
+                    obj.addProperty("url", request.getContextPath() + "/file/pic/show?picPath=" + path);
+                    try (PrintWriter writer = response.getWriter()) {
                         Gson gson = new Gson();
                         writer.write(gson.toJson(obj));
                         writer.flush();
@@ -461,14 +497,14 @@ public class FileController extends BasicController {
 
     @ResponseBody
     @RequestMapping(value = "downloadzip")
-    public ResultEntity downloadZip(HttpServletRequest request,HttpServletResponse response){
-        String htmlPath= getParamVal(request,"htmlPath");
+    public ResultEntity downloadZip(HttpServletRequest request, HttpServletResponse response) {
+        String htmlPath = getParamVal(request, "htmlPath");
 
 
         /** 1.创建临时文件夹  */
         String rootPath = request.getSession().getServletContext().getRealPath("/");
         File temDir = new File(rootPath + "/" + UUID.randomUUID().toString().replaceAll("-", ""));
-        if(!temDir.exists()){
+        if (!temDir.exists()) {
             temDir.mkdirs();
         }
 
@@ -482,7 +518,7 @@ public class FileController extends BasicController {
         /** 4.调用工具类，下载zip压缩包 */
         // 这里我们不需要保留目录结构
         try {
-            ZipUtils.toZip(htmlPath, response.getOutputStream(),false);
+            ZipUtils.toZip(htmlPath, response.getOutputStream(), false);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -497,6 +533,49 @@ public class FileController extends BasicController {
 
 
         return null;
+    }
+
+    @RequestMapping(value = "/pic/show", method = RequestMethod.GET)
+    public void showPicture(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        String picPath = getParamVal(request, "picPath");
+        File file = null;
+        if (picPath != "") {
+            if (picPath.indexOf(FileUtils.VFS_ROOT_PATH) >= 0) {
+                file = new File(picPath);
+            } else {
+                file = new File(FileUtils.VFS_ROOT_PATH + picPath);
+            }
+        } else {
+            String filePath = request.getSession().getServletContext().getRealPath("/assetsNew/images/uploading-icon.png");
+            file = new File(filePath);
+        }
+
+        if (!file.exists()) return;      //再次判断，避免异常
+        response.setContentType("multipart/form-data");
+        InputStream reader = null;
+        try {
+            reader = VFSUtil.getInputStream(file, true);
+            byte[] buf = new byte[1024];
+            int len = 0;
+
+            OutputStream out = response.getOutputStream();
+
+            while ((len = reader.read(buf)) != -1) {
+                out.write(buf, 0, len);
+            }
+            out.flush();
+        } catch (Exception ex) {
+            logger.error("显示图片时发生错误:" + ex.getMessage(), ex);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (Exception ex) {
+                    logger.error("关闭文件流出错", ex);
+                }
+            }
+        }
     }
 }
 // TODO: 18-4-9  编辑器错误的返回值

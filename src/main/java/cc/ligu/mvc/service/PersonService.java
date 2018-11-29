@@ -18,4 +18,9 @@ public interface PersonService {
     int deletePerson(Person person);
 
     List<String> getAllSelect(int type);
+
+    int changeUserPwd(int sysUserId,String pwd);
+
+    //根据人员身份证号码查询人员
+    Person selectPersonByIdNum(String idNum);
 }

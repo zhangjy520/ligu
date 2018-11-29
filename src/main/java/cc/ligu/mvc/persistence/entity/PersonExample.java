@@ -4,10 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PersonExample {
+    /**
+     * oa_person
+     */
     protected String orderByClause;
 
+    /**
+     * oa_person
+     */
     protected boolean distinct;
 
+    /**
+     * oa_person
+     */
     protected List<Criteria> oredCriteria;
 
     public PersonExample() {
@@ -63,6 +72,9 @@ public class PersonExample {
         distinct = false;
     }
 
+    /**
+     * oa_person 2018-09-17
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -574,6 +586,76 @@ public class PersonExample {
             return (Criteria) this;
         }
 
+        public Criteria andIdentityTypeIsNull() {
+            addCriterion("identity_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeIsNotNull() {
+            addCriterion("identity_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeEqualTo(String value) {
+            addCriterion("identity_type =", value, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeNotEqualTo(String value) {
+            addCriterion("identity_type <>", value, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeGreaterThan(String value) {
+            addCriterion("identity_type >", value, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("identity_type >=", value, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeLessThan(String value) {
+            addCriterion("identity_type <", value, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeLessThanOrEqualTo(String value) {
+            addCriterion("identity_type <=", value, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeLike(String value) {
+            addCriterion("identity_type like", value, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeNotLike(String value) {
+            addCriterion("identity_type not like", value, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeIn(List<String> values) {
+            addCriterion("identity_type in", values, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeNotIn(List<String> values) {
+            addCriterion("identity_type not in", values, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeBetween(String value1, String value2) {
+            addCriterion("identity_type between", value1, value2, "identityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityTypeNotBetween(String value1, String value2) {
+            addCriterion("identity_type not between", value1, value2, "identityType");
+            return (Criteria) this;
+        }
+
         public Criteria andIdentityNumIsNull() {
             addCriterion("identity_num is null");
             return (Criteria) this;
@@ -641,6 +723,76 @@ public class PersonExample {
 
         public Criteria andIdentityNumNotBetween(String value1, String value2) {
             addCriterion("identity_num not between", value1, value2, "identityNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgIsNull() {
+            addCriterion("identity_img is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgIsNotNull() {
+            addCriterion("identity_img is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgEqualTo(String value) {
+            addCriterion("identity_img =", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgNotEqualTo(String value) {
+            addCriterion("identity_img <>", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgGreaterThan(String value) {
+            addCriterion("identity_img >", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgGreaterThanOrEqualTo(String value) {
+            addCriterion("identity_img >=", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgLessThan(String value) {
+            addCriterion("identity_img <", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgLessThanOrEqualTo(String value) {
+            addCriterion("identity_img <=", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgLike(String value) {
+            addCriterion("identity_img like", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgNotLike(String value) {
+            addCriterion("identity_img not like", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgIn(List<String> values) {
+            addCriterion("identity_img in", values, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgNotIn(List<String> values) {
+            addCriterion("identity_img not in", values, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgBetween(String value1, String value2) {
+            addCriterion("identity_img between", value1, value2, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgNotBetween(String value1, String value2) {
+            addCriterion("identity_img not between", value1, value2, "identityImg");
             return (Criteria) this;
         }
 
@@ -1244,6 +1396,76 @@ public class PersonExample {
             return (Criteria) this;
         }
 
+        public Criteria andBlackImageIsNull() {
+            addCriterion("black_image is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageIsNotNull() {
+            addCriterion("black_image is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageEqualTo(String value) {
+            addCriterion("black_image =", value, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageNotEqualTo(String value) {
+            addCriterion("black_image <>", value, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageGreaterThan(String value) {
+            addCriterion("black_image >", value, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageGreaterThanOrEqualTo(String value) {
+            addCriterion("black_image >=", value, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageLessThan(String value) {
+            addCriterion("black_image <", value, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageLessThanOrEqualTo(String value) {
+            addCriterion("black_image <=", value, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageLike(String value) {
+            addCriterion("black_image like", value, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageNotLike(String value) {
+            addCriterion("black_image not like", value, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageIn(List<String> values) {
+            addCriterion("black_image in", values, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageNotIn(List<String> values) {
+            addCriterion("black_image not in", values, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageBetween(String value1, String value2) {
+            addCriterion("black_image between", value1, value2, "blackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlackImageNotBetween(String value1, String value2) {
+            addCriterion("black_image not between", value1, value2, "blackImage");
+            return (Criteria) this;
+        }
+
         public Criteria andRemarkIsNull() {
             addCriterion("remark is null");
             return (Criteria) this;
@@ -1639,8 +1861,18 @@ public class PersonExample {
             return (Criteria) this;
         }
 
+        public Criteria andIdentityTypeLikeInsensitive(String value) {
+            addCriterion("upper(identity_type) like", value.toUpperCase(), "identityType");
+            return (Criteria) this;
+        }
+
         public Criteria andIdentityNumLikeInsensitive(String value) {
             addCriterion("upper(identity_num) like", value.toUpperCase(), "identityNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgLikeInsensitive(String value) {
+            addCriterion("upper(identity_img) like", value.toUpperCase(), "identityImg");
             return (Criteria) this;
         }
 
@@ -1674,12 +1906,20 @@ public class PersonExample {
             return (Criteria) this;
         }
 
+        public Criteria andBlackImageLikeInsensitive(String value) {
+            addCriterion("upper(black_image) like", value.toUpperCase(), "blackImage");
+            return (Criteria) this;
+        }
+
         public Criteria andRemarkLikeInsensitive(String value) {
             addCriterion("upper(remark) like", value.toUpperCase(), "remark");
             return (Criteria) this;
         }
     }
 
+    /**
+     * oa_person
+     */
     public static class Criteria extends GeneratedCriteria {
 
         protected Criteria() {
@@ -1687,6 +1927,9 @@ public class PersonExample {
         }
     }
 
+    /**
+     * oa_person 2018-09-17
+     */
     public static class Criterion {
         private String condition;
 

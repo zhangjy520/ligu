@@ -2,24 +2,21 @@ package cc.ligu.mvc.service.impl;
 
 import cc.ligu.common.service.BasicService;
 import cc.ligu.common.utils.DicUtil;
-import cc.ligu.mvc.persistence.dao.PersonExamHistoryMapper;
-import cc.ligu.mvc.persistence.dao.PersonWrongQuestionMapper;
-import cc.ligu.mvc.persistence.dao.QuestionMapper;
-import cc.ligu.mvc.persistence.dao.QuestionVersionMapper;
+import cc.ligu.mvc.modelView.ScoreView;
+import cc.ligu.mvc.persistence.dao.*;
 import cc.ligu.mvc.persistence.entity.*;
 import cc.ligu.mvc.service.QuestionService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import net.sf.json.JSONArray;
-import net.sf.json.JsonConfig;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by zjy on 2018/5/21.
@@ -31,6 +28,9 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     QuestionMapper questionMapper;
 
     @Autowired
+    PersonMapper personMapper;
+
+    @Autowired
     PersonExamHistoryMapper personExamHistoryMapper;
 
     @Autowired
@@ -38,6 +38,9 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
 
     @Autowired
     QuestionVersionMapper questionVersionMapper;
+
+    @Autowired
+    ApiMapper apiMapper;
 
     @Override
     public PageInfo<Question> listAllQuestion(int pageSize, int pageNum, Question question) {
@@ -101,7 +104,7 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     }
 
     @Override
-    public List<Map> selectRandomQuestionByCount(int count) {
+    public List<Question> selectRandomQuestionByCount(int count) {
         return questionMapper.selectRandomQuestionByCount(count);
     }
 
@@ -145,6 +148,11 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     }
 
     @Override
+    public int saveWrongQuestion(PersonWrongQuestion personWrongQuestion) throws Exception {
+        return personWrongQuestionMapper.insertSelective(personWrongQuestion);
+    }
+
+    @Override
     public List<Question> wrongQuestionList(int personId) {
         PersonWrongQuestionExample example = new PersonWrongQuestionExample();
         example.createCriteria().andPersonIdEqualTo(personId);
@@ -164,7 +172,7 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     }
 
     @Override
-    public int removeWrongQuestion(String questionIds,int personId) {
+    public int removeWrongQuestion(String questionIds, int personId) {
         List<String> questionIdList = DicUtil.splitWithOutNull(questionIds);
         for (String questionId : questionIdList) {
             PersonWrongQuestionExample example = new PersonWrongQuestionExample();
@@ -183,4 +191,123 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
             return new QuestionVersion();
         }
     }
+
+    @Override
+    public int saveExamHistory(PersonExamHistoryWithBLOBs personExamHistory) {
+        if (StringUtils.isEmpty(personExamHistory.getId())) {
+            //TODO 保存考试成绩
+            //questionMapper.insertSelective(question);
+            return 1;
+        } else {
+            return personExamHistoryMapper.updateByPrimaryKeySelective(personExamHistory);
+        }
+    }
+
+    @Override
+    public List<PersonExamHistoryWithBLOBs> getHistoryScore(UserView userView) {
+        PersonExamHistoryExample examHistoryExample = new PersonExamHistoryExample();
+        examHistoryExample.setOrderByClause("exam_time");
+        examHistoryExample.createCriteria().andPersonIdEqualTo(userView.getRefId()).andObtainScoreIsNotNull().andExamTypeEqualTo(2);//该人成绩不为空的数据记录
+
+        List<PersonExamHistoryWithBLOBs> res = personExamHistoryMapper.selectByExampleWithBLOBs(examHistoryExample);
+        DateFormat formatter = new SimpleDateFormat("MM");
+        Calendar calendar = Calendar.getInstance();
+        for (PersonExamHistoryWithBLOBs bloBs : res) {
+
+            calendar.setTimeInMillis(Long.valueOf(bloBs.getExamTime()));
+            bloBs.setMonth(formatter.format(calendar.getTime()));
+        }
+        return res;
+    }
+
+    @Override
+    public List<ScoreView> getMonthScoreList(int year, int month) {
+        long begin = DicUtil.getBeginTime(year, month);
+        long end = DicUtil.getEndTime(year, month);
+
+        PersonExamHistoryExample examHistoryExample = new PersonExamHistoryExample();
+        examHistoryExample.createCriteria().andExamTimeBetween(String.valueOf(begin), String.valueOf(end)).andObtainScoreIsNotNull().andExamTypeEqualTo(2);
+        List<PersonExamHistoryWithBLOBs> bloBsList = personExamHistoryMapper.selectByExampleWithBLOBs(examHistoryExample);
+
+        List<ScoreView> mapList = new ArrayList<>();
+        for (PersonExamHistoryWithBLOBs bloBs : bloBsList) {
+            Person person = personMapper.selectByPrimaryKey(bloBs.getPersonId());
+            ScoreView re = new ScoreView();
+            if (null != person) {
+                re.setPersonName(person.getName());
+                re.setPersonId(bloBs.getPersonId());
+                re.setPersonIdentity(person.getIdentityNum());
+            }
+            re.setMonth(month);
+            re.setScore(bloBs.getObtainScore());
+
+            mapList.add(re);
+        }
+        //将同一人同月多次成绩排除低的
+        List<ScoreView> resList = new ArrayList<>();
+        for (ScoreView scoreView : mapList) {
+            if (resList.contains(scoreView)) {//这里重写scoreView equals 方法，月份+身份证相同视为
+                if (scoreView.getScore().compareTo(resList.get(resList.indexOf(scoreView)).getScore()) > 0) {
+                    //如果当前的成绩大于已录入集合的成绩，刷新成绩
+                    resList.get(resList.indexOf(scoreView)).setScore(scoreView.getScore());
+                } else {
+                    continue;
+                }
+            } else {
+                resList.add(scoreView);
+            }
+        }
+        Collections.sort(resList);
+        for (int i = 0; i < resList.size(); i++) {
+            resList.get(i).setOrder(i + 1);
+        }
+        return resList;
+
+    }
+
+    @Override
+    public ScoreView personMonthScoreDetail(int personId, int year, int month) {
+        List<ScoreView> res = getMonthScoreList(year, month);
+        for (ScoreView scoreView : res) {
+            if (scoreView.getPersonId() == personId) {
+                return scoreView;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Map getExamReport() {
+        Date monthStart = doGetMonthStart(Calendar.getInstance());
+        //获取当月考试的所有用户考试信息
+        List<PersonExamHistoryWithBLOBs> monthExamResult = personExamHistoryMapper.getExamReport(String.valueOf(monthStart.getTime()), 2);
+
+        List<PersonExamHistoryWithBLOBs> passList = new ArrayList<>();
+        for (PersonExamHistoryWithBLOBs bloBs : monthExamResult) {
+            if (!StringUtils.isEmpty(bloBs.getObtainScore())) {
+                //分值不为空
+                if (Integer.valueOf(bloBs.getObtainScore()) >= DicUtil.PASS_SCORE) {
+                    //获得分数大于设定通过分数
+                    passList.add(bloBs);
+                }
+            }
+        }
+
+        Map result = new HashMap();
+        result.put("examUserS", monthExamResult.size());//今日活跃度
+        result.put("passUsers", passList.size());//当前正在登录的数量
+        return result;
+    }
+
+    private static Date doGetMonthStart(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+
+        return calendar.getTime();
+    }
+
+
 }

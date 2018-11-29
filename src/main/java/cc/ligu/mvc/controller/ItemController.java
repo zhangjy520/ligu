@@ -5,16 +5,12 @@
 package cc.ligu.mvc.controller;
 
 import cc.ligu.common.controller.BasicController;
-import cc.ligu.common.entity.ResultEntity;
-import cc.ligu.common.security.AESencryptor;
 import cc.ligu.common.utils.DWZResponseUtil;
 import cc.ligu.mvc.modelView.DWZResponse;
 import cc.ligu.mvc.persistence.entity.Item;
-import cc.ligu.mvc.persistence.entity.UserView;
 import cc.ligu.mvc.service.UserService;
 import cc.ligu.mvc.service.impl.ItemServiceImpl;
 import com.github.pagehelper.PageInfo;
-import com.wordnik.swagger.annotations.*;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -63,7 +59,7 @@ public class ItemController extends BasicController {
         try {
             itemService.saveItem(item);
         } catch (Exception e) {
-            return DWZResponseUtil.callbackFail("500", "保存项目失败", "");
+            return DWZResponseUtil.callbackFail("300", "保存项目失败", "");
         }
         return DWZResponseUtil.callbackSuccess("保存项目成功", "_blank");
     }
@@ -76,7 +72,7 @@ public class ItemController extends BasicController {
             item.setId(id);
             itemService.deleteItem(item);
         } catch (Exception e) {
-            return DWZResponseUtil.callbackFail("500", "删除项目失败", "");
+            return DWZResponseUtil.callbackFail("300", "删除项目失败", "");
         }
         return DWZResponseUtil.callbackSuccess("删除项目成功", "");
     }

@@ -7,6 +7,16 @@ public class PersonExamHistoryWithBLOBs extends PersonExamHistory implements Ser
 
     private String wrongIds;
 
+    private String month;
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+
     private static final long serialVersionUID = 1L;
 
     public String getQuestionIds() {

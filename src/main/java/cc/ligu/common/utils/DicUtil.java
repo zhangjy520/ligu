@@ -1,16 +1,19 @@
 package cc.ligu.common.utils;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import net.sf.json.JSONObject;
 import org.springframework.util.StringUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * Created by zjy on 2016/9/9.
  */
 public class DicUtil {
+
+    //通过考试分值
+    public static Integer PASS_SCORE = 90;
 
     //题目类别：1单选题 2多选题 3其他
     public static List<KVEntity> questionTypeList = new ArrayList<KVEntity>();
@@ -137,7 +140,7 @@ public class DicUtil {
     public static String getValueByKeyAndFlag(int key, String which) {
         String val = "";
         List<KVEntity> kvEntityList = (List<KVEntity>) map.get(which);
-        for (KVEntity entity : kvEntityList) {
+        for (KVEntity entity: kvEntityList) {
             if (entity.getKey().equals(String.valueOf(key))) {
                 val = entity.getValue();
                 break;
@@ -149,7 +152,7 @@ public class DicUtil {
     public static Integer getKeyByValueAndFlag(String value, String which) {
         int val = 0;
         List<KVEntity> kvEntityList = (List<KVEntity>) map.get(which);
-        for (KVEntity entity : kvEntityList) {
+        for (KVEntity entity: kvEntityList) {
             if (entity.getValue().equals(value)) {
                 val = Integer.parseInt(entity.getKey());
                 break;
@@ -159,9 +162,11 @@ public class DicUtil {
     }
 
     public static List<String> splitWithOutNull(String param) {
+        if (StringUtils.isEmpty(param))
+            return null;
         String[] res = param.split(",");
         List<String> out = new ArrayList<>();
-        for (String v : res) {
+        for (String v: res) {
             if (!StringUtils.isEmpty(v))
                 out.add(v);
         }
@@ -182,11 +187,70 @@ public class DicUtil {
         try {
             JSONObject data = JSONObject.fromObject(json);
             return data.get(key).toString();
-        }catch (Exception e){
+        } catch (Exception e) {
             return "";
         }
     }
 
+
+    public static long getBeginTime(int year, int month) {
+        Date d= null;
+        try {
+            d = new SimpleDateFormat("yyyyMM").parse(year+""+month);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        //设置为1号,当前日期既为本月第一天
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        //将小时至0
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        //将分钟至0
+        c.set(Calendar.MINUTE, 0);
+        //将秒至0
+        c.set(Calendar.SECOND,0);
+        //将毫秒至0
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTimeInMillis();
+    }
+
+    public static long getEndTime(int year, int month){
+        Date d= null;
+        try {
+            d = new SimpleDateFormat("yyyyMM").parse(year+""+month);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+
+        //设置为当月最后一天
+        c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+        //将小时至23
+        c.set(Calendar.HOUR_OF_DAY, 23);
+        //将分钟至59
+        c.set(Calendar.MINUTE, 59);
+        //将秒至59
+        c.set(Calendar.SECOND,59);
+        //将毫秒至999
+        c.set(Calendar.MILLISECOND, 999);
+        // 获取本月最后一天的时间戳
+        return c.getTimeInMillis();
+
+    }
+
+
     public static void main(String[] args) {
+        System.out.println(getBeginTime(2018,7));
+        System.out.println(getEndTime(2018,7));
+
+        String s = "1data,2data,5data,6data".replaceAll("[5-9]data","");
+        System.out.println("sss");
+        System.out.println("32".compareTo("22"));
+        System.out.println("32".compareTo("32"));
+        System.out.println("32".compareTo("33"));
+        System.out.println("77".compareTo("100"));
+        System.out.println("72".compareTo("7"));
     }
 }

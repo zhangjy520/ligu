@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.ligu.mvc.persistence.dao.LoginLogMapper" >
+  <resultMap id="BaseResultMap" type="cc.ligu.mvc.persistence.entity.LoginLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="sys_user_id" property="sysUserId" jdbcType="INTEGER" />
+    <result column="ref_person_id" property="refPersonId" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="login_status" property="loginStatus" jdbcType="INTEGER" />
+    <result column="login_date" property="loginDate" jdbcType="BIGINT" />
+    <result column="logout_date" property="logoutDate" jdbcType="BIGINT" />
+    <result column="login_source" property="loginSource" jdbcType="INTEGER" />
+    <result column="login_id" property="loginId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, sys_user_id, ref_person_id, username, name, login_status, login_date, logout_date, 
+    login_source, login_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cc.ligu.mvc.persistence.entity.LoginLogExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from login_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from login_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from login_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cc.ligu.mvc.persistence.entity.LoginLogExample" >
+    delete from login_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cc.ligu.mvc.persistence.entity.LoginLog" >
+    insert into login_log (id, sys_user_id, ref_person_id, 
+      username, name, login_status, 
+      login_date, logout_date, login_source, 
+      login_id)
+    values (#{id,jdbcType=INTEGER}, #{sysUserId,jdbcType=INTEGER}, #{refPersonId,jdbcType=INTEGER}, 
+      #{username,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{loginStatus,jdbcType=INTEGER}, 
+      #{loginDate,jdbcType=BIGINT}, #{logoutDate,jdbcType=BIGINT}, #{loginSource,jdbcType=INTEGER}, 
+      #{loginId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cc.ligu.mvc.persistence.entity.LoginLog" >
+    insert into login_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sysUserId != null" >
+        sys_user_id,
+      </if>
+      <if test="refPersonId != null" >
+        ref_person_id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="loginStatus != null" >
+        login_status,
+      </if>
+      <if test="loginDate != null" >
+        login_date,
+      </if>
+      <if test="logoutDate != null" >
+        logout_date,
+      </if>
+      <if test="loginSource != null" >
+        login_source,
+      </if>
+      <if test="loginId != null" >
+        login_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sysUserId != null" >
+        #{sysUserId,jdbcType=INTEGER},
+      </if>
+      <if test="refPersonId != null" >
+        #{refPersonId,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="loginStatus != null" >
+        #{loginStatus,jdbcType=INTEGER},
+      </if>
+      <if test="loginDate != null" >
+        #{loginDate,jdbcType=BIGINT},
+      </if>
+      <if test="logoutDate != null" >
+        #{logoutDate,jdbcType=BIGINT},
+      </if>
+      <if test="loginSource != null" >
+        #{loginSource,jdbcType=INTEGER},
+      </if>
+      <if test="loginId != null" >
+        #{loginId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update login_log
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.sysUserId != null" >
+        sys_user_id = #{record.sysUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.refPersonId != null" >
+        ref_person_id = #{record.refPersonId,jdbcType=INTEGER},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginStatus != null" >
+        login_status = #{record.loginStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.loginDate != null" >
+        login_date = #{record.loginDate,jdbcType=BIGINT},
+      </if>
+      <if test="record.logoutDate != null" >
+        logout_date = #{record.logoutDate,jdbcType=BIGINT},
+      </if>
+      <if test="record.loginSource != null" >
+        login_source = #{record.loginSource,jdbcType=INTEGER},
+      </if>
+      <if test="record.loginId != null" >
+        login_id = #{record.loginId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update login_log
+    set id = #{record.id,jdbcType=INTEGER},
+      sys_user_id = #{record.sysUserId,jdbcType=INTEGER},
+      ref_person_id = #{record.refPersonId,jdbcType=INTEGER},
+      username = #{record.username,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      login_status = #{record.loginStatus,jdbcType=INTEGER},
+      login_date = #{record.loginDate,jdbcType=BIGINT},
+      logout_date = #{record.logoutDate,jdbcType=BIGINT},
+      login_source = #{record.loginSource,jdbcType=INTEGER},
+      login_id = #{record.loginId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cc.ligu.mvc.persistence.entity.LoginLog" >
+    update login_log
+    <set >
+      <if test="sysUserId != null" >
+        sys_user_id = #{sysUserId,jdbcType=INTEGER},
+      </if>
+      <if test="refPersonId != null" >
+        ref_person_id = #{refPersonId,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="loginStatus != null" >
+        login_status = #{loginStatus,jdbcType=INTEGER},
+      </if>
+      <if test="loginDate != null" >
+        login_date = #{loginDate,jdbcType=BIGINT},
+      </if>
+      <if test="logoutDate != null" >
+        logout_date = #{logoutDate,jdbcType=BIGINT},
+      </if>
+      <if test="loginSource != null" >
+        login_source = #{loginSource,jdbcType=INTEGER},
+      </if>
+      <if test="loginId != null" >
+        login_id = #{loginId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cc.ligu.mvc.persistence.entity.LoginLog" >
+    update login_log
+    set sys_user_id = #{sysUserId,jdbcType=INTEGER},
+      ref_person_id = #{refPersonId,jdbcType=INTEGER},
+      username = #{username,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      login_status = #{loginStatus,jdbcType=INTEGER},
+      login_date = #{loginDate,jdbcType=BIGINT},
+      logout_date = #{logoutDate,jdbcType=BIGINT},
+      login_source = #{loginSource,jdbcType=INTEGER},
+      login_id = #{loginId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

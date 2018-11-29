@@ -28,10 +28,12 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
+            <shiro:hasAnyRoles name="root">
             <li><a class="add" href="${ctx}/question/pop/modify" target="dialog" mask="true"><span>新增</span></a></li>
             <li class="line">line</li>
             <li><a class="icon" href="${ctx}/question/template/download" target="dwzExport" targetType="navTab" title="下载导入模版?"><span>下载导入模版</span></a></li>
             <li><a class="icon" href="${ctx}/question/pop/upload" target="dialog" title="导入题库?"><span>导入题库</span></a></li>
+            </shiro:hasAnyRoles>
         </ul>
     </div>
     <table class="table" width="100%" layoutH="138">
@@ -48,7 +50,9 @@
             <th width="80">D选项</th>
             <th width="120">正确选项</th>
             <th width="120" align="center">答案解析</th>
+            <shiro:hasAnyRoles name="root">
             <th width="80" align="center">操作</th>
+            </shiro:hasAnyRoles>
         </tr>
         </thead>
         <tbody>
@@ -65,12 +69,14 @@
                 <td>${question.d}</td>
                 <td>${question.answerCorrect}</td>
                 <td>${question.answerExplain}</td>
+                <shiro:hasAnyRoles name="root">
                 <td>
                     <div>
                         <a target="ajaxTodo" title="确认删除？" href="${ctx}/question/delete/${question.id}" class="">删除</a>
                         <a target="dialog"  href="${ctx}/question/pop/modify?id=${question.id}" class="">修改</a>
                     </div>
                 </td>
+                </shiro:hasAnyRoles>
             </tr>
         </c:forEach>
         </tbody>

@@ -6,7 +6,6 @@ package cc.ligu.mvc.controller;
 
 import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.utils.DWZResponseUtil;
-import cc.ligu.common.utils.DicUtil;
 import cc.ligu.common.utils.PropertiesUtil;
 import cc.ligu.mvc.modelView.DWZResponse;
 import cc.ligu.mvc.persistence.entity.Source;
@@ -16,7 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -66,7 +68,8 @@ public class SourceController extends BasicController {
             }
             sourceService.saveSource(source,getLoginUser());
         } catch (Exception e) {
-            return DWZResponseUtil.callbackFail("500", "保存资源失败", "");
+            e.printStackTrace();
+            return DWZResponseUtil.callbackFail("300", "保存资源失败", "");
         }
         return DWZResponseUtil.callbackSuccess("保存资源成功", "_blank");
     }
@@ -79,7 +82,7 @@ public class SourceController extends BasicController {
             source.setId(id);
             sourceService.deleteSource(source);
         } catch (Exception e) {
-            return DWZResponseUtil.callbackFail("500", "删除资源失败", "");
+            return DWZResponseUtil.callbackFail("300", "删除资源失败", "");
         }
         return DWZResponseUtil.callbackSuccess("删除资源成功", "");
     }

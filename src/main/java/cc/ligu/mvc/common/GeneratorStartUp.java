@@ -9,7 +9,6 @@ import org.mybatis.generator.internal.DefaultShellCallback;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,8 +24,8 @@ public class GeneratorStartUp {
         try {
             List<String> warnings = new ArrayList<String>();
             boolean overwrite = true;
-//            File configFile = new File("D:\\zjywork\\ligu\\src\\main\\resources\\mybatis-generator.xml");
-            File configFile = new File("D:\\java\\ligu\\src\\main\\resources\\mybatis-generator.xml");
+            File configFile = new File("D:\\zjywork\\ligu\\src\\main\\resources\\mybatis-generator.xml");
+//            File configFile = new File("D:\\java\\ligu\\src\\main\\resources\\mybatis-generator.xml");
             ConfigurationParser cp = new ConfigurationParser(warnings);
             Configuration config = cp.parseConfiguration(configFile);
             DefaultShellCallback callback = new DefaultShellCallback(overwrite);

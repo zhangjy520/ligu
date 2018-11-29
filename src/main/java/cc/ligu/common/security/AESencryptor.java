@@ -83,7 +83,9 @@ public class AESencryptor {
     public static void main(String args[]) {
         String ori = "admin";
         String encodeStr = encryptCBCPKCS5Padding(ori);
+        String dd = decryptCBCPKCS5Padding("YWThj7npu4lG1yGSwxfD2Q==");
         System.out.println(encodeStr);
+        System.out.println(dd);
 
     }
 }

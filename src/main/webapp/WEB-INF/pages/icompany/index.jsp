@@ -28,7 +28,9 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
+            <shiro:hasAnyRoles name="root">
             <li><a class="add" href="${ctx}/iCompany/pop/modify" target="dialog" mask="true"><span>新增</span></a></li>
+            </shiro:hasAnyRoles>
         </ul>
     </div>
     <table class="table" width="100%" layoutH="138">
@@ -38,7 +40,9 @@
             <th width="60">保险公司主页</th>
             <th width="20">保单号查询页面</th>
             <th width="40">保险公司电话</th>
+            <shiro:hasAnyRoles name="root">
             <th width="80" align="center">操作</th>
+            </shiro:hasAnyRoles>
         </tr>
         </thead>
         <tbody>
@@ -48,12 +52,14 @@
                 <td>${iCompany.urlIndex}</td>
                 <td>${iCompany.urlForQuery}</td>
                 <td>${iCompany.phone}</td>
+                <shiro:hasAnyRoles name="root">
                 <td>
                     <div>
                         <a target="ajaxTodo" title="确认删除？" href="${ctx}/iCompany/delete/${iCompany.id}" class="">删除</a>
                         <a target="dialog"  href="${ctx}/iCompany/pop/modify?id=${iCompany.id}" class="">修改</a>
                     </div>
                 </td>
+                </shiro:hasAnyRoles>
             </tr>
         </c:forEach>
         </tbody>

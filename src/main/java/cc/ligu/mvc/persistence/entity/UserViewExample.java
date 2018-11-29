@@ -4,10 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserViewExample {
+    /**
+     * v_user
+     */
     protected String orderByClause;
 
+    /**
+     * v_user
+     */
     protected boolean distinct;
 
+    /**
+     * v_user
+     */
     protected List<Criteria> oredCriteria;
 
     public UserViewExample() {
@@ -63,6 +72,9 @@ public class UserViewExample {
         distinct = false;
     }
 
+    /**
+     * v_user 2018-09-17
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -914,6 +926,76 @@ public class UserViewExample {
             return (Criteria) this;
         }
 
+        public Criteria andIdentityImgIsNull() {
+            addCriterion("identity_img is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgIsNotNull() {
+            addCriterion("identity_img is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgEqualTo(String value) {
+            addCriterion("identity_img =", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgNotEqualTo(String value) {
+            addCriterion("identity_img <>", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgGreaterThan(String value) {
+            addCriterion("identity_img >", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgGreaterThanOrEqualTo(String value) {
+            addCriterion("identity_img >=", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgLessThan(String value) {
+            addCriterion("identity_img <", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgLessThanOrEqualTo(String value) {
+            addCriterion("identity_img <=", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgLike(String value) {
+            addCriterion("identity_img like", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgNotLike(String value) {
+            addCriterion("identity_img not like", value, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgIn(List<String> values) {
+            addCriterion("identity_img in", values, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgNotIn(List<String> values) {
+            addCriterion("identity_img not in", values, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgBetween(String value1, String value2) {
+            addCriterion("identity_img between", value1, value2, "identityImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentityImgNotBetween(String value1, String value2) {
+            addCriterion("identity_img not between", value1, value2, "identityImg");
+            return (Criteria) this;
+        }
+
         public Criteria andInsurancePurchasesIsNull() {
             addCriterion("insurance_purchases is null");
             return (Criteria) this;
@@ -1679,6 +1761,11 @@ public class UserViewExample {
             return (Criteria) this;
         }
 
+        public Criteria andIdentityImgLikeInsensitive(String value) {
+            addCriterion("upper(identity_img) like", value.toUpperCase(), "identityImg");
+            return (Criteria) this;
+        }
+
         public Criteria andInsurancePurchasesLikeInsensitive(String value) {
             addCriterion("upper(insurance_purchases) like", value.toUpperCase(), "insurancePurchases");
             return (Criteria) this;
@@ -1710,6 +1797,9 @@ public class UserViewExample {
         }
     }
 
+    /**
+     * v_user
+     */
     public static class Criteria extends GeneratedCriteria {
 
         protected Criteria() {
@@ -1717,6 +1807,9 @@ public class UserViewExample {
         }
     }
 
+    /**
+     * v_user 2018-09-17
+     */
     public static class Criterion {
         private String condition;
 

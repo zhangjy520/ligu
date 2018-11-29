@@ -4,7 +4,6 @@ import cc.ligu.common.service.BasicService;
 import cc.ligu.mvc.persistence.dao.UserMapper;
 import cc.ligu.mvc.persistence.dao.UserViewMapper;
 import cc.ligu.mvc.persistence.entity.User;
-import cc.ligu.mvc.persistence.entity.UserExample;
 import cc.ligu.mvc.persistence.entity.UserView;
 import cc.ligu.mvc.persistence.entity.UserViewExample;
 import cc.ligu.mvc.service.UserService;
@@ -51,6 +50,17 @@ public class UserServiceImpl extends BasicService implements UserService {
 
         List<UserView> res = userViewMapper.selectByExample(example);
         if (res.size() > 0)
+            return res.get(0);
+        return null;
+    }
+
+    @Override
+    public UserView selectUserViewByIdenti(String idNum) {
+        UserViewExample example = new UserViewExample();
+        example.createCriteria().andIdentityNumEqualTo(idNum);
+
+        List<UserView> res = userViewMapper.selectByExample(example);
+        if (res.size()>0)
             return res.get(0);
         return null;
     }

@@ -17,14 +17,18 @@
                 </select>
             </div>
             <div class="unit">
-                <label>身份证号码：</label>
-                <input ${disabled} type="text" name="identityNum" value="${person.identityNum}" size="30"/>
+                <label>证件类型：</label>
+                <input ${disabled} type="text" <c:if test="${flag}">disabled</c:if> name="identityType" value="${person.identityType}" size="30"/>
+            </div>
+            <div class="unit">
+                <label>证件号码：</label>
+                <input ${disabled} <c:if test="${flag}">disabled</c:if> type="text" name="identityNum" value="${person.identityNum}" size="30"/>
             </div>
             <div class="unit">
                 <label>人员类别：</label>
                 <select name="typeDisabled" disabled="disabled">
                     <option value="2" <c:if test="${roleType == 2}">selected</c:if>>人员审核管理员</option>
-                    <option value="3" <c:if test="${roleType == 3}">selected</c:if>>项目管理员</option>
+                    <option value="3" <c:if test="${roleType == 3}">selected</c:if>>项目经理</option>
                     <option value="4" <c:if test="${roleType == 4}">selected</c:if>>施工管理员</option>
                     <option value="5" <c:if test="${roleType == 5}">selected</c:if>>施工工人</option>
                 </select>
@@ -46,6 +50,16 @@
             <div class="unit">
                 <label>保险公司：</label>
                 <input ${disabled} type="text" name="insurancePurchasesCompany" value="${ligu:getValueFromJson(person.insurancePurchases,'company')}"
+                                   size="30"/>
+            </div>
+            <div class="unit">
+                <label>保险时限：</label>
+                <input ${disabled} type="text" name="insurancePurchasesTime" value="${ligu:getValueFromJson(person.insurancePurchases,'order_time')}"
+                                   size="30"/>
+            </div>
+            <div class="unit">
+                <label>保险额度：</label>
+                <input ${disabled} type="text" name="insurancePurchasesHowMuch" value="${ligu:getValueFromJson(person.insurancePurchases,'how_much')}"
                                    size="30"/>
             </div>
             <div class="unit">

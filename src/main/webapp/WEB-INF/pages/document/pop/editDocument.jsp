@@ -85,20 +85,23 @@
                 $("input[name='url']").val("已经上传，不需要填写路径");
                 $("input[name='url']").attr("disabled",true);
             },
+            uploadProgress:function(file,percentage){
+              console.log(percentage);
+            },
             error: function (err) {
                 console.info(err);
             },
             buttonText: '上传资源',
             chunked: false,
             // 分片大小
-            chunkSize: 50 * 1024 * 1024,
+            chunkSize: 200 * 1024 * 1024,
             //最大上传的文件数量, 总文件大小,单个文件大小(单位字节);
             fileNumLimit: 1,
             fileSizeLimit: 250 * 1024 * 1024,
             fileSingleSizeLimit: 250 * 1024 * 1024,
             accept: {
                 title: "files",
-                extensions: "avi,rmvb,rm,flv,mp4,mov,pdf,wps,rtf,doc,txt,docx,ppt,xlsx,bmp,gif,jpg,pic,png,tif"
+                extensions: "pptx,docx,xlsx,avi,rmvb,rm,flv,mp4,mov,pdf,wps,rtf,doc,txt,docx,ppt,xlsx,bmp,gif,jpg,pic,png,tif"
             },
         });
 

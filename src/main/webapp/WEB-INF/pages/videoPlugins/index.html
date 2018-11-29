@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<div>
+      <video width="400" height="500" controls="controls">
+      </video>
+</div>
+
+<input type="file" accept="video/*" />
+<script type="text/javascript">
+
+    $("input").change(function(){
+        var files = this.files;
+        if(!files.length) {
+            return;
+        }
+
+        $("video").attr("src", window.URL.createObjectURL(files[0]));
+
+        $("video").get(0).playbackRate = 10;
+        $("video").get(0).play();
+
+    });
+
+</script>
+
+
+</body>
+
+</html>

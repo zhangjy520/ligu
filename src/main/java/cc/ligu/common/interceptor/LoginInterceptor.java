@@ -17,6 +17,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
+        response.setHeader("Access-Control-Allow-Origin","*");
         // 获得请求路径的uri
         String uri = request.getRequestURI();
         if (StringUtils.isEmpty(uri)) {

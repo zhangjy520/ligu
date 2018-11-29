@@ -2,13 +2,9 @@ package cc.ligu.mvc.service.impl;
 
 import cc.ligu.common.service.BasicService;
 import cc.ligu.mvc.persistence.dao.InsuranceCompanyMapper;
-import cc.ligu.mvc.persistence.dao.ItemMapper;
 import cc.ligu.mvc.persistence.entity.InsuranceCompany;
 import cc.ligu.mvc.persistence.entity.InsuranceCompanyExample;
-import cc.ligu.mvc.persistence.entity.Item;
-import cc.ligu.mvc.persistence.entity.ItemExample;
 import cc.ligu.mvc.service.ICompanyService;
-import cc.ligu.mvc.service.ItemService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +30,7 @@ public class ICompanyServiceImpl extends BasicService implements ICompanyService
         if (!StringUtils.isEmpty(insuranceCompany.getName())) {
             cri.andNameLike("%" + insuranceCompany.getName() + "%");
         }
-        PageHelper.startPage(pageSize,pageNum);
+        PageHelper.startPage(pageNum,pageSize);
         List<InsuranceCompany> res = insuranceCompanyMapper.selectByExample(example);
         PageInfo<InsuranceCompany> page = new PageInfo<InsuranceCompany>(res);
         return page;

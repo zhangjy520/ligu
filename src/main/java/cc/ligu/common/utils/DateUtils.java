@@ -229,8 +229,11 @@ public class DateUtils {
      */
     public static void main(String[] args) throws UnsupportedEncodingException, ParseException {
 
-       /*millsToyyyyMMdd(System.currentTimeMillis());*/
-
+        DateFormat formatter = new SimpleDateFormat("MM");
+        Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(Long.valueOf("1530713279049"));
+        String ss =formatter.format(calendar.getTime());
+        System.out.println();
     }
 
 }

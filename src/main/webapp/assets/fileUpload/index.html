@@ -1,0 +1,41 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="css/iconfont.css" rel="stylesheet" type="text/css"/>
+    <link href="css/fileUpload.css" rel="stylesheet" type="text/css">
+    <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="js/fileUpload.js"></script>
+</head>
+<body>
+<div id="fileUploadContent" class="fileUploadContent"></div>
+
+<button onclick="testUpload()">提交</button>
+</body>
+</html>
+<script type="text/javascript">
+    $("#fileUploadContent").initUpload({
+        "uploadUrl":"http://localhost:8081/ligu/api/add/project?clientId=cd&name=张三&simpleName=李四&desc=王五",//上传文件信息地址
+        //"size":350,//文件大小限制，单位kb,默认不限制
+        //"maxFileNumber":3,//文件个数限制，为整数
+        //"filelSavePath":"",//文件上传地址，后台设置的根目录
+        "beforeUpload":beforeUploadFun,//在上传前执行的函数
+        "onUpload":function(opt,data){
+            alert(opt);
+            alert(data);
+            uploadTools.uploadError(opt);//显示上传错误
+            uploadTools.uploadSuccess(opt);//显示上传成功
+        },//在上传后执行的函数
+        //autoCommit:true,//文件是否自动上传
+        "fileType":['png','jpg','docx','doc','txt']//文件类型限制，默认不限制，注意写的是文件后缀
+    });
+
+    function beforeUploadFun(opt){
+        alert("before");
+    }
+
+    function testUpload(){
+        var opt = uploadTools.getOpt("fileUploadContent");
+        uploadEvent.uploadFileEvent(opt);
+    }
+</script>

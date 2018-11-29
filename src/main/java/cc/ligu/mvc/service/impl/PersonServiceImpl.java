@@ -5,10 +5,7 @@ import cc.ligu.common.service.BasicService;
 import cc.ligu.mvc.persistence.dao.ApiMapper;
 import cc.ligu.mvc.persistence.dao.PersonMapper;
 import cc.ligu.mvc.persistence.dao.UserMapper;
-import cc.ligu.mvc.persistence.entity.Person;
-import cc.ligu.mvc.persistence.entity.PersonExample;
-import cc.ligu.mvc.persistence.entity.User;
-import cc.ligu.mvc.persistence.entity.UserView;
+import cc.ligu.mvc.persistence.entity.*;
 import cc.ligu.mvc.service.PersonService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -56,7 +53,7 @@ public class PersonServiceImpl extends BasicService implements PersonService {
     public List<Person> listAllPerson(Person person) {
         PersonExample example = new PersonExample();
         PersonExample.Criteria criteria = example.createCriteria().andDelFlagEqualTo(0);
-        if(StringUtils.isEmpty(person.getBlackFlag())||person.getBlackFlag()!=0){
+        if (StringUtils.isEmpty(person.getBlackFlag()) || person.getBlackFlag() != 0) {
             criteria.andBlackFlagEqualTo(person.getBlackFlag());
         }
 
@@ -67,18 +64,19 @@ public class PersonServiceImpl extends BasicService implements PersonService {
     @Override
     public int savePerson(Person person, UserView userView) {
         int flag = 0;
-        if (null!=person.getType()&&person.getType() != 5) {
+        List<String> li = new ArrayList<>();
+        if (null != person.getType() && person.getType() != 5) {
             //管理员设置，默认已审核！审核未审核只针对施工人员
             person.setStatus(1);
         }
 
-        if (!StringUtils.isEmpty(person.getName())&&!StringUtils.isEmpty(person.getIdentityNum())){
+        if (!StringUtils.isEmpty(person.getName()) && !StringUtils.isEmpty(person.getIdentityNum())) {
             //如果用户的姓名+身份证不为空，到库里查该人员，如果有该人员，做修改，否则进行下面的操作
             PersonExample example = new PersonExample();
             example.createCriteria().andIdentityNumEqualTo(person.getIdentityNum());
 
             List<Person> personLis = personMapper.selectByExample(example);
-            if(personLis.size()>0){
+            if (personLis.size() > 0) {
                 person.setId(personLis.get(0).getId());
                 flag = -2;
             }
@@ -103,6 +101,10 @@ public class PersonServiceImpl extends BasicService implements PersonService {
             person.setUpdateBy(userView.getId());
             person.setUpdateDate(System.currentTimeMillis());
             personMapper.updateByPrimaryKeySelective(person);
+            li.add(person.getName());
+        }
+        for (int i = 0; i < li.size(); i++) {
+            System.out.println(li.get(i));
         }
         return flag;
     }
@@ -112,20 +114,47 @@ public class PersonServiceImpl extends BasicService implements PersonService {
         return personMapper.selectByPrimaryKey(personId);
     }
 
+    @Transactional
     @Override
     public int deletePerson(Person person) {
-        return personMapper.deleteByPrimaryKey(person.getId());
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andRefIdEqualTo(person.getId());
+        userMapper.deleteByExample(userExample);
+        personMapper.deleteByPrimaryKey(person.getId());
+        return 1;
     }
 
     @Override
     public List<String> getAllSelect(int type) {
         List<String> selectList = apiMapper.getAllSelect(type);
         List<String> res = new ArrayList<>();
-        for (String select:selectList) {
-            if(!StringUtils.isEmpty(select)){
+        for (String select : selectList) {
+            if (!StringUtils.isEmpty(select)) {
                 res.add(select);
             }
         }
         return res;
+    }
+
+    @Override
+    public int changeUserPwd(int sysUserId, String pwd) {
+        User user = new User();
+        user.setPassword(AESencryptor.encryptCBCPKCS5Padding(pwd));
+        user.setId(sysUserId);
+        user.setUpdateBy(sysUserId);
+        user.setUpdateDate(System.currentTimeMillis());
+        return userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    public Person selectPersonByIdNum(String idNum) {
+        PersonExample personExample = new PersonExample();
+        personExample.createCriteria().andIdentityNumEqualTo(idNum);
+
+        List<Person> personList = personMapper.selectByExample(personExample);
+        if (personList.size() > 0) {
+            return personList.get(0);
+        }
+        return null;
     }
 }
