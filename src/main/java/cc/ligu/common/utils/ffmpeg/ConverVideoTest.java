@@ -7,8 +7,8 @@ public class ConverVideoTest {
     public void run() {
         try {
             // 转换并截图
-            String filePath = "/home/alpha/Videos/1.avi";
-            ConverVideoUtils cv = new ConverVideoUtils(filePath,"","");
+            String filePath = "F:\\actviti资料";
+            ConvertVideoUtils cv = new ConvertVideoUtils(filePath,"","");
             String targetExtension = ".mp4";
             boolean isDelSourseFile = false;
             boolean beginConver = cv.beginConver(targetExtension,isDelSourseFile);

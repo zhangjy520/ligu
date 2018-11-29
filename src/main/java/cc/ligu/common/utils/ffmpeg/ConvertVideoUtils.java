@@ -12,24 +12,21 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
-public class ConverVideoUtils {
+public class ConvertVideoUtils {
 
     private Date dt;
-    private long begintime;
-    private String sourceVideoPath;//源视频路径
-    private String filerealname; // 文件名 不包括扩展名
+    private long beginTime;
+    private String sourceVideoPath;//待转换源视频路径
+    private String fileRealname; // 文件名 不包括扩展名
     private String filename; // 包括扩展名
     private String imageRealPath; // 截图的存放目录
     private String targetfolder; // 转换后视频的目录
-    private String videofolder = Contants.videofolder; // 别的格式视频的目录
-    private String ffmpegpath = "ffmpegpath=/home/alpha/soft/ffmpeg/bin/ffmpeg"; // ffmpeg.exe的目录
-    private String mencoderpath = Contants.mencoderpath; // mencoder的目录
 
 
-    public ConverVideoUtils() {
+    public ConvertVideoUtils() {
     }
 
-    public ConverVideoUtils(String path, String targetfolder, String imageRealPath) {
+    public ConvertVideoUtils(String path, String targetfolder, String imageRealPath) {
         this.sourceVideoPath = path;
         this.targetfolder = targetfolder;
         this.imageRealPath = imageRealPath;
@@ -51,22 +48,22 @@ public class ConverVideoUtils {
     public boolean beginConver(String targetExtension, boolean isDelSourseFile) {
         File fi = new File(sourceVideoPath);
         filename = fi.getName();
-        filerealname = filename.substring(0, filename.lastIndexOf(".")).toLowerCase();
+        fileRealname = filename.substring(0, filename.lastIndexOf(".")).toLowerCase();
         System.out.println("----接收到文件(" + sourceVideoPath + ")需要转换-------------------------- ");
         if (!checkfile(sourceVideoPath)) {
             System.out.println(sourceVideoPath + "文件不存在" + " ");
             return false;
         }
         dt = new Date();
-        begintime = dt.getTime();
+        beginTime = dt.getTime();
         System.out.println("----开始转文件(" + sourceVideoPath + ")-------------------------- ");
         if (process(targetExtension, isDelSourseFile)) {
             Date dt2 = new Date();
             System.out.println("转换成功 ");
-            long endtime = dt2.getTime();
-            long timecha = (endtime - begintime);
-            System.out.println("转换视频格式共用了:" + timecha / 1000 + " s");
-            if (processImg(targetfolder + filerealname + targetExtension)) {
+            long endTime = dt2.getTime();
+            long timeDiff = (endTime - beginTime);
+            System.out.println("转换视频格式共用了:" + timeDiff / 1000 + " s");
+            if (processImg(targetfolder + fileRealname + targetExtension)) {
                 System.out.println("screenshot success-截图成功了！ ");
             } else {
                 System.out.println("screenshot fail-截图失败了！ ");
@@ -95,11 +92,11 @@ public class ConverVideoUtils {
         }
         File fi = new File(sourceVideoPath);
         filename = fi.getName();
-        filerealname = filename.substring(0, filename.lastIndexOf(".")).toLowerCase();
+        fileRealname = filename.substring(0, filename.lastIndexOf(".")).toLowerCase();
         List<String> commend = new java.util.ArrayList<String>();
         //第一帧： 00:00:01
         //time ffmpeg -ss 00:00:01 -i test1.flv -f image2 -y test1.jpg
-        commend.add(ffmpegpath);
+        commend.add(Contants.ffmpegPath);
         commend.add("-i");
         commend.add(sourceVideoPath);
         commend.add("-y");
@@ -118,7 +115,7 @@ public class ConverVideoUtils {
         commend.add("-f");
         commend.add("image2");
         commend.add("-y");
-        commend.add(imageRealPath + filerealname + ".jpg");
+        commend.add(imageRealPath + fileRealname + ".jpg");
         try {
             ProcessBuilder builder = new ProcessBuilder();
             String cmd = commend.toString();
@@ -224,7 +221,7 @@ public class ConverVideoUtils {
      */
     private String processAVI(int type) {
         List<String> commend = new java.util.ArrayList<String>();
-        commend.add(mencoderpath);
+        commend.add(Contants.ffmpegPath);
         commend.add(sourceVideoPath);
         commend.add("-oac");
         commend.add("mp3lame");
@@ -237,7 +234,7 @@ public class ConverVideoUtils {
         commend.add("-of");
         commend.add("avi");
         commend.add("-o");
-        commend.add(videofolder + filerealname + ".avi");
+        commend.add(Contants.videoFolder + fileRealname + ".avi");
         // 命令类型：mencoder 1.rmvb -oac mp3lame -lameopts preset=64 -ovc xvid
         // -xvidencopts bitrate=600 -of avi -o rmvb.avi
         try {
@@ -245,7 +242,7 @@ public class ConverVideoUtils {
             builder.command(commend);
             Process p = builder.start();
             doWaitFor(p);
-            return videofolder + filerealname + ".avi";
+            return Contants.videoFolder + fileRealname + ".avi";
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -271,14 +268,14 @@ public class ConverVideoUtils {
         //ffmpeg  -i  uploadfile/video/test.wmv -c:v libx264 -strict -2 uploadfile/mp4/test.mp4
         //ffmpeg  -i 4.avi  -vcodec copy  abc.mp4
         List<String> commend = new java.util.ArrayList<>();
-        commend.add(ffmpegpath);
+        commend.add(Contants.ffmpegPath);
         commend.add("-i");
         commend.add(oldfilepath);
         commend.add("-c:v");
         commend.add("libx264");
         commend.add("-strict");
         commend.add("-2");
-        commend.add(targetfolder + filerealname + targetExtension);
+        commend.add(targetfolder + fileRealname + targetExtension);
         try {
             ProcessBuilder builder = new ProcessBuilder();
             String cmd = commend.toString();
@@ -309,7 +306,7 @@ public class ConverVideoUtils {
             return false;
         }
         List<String> commend = new java.util.ArrayList<>();
-        commend.add(ffmpegpath);
+        commend.add(Contants.ffmpegPath);
         commend.add("-i");
         commend.add(oldfilepath);
         commend.add("-ab");
@@ -325,7 +322,7 @@ public class ConverVideoUtils {
         commend.add("-r");
         commend.add("24");
         commend.add("-y");
-        commend.add(targetfolder + filerealname + ".flv");
+        commend.add(targetfolder + fileRealname + ".flv");
         try {
             ProcessBuilder builder = new ProcessBuilder();
             String cmd = commend.toString();
