@@ -294,8 +294,8 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
         }
 
         Map result = new HashMap();
-        result.put("examUserS", monthExamResult.size());//今日活跃度
-        result.put("passUsers", passList.size());//当前正在登录的数量
+        result.put("examUserS", monthExamResult.size());//参与考试的人数
+        result.put("passUsers", passList.size());//当月通过考试的人数
         return result;
     }
 

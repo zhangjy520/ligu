@@ -73,6 +73,11 @@
                 <input ${disabled} type="text" name="professionalUnit" value="${person.professionalUnit}"
                        size="30"/>
             </div>
+            <div class="unit">
+                <label>中标公司：</label>
+                <input ${disabled} type="text" name="company" value="${person.company}"
+                                   size="30"/>
+            </div>
             <c:if test="${ligu:notEmptyString(check)}">
                 <div class="unit">
                     <label>审核：</label>

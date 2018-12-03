@@ -4,14 +4,70 @@
     <!--获取所有的 0 承保公司/ 1隶属单位-->
     <select id="getAllSelect" parameterType="java.lang.Integer" resultType="String">
 
-        <if test="type == 0" >
+        <if test="type == 0">
             select DISTINCT name from insurance_company
         </if>
-        <if test="type == 1" >
+        <if test="type == 1">
             SELECT DISTINCT
             professional_unit
             FROM oa_person WHERE professional_unit IS NOT NULL
         </if>
     </select>
 
+    <!-- 获取所有的施工单位专业/中标公司的人员信息 -->
+    <select id="getAllCompanyInfo" resultType="java.util.Map">
+        SELECT
+        GROUP_CONCAT(id) AS personIds,
+        COUNT(*) AS num,
+        company AS company
+      FROM
+        oa_person
+      WHERE company IS NOT NULL
+        AND company != ""
+      GROUP BY company
+  </select>
+
+    <!-- 获取这一批人的身份分布（多少个*管理员，多少个普通员工）-->
+    <select id="getAllRoleInfo" resultType="java.util.Map">
+        SELECT
+        GROUP_CONCAT(id) AS personIds,
+        COUNT(*) AS num,
+        oa_person.`type`
+        FROM
+        oa_person
+        WHERE id IN
+        <foreach item="id" index="index" collection="idList" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        GROUP BY oa_person.`type`
+    </select>
+
+    <!--获取这一批人某个月的考试情况（多少个通过考试，多少个未通过考试）-->
+    <select id="getAllPass" resultType="java.util.Map">
+        SELECT
+        t1.*
+        FROM
+        ref_person_exam_history t1
+        JOIN
+        (SELECT
+        person_id,
+        MAX(exam_time) AS exam_time
+        FROM
+        ref_person_exam_history
+        GROUP BY person_id) t2
+        ON t1.person_id = t2.person_id
+        AND t1.exam_time = t2.exam_time
+        WHERE 1=1
+        and t1.exam_type = 2
+        <if test="passScore != 0">
+            and t1.obtain_score &gt;= #{passScore}
+        </if>
+        <if test="examTime != null">
+            and t1.exam_time &gt; #{examTime}
+        </if>
+        and t1.`person_id` in
+        <foreach item="id" index="index" collection="idList" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

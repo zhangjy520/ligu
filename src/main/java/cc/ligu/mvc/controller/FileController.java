@@ -5,7 +5,7 @@ import cc.ligu.common.entity.ResultEntity;
 import cc.ligu.common.utils.FileUtils;
 import cc.ligu.common.utils.VFSUtil;
 import cc.ligu.common.utils.ZipUtils;
-import cc.ligu.common.utils.ffmpeg.ConverVideoUtils;
+import cc.ligu.common.utils.ffmpeg.ConvertVideoUtils;
 import cc.ligu.mvc.common.QtFastStart;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.gson.Gson;
@@ -379,7 +379,7 @@ public class FileController extends BasicController {
         }
     }
 
-    public void ConverVideo(final String targetExtension, final boolean isDelSourseFile, final ConverVideoUtils converVideoUtils) {
+    public void ConverVideo(final String targetExtension, final boolean isDelSourseFile, final ConvertVideoUtils converVideoUtils) {
         Runnable convertTask = new Runnable() {
             @Override
             public void run() {

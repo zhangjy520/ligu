@@ -2,6 +2,7 @@ package cc.ligu.mvc.service.impl;
 
 import cc.ligu.common.security.AESencryptor;
 import cc.ligu.common.service.BasicService;
+import cc.ligu.common.utils.DicUtil;
 import cc.ligu.mvc.persistence.dao.ApiMapper;
 import cc.ligu.mvc.persistence.dao.PersonMapper;
 import cc.ligu.mvc.persistence.dao.UserMapper;
@@ -14,8 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -156,5 +156,47 @@ public class PersonServiceImpl extends BasicService implements PersonService {
             return personList.get(0);
         }
         return null;
+    }
+
+    @Override
+    public HashMap getAllCompanyInfo() {
+        Date monthStart = doGetMonthStart(Calendar.getInstance());
+
+        HashMap report = new HashMap();
+        List<HashMap> res = apiMapper.getAllCompanyInfo();
+        report.put("companyNum", res.size());//中标队伍数量
+        report.put("companyDetail", res);//中标队伍统计详情
+
+        List info = new ArrayList();
+        for (HashMap company : res) {
+            String personIds = company.get("personIds").toString();
+            List<String> personIdList = DicUtil.splitWithOutNull(personIds);//各中标队伍的人详情
+
+            if (personIdList.size() > 0) {
+                List passResult = apiMapper.getAllPass(personIdList, DicUtil.PASS_SCORE, String.valueOf(monthStart.getTime()));
+                company.put("passNum", passResult.size());//该中标队伍的及格人数
+
+                List<HashMap> roleResult = apiMapper.getAllRoleInfo(personIdList);
+                company.put("roleDetail", roleResult);
+
+                for (Map m : roleResult) {
+                    m.put("roleName",DicUtil.getValueByKeyAndFlag(Integer.valueOf(m.get("type").toString()),"personType"));
+                    m.remove("personIds");
+                }
+            }
+            company.remove("personIds");
+
+        }
+        return report;
+    }
+
+    private static Date doGetMonthStart(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+
+        return calendar.getTime();
     }
 }

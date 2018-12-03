@@ -417,7 +417,7 @@ public class Person implements Serializable {
      * @return company 所属中标单位
      */
 
-//    @ExcelField(title = "所属中标单位", align = 2, sort = 11, groups = {1, 2})
+    @ExcelField(title = "所属中标单位", align = 2, sort = 11, groups = {1, 2})
     public String getCompany() {
         return company;
     }

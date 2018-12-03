@@ -882,6 +882,22 @@ public class ApiController extends BasicController {
     }
 
 
+    @ApiOperation(value = "投标公司信息统计", httpMethod = "POST", notes = "获取投标公司的人员统计情况")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping("/company/report")
+    public ResultEntity getCompanyInfo(HttpServletRequest request) {
+        try {
+            HashMap res = personService.getAllCompanyInfo();
+            return ResultEntity.newResultEntity(res);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultEntity.newErrEntity("投标公司信息统计发生异常");
+        }
+    }
+
+
     protected UserView getAppLoginUser(HttpServletRequest request) {
         UserView UserView = (UserView) cacheService.getCacheByKey(request.getParameter("clientId"));
         return UserView;
