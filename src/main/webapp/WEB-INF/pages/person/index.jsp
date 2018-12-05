@@ -51,6 +51,8 @@
                 <li><a title="确实要删除这些人员吗?" target="selectedTodo" postType="string" href="${ctx}/person/batch_delete" class="delete"><span>批量删除</span></a></li>
                 <li><a class="icon" href="${ctx}/person/template/download" target="dwzExport" targetType="navTab"
                        title="下载导入模版?"><span>下载导入模版</span></a></li>
+                <li><a class="icon" href="${ctx}/person/export" target="dwzExport" targetType="navTab"
+                       title="导出人员数据?"><span>导出人员数据</span></a></li>
                 <li><a class="icon" href="${ctx}/person/pop/upload" target="dialog" title="导入人员?"><span>导入人员</span></a>
                 </li>
 

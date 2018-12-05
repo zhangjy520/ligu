@@ -36,10 +36,10 @@ public class PersonServiceImpl extends BasicService implements PersonService {
         PersonExample personExample = new PersonExample();
         PersonExample.Criteria criteria = personExample.createCriteria();
 
-        if (!StringUtils.isEmpty(person.getName())) {
+        if (null!=person&&!StringUtils.isEmpty(person.getName())) {
             criteria.andNameLike("%" + person.getName() + "%");
         }
-        if (person.getType() != 0) {
+        if (null!=person&&person.getType() != 0) {
             criteria.andTypeEqualTo(person.getType());
         }
 

@@ -174,6 +174,7 @@ public class Person implements Serializable {
      *
      * @return name 姓名
      */
+    @ExcelField(title = "姓名", align = 2, sort = 1, groups = {1, 2})
     public String getName() {
         return name;
     }
@@ -183,7 +184,6 @@ public class Person implements Serializable {
      *
      * @param name 姓名
      */
-    @ExcelField(title = "姓名", align = 2, sort = 1, groups = {1, 2})
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
     }
