@@ -28,6 +28,14 @@
     </function>
 
     <function>
+        <description>将毫秒转换成指定格式日期</description>
+        <name>millsToDate</name>
+        <function-class>cc.ligu.common.utils.DateUtils</function-class>
+        <function-signature>java.lang.String millsToDate(java.lang.String,java.lang.String))</function-signature>
+        <example>${ligu:millsToyyyyMMdd(string,string)}</example>
+    </function>
+
+    <function>
         <description>判断当前日期和数据日期差</description>
         <name>outOfDate</name>
         <function-class>cc.ligu.common.utils.DateUtils</function-class>

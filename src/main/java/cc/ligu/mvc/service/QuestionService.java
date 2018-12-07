@@ -43,4 +43,8 @@ public interface QuestionService {
     ScoreView personMonthScoreDetail(int personId, int year, int month);
 
     Map getExamReport();
+
+    PageInfo<Map> listAllHaveScorePerson(int pageSize, int pageNum);//查询当前参加了考试的人员列表
+
+    int deletePersonScore(List personIdList);//删除某个人的历史考试成绩
 }

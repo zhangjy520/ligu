@@ -214,6 +214,13 @@ public class DateUtils {
       /* System.out.println(  " = " + );*/
         return formatter.format(calendar.getTime());
     }
+
+    public static String millsToDate(String mills,String pattern){
+        DateFormat formatter = new SimpleDateFormat(pattern);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.valueOf(mills));
+        return formatter.format(calendar.getTime());
+    }
     /*判断当前时间和发布时间之间差别*/
     public static boolean outOfDate(Long mills){
         if (System.currentTimeMillis()>mills){
@@ -228,6 +235,8 @@ public class DateUtils {
      * @throws ParseException
      */
     public static void main(String[] args) throws UnsupportedEncodingException, ParseException {
+
+        System.out.println(millsToDate("1530713279049","yyyy-MM-dd HH:mm"));
 
         DateFormat formatter = new SimpleDateFormat("MM");
         Calendar calendar = Calendar.getInstance();

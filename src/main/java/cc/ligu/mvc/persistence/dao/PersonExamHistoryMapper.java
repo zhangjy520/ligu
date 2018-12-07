@@ -6,6 +6,7 @@ import cc.ligu.mvc.persistence.entity.PersonExamHistoryWithBLOBs;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PersonExamHistoryMapper {
     int deleteByExample(PersonExamHistoryExample example);
@@ -35,4 +36,6 @@ public interface PersonExamHistoryMapper {
     int updateByPrimaryKey(PersonExamHistory record);
 
     List<PersonExamHistoryWithBLOBs> getExamReport(@Param("examTime")String examTime,@Param("examType")int examType);
+
+    List<Map> listAllHaveScorePerson();
 }

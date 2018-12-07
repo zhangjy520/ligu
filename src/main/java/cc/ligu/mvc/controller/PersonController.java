@@ -272,9 +272,12 @@ public class PersonController extends BasicController {
                         baoXianView.setOrder_time(baoXianList.get(3));
                     } catch (Exception e) {
                         //有的人员没有这些信息
+                        person.setInsurancePurchases(new Gson().toJson(new BaoXianView()));
                     }
 
                     person.setInsurancePurchases(new Gson().toJson(baoXianView));
+                } else {
+                    person.setInsurancePurchases(new Gson().toJson(new BaoXianView()));
                 }
 
                 String typeName = person.getTypeName();
@@ -312,7 +315,7 @@ public class PersonController extends BasicController {
                     if (!StringUtils.isEmpty(baoXianView)) {
                         BaoXianView baoxian = GsonUtil.fromJson(baoXianView, BaoXianView.class);
                         String pur = baoxian.getCompany() + "," + baoxian.getOrder_num() + "," + baoxian.getHow_much() + "," + baoxian.getOrder_time();
-                            person.setInsurancePurchases(pur);
+                        person.setInsurancePurchases(pur);
                     }
 
                     String typeName = DicUtil.getValueByKeyAndFlag(person.getType(), "personType");

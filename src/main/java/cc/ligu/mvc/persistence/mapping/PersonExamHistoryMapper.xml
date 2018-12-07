@@ -323,4 +323,22 @@
            and t1.exam_type = #{examType}
         </if>
     </select>
+
+    <select id="listAllHaveScorePerson" resultType="java.util.Map">
+        SELECT
+          d.*,
+          p.*
+        FROM
+          (SELECT
+            person_id,
+            MAX(exam_time) AS latestTime,
+            MAX(obtain_score) AS maxScore
+          FROM
+            ref_person_exam_history
+          WHERE obtain_score IS NOT NULL
+            AND exam_type = 2
+          GROUP BY person_id) d
+          LEFT JOIN oa_person p
+            ON d.person_id = p.`id`
+    </select>
 </mapper>

@@ -299,6 +299,26 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
         return result;
     }
 
+    @Override
+    public PageInfo<Map> listAllHaveScorePerson(int pageSize, int pageNum) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Map> res = personExamHistoryMapper.listAllHaveScorePerson();
+
+        PageInfo<Map> page = new PageInfo<Map>(res);
+        return page;
+    }
+
+    @Override
+    public int deletePersonScore(List personIdList) {
+        if (personIdList.size() > 0) {
+            PersonExamHistoryExample example = new PersonExamHistoryExample();
+            example.createCriteria().andPersonIdIn(personIdList);
+
+            return personExamHistoryMapper.deleteByExample(example);
+        }
+        return 0;
+    }
+
     private static Date doGetMonthStart(Calendar calendar) {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
