@@ -38,4 +38,6 @@ public interface PersonExamHistoryMapper {
     List<PersonExamHistoryWithBLOBs> getExamReport(@Param("examTime")String examTime,@Param("examType")int examType);
 
     List<Map> listAllHaveScorePerson();
+
+    List<Map> exportAllScore();
 }

@@ -11,6 +11,7 @@ import cc.ligu.common.utils.DicUtil;
 import cc.ligu.common.utils.excel.ExportExcel;
 import cc.ligu.common.utils.excel.ImportExcel;
 import cc.ligu.mvc.modelView.DWZResponse;
+import cc.ligu.mvc.persistence.entity.PersonExamHistory;
 import cc.ligu.mvc.persistence.entity.PersonExamHistoryWithBLOBs;
 import cc.ligu.mvc.persistence.entity.Question;
 import cc.ligu.mvc.persistence.entity.UserView;
@@ -163,12 +164,45 @@ public class QuestionController extends BasicController {
             String ids = getParamVal(request, "ids");
             List<String> idList = DicUtil.splitWithOutNull(ids);
 
-            if (idList.size()>0){
+            if (idList.size() > 0) {
                 questionService.deletePersonScore(idList);
             }
         } catch (Exception e) {
             return DWZResponseUtil.callbackFail("300", "删除失败", "_blank");
         }
         return DWZResponseUtil.callbackSuccess("删除成功", "_blank");
+    }
+
+    //导出功能
+    @ResponseBody
+    @RequestMapping(value = "/export", method = RequestMethod.GET)
+    public void exportFile(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String fileName = "历史考试成绩导出.xlsx";
+            List<Map> scoreList = questionService.exportAllScore();
+
+            List<PersonExamHistory> dataList = new ArrayList<>();
+            if (scoreList.size() > 0) {
+                for (Map map : scoreList) {
+                    try {
+                        PersonExamHistory scoreHistory = new PersonExamHistory();
+                        scoreHistory.setPersonName(map.get("name").toString());
+                        scoreHistory.setPersonIdCard(map.get("identity_num").toString());
+                        scoreHistory.setExamTime(DateUtils.millsToDate(map.get("exam_time").toString(), "yyyy-MM-dd HH:mm"));
+                        scoreHistory.setObtainScore(map.get("obtain_score").toString());
+
+                        dataList.add(scoreHistory);
+                    } catch (Exception e) {
+                        continue;
+                    }
+                }
+
+            }
+
+            new ExportExcel("历史考试成绩导出", PersonExamHistory.class, 1, 50, null, 1).setDataList(dataList).write(response, fileName).dispose();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

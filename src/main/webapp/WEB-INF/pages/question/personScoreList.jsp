@@ -27,6 +27,8 @@
                 <li><a title="确实要删除这些人的考试数据吗?" target="selectedTodo" postType="string"
                        href="${ctx}/question/batch_delete"
                        class="delete"><span>批量删除</span></a></li>
+                <li><a class="icon" href="${ctx}/question/export" target="dwzExport" targetType="navTab"
+                       title="导出人员数据?"><span>导出人员数据</span></a></li>
             </shiro:hasAnyRoles>
         </ul>
     </div>

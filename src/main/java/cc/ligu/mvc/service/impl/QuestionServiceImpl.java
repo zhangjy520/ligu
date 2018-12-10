@@ -319,6 +319,11 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
         return 0;
     }
 
+    @Override
+    public List<Map> exportAllScore() {
+        return personExamHistoryMapper.exportAllScore();
+    }
+
     private static Date doGetMonthStart(Calendar calendar) {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);

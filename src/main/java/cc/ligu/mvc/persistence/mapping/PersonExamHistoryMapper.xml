@@ -341,4 +341,19 @@
           LEFT JOIN oa_person p
             ON d.person_id = p.`id`
     </select>
+
+    <select id="exportAllScore" resultType="java.util.Map">
+       SELECT
+          h.*,
+          p.`name`,
+          p.`identity_num`
+        FROM
+          ref_person_exam_history h
+          LEFT JOIN oa_person p
+            ON h.`person_id` = p.`id`
+        WHERE h.`obtain_score` IS NOT NULL
+          AND h.`exam_type` = 2
+        ORDER BY h.`person_id`,
+          h.`exam_time`
+    </select>
 </mapper>
