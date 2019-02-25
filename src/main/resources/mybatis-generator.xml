@@ -428,7 +428,7 @@
             <property name="useActualColumnNames" value="false"/>
             <columnOverride column="group_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>-->
-        <table schema="ligu" tableName="project_report" domainObjectName="ProjectReport"
+        <!--<table schema="ligu" tableName="project_report" domainObjectName="ProjectReport"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
@@ -439,6 +439,14 @@
             <columnOverride column="project_desc" javaType="java.lang.String" jdbcType="VARCHAR" />
             <columnOverride column="project_attach" javaType="java.lang.String" jdbcType="VARCHAR" />
             <columnOverride column="manager" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
+        <table schema="gzsm1114" tableName="sl_process_time_record" domainObjectName="ProcessTimeRecord"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
         </table>
     </context>
 </generatorConfiguration>
