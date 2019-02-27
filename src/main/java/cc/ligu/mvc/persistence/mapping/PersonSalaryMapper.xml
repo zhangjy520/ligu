@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.ligu.mvc.persistence.dao.PersonSalaryMapper" >
+  <resultMap id="BaseResultMap" type="cc.ligu.mvc.persistence.entity.PersonSalary" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="person_name" property="personName" jdbcType="VARCHAR" />
+    <result column="person_num" property="personNum" jdbcType="VARCHAR" />
+    <result column="salary_life" property="salaryLife" jdbcType="VARCHAR" />
+    <result column="salary_sum" property="salarySum" jdbcType="VARCHAR" />
+    <result column="time_life" property="timeLife" jdbcType="VARCHAR" />
+    <result column="time_sum" property="timeSum" jdbcType="VARCHAR" />
+    <result column="zheng_ju_urls" property="zhengJuUrls" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, person_name, person_num, salary_life, salary_sum, time_life, time_sum, zheng_ju_urls
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cc.ligu.mvc.persistence.entity.PersonSalaryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from person_salary
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from person_salary
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from person_salary
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cc.ligu.mvc.persistence.entity.PersonSalaryExample" >
+    delete from person_salary
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cc.ligu.mvc.persistence.entity.PersonSalary" >
+    insert into person_salary (id, person_name, person_num, 
+      salary_life, salary_sum, time_life, 
+      time_sum, zheng_ju_urls)
+    values (#{id,jdbcType=INTEGER}, #{personName,jdbcType=VARCHAR}, #{personNum,jdbcType=VARCHAR}, 
+      #{salaryLife,jdbcType=VARCHAR}, #{salarySum,jdbcType=VARCHAR}, #{timeLife,jdbcType=VARCHAR}, 
+      #{timeSum,jdbcType=VARCHAR}, #{zhengJuUrls,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cc.ligu.mvc.persistence.entity.PersonSalary" >
+    insert into person_salary
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="personName != null" >
+        person_name,
+      </if>
+      <if test="personNum != null" >
+        person_num,
+      </if>
+      <if test="salaryLife != null" >
+        salary_life,
+      </if>
+      <if test="salarySum != null" >
+        salary_sum,
+      </if>
+      <if test="timeLife != null" >
+        time_life,
+      </if>
+      <if test="timeSum != null" >
+        time_sum,
+      </if>
+      <if test="zhengJuUrls != null" >
+        zheng_ju_urls,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="personName != null" >
+        #{personName,jdbcType=VARCHAR},
+      </if>
+      <if test="personNum != null" >
+        #{personNum,jdbcType=VARCHAR},
+      </if>
+      <if test="salaryLife != null" >
+        #{salaryLife,jdbcType=VARCHAR},
+      </if>
+      <if test="salarySum != null" >
+        #{salarySum,jdbcType=VARCHAR},
+      </if>
+      <if test="timeLife != null" >
+        #{timeLife,jdbcType=VARCHAR},
+      </if>
+      <if test="timeSum != null" >
+        #{timeSum,jdbcType=VARCHAR},
+      </if>
+      <if test="zhengJuUrls != null" >
+        #{zhengJuUrls,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update person_salary
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.personName != null" >
+        person_name = #{record.personName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.personNum != null" >
+        person_num = #{record.personNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salaryLife != null" >
+        salary_life = #{record.salaryLife,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salarySum != null" >
+        salary_sum = #{record.salarySum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.timeLife != null" >
+        time_life = #{record.timeLife,jdbcType=VARCHAR},
+      </if>
+      <if test="record.timeSum != null" >
+        time_sum = #{record.timeSum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zhengJuUrls != null" >
+        zheng_ju_urls = #{record.zhengJuUrls,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update person_salary
+    set id = #{record.id,jdbcType=INTEGER},
+      person_name = #{record.personName,jdbcType=VARCHAR},
+      person_num = #{record.personNum,jdbcType=VARCHAR},
+      salary_life = #{record.salaryLife,jdbcType=VARCHAR},
+      salary_sum = #{record.salarySum,jdbcType=VARCHAR},
+      time_life = #{record.timeLife,jdbcType=VARCHAR},
+      time_sum = #{record.timeSum,jdbcType=VARCHAR},
+      zheng_ju_urls = #{record.zhengJuUrls,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cc.ligu.mvc.persistence.entity.PersonSalary" >
+    update person_salary
+    <set >
+      <if test="personName != null" >
+        person_name = #{personName,jdbcType=VARCHAR},
+      </if>
+      <if test="personNum != null" >
+        person_num = #{personNum,jdbcType=VARCHAR},
+      </if>
+      <if test="salaryLife != null" >
+        salary_life = #{salaryLife,jdbcType=VARCHAR},
+      </if>
+      <if test="salarySum != null" >
+        salary_sum = #{salarySum,jdbcType=VARCHAR},
+      </if>
+      <if test="timeLife != null" >
+        time_life = #{timeLife,jdbcType=VARCHAR},
+      </if>
+      <if test="timeSum != null" >
+        time_sum = #{timeSum,jdbcType=VARCHAR},
+      </if>
+      <if test="zhengJuUrls != null" >
+        zheng_ju_urls = #{zhengJuUrls,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cc.ligu.mvc.persistence.entity.PersonSalary" >
+    update person_salary
+    set person_name = #{personName,jdbcType=VARCHAR},
+      person_num = #{personNum,jdbcType=VARCHAR},
+      salary_life = #{salaryLife,jdbcType=VARCHAR},
+      salary_sum = #{salarySum,jdbcType=VARCHAR},
+      time_life = #{timeLife,jdbcType=VARCHAR},
+      time_sum = #{timeSum,jdbcType=VARCHAR},
+      zheng_ju_urls = #{zhengJuUrls,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -163,6 +163,11 @@
                                 <li><a href="${ctx}/projectReport/index" target="navTab">工程完成报告</a></li>
                             </ul>
                         </li>
+                        <li><a>薪资管理</a>
+                            <ul>
+                                <li><a href="${ctx}/personSalary/index" target="navTab">薪资管理</a></li>
+                            </ul>
+                        </li>
 
                     </ul>
                 </div>

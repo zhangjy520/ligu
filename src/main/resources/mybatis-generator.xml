@@ -440,13 +440,22 @@
             <columnOverride column="project_attach" javaType="java.lang.String" jdbcType="VARCHAR" />
             <columnOverride column="manager" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>-->
-        <table schema="gzsm1114" tableName="sl_process_time_record" domainObjectName="ProcessTimeRecord"
+        <!--<table schema="gzsm1114" tableName="sl_process_time_record" domainObjectName="ProcessTimeRecord"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
                enableSelectByExample="true"
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <table schema="ligu" tableName="person_salary" domainObjectName="PersonSalary"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="zheng_ju_urls" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>
     </context>
 </generatorConfiguration>

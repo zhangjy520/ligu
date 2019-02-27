@@ -16,6 +16,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,14 +60,25 @@ public class FileController extends BasicController {
         InputStream fis = null;
         try {
             String fullPath = FileUtils.VFS_ROOT_PATH + FileUtils.SOURCE_ATTACH;
+            String basePath = getParamVal(request, "basePath");
+            if (!StringUtils.isEmpty(basePath)) {
+                fullPath += basePath + "/";
+            }
             File dir = new File(fullPath);
             if (!dir.exists()) {
                 dir.mkdirs();
             }
             String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
             String fileName = System.currentTimeMillis() + suffix;
-            String absPath = FileUtils.VFS_ROOT_PATH + FileUtils.SOURCE_ATTACH + fileName;
-            String fileRequestPath = FileUtils.SOURCE_ATTACH + fileName;
+            String absPath = fullPath + fileName;
+
+
+            String fileRequestPath;
+            if (!StringUtils.isEmpty(basePath)) {
+                fileRequestPath = FileUtils.SOURCE_ATTACH + basePath + "/" + fileName;
+            } else {
+                fileRequestPath = FileUtils.SOURCE_ATTACH + fileName;
+            }
 
             //如果是mp4视频格式，将moov模块移动到视频头部，可以实现边下边播放
             if (".mp4".equals(suffix) || ".MP4".equals(suffix) || ".Mp4".equals(suffix)) {

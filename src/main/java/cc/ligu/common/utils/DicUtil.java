@@ -242,6 +242,12 @@ public class DicUtil {
 
 
     public static void main(String[] args) {
+        String emailRegEx ="^[0-9]{4}-[0-12]{2}$";
+        String email = "2012-01";
+        System.out.println(email.matches(emailRegEx));//true
+        if (1>0)
+            return;
+
         System.out.println(getBeginTime(2018,7));
         System.out.println(getEndTime(2018,7));
 
