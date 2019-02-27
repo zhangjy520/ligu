@@ -10,7 +10,7 @@ public class ConverVideoTest {
     public void run() {
         try {
             // 转换并截图
-            String filePath = "C:\\Users\\shenyy\\Desktop\\运维项目0.wmv";
+            String filePath = "C:\\Users\\shenyy\\Desktop\\薪资.wmv";
             ConvertVideoUtils cv = new ConvertVideoUtils(filePath,"C:\\Users\\shenyy\\Desktop\\","C:\\Users\\shenyy\\Desktop\\");
             String targetExtension = ".mp4";
             boolean isDelSourseFile = true;
