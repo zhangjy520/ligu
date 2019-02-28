@@ -3,12 +3,11 @@
 <mapper namespace="cc.ligu.mvc.persistence.dao.PersonSalaryMapper" >
   <resultMap id="BaseResultMap" type="cc.ligu.mvc.persistence.entity.PersonSalary" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="fee_type" property="feeType" jdbcType="VARCHAR" />
     <result column="person_name" property="personName" jdbcType="VARCHAR" />
     <result column="person_num" property="personNum" jdbcType="VARCHAR" />
-    <result column="salary_life" property="salaryLife" jdbcType="VARCHAR" />
-    <result column="salary_sum" property="salarySum" jdbcType="VARCHAR" />
-    <result column="time_life" property="timeLife" jdbcType="VARCHAR" />
-    <result column="time_sum" property="timeSum" jdbcType="VARCHAR" />
+    <result column="send_time" property="sendTime" jdbcType="VARCHAR" />
+    <result column="send_much" property="sendMuch" jdbcType="VARCHAR" />
     <result column="zheng_ju_urls" property="zhengJuUrls" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -70,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, person_name, person_num, salary_life, salary_sum, time_life, time_sum, zheng_ju_urls
+    id, fee_type, person_name, person_num, send_time, send_much, zheng_ju_urls
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cc.ligu.mvc.persistence.entity.PersonSalaryExample" >
     select
@@ -104,12 +103,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cc.ligu.mvc.persistence.entity.PersonSalary" >
-    insert into person_salary (id, person_name, person_num, 
-      salary_life, salary_sum, time_life, 
-      time_sum, zheng_ju_urls)
-    values (#{id,jdbcType=INTEGER}, #{personName,jdbcType=VARCHAR}, #{personNum,jdbcType=VARCHAR}, 
-      #{salaryLife,jdbcType=VARCHAR}, #{salarySum,jdbcType=VARCHAR}, #{timeLife,jdbcType=VARCHAR}, 
-      #{timeSum,jdbcType=VARCHAR}, #{zhengJuUrls,jdbcType=VARCHAR})
+    insert into person_salary (id, fee_type, person_name, 
+      person_num, send_time, send_much, 
+      zheng_ju_urls)
+    values (#{id,jdbcType=INTEGER}, #{feeType,jdbcType=VARCHAR}, #{personName,jdbcType=VARCHAR}, 
+      #{personNum,jdbcType=VARCHAR}, #{sendTime,jdbcType=VARCHAR}, #{sendMuch,jdbcType=VARCHAR}, 
+      #{zhengJuUrls,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cc.ligu.mvc.persistence.entity.PersonSalary" >
     insert into person_salary
@@ -117,23 +116,20 @@
       <if test="id != null" >
         id,
       </if>
+      <if test="feeType != null" >
+        fee_type,
+      </if>
       <if test="personName != null" >
         person_name,
       </if>
       <if test="personNum != null" >
         person_num,
       </if>
-      <if test="salaryLife != null" >
-        salary_life,
+      <if test="sendTime != null" >
+        send_time,
       </if>
-      <if test="salarySum != null" >
-        salary_sum,
-      </if>
-      <if test="timeLife != null" >
-        time_life,
-      </if>
-      <if test="timeSum != null" >
-        time_sum,
+      <if test="sendMuch != null" >
+        send_much,
       </if>
       <if test="zhengJuUrls != null" >
         zheng_ju_urls,
@@ -143,23 +139,20 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
+      <if test="feeType != null" >
+        #{feeType,jdbcType=VARCHAR},
+      </if>
       <if test="personName != null" >
         #{personName,jdbcType=VARCHAR},
       </if>
       <if test="personNum != null" >
         #{personNum,jdbcType=VARCHAR},
       </if>
-      <if test="salaryLife != null" >
-        #{salaryLife,jdbcType=VARCHAR},
+      <if test="sendTime != null" >
+        #{sendTime,jdbcType=VARCHAR},
       </if>
-      <if test="salarySum != null" >
-        #{salarySum,jdbcType=VARCHAR},
-      </if>
-      <if test="timeLife != null" >
-        #{timeLife,jdbcType=VARCHAR},
-      </if>
-      <if test="timeSum != null" >
-        #{timeSum,jdbcType=VARCHAR},
+      <if test="sendMuch != null" >
+        #{sendMuch,jdbcType=VARCHAR},
       </if>
       <if test="zhengJuUrls != null" >
         #{zhengJuUrls,jdbcType=VARCHAR},
@@ -172,23 +165,20 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.feeType != null" >
+        fee_type = #{record.feeType,jdbcType=VARCHAR},
+      </if>
       <if test="record.personName != null" >
         person_name = #{record.personName,jdbcType=VARCHAR},
       </if>
       <if test="record.personNum != null" >
         person_num = #{record.personNum,jdbcType=VARCHAR},
       </if>
-      <if test="record.salaryLife != null" >
-        salary_life = #{record.salaryLife,jdbcType=VARCHAR},
+      <if test="record.sendTime != null" >
+        send_time = #{record.sendTime,jdbcType=VARCHAR},
       </if>
-      <if test="record.salarySum != null" >
-        salary_sum = #{record.salarySum,jdbcType=VARCHAR},
-      </if>
-      <if test="record.timeLife != null" >
-        time_life = #{record.timeLife,jdbcType=VARCHAR},
-      </if>
-      <if test="record.timeSum != null" >
-        time_sum = #{record.timeSum,jdbcType=VARCHAR},
+      <if test="record.sendMuch != null" >
+        send_much = #{record.sendMuch,jdbcType=VARCHAR},
       </if>
       <if test="record.zhengJuUrls != null" >
         zheng_ju_urls = #{record.zhengJuUrls,jdbcType=VARCHAR},
@@ -201,12 +191,11 @@
   <update id="updateByExample" parameterType="map" >
     update person_salary
     set id = #{record.id,jdbcType=INTEGER},
+      fee_type = #{record.feeType,jdbcType=VARCHAR},
       person_name = #{record.personName,jdbcType=VARCHAR},
       person_num = #{record.personNum,jdbcType=VARCHAR},
-      salary_life = #{record.salaryLife,jdbcType=VARCHAR},
-      salary_sum = #{record.salarySum,jdbcType=VARCHAR},
-      time_life = #{record.timeLife,jdbcType=VARCHAR},
-      time_sum = #{record.timeSum,jdbcType=VARCHAR},
+      send_time = #{record.sendTime,jdbcType=VARCHAR},
+      send_much = #{record.sendMuch,jdbcType=VARCHAR},
       zheng_ju_urls = #{record.zhengJuUrls,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -215,23 +204,20 @@
   <update id="updateByPrimaryKeySelective" parameterType="cc.ligu.mvc.persistence.entity.PersonSalary" >
     update person_salary
     <set >
+      <if test="feeType != null" >
+        fee_type = #{feeType,jdbcType=VARCHAR},
+      </if>
       <if test="personName != null" >
         person_name = #{personName,jdbcType=VARCHAR},
       </if>
       <if test="personNum != null" >
         person_num = #{personNum,jdbcType=VARCHAR},
       </if>
-      <if test="salaryLife != null" >
-        salary_life = #{salaryLife,jdbcType=VARCHAR},
+      <if test="sendTime != null" >
+        send_time = #{sendTime,jdbcType=VARCHAR},
       </if>
-      <if test="salarySum != null" >
-        salary_sum = #{salarySum,jdbcType=VARCHAR},
-      </if>
-      <if test="timeLife != null" >
-        time_life = #{timeLife,jdbcType=VARCHAR},
-      </if>
-      <if test="timeSum != null" >
-        time_sum = #{timeSum,jdbcType=VARCHAR},
+      <if test="sendMuch != null" >
+        send_much = #{sendMuch,jdbcType=VARCHAR},
       </if>
       <if test="zhengJuUrls != null" >
         zheng_ju_urls = #{zhengJuUrls,jdbcType=VARCHAR},
@@ -241,12 +227,11 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="cc.ligu.mvc.persistence.entity.PersonSalary" >
     update person_salary
-    set person_name = #{personName,jdbcType=VARCHAR},
+    set fee_type = #{feeType,jdbcType=VARCHAR},
+      person_name = #{personName,jdbcType=VARCHAR},
       person_num = #{personNum,jdbcType=VARCHAR},
-      salary_life = #{salaryLife,jdbcType=VARCHAR},
-      salary_sum = #{salarySum,jdbcType=VARCHAR},
-      time_life = #{timeLife,jdbcType=VARCHAR},
-      time_sum = #{timeSum,jdbcType=VARCHAR},
+      send_time = #{sendTime,jdbcType=VARCHAR},
+      send_much = #{sendMuch,jdbcType=VARCHAR},
       zheng_ju_urls = #{zhengJuUrls,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

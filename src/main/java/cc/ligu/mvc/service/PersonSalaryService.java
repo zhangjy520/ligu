@@ -19,4 +19,9 @@ public interface PersonSalaryService {
     //根据人员身份证号码查询人员薪资
     List<PersonSalary> selectPersonSalaryByIdNum(String idNum);
 
+    //根据人员身份证，查询最新一次的个人薪资发放情况
+    PersonSalary selectPersonLatestSalaryByIdNum(String idNum);
+
+
+
 }

@@ -68,10 +68,9 @@
             <th width="22"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
             <th width="40">姓名</th>
             <th width="80" align="center">身份证号码</th>
-            <th width="80">生活费</th>
-            <th width="80">生活费发放年月</th>
-            <th width="80">工资</th>
-            <th width="80">工资发放年月</th>
+            <th width="80">费用类别</th>
+            <th width="80">发放日期</th>
+            <th width="80">发放金额</th>
             <th width="80">发放凭证</th>
             <shiro:hasAnyRoles name="worker_er,item_er,checker,root">
                 <th width="80" align="center">操作</th>
@@ -84,10 +83,9 @@
                 <td><input name="ids" value="${person.id}" type="checkbox"></td>
                 <td>${person.personName}</td>
                 <td>${person.personNum}</td>
-                <td>${person.salaryLife}</td>
-                <td>${person.timeLife}</td>
-                <td>${person.salarySum}</td>
-                <td>${person.timeSum}</td>
+                <td>${person.feeType}</td>
+                <td>${person.sendTime}</td>
+                <td>${person.sendMuch}</td>
                 <td>
                     <ul>
                         <c:forEach items="${person.zhengJuList}" var="attach">

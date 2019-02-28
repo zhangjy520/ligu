@@ -73,7 +73,7 @@ public class PersonSalaryExample {
     }
 
     /**
-     * person_salary 2019-02-27
+     * person_salary 2019-02-28
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -173,6 +173,76 @@ public class PersonSalaryExample {
 
         public Criteria andIdNotBetween(Integer value1, Integer value2) {
             addCriterion("id not between", value1, value2, "id");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeTypeIsNull() {
+            addCriterion("fee_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeTypeIsNotNull() {
+            addCriterion("fee_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeTypeEqualTo(String value) {
+            addCriterion("fee_type =", value, "feeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeTypeNotEqualTo(String value) {
+            addCriterion("fee_type <>", value, "feeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeTypeGreaterThan(String value) {
+            addCriterion("fee_type >", value, "feeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("fee_type >=", value, "feeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeTypeLessThan(String value) {
+            addCriterion("fee_type <", value, "feeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeTypeLessThanOrEqualTo(String value) {
+            addCriterion("fee_type <=", value, "feeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeTypeLike(String value) {
+            addCriterion("fee_type like", value, "feeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeTypeNotLike(String value) {
+            addCriterion("fee_type not like", value, "feeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeTypeIn(List<String> values) {
+            addCriterion("fee_type in", values, "feeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeTypeNotIn(List<String> values) {
+            addCriterion("fee_type not in", values, "feeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeTypeBetween(String value1, String value2) {
+            addCriterion("fee_type between", value1, value2, "feeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeeTypeNotBetween(String value1, String value2) {
+            addCriterion("fee_type not between", value1, value2, "feeType");
             return (Criteria) this;
         }
 
@@ -316,283 +386,143 @@ public class PersonSalaryExample {
             return (Criteria) this;
         }
 
-        public Criteria andSalaryLifeIsNull() {
-            addCriterion("salary_life is null");
+        public Criteria andSendTimeIsNull() {
+            addCriterion("send_time is null");
             return (Criteria) this;
         }
 
-        public Criteria andSalaryLifeIsNotNull() {
-            addCriterion("salary_life is not null");
+        public Criteria andSendTimeIsNotNull() {
+            addCriterion("send_time is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSalaryLifeEqualTo(String value) {
-            addCriterion("salary_life =", value, "salaryLife");
+        public Criteria andSendTimeEqualTo(String value) {
+            addCriterion("send_time =", value, "sendTime");
             return (Criteria) this;
         }
 
-        public Criteria andSalaryLifeNotEqualTo(String value) {
-            addCriterion("salary_life <>", value, "salaryLife");
+        public Criteria andSendTimeNotEqualTo(String value) {
+            addCriterion("send_time <>", value, "sendTime");
             return (Criteria) this;
         }
 
-        public Criteria andSalaryLifeGreaterThan(String value) {
-            addCriterion("salary_life >", value, "salaryLife");
+        public Criteria andSendTimeGreaterThan(String value) {
+            addCriterion("send_time >", value, "sendTime");
             return (Criteria) this;
         }
 
-        public Criteria andSalaryLifeGreaterThanOrEqualTo(String value) {
-            addCriterion("salary_life >=", value, "salaryLife");
+        public Criteria andSendTimeGreaterThanOrEqualTo(String value) {
+            addCriterion("send_time >=", value, "sendTime");
             return (Criteria) this;
         }
 
-        public Criteria andSalaryLifeLessThan(String value) {
-            addCriterion("salary_life <", value, "salaryLife");
+        public Criteria andSendTimeLessThan(String value) {
+            addCriterion("send_time <", value, "sendTime");
             return (Criteria) this;
         }
 
-        public Criteria andSalaryLifeLessThanOrEqualTo(String value) {
-            addCriterion("salary_life <=", value, "salaryLife");
+        public Criteria andSendTimeLessThanOrEqualTo(String value) {
+            addCriterion("send_time <=", value, "sendTime");
             return (Criteria) this;
         }
 
-        public Criteria andSalaryLifeLike(String value) {
-            addCriterion("salary_life like", value, "salaryLife");
+        public Criteria andSendTimeLike(String value) {
+            addCriterion("send_time like", value, "sendTime");
             return (Criteria) this;
         }
 
-        public Criteria andSalaryLifeNotLike(String value) {
-            addCriterion("salary_life not like", value, "salaryLife");
+        public Criteria andSendTimeNotLike(String value) {
+            addCriterion("send_time not like", value, "sendTime");
             return (Criteria) this;
         }
 
-        public Criteria andSalaryLifeIn(List<String> values) {
-            addCriterion("salary_life in", values, "salaryLife");
+        public Criteria andSendTimeIn(List<String> values) {
+            addCriterion("send_time in", values, "sendTime");
             return (Criteria) this;
         }
 
-        public Criteria andSalaryLifeNotIn(List<String> values) {
-            addCriterion("salary_life not in", values, "salaryLife");
+        public Criteria andSendTimeNotIn(List<String> values) {
+            addCriterion("send_time not in", values, "sendTime");
             return (Criteria) this;
         }
 
-        public Criteria andSalaryLifeBetween(String value1, String value2) {
-            addCriterion("salary_life between", value1, value2, "salaryLife");
+        public Criteria andSendTimeBetween(String value1, String value2) {
+            addCriterion("send_time between", value1, value2, "sendTime");
             return (Criteria) this;
         }
 
-        public Criteria andSalaryLifeNotBetween(String value1, String value2) {
-            addCriterion("salary_life not between", value1, value2, "salaryLife");
+        public Criteria andSendTimeNotBetween(String value1, String value2) {
+            addCriterion("send_time not between", value1, value2, "sendTime");
             return (Criteria) this;
         }
 
-        public Criteria andSalarySumIsNull() {
-            addCriterion("salary_sum is null");
+        public Criteria andSendMuchIsNull() {
+            addCriterion("send_much is null");
             return (Criteria) this;
         }
 
-        public Criteria andSalarySumIsNotNull() {
-            addCriterion("salary_sum is not null");
+        public Criteria andSendMuchIsNotNull() {
+            addCriterion("send_much is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSalarySumEqualTo(String value) {
-            addCriterion("salary_sum =", value, "salarySum");
+        public Criteria andSendMuchEqualTo(String value) {
+            addCriterion("send_much =", value, "sendMuch");
             return (Criteria) this;
         }
 
-        public Criteria andSalarySumNotEqualTo(String value) {
-            addCriterion("salary_sum <>", value, "salarySum");
+        public Criteria andSendMuchNotEqualTo(String value) {
+            addCriterion("send_much <>", value, "sendMuch");
             return (Criteria) this;
         }
 
-        public Criteria andSalarySumGreaterThan(String value) {
-            addCriterion("salary_sum >", value, "salarySum");
+        public Criteria andSendMuchGreaterThan(String value) {
+            addCriterion("send_much >", value, "sendMuch");
             return (Criteria) this;
         }
 
-        public Criteria andSalarySumGreaterThanOrEqualTo(String value) {
-            addCriterion("salary_sum >=", value, "salarySum");
+        public Criteria andSendMuchGreaterThanOrEqualTo(String value) {
+            addCriterion("send_much >=", value, "sendMuch");
             return (Criteria) this;
         }
 
-        public Criteria andSalarySumLessThan(String value) {
-            addCriterion("salary_sum <", value, "salarySum");
+        public Criteria andSendMuchLessThan(String value) {
+            addCriterion("send_much <", value, "sendMuch");
             return (Criteria) this;
         }
 
-        public Criteria andSalarySumLessThanOrEqualTo(String value) {
-            addCriterion("salary_sum <=", value, "salarySum");
+        public Criteria andSendMuchLessThanOrEqualTo(String value) {
+            addCriterion("send_much <=", value, "sendMuch");
             return (Criteria) this;
         }
 
-        public Criteria andSalarySumLike(String value) {
-            addCriterion("salary_sum like", value, "salarySum");
+        public Criteria andSendMuchLike(String value) {
+            addCriterion("send_much like", value, "sendMuch");
             return (Criteria) this;
         }
 
-        public Criteria andSalarySumNotLike(String value) {
-            addCriterion("salary_sum not like", value, "salarySum");
+        public Criteria andSendMuchNotLike(String value) {
+            addCriterion("send_much not like", value, "sendMuch");
             return (Criteria) this;
         }
 
-        public Criteria andSalarySumIn(List<String> values) {
-            addCriterion("salary_sum in", values, "salarySum");
+        public Criteria andSendMuchIn(List<String> values) {
+            addCriterion("send_much in", values, "sendMuch");
             return (Criteria) this;
         }
 
-        public Criteria andSalarySumNotIn(List<String> values) {
-            addCriterion("salary_sum not in", values, "salarySum");
+        public Criteria andSendMuchNotIn(List<String> values) {
+            addCriterion("send_much not in", values, "sendMuch");
             return (Criteria) this;
         }
 
-        public Criteria andSalarySumBetween(String value1, String value2) {
-            addCriterion("salary_sum between", value1, value2, "salarySum");
+        public Criteria andSendMuchBetween(String value1, String value2) {
+            addCriterion("send_much between", value1, value2, "sendMuch");
             return (Criteria) this;
         }
 
-        public Criteria andSalarySumNotBetween(String value1, String value2) {
-            addCriterion("salary_sum not between", value1, value2, "salarySum");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeLifeIsNull() {
-            addCriterion("time_life is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeLifeIsNotNull() {
-            addCriterion("time_life is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeLifeEqualTo(String value) {
-            addCriterion("time_life =", value, "timeLife");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeLifeNotEqualTo(String value) {
-            addCriterion("time_life <>", value, "timeLife");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeLifeGreaterThan(String value) {
-            addCriterion("time_life >", value, "timeLife");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeLifeGreaterThanOrEqualTo(String value) {
-            addCriterion("time_life >=", value, "timeLife");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeLifeLessThan(String value) {
-            addCriterion("time_life <", value, "timeLife");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeLifeLessThanOrEqualTo(String value) {
-            addCriterion("time_life <=", value, "timeLife");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeLifeLike(String value) {
-            addCriterion("time_life like", value, "timeLife");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeLifeNotLike(String value) {
-            addCriterion("time_life not like", value, "timeLife");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeLifeIn(List<String> values) {
-            addCriterion("time_life in", values, "timeLife");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeLifeNotIn(List<String> values) {
-            addCriterion("time_life not in", values, "timeLife");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeLifeBetween(String value1, String value2) {
-            addCriterion("time_life between", value1, value2, "timeLife");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeLifeNotBetween(String value1, String value2) {
-            addCriterion("time_life not between", value1, value2, "timeLife");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeSumIsNull() {
-            addCriterion("time_sum is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeSumIsNotNull() {
-            addCriterion("time_sum is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeSumEqualTo(String value) {
-            addCriterion("time_sum =", value, "timeSum");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeSumNotEqualTo(String value) {
-            addCriterion("time_sum <>", value, "timeSum");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeSumGreaterThan(String value) {
-            addCriterion("time_sum >", value, "timeSum");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeSumGreaterThanOrEqualTo(String value) {
-            addCriterion("time_sum >=", value, "timeSum");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeSumLessThan(String value) {
-            addCriterion("time_sum <", value, "timeSum");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeSumLessThanOrEqualTo(String value) {
-            addCriterion("time_sum <=", value, "timeSum");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeSumLike(String value) {
-            addCriterion("time_sum like", value, "timeSum");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeSumNotLike(String value) {
-            addCriterion("time_sum not like", value, "timeSum");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeSumIn(List<String> values) {
-            addCriterion("time_sum in", values, "timeSum");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeSumNotIn(List<String> values) {
-            addCriterion("time_sum not in", values, "timeSum");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeSumBetween(String value1, String value2) {
-            addCriterion("time_sum between", value1, value2, "timeSum");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeSumNotBetween(String value1, String value2) {
-            addCriterion("time_sum not between", value1, value2, "timeSum");
+        public Criteria andSendMuchNotBetween(String value1, String value2) {
+            addCriterion("send_much not between", value1, value2, "sendMuch");
             return (Criteria) this;
         }
 
@@ -666,6 +596,11 @@ public class PersonSalaryExample {
             return (Criteria) this;
         }
 
+        public Criteria andFeeTypeLikeInsensitive(String value) {
+            addCriterion("upper(fee_type) like", value.toUpperCase(), "feeType");
+            return (Criteria) this;
+        }
+
         public Criteria andPersonNameLikeInsensitive(String value) {
             addCriterion("upper(person_name) like", value.toUpperCase(), "personName");
             return (Criteria) this;
@@ -676,23 +611,13 @@ public class PersonSalaryExample {
             return (Criteria) this;
         }
 
-        public Criteria andSalaryLifeLikeInsensitive(String value) {
-            addCriterion("upper(salary_life) like", value.toUpperCase(), "salaryLife");
+        public Criteria andSendTimeLikeInsensitive(String value) {
+            addCriterion("upper(send_time) like", value.toUpperCase(), "sendTime");
             return (Criteria) this;
         }
 
-        public Criteria andSalarySumLikeInsensitive(String value) {
-            addCriterion("upper(salary_sum) like", value.toUpperCase(), "salarySum");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeLifeLikeInsensitive(String value) {
-            addCriterion("upper(time_life) like", value.toUpperCase(), "timeLife");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeSumLikeInsensitive(String value) {
-            addCriterion("upper(time_sum) like", value.toUpperCase(), "timeSum");
+        public Criteria andSendMuchLikeInsensitive(String value) {
+            addCriterion("upper(send_much) like", value.toUpperCase(), "sendMuch");
             return (Criteria) this;
         }
 
@@ -713,7 +638,7 @@ public class PersonSalaryExample {
     }
 
     /**
-     * person_salary 2019-02-27
+     * person_salary 2019-02-28
      */
     public static class Criterion {
         private String condition;

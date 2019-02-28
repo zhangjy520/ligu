@@ -14,7 +14,6 @@ import cc.ligu.mvc.modelView.BaoXianView;
 import cc.ligu.mvc.modelView.ScoreView;
 import cc.ligu.mvc.persistence.entity.*;
 import cc.ligu.mvc.service.*;
-import cc.ligu.mvc.service.impl.ItemServiceImpl;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
 import com.google.gson.Gson;
@@ -42,8 +41,6 @@ import java.util.*;
 public class ApiController extends BasicController {
 
     @Resource
-    ItemServiceImpl itemService;
-    @Resource
     SourceService sourceService;
     @Resource
     UserService userService;
@@ -61,6 +58,9 @@ public class ApiController extends BasicController {
     CacheService cacheService;
     @Resource
     ProjectReportService projectReportService;
+
+    @Resource
+    PersonSalaryService personSalaryService;
 
     @ApiIgnore
     @ApiOperation(value = "通过客户端id判断是否需要登录", httpMethod = "POST", notes = "验证是否需要登录,不需要登录返回用户信息")
@@ -545,7 +545,12 @@ public class ApiController extends BasicController {
             userView.setIdentityNum(identify);
 
             List<UserView> res = userService.selectUserViewByUserView(userView);
+            for (UserView view : res) {
+                //关联查询薪资信息。这里身份证查的结果为一条，这里再查数据库不算循环
+                PersonSalaryExample example = new PersonSalaryExample();
+                example.createCriteria().andPersonNumEqualTo(view.getIdentityNum());
 
+            }
             return ResultEntity.newResultEntity(res);
         } catch (Exception e) {
             e.printStackTrace();

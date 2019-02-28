@@ -199,6 +199,17 @@ public class ExportExcel {
         } else {
             this.styles = createSingleStyles(wb);
         }
+
+        DataFormat format = wb.createDataFormat();
+        this.styles.get("title").setDataFormat(format.getFormat("@"));
+        this.styles.get("intro").setDataFormat(format.getFormat("@"));
+        this.styles.get("data").setDataFormat(format.getFormat("@"));
+        this.styles.get("data1").setDataFormat(format.getFormat("@"));
+        this.styles.get("data2").setDataFormat(format.getFormat("@"));
+        this.styles.get("data3").setDataFormat(format.getFormat("@"));
+        this.styles.get("header").setDataFormat(format.getFormat("@"));
+        this.styles.get("header2").setDataFormat(format.getFormat("@"));
+
         // Create title
         if (StringUtils.isNotBlank(title)) {
             Row titleRow = sheet.createRow(rownum++);
@@ -269,6 +280,19 @@ public class ExportExcel {
                 sheet.addValidationData(setDataValidation(sheet, dlData, 3, 50000, field.sort() - 1, field.sort() - 1));
             }
         }
+
+
+        //设置文本格式
+        CellStyle styleCell = wb.createCellStyle();
+        for (int i = 3; i < 10; i++) {
+            Row dataRow = sheet.createRow(i);
+            for (int j = 0; j < 20; j++) {
+                Cell dataCell = dataRow.createCell(j);
+                styleCell.setDataFormat(format.getFormat("@"));
+                dataCell.setCellStyle(styleCell);
+            }
+        }
+
         log.debug("Initialize success.");
     }
 
@@ -282,6 +306,8 @@ public class ExportExcel {
         Map<String, CellStyle> styles = new HashMap<String, CellStyle>();
 
         CellStyle style = wb.createCellStyle();
+        DataFormat format = wb.createDataFormat();
+        style.setDataFormat(format.getFormat("@"));
 
         style.setAlignment(CellStyle.ALIGN_CENTER);
         style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);

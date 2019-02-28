@@ -7,9 +7,14 @@ import java.util.List;
 
 public class PersonSalary implements Serializable {
     /**
-     *
+     * 
      */
     private Integer id;
+
+    /**
+     * 费用类别[生活费 工程款]
+     */
+    private String feeType;
 
     /**
      * 人员姓名
@@ -22,32 +27,22 @@ public class PersonSalary implements Serializable {
     private String personNum;
 
     /**
-     * 生活费
+     * 发放日期
      */
-    private String salaryLife;
+    private String sendTime;
 
     /**
      * 工资
      */
-    private String salarySum;
-
-    /**
-     * 生活费发放年月[201903]
-     */
-    private String timeLife;
-
-    /**
-     * 工资发放年月[201903]
-     */
-    private String timeSum;
+    private String sendMuch;
 
     /**
      * 薪资发放证明文件地址
      */
     private String zhengJuUrls;
 
-
     private List<String> zhengJuList;
+
     public List<String> getZhengJuList() {
         return zhengJuList;
     }
@@ -57,7 +52,6 @@ public class PersonSalary implements Serializable {
         return this;
     }
 
-
     /**
      * person_salary
      */
@@ -65,7 +59,7 @@ public class PersonSalary implements Serializable {
 
     /**
      * 获取
-     * @return id
+     * @return id 
      */
     public Integer getId() {
         return id;
@@ -73,17 +67,34 @@ public class PersonSalary implements Serializable {
 
     /**
      * 设置
-     * @param id
+     * @param id 
      */
     public void setId(Integer id) {
         this.id = id;
     }
 
     /**
+     * 获取费用类别[生活费 工程款]
+     * @return fee_type 费用类别[生活费 工程款]
+     */
+    @ExcelField(title = "费用类别", align = 2, sort = 1, groups = {1, 2}, isnull = 1, isDropDown = 1, dropDownList = {"生活费", "工程款"})
+    public String getFeeType() {
+        return feeType;
+    }
+
+    /**
+     * 设置费用类别[生活费 工程款]
+     * @param feeType 费用类别[生活费 工程款]
+     */
+    public void setFeeType(String feeType) {
+        this.feeType = feeType == null ? null : feeType.trim();
+    }
+
+    /**
      * 获取人员姓名
      * @return person_name 人员姓名
      */
-    @ExcelField(title = "姓名", align = 2, sort = 1,isnull = 1, groups = {1, 2})
+    @ExcelField(title = "姓名", align = 2, sort = 2, groups = {1, 2})
     public String getPersonName() {
         return personName;
     }
@@ -100,7 +111,7 @@ public class PersonSalary implements Serializable {
      * 获取identity_num 人员身份证
      * @return person_num identity_num 人员身份证
      */
-    @ExcelField(title = "身份证号", align = 2, sort = 2,isnull = 1, groups = {1, 2})
+    @ExcelField(title = "身份证", align = 2, sort = 3, groups = {1, 2})
     public String getPersonNum() {
         return personNum;
     }
@@ -115,70 +126,36 @@ public class PersonSalary implements Serializable {
 
     /**
      * 获取生活费
-     * @return salary_life 生活费
+     * @return send_time 生活费
      */
-    @ExcelField(title = "生活费金额", align = 2, sort = 3,isnull = 1, groups = {1, 2})
-    public String getSalaryLife() {
-        return salaryLife;
+    @ExcelField(title = "发放日期", align = 2, sort = 4, groups = {1, 2})
+    public String getSendTime() {
+        return sendTime;
     }
 
     /**
      * 设置生活费
-     * @param salaryLife 生活费
+     * @param sendTime 生活费
      */
-    public void setSalaryLife(String salaryLife) {
-        this.salaryLife = salaryLife == null ? null : salaryLife.trim();
+    public void setSendTime(String sendTime) {
+        this.sendTime = sendTime == null ? null : sendTime.trim();
     }
 
     /**
      * 获取工资
-     * @return salary_sum 工资
+     * @return send_much 工资
      */
-    @ExcelField(title = "工资金额", align = 2, sort = 5,isnull = 1, groups = {1, 2})
-    public String getSalarySum() {
-        return salarySum;
+    @ExcelField(title = "金额", align = 2, sort = 5, groups = {1, 2})
+    public String getSendMuch() {
+        return sendMuch;
     }
 
     /**
      * 设置工资
-     * @param salarySum 工资
+     * @param sendMuch 工资
      */
-    public void setSalarySum(String salarySum) {
-        this.salarySum = salarySum == null ? null : salarySum.trim();
-    }
-
-    /**
-     * 获取生活费发放年月[201903]
-     * @return time_life 生活费发放年月[201903]
-     */
-    @ExcelField(title = "生活费发放日期", align = 2, sort = 4,isnull = 1, groups = {1, 2})
-    public String getTimeLife() {
-        return timeLife;
-    }
-
-    /**
-     * 设置生活费发放年月[201903]
-     * @param timeLife 生活费发放年月[201903]
-     */
-    public void setTimeLife(String timeLife) {
-        this.timeLife = timeLife == null ? null : timeLife.trim();
-    }
-
-    /**
-     * 获取工资发放年月[201903]
-     * @return time_sum 工资发放年月[201903]
-     */
-    @ExcelField(title = "工资发放日期", align = 2, sort = 6,isnull = 1, groups = {1, 2})
-    public String getTimeSum() {
-        return timeSum;
-    }
-
-    /**
-     * 设置工资发放年月[201903]
-     * @param timeSum 工资发放年月[201903]
-     */
-    public void setTimeSum(String timeSum) {
-        this.timeSum = timeSum == null ? null : timeSum.trim();
+    public void setSendMuch(String sendMuch) {
+        this.sendMuch = sendMuch == null ? null : sendMuch.trim();
     }
 
     /**
@@ -210,13 +187,12 @@ public class PersonSalary implements Serializable {
         }
         PersonSalary other = (PersonSalary) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-                && (this.getPersonName() == null ? other.getPersonName() == null : this.getPersonName().equals(other.getPersonName()))
-                && (this.getPersonNum() == null ? other.getPersonNum() == null : this.getPersonNum().equals(other.getPersonNum()))
-                && (this.getSalaryLife() == null ? other.getSalaryLife() == null : this.getSalaryLife().equals(other.getSalaryLife()))
-                && (this.getSalarySum() == null ? other.getSalarySum() == null : this.getSalarySum().equals(other.getSalarySum()))
-                && (this.getTimeLife() == null ? other.getTimeLife() == null : this.getTimeLife().equals(other.getTimeLife()))
-                && (this.getTimeSum() == null ? other.getTimeSum() == null : this.getTimeSum().equals(other.getTimeSum()))
-                && (this.getZhengJuUrls() == null ? other.getZhengJuUrls() == null : this.getZhengJuUrls().equals(other.getZhengJuUrls()));
+            && (this.getFeeType() == null ? other.getFeeType() == null : this.getFeeType().equals(other.getFeeType()))
+            && (this.getPersonName() == null ? other.getPersonName() == null : this.getPersonName().equals(other.getPersonName()))
+            && (this.getPersonNum() == null ? other.getPersonNum() == null : this.getPersonNum().equals(other.getPersonNum()))
+            && (this.getSendTime() == null ? other.getSendTime() == null : this.getSendTime().equals(other.getSendTime()))
+            && (this.getSendMuch() == null ? other.getSendMuch() == null : this.getSendMuch().equals(other.getSendMuch()))
+            && (this.getZhengJuUrls() == null ? other.getZhengJuUrls() == null : this.getZhengJuUrls().equals(other.getZhengJuUrls()));
     }
 
     @Override
@@ -224,12 +200,11 @@ public class PersonSalary implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+        result = prime * result + ((getFeeType() == null) ? 0 : getFeeType().hashCode());
         result = prime * result + ((getPersonName() == null) ? 0 : getPersonName().hashCode());
         result = prime * result + ((getPersonNum() == null) ? 0 : getPersonNum().hashCode());
-        result = prime * result + ((getSalaryLife() == null) ? 0 : getSalaryLife().hashCode());
-        result = prime * result + ((getSalarySum() == null) ? 0 : getSalarySum().hashCode());
-        result = prime * result + ((getTimeLife() == null) ? 0 : getTimeLife().hashCode());
-        result = prime * result + ((getTimeSum() == null) ? 0 : getTimeSum().hashCode());
+        result = prime * result + ((getSendTime() == null) ? 0 : getSendTime().hashCode());
+        result = prime * result + ((getSendMuch() == null) ? 0 : getSendMuch().hashCode());
         result = prime * result + ((getZhengJuUrls() == null) ? 0 : getZhengJuUrls().hashCode());
         return result;
     }
@@ -241,12 +216,11 @@ public class PersonSalary implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", feeType=").append(feeType);
         sb.append(", personName=").append(personName);
         sb.append(", personNum=").append(personNum);
-        sb.append(", salaryLife=").append(salaryLife);
-        sb.append(", salarySum=").append(salarySum);
-        sb.append(", timeLife=").append(timeLife);
-        sb.append(", timeSum=").append(timeSum);
+        sb.append(", sendTime=").append(sendTime);
+        sb.append(", sendMuch=").append(sendMuch);
         sb.append(", zhengJuUrls=").append(zhengJuUrls);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

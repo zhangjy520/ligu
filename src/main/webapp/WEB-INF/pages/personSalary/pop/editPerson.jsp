@@ -13,27 +13,21 @@
                 <label>身份证号：</label>
                 <input ${disabled} type="text" name="personNum" value="${person.personNum}" size="30"/>
             </div>
-
             <div class="unit">
-                <label>生活费</label>
-                <input ${disabled} type="text" name="salaryLife" value="${person.salaryLife}"
-                       size="30"/>
-            </div>
-            <div class="unit">
-                <label>生活费发放年月：</label>
-                <input ${disabled} type="text" name="timeLife" value="${person.timeLife}"
-                                   size="30"/>
+                <label>费用类别：</label>
+                <input ${disabled} type="text" name="feeType" value="${person.feeType}" size="30"/>
             </div>
 
             <div class="unit">
-                <label>工资：</label>
-                <input ${disabled} type="text" name="salarySum" value="${person.salarySum}" size="30"/>
+                <label>金额：</label>
+                <input ${disabled} type="text" name="sendMuch" value="${person.sendMuch}" size="30"/>
             </div>
 
             <div class="unit">
-                <label>工资发放年月：</label>
-                <input ${disabled} type="text" name="timeSum" value="${person.timeSum}" size="30"/>
+                <label>发放日期：</label>
+                <input ${disabled} type="text" name="sendTime" value="${person.sendTime}" size="30"/>
             </div>
+
             <div class="unit">
                 <label>发放证明：</label>
                 <input ${disabled} type="text" name="zhengJuUrls" value="${person.zhengJuUrls}" size="30"/>

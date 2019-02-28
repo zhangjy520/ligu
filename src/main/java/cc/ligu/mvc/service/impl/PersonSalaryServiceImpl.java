@@ -53,10 +53,24 @@ public class PersonSalaryServiceImpl extends BasicService implements PersonSalar
         return personSalaryMapper.selectByExample(example);
     }
 
+    //如果录入的薪资，同人，同身份证号，同日期，作更新
     @Override
     public int savePersonSalary(PersonSalary personSalary) {
         if (StringUtils.isEmpty(personSalary.getId())) {
-            personSalaryMapper.insertSelective(personSalary);
+            PersonSalaryExample example = new PersonSalaryExample();
+            PersonSalaryExample.Criteria res = example.createCriteria().andPersonNameEqualTo(personSalary.getPersonName())
+                    .andPersonNumEqualTo(personSalary.getPersonNum());
+
+            if (!StringUtils.isEmpty(personSalary.getFeeType())) {
+                res.andFeeTypeEqualTo(personSalary.getFeeType());
+            }
+            if (!StringUtils.isEmpty(personSalary.getSendTime())) {
+                res.andSendTimeEqualTo(personSalary.getSendTime());
+            }
+            int sum = personSalaryMapper.updateByExampleSelective(personSalary, example);
+            if (sum <= 0) {
+                personSalaryMapper.insertSelective(personSalary);
+            }
         } else {
             personSalaryMapper.updateByPrimaryKeySelective(personSalary);
         }
@@ -81,6 +95,11 @@ public class PersonSalaryServiceImpl extends BasicService implements PersonSalar
 
         List<PersonSalary> personList = personSalaryMapper.selectByExample(personExample);
         return personList;
+    }
+
+    @Override
+    public PersonSalary selectPersonLatestSalaryByIdNum(String idNum) {
+        return null;
     }
 
 
