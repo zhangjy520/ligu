@@ -85,6 +85,14 @@ public class ApiController extends BasicController {
     })
     @RequestMapping("/logout")
     public ResultEntity applogOut(HttpServletRequest request) {
+        UserView userView1 = new UserView();
+        userView1.setId(1);
+        userView1.setRefId(3);
+        HashMap res = questionService.selectPvpRandomQuestionByCountAndSaveRecord(5,userView1,null);
+        questionService.uploadMachinePvpResult(Integer.valueOf(res.get("pvpId").toString()),userView1,90,80);
+        if (1==1)
+            return ResultEntity.newResultEntity(res);
+
         String clientId = getParamVal(request, "clientId");
         try {
 //            request.getSession().removeAttribute(clientId);
@@ -386,7 +394,6 @@ public class ApiController extends BasicController {
     @RequestMapping(value = "/uploadWrongExam")
     public ResultEntity uploadWrongExam(HttpServletRequest request) {
         String json = getParamVal(request, "jsonStr");
-
         try {
             UserView userView = getAppLoginUser(request);
             questionService.saveWrongExam(json, userView);

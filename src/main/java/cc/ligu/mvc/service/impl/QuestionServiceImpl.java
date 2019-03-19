@@ -2,6 +2,7 @@ package cc.ligu.mvc.service.impl;
 
 import cc.ligu.common.service.BasicService;
 import cc.ligu.common.utils.DicUtil;
+import cc.ligu.mvc.modelView.PvpPersonView;
 import cc.ligu.mvc.modelView.ScoreView;
 import cc.ligu.mvc.persistence.dao.*;
 import cc.ligu.mvc.persistence.entity.*;
@@ -38,6 +39,12 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
 
     @Autowired
     QuestionVersionMapper questionVersionMapper;
+
+    @Autowired
+    PvpPersonMapper pvpPersonMapper;
+
+    @Autowired
+    PvpArchievementMapper pvpArchievementMapper;
 
     @Autowired
     ApiMapper apiMapper;
@@ -106,6 +113,85 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     @Override
     public List<Question> selectRandomQuestionByCount(int count) {
         return questionMapper.selectRandomQuestionByCount(count);
+    }
+
+    @Override
+    @Transactional
+    public HashMap selectPvpRandomQuestionByCountAndSaveRecord(int count, UserView userViewA, UserView userViewB) {
+        //随机查询答案长度不超过20个字符的单选题
+        List<Question> questionList = questionMapper.selectPvpRandomQuestionByCount(count);
+        StringBuilder questionIds = new StringBuilder();
+        for (Question question : questionList) {
+            questionIds.append(question.getId() + ",");
+        }
+        PvpPerson pvpPerson = new PvpPerson();
+        pvpPerson.setPersonAId(userViewA.getRefId());
+        pvpPerson.setQuestionIds(questionIds.toString());
+        pvpPerson.setPvpTime(String.valueOf(System.currentTimeMillis()));
+
+        //查询personA的最新成绩
+        PvpPersonView result = pvpPersonMapper.selectLatestPvpByPersonAId(userViewA.getRefId());
+        if (null != result) {
+            pvpPerson.setPersonACurrentJifen(result.getPersonACurrentJifen());
+            pvpPerson.setPersonAchievementId(result.getPersonAchievementId());
+        }
+
+        //并且记录对战信息 对战类型[0人机对战 1人人对战]
+        if (userViewB == null) {
+            //人机对战，对面是电脑
+            pvpPerson.setPvpType(0);
+        } else {
+            //人人对战，对面不是电脑
+            pvpPerson.setPvpType(1);
+            pvpPerson.setPersonBId(userViewB.getRefId());
+        }
+        pvpPersonMapper.insertSelective(pvpPerson);//将本次对战记录保存(此记录在对战结束还会更新积分等级)
+        HashMap map = new HashMap();
+        map.put("pvpId", pvpPerson.getId());//对战ID
+        map.put("questionList", questionList);//对战题目列表
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public void uploadMachinePvpResult(Integer pvpId, UserView userViewA, Integer scoreA, Integer scoreMachine) {
+        PvpPerson pvpPerson = pvpPersonMapper.selectByPrimaryKey(pvpId);//根据对战ID获取当前人员的分数积分详情
+        pvpPerson.setPersonAScore(scoreA.toString());
+        pvpPerson.setPersonBScore(scoreMachine.toString());
+        if (scoreA > scoreMachine) {
+            //大于机器得分，获胜
+            pvpPerson.setPersonAThisScore(DicUtil.WIN_INTEGRAL);
+            pvpPerson.setPersonACurrentJifen(pvpPerson.getPersonACurrentJifen() + DicUtil.WIN_INTEGRAL);
+        } else if (scoreA == scoreMachine) {
+            //等于机器得分，平局
+            pvpPerson.setPersonAThisScore(DicUtil.PING_INTEGRAL);
+            pvpPerson.setPersonACurrentJifen(pvpPerson.getPersonACurrentJifen() + DicUtil.PING_INTEGRAL);
+        } else {
+            //小于机器得分，输
+            pvpPerson.setPersonAThisScore(DicUtil.LOSE_INTEGRAL);
+            pvpPerson.setPersonACurrentJifen(pvpPerson.getPersonACurrentJifen() + DicUtil.LOSE_INTEGRAL);
+        }
+        pvpPerson.setComplete(1);//对战完成
+
+        //根据当前积分重新计算段位
+        PvpArchievement arch = regexPvpArchieveByJiFen(pvpPerson.getPersonACurrentJifen());
+        if (arch != null) {
+            pvpPerson.setPersonAchievementId(arch.getId());
+        }
+        pvpPersonMapper.updateByPrimaryKeySelective(pvpPerson);
+    }
+
+    @Override
+    public PvpArchievement regexPvpArchieveByJiFen(Integer jiFen) {
+        PvpArchievementExample example = new PvpArchievementExample();
+        example.createCriteria().andMinScoreLessThanOrEqualTo(jiFen)
+                .andMaxScoreGreaterThanOrEqualTo(jiFen);
+        List<PvpArchievement> arch = pvpArchievementMapper.selectByExample(example);
+
+        if (arch.size() > 0) {
+            return arch.get(0);
+        }
+        return null;
     }
 
     @Override
@@ -322,6 +408,12 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     @Override
     public List<Map> exportAllScore() {
         return personExamHistoryMapper.exportAllScore();
+    }
+
+    @Override
+    public PvpPersonView selectLatestPvpByPersonAId(String personAId) {
+
+        return null;
     }
 
     private static Date doGetMonthStart(Calendar calendar) {

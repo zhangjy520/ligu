@@ -11,6 +11,9 @@ import java.util.*;
  * Created by zjy on 2016/9/9.
  */
 public class DicUtil {
+    public static Integer WIN_INTEGRAL = 2;//对战获胜积分比例
+    public static Integer PING_INTEGRAL = 0;//对战平局积分比例
+    public static Integer LOSE_INTEGRAL = -2;//对战输积分比例
 
     //通过考试分值
     public static Integer PASS_SCORE = 90;
@@ -140,7 +143,7 @@ public class DicUtil {
     public static String getValueByKeyAndFlag(int key, String which) {
         String val = "";
         List<KVEntity> kvEntityList = (List<KVEntity>) map.get(which);
-        for (KVEntity entity: kvEntityList) {
+        for (KVEntity entity : kvEntityList) {
             if (entity.getKey().equals(String.valueOf(key))) {
                 val = entity.getValue();
                 break;
@@ -152,7 +155,7 @@ public class DicUtil {
     public static Integer getKeyByValueAndFlag(String value, String which) {
         int val = 0;
         List<KVEntity> kvEntityList = (List<KVEntity>) map.get(which);
-        for (KVEntity entity: kvEntityList) {
+        for (KVEntity entity : kvEntityList) {
             if (entity.getValue().equals(value)) {
                 val = Integer.parseInt(entity.getKey());
                 break;
@@ -166,7 +169,7 @@ public class DicUtil {
             return null;
         String[] res = param.split(",");
         List<String> out = new ArrayList<>();
-        for (String v: res) {
+        for (String v : res) {
             if (!StringUtils.isEmpty(v))
                 out.add(v);
         }
@@ -194,9 +197,9 @@ public class DicUtil {
 
 
     public static long getBeginTime(int year, int month) {
-        Date d= null;
+        Date d = null;
         try {
-            d = new SimpleDateFormat("yyyyMM").parse(year+""+month);
+            d = new SimpleDateFormat("yyyyMM").parse(year + "" + month);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -209,16 +212,16 @@ public class DicUtil {
         //将分钟至0
         c.set(Calendar.MINUTE, 0);
         //将秒至0
-        c.set(Calendar.SECOND,0);
+        c.set(Calendar.SECOND, 0);
         //将毫秒至0
         c.set(Calendar.MILLISECOND, 0);
         return c.getTimeInMillis();
     }
 
-    public static long getEndTime(int year, int month){
-        Date d= null;
+    public static long getEndTime(int year, int month) {
+        Date d = null;
         try {
-            d = new SimpleDateFormat("yyyyMM").parse(year+""+month);
+            d = new SimpleDateFormat("yyyyMM").parse(year + "" + month);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -232,7 +235,7 @@ public class DicUtil {
         //将分钟至59
         c.set(Calendar.MINUTE, 59);
         //将秒至59
-        c.set(Calendar.SECOND,59);
+        c.set(Calendar.SECOND, 59);
         //将毫秒至999
         c.set(Calendar.MILLISECOND, 999);
         // 获取本月最后一天的时间戳
@@ -242,16 +245,17 @@ public class DicUtil {
 
 
     public static void main(String[] args) {
-        String emailRegEx ="^[0-9]{4}-[0-12]{2}$";
+
+        String emailRegEx = "^[0-9]{4}-[0-12]{2}$";
         String email = "2012-01";
         System.out.println(email.matches(emailRegEx));//true
-        if (1>0)
+        if (1 > 0)
             return;
 
-        System.out.println(getBeginTime(2018,7));
-        System.out.println(getEndTime(2018,7));
+        System.out.println(getBeginTime(2018, 7));
+        System.out.println(getEndTime(2018, 7));
 
-        String s = "1data,2data,5data,6data".replaceAll("[5-9]data","");
+        String s = "1data,2data,5data,6data".replaceAll("[5-9]data", "");
         System.out.println("sss");
         System.out.println("32".compareTo("22"));
         System.out.println("32".compareTo("32"));
