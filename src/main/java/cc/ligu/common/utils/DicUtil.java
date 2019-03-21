@@ -11,9 +11,9 @@ import java.util.*;
  * Created by zjy on 2016/9/9.
  */
 public class DicUtil {
-    public static Integer WIN_INTEGRAL = 2;//对战获胜积分比例
+    public static Integer WIN_INTEGRAL = 5;//对战获胜积分比例
     public static Integer PING_INTEGRAL = 0;//对战平局积分比例
-    public static Integer LOSE_INTEGRAL = -2;//对战输积分比例
+    public static Integer LOSE_INTEGRAL = -5;//对战输积分比例
 
     //通过考试分值
     public static Integer PASS_SCORE = 90;

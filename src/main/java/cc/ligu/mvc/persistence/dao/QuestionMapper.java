@@ -33,4 +33,7 @@ public interface QuestionMapper {
 
     //随机查询答案长度不超过20个字符的单选题
     List<Question> selectPvpRandomQuestionByCount(@Param("count") int count);
+
+    //重置指定人员的最新积分为0,段位也重置为了最低为1
+    int resetJiFenByPersonId(Integer personId);
 }

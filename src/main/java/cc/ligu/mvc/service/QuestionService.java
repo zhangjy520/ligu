@@ -25,10 +25,13 @@ public interface QuestionService {
     HashMap selectPvpRandomQuestionByCountAndSaveRecord(int count, UserView userViewA, UserView userViewB);
 
     //人机对战完毕，上传人机对战结果，后期如果有人人对战需求，另外设计表吧
-    void uploadMachinePvpResult(Integer pvpId,UserView userViewA,Integer scoreA,Integer scoreMachine);
+    int uploadMachinePvpResult(Integer pvpId,UserView userViewA,Integer scoreA,Integer scoreMachine);
 
     //根据pvp的积分，匹配对应的成就
     PvpArchievement regexPvpArchieveByJiFen(Integer jiFen);
+
+    //重置一批人的积分
+    void resetJiFenByPersonIds(List<Integer> personIdList);
 
     int saveExam(PersonExamHistoryWithBLOBs personExamHistoryWithBLOBs);
 
@@ -63,5 +66,8 @@ public interface QuestionService {
     List<Map> exportAllScore();//查询所有的考试成绩
 
     //获取指定人员当前的段位，积分(取最新的对战成绩即可)
-    PvpPersonView selectLatestPvpByPersonAId(String personAId);
+    PvpPersonView selectLatestPvpByPersonAId(Integer personAId);
+
+    //获取最新积分排行(积分从高到低排列)
+    List<HashMap> selectLatestPvpList();
 }

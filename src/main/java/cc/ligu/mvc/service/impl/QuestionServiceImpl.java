@@ -117,7 +117,7 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
 
     @Override
     @Transactional
-    public HashMap selectPvpRandomQuestionByCountAndSaveRecord(int count, UserView userViewA, UserView userViewB) {
+    public synchronized HashMap selectPvpRandomQuestionByCountAndSaveRecord(int count, UserView userViewA, UserView userViewB) {
         //随机查询答案长度不超过20个字符的单选题
         List<Question> questionList = questionMapper.selectPvpRandomQuestionByCount(count);
         StringBuilder questionIds = new StringBuilder();
@@ -154,7 +154,8 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
 
     @Override
     @Transactional
-    public void uploadMachinePvpResult(Integer pvpId, UserView userViewA, Integer scoreA, Integer scoreMachine) {
+    public synchronized int uploadMachinePvpResult(Integer pvpId, UserView userViewA, Integer scoreA, Integer scoreMachine) {
+        int getJiFen = 0;
         PvpPerson pvpPerson = pvpPersonMapper.selectByPrimaryKey(pvpId);//根据对战ID获取当前人员的分数积分详情
         pvpPerson.setPersonAScore(scoreA.toString());
         pvpPerson.setPersonBScore(scoreMachine.toString());
@@ -162,14 +163,17 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
             //大于机器得分，获胜
             pvpPerson.setPersonAThisScore(DicUtil.WIN_INTEGRAL);
             pvpPerson.setPersonACurrentJifen(pvpPerson.getPersonACurrentJifen() + DicUtil.WIN_INTEGRAL);
+            getJiFen = DicUtil.WIN_INTEGRAL;
         } else if (scoreA == scoreMachine) {
             //等于机器得分，平局
             pvpPerson.setPersonAThisScore(DicUtil.PING_INTEGRAL);
             pvpPerson.setPersonACurrentJifen(pvpPerson.getPersonACurrentJifen() + DicUtil.PING_INTEGRAL);
+            getJiFen = DicUtil.PING_INTEGRAL;
         } else {
             //小于机器得分，输
             pvpPerson.setPersonAThisScore(DicUtil.LOSE_INTEGRAL);
             pvpPerson.setPersonACurrentJifen(pvpPerson.getPersonACurrentJifen() + DicUtil.LOSE_INTEGRAL);
+            getJiFen = DicUtil.LOSE_INTEGRAL;
         }
         pvpPerson.setComplete(1);//对战完成
 
@@ -179,6 +183,7 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
             pvpPerson.setPersonAchievementId(arch.getId());
         }
         pvpPersonMapper.updateByPrimaryKeySelective(pvpPerson);
+        return getJiFen;
     }
 
     @Override
@@ -192,6 +197,16 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
             return arch.get(0);
         }
         return null;
+    }
+
+    @Override
+    @Transactional
+    public void resetJiFenByPersonIds(List<Integer> personIdList) {
+        if (personIdList.size() > 0) {
+            for (Integer personId : personIdList) {
+                questionMapper.resetJiFenByPersonId(personId);
+            }
+        }
     }
 
     @Override
@@ -279,13 +294,20 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     }
 
     @Override
+    @Transactional
     public int saveExamHistory(PersonExamHistoryWithBLOBs personExamHistory) {
         if (StringUtils.isEmpty(personExamHistory.getId())) {
             //TODO 保存考试成绩
             //questionMapper.insertSelective(question);
-            return 1;
+            return 0;
         } else {
-            return personExamHistoryMapper.updateByPrimaryKeySelective(personExamHistory);
+            personExamHistoryMapper.updateByPrimaryKeySelective(personExamHistory);
+
+            PvpPerson score = selectLatestPvpByPersonAId(personExamHistory.getPersonId());//获取该人员的最新积分
+            int getJiFen = calcJiFen(Integer.parseInt(personExamHistory.getObtainScore()));//计算该人员本次考试获取积分
+            score.setPersonACurrentJifen(score.getPersonACurrentJifen() + getJiFen);//求和
+            pvpPersonMapper.updateByPrimaryKeySelective(score);//更新
+            return getJiFen;
         }
     }
 
@@ -411,9 +433,13 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     }
 
     @Override
-    public PvpPersonView selectLatestPvpByPersonAId(String personAId) {
+    public PvpPersonView selectLatestPvpByPersonAId(Integer personAId) {
+        return pvpPersonMapper.selectLatestPvpByPersonAId(personAId);
+    }
 
-        return null;
+    @Override
+    public List<HashMap> selectLatestPvpList() {
+        return pvpPersonMapper.selectLatestPvpList();
     }
 
     private static Date doGetMonthStart(Calendar calendar) {
@@ -426,5 +452,19 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
         return calendar.getTime();
     }
 
-
+    //根据考试得到的分数，取得他对应的等级和对应形象
+    //[90-100]5  [80-89]3 [70-79]2 [60-69]1 [0-60]0
+    public static Integer calcJiFen(Integer score) {
+        if (score >= 90 && score <= 100) {
+            return 5;
+        } else if (score >= 80 && score <= 89) {
+            return 3;
+        } else if (score >= 70 && score <= 79) {
+            return 2;
+        } else if (score >= 60 && score <= 69) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }

@@ -498,4 +498,21 @@
             LIMIT #{count,jdbcType=INTEGER}
         </if>
     </select>
+
+    <update id="resetJiFenByPersonId">
+        UPDATE
+          pvp_person
+        SET
+          person_a_current_jifen = 0,
+          person_achievement_id = 1
+        WHERE pvp_time =
+          (SELECT
+            a.latestTime
+          FROM
+            (SELECT
+              MAX(pvp_time) AS latestTime
+            FROM
+              pvp_person
+            WHERE person_a_id = #{personId,jdbcType=INTEGER}) a)
+    </update>
 </mapper>

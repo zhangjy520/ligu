@@ -349,4 +349,26 @@
     ORDER BY pvp_time DESC
     LIMIT 1
   </select>
+
+  <select id="selectLatestPvpList" resultType="java.util.HashMap">
+      SELECT
+      a.*,
+      c.`level` AS archLevel,
+        c.`name` AS archName,
+        o.name AS personName,
+        o.`identity_num` AS identityNum
+    FROM
+      pvp_person a,
+      pvp_archievement c,
+      oa_person o
+    WHERE a.pvp_time =
+      (SELECT
+        MAX(pvp_time)
+      FROM
+        pvp_person
+      WHERE person_a_id = a.person_a_id)
+      AND a.`person_achievement_id` = c.`id`
+      AND a.`person_a_id` = o.`id`
+    ORDER BY a.person_a_current_jifen DESC
+  </select>
 </mapper>

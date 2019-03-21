@@ -85,14 +85,6 @@ public class ApiController extends BasicController {
     })
     @RequestMapping("/logout")
     public ResultEntity applogOut(HttpServletRequest request) {
-        UserView userView1 = new UserView();
-        userView1.setId(1);
-        userView1.setRefId(3);
-        HashMap res = questionService.selectPvpRandomQuestionByCountAndSaveRecord(5,userView1,null);
-        questionService.uploadMachinePvpResult(Integer.valueOf(res.get("pvpId").toString()),userView1,90,80);
-        if (1==1)
-            return ResultEntity.newResultEntity(res);
-
         String clientId = getParamVal(request, "clientId");
         try {
 //            request.getSession().removeAttribute(clientId);
@@ -417,7 +409,9 @@ public class ApiController extends BasicController {
         int examId = getParamInt(request, "examId");
         String jsonStr = getParamVal(request, "jsonStr");
         String score = getParamVal(request, "score");
-
+        if (StringUtil.isEmpty(score)) {
+            score = "0";
+        }
         try {
             UserView userView = getAppLoginUser(request);
 
@@ -435,9 +429,9 @@ public class ApiController extends BasicController {
             bloBs.setWrongIds(wrongIds);
             bloBs.setObtainScore(score);
 
-            questionService.saveExamHistory(bloBs);//保存考试成绩
+            int winJiFen = questionService.saveExamHistory(bloBs);//保存考试成绩
 
-            return ResultEntity.newResultEntity("提交成功");
+            return ResultEntity.newResultEntity("考试成绩保存成功，本次获得积分", winJiFen);
         } catch (Exception e) {
             e.printStackTrace();
             return ResultEntity.newErrEntity("提交失败，请检查参数格式");
@@ -890,9 +884,7 @@ public class ApiController extends BasicController {
         } else {
             return ResultEntity.newErrEntity("旧密码验证错误");
         }
-
     }
-
 
     @ApiOperation(value = "投标公司信息统计", httpMethod = "POST", notes = "获取投标公司的人员统计情况")
     @ApiImplicitParams({
@@ -909,6 +901,61 @@ public class ApiController extends BasicController {
         }
     }
 
+    @ApiOperation(value = "获取人机对战的题目列表", httpMethod = "POST", notes = "根据clientId 获取人机对战的题目,默认5道题")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "count", value = "不传默认5道题", required = false),
+    })
+    @RequestMapping(value = "/getPvpQuestion")
+    public ResultEntity getPvpQuestion(HttpServletRequest request) throws UnsupportedEncodingException {
+        UserView userView = getAppLoginUser(request);
+        int count = getParamInt(request, "count");
+        count = (count == 0 ? 5 : count);
+        try {
+            HashMap res = questionService.selectPvpRandomQuestionByCountAndSaveRecord(count, userView, null);
+            return ResultEntity.newResultEntity(res);
+        } catch (Exception e) {
+            return ResultEntity.newErrEntity(e.getMessage());
+        }
+
+    }
+
+    @ApiOperation(value = "对战结束，上传对战结果", httpMethod = "POST", notes = "app端只需要上传人和机器得对战分数，积分后台自动计算。" +
+            "目前规则：获胜+5，平0，输-5")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "pvpId", value = "对战ID,请求题目列表的时候返回的pvpId", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "scorePerson", value = "人分数", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "scoreMachine", value = "机器分数", required = true),
+    })
+    @RequestMapping(value = "/uploadPvpResult")
+    public ResultEntity personaMonthScoreDetail(HttpServletRequest request) throws UnsupportedEncodingException {
+        UserView userView = getAppLoginUser(request);
+        int pvpId = getParamInt(request, "pvpId");
+        int scorePerson = getParamInt(request, "scorePerson");
+        int scoreMachine = getParamInt(request, "scoreMachine");
+        try {
+            int winJiFen = questionService.uploadMachinePvpResult(pvpId, userView, scorePerson, scoreMachine);
+            return ResultEntity.newResultEntity("对战结束，本次对战积分", winJiFen);
+        } catch (Exception e) {
+            return ResultEntity.newErrEntity(e.getMessage());
+        }
+
+    }
+
+    @ApiOperation(value = "查看积分排行榜单", httpMethod = "POST", notes = "查看积分排行榜单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping("/paihang")
+    public ResultEntity queryJiFenList(HttpServletRequest request) {
+        try {
+            List<HashMap> res = questionService.selectLatestPvpList();
+            return ResultEntity.newResultEntity(res);
+        } catch (Exception e) {
+            return ResultEntity.newErrEntity(e.getMessage());
+        }
+    }
 
     protected UserView getAppLoginUser(HttpServletRequest request) {
         UserView UserView = (UserView) cacheService.getCacheByKey(request.getParameter("clientId"));
