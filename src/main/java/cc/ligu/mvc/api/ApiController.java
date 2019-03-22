@@ -11,6 +11,7 @@ import cc.ligu.common.utils.DicUtil;
 import cc.ligu.common.utils.PropertiesUtil;
 import cc.ligu.mvc.controller.FileController;
 import cc.ligu.mvc.modelView.BaoXianView;
+import cc.ligu.mvc.modelView.PvpPersonView;
 import cc.ligu.mvc.modelView.ScoreView;
 import cc.ligu.mvc.persistence.entity.*;
 import cc.ligu.mvc.service.*;
@@ -669,7 +670,6 @@ public class ApiController extends BasicController {
                 }
             }
 
-
             String remark = getParamVal(request, "remark");
 
             Map uploads = (Map) new FileController().uploads(multipartFile, request).getData();
@@ -953,6 +953,24 @@ public class ApiController extends BasicController {
             List<HashMap> res = questionService.selectLatestPvpList();
             return ResultEntity.newResultEntity(res);
         } catch (Exception e) {
+            return ResultEntity.newErrEntity(e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "个人积分段位查询", httpMethod = "POST", notes = "根据身份证查询个人的积分段位")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "idNum", value = "身份证", required = true),
+    })
+    @RequestMapping("/queryPersonArc")
+    public ResultEntity queryPersonArc(HttpServletRequest request) {
+        try {
+            String idNum = getParamVal(request,"idNum");
+            Person person = personService.selectPersonByIdNum(idNum);
+            PvpPersonView pvpPerson = questionService.selectLatestPvpByPersonAId(person.getId());
+            return ResultEntity.newResultEntity(pvpPerson);
+        } catch (Exception e) {
+            e.printStackTrace();
             return ResultEntity.newErrEntity(e.getMessage());
         }
     }
