@@ -6,9 +6,13 @@ package cc.ligu.mvc.controller;
 
 import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.utils.DWZResponseUtil;
+import cc.ligu.common.utils.DateUtils;
+import cc.ligu.common.utils.DicUtil;
 import cc.ligu.common.utils.excel.ExportExcel;
 import cc.ligu.common.utils.excel.ImportExcel;
 import cc.ligu.mvc.modelView.DWZResponse;
+import cc.ligu.mvc.persistence.entity.PersonExamHistory;
+import cc.ligu.mvc.persistence.entity.PersonExamHistoryWithBLOBs;
 import cc.ligu.mvc.persistence.entity.Question;
 import cc.ligu.mvc.persistence.entity.UserView;
 import cc.ligu.mvc.service.QuestionService;
@@ -24,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/question")
 @Controller
@@ -58,7 +63,7 @@ public class QuestionController extends BasicController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public DWZResponse saveQuestion(Model model, Question question) {
         try {
-            questionService.saveQuestion(question,getLoginUser());
+            questionService.saveQuestion(question, getLoginUser());
         } catch (Exception e) {
             return DWZResponseUtil.callbackFail("300", "保存题目失败", "");
         }
@@ -113,7 +118,7 @@ public class QuestionController extends BasicController {
         for (Question question : list) {
             try {
                 //先循环入库吧，到时候定了再加个批量插入
-                questionService.saveQuestion(question,loginUser);
+                questionService.saveQuestion(question, loginUser);
             } catch (Exception e) {
                 e.printStackTrace();
                 continue;
@@ -124,5 +129,80 @@ public class QuestionController extends BasicController {
 
         return DWZResponseUtil.callbackSuccess("导入成功，耗时" + (end - begin) / 1000 + "秒", "_blank");
 
+    }
+
+
+    //考试成绩统计
+    @RequestMapping(value = "/score")
+    public String scoreIndex(HttpServletRequest request, Model model) {
+        PageInfo<Map> pageInfo = questionService.listAllHaveScorePerson(getPageSize(request), getPageNum(request));
+        model.addAttribute("pageInfo", pageInfo);
+        return "question/personScoreList";
+    }
+
+    //获取某人的历史成绩
+    @RequestMapping("/score/{id}")
+    public String scoreDetailIndex(HttpServletRequest request, Model model, @PathVariable("id") int personId) {
+        String personName = getParamVal(request, "personName");
+        UserView view = new UserView();
+        view.setRefId(personId);
+
+        List<PersonExamHistoryWithBLOBs> result = questionService.getHistoryScore(view);
+        for (PersonExamHistoryWithBLOBs format : result) {
+            format.setExamTime(DateUtils.millsToDate(format.getExamTime(), "yyyy-MM-dd HH:mm"));
+        }
+
+        model.addAttribute("personName", personName);
+        model.addAttribute("data", result);
+        return "question/pop/scoreDetail";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/batch_delete", method = RequestMethod.POST)
+    public DWZResponse batchdeletePerson(Model model, HttpServletRequest request) {
+        try {
+            String ids = getParamVal(request, "ids");
+            List<String> idList = DicUtil.splitWithOutNull(ids);
+
+            if (idList.size() > 0) {
+                questionService.deletePersonScore(idList);
+            }
+        } catch (Exception e) {
+            return DWZResponseUtil.callbackFail("300", "删除失败", "_blank");
+        }
+        return DWZResponseUtil.callbackSuccess("删除成功", "_blank");
+    }
+
+    //导出功能
+    @ResponseBody
+    @RequestMapping(value = "/export", method = RequestMethod.GET)
+    public void exportFile(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String fileName = "历史考试成绩导出.xlsx";
+            List<Map> scoreList = questionService.exportAllScore();
+
+            List<PersonExamHistory> dataList = new ArrayList<>();
+            if (scoreList.size() > 0) {
+                for (Map map : scoreList) {
+                    try {
+                        PersonExamHistory scoreHistory = new PersonExamHistory();
+                        scoreHistory.setPersonName(map.get("name").toString());
+                        scoreHistory.setPersonIdCard(map.get("identity_num").toString());
+                        scoreHistory.setExamTime(DateUtils.millsToDate(map.get("exam_time").toString(), "yyyy-MM-dd HH:mm"));
+                        scoreHistory.setObtainScore(map.get("obtain_score").toString());
+
+                        dataList.add(scoreHistory);
+                    } catch (Exception e) {
+                        continue;
+                    }
+                }
+
+            }
+
+            new ExportExcel("历史考试成绩导出", PersonExamHistory.class, 1, 50, null, 1).setDataList(dataList).write(response, fileName).dispose();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

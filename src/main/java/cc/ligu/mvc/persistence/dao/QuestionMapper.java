@@ -2,6 +2,7 @@ package cc.ligu.mvc.persistence.dao;
 
 import cc.ligu.mvc.persistence.entity.Question;
 import cc.ligu.mvc.persistence.entity.QuestionExample;
+
 import java.util.List;
 import java.util.Map;
 
@@ -29,4 +30,10 @@ public interface QuestionMapper {
     int updateByPrimaryKey(Question record);
 
     List<Question> selectRandomQuestionByCount(@Param("count") int count);
+
+    //随机查询答案长度不超过20个字符的单选题
+    List<Question> selectPvpRandomQuestionByCount(@Param("count") int count);
+
+    //重置指定人员的最新积分为0,段位也重置为了最低为1
+    int resetJiFenByPersonId(Integer personId);
 }

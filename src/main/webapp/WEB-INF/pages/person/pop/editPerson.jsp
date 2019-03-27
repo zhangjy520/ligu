@@ -62,11 +62,11 @@
                 <input ${disabled} type="text" name="insurancePurchasesHowMuch" value="${ligu:getValueFromJson(person.insurancePurchases,'how_much')}"
                                    size="30"/>
             </div>
-            <div class="unit">
+           <%-- <div class="unit">
                 <label>薪资情况：</label>
                 <input ${disabled} type="text" name="salaryDetails" value="${person.salaryDetails}"
                        size="30"/>
-            </div>
+            </div>--%>
 
             <div class="unit">
                 <label>施工单位专业：</label>

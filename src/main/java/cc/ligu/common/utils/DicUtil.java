@@ -3,6 +3,7 @@ package cc.ligu.common.utils;
 import net.sf.json.JSONObject;
 import org.springframework.util.StringUtils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -11,6 +12,17 @@ import java.util.*;
  * Created by zjy on 2016/9/9.
  */
 public class DicUtil {
+    public static DateFormat dateFormat;
+    public static DateFormat dateFormatSalary;
+
+    static {
+        dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        dateFormatSalary = new SimpleDateFormat("yyyy-MM");
+    }
+
+    public static Integer WIN_INTEGRAL = 5;//对战获胜积分比例
+    public static Integer PING_INTEGRAL = 0;//对战平局积分比例
+    public static Integer LOSE_INTEGRAL = -5;//对战输积分比例
 
     //通过考试分值
     public static Integer PASS_SCORE = 90;
@@ -140,7 +152,7 @@ public class DicUtil {
     public static String getValueByKeyAndFlag(int key, String which) {
         String val = "";
         List<KVEntity> kvEntityList = (List<KVEntity>) map.get(which);
-        for (KVEntity entity: kvEntityList) {
+        for (KVEntity entity : kvEntityList) {
             if (entity.getKey().equals(String.valueOf(key))) {
                 val = entity.getValue();
                 break;
@@ -152,7 +164,7 @@ public class DicUtil {
     public static Integer getKeyByValueAndFlag(String value, String which) {
         int val = 0;
         List<KVEntity> kvEntityList = (List<KVEntity>) map.get(which);
-        for (KVEntity entity: kvEntityList) {
+        for (KVEntity entity : kvEntityList) {
             if (entity.getValue().equals(value)) {
                 val = Integer.parseInt(entity.getKey());
                 break;
@@ -166,7 +178,19 @@ public class DicUtil {
             return null;
         String[] res = param.split(",");
         List<String> out = new ArrayList<>();
-        for (String v: res) {
+        for (String v : res) {
+            if (!StringUtils.isEmpty(v))
+                out.add(v);
+        }
+        return out;
+    }
+
+    public static List<String> splitWithOutNull(String param, String tag) {
+        if (StringUtils.isEmpty(param))
+            return null;
+        String[] res = param.split(tag);
+        List<String> out = new ArrayList<>();
+        for (String v : res) {
             if (!StringUtils.isEmpty(v))
                 out.add(v);
         }
@@ -194,9 +218,9 @@ public class DicUtil {
 
 
     public static long getBeginTime(int year, int month) {
-        Date d= null;
+        Date d = null;
         try {
-            d = new SimpleDateFormat("yyyyMM").parse(year+""+month);
+            d = new SimpleDateFormat("yyyyMM").parse(year + "" + month);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -209,16 +233,16 @@ public class DicUtil {
         //将分钟至0
         c.set(Calendar.MINUTE, 0);
         //将秒至0
-        c.set(Calendar.SECOND,0);
+        c.set(Calendar.SECOND, 0);
         //将毫秒至0
         c.set(Calendar.MILLISECOND, 0);
         return c.getTimeInMillis();
     }
 
-    public static long getEndTime(int year, int month){
-        Date d= null;
+    public static long getEndTime(int year, int month) {
+        Date d = null;
         try {
-            d = new SimpleDateFormat("yyyyMM").parse(year+""+month);
+            d = new SimpleDateFormat("yyyyMM").parse(year + "" + month);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -232,7 +256,7 @@ public class DicUtil {
         //将分钟至59
         c.set(Calendar.MINUTE, 59);
         //将秒至59
-        c.set(Calendar.SECOND,59);
+        c.set(Calendar.SECOND, 59);
         //将毫秒至999
         c.set(Calendar.MILLISECOND, 999);
         // 获取本月最后一天的时间戳
@@ -240,12 +264,38 @@ public class DicUtil {
 
     }
 
+    //2017年12月15日-2018年12月14日
+    public static long formatDate(String date) {
+        try {
+            List<String> split1 = splitWithOutNull(date, "-");
+            if (split1 != null && split1.size() == 2) {
+                String endDate = split1.get(1);
+                Date end = dateFormat.parse(endDate);
+                return end.getTime();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0L;
+    }
 
     public static void main(String[] args) {
-        System.out.println(getBeginTime(2018,7));
-        System.out.println(getEndTime(2018,7));
+        String emailRegEx = "^[0-9]{4}-[0,1]{1}[0-9]{1}$";
+        String email = "2019-05";
+        String email1 = "2019-12";
+        String email2 = "2019-11";
+        String email3 = "2019-21";
+        System.out.println(email.matches(emailRegEx));//true
+        System.out.println(email1.matches(emailRegEx));//true
+        System.out.println(email2.matches(emailRegEx));//true
+        System.out.println(email3.matches(emailRegEx));//true
+        if (1 > 0)
+            return;
 
-        String s = "1data,2data,5data,6data".replaceAll("[5-9]data","");
+        System.out.println(getBeginTime(2018, 7));
+        System.out.println(getEndTime(2018, 7));
+
+        String s = "1data,2data,5data,6data".replaceAll("[5-9]data", "");
         System.out.println("sss");
         System.out.println("32".compareTo("22"));
         System.out.println("32".compareTo("32"));

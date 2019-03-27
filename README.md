@@ -44,4 +44,26 @@
   
   
   # mysql默认值修改
-    sys_user 的photo_url的值需要修改：http://47.94.98.20:8085/source/attach/headPic/head_defalut.png
+    sys_user 的photo_url的值需要修改：http://47.94.98.20:8085/source/attach/headPic/head_defalut.png  （前面的ip+端口动态替换成服务器nginx的部署地址）
+    
+    
+    
+    
+    
+    
+   二期需求：
+   doc_source 表新增了字段为工艺示例在线文档
+   feedback 反馈建议表
+   person_salary 人员工资发放情况表
+   notice_message 人员app消息通知表
+   
+   
+   
+   
+   
+   保险日期格式一定要是：
+   2019年3月8-2020年3月7日
+   薪资日期格式一定要是
+   2012-01
+   
+   薪资录入：发放薪资日期为有效日期截止日

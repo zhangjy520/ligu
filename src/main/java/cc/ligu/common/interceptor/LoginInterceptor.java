@@ -26,7 +26,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         Subject loginUser = SecurityUtils.getSubject();
         if (loginUser.isAuthenticated())
             return true;
-        response.sendRedirect("login");
+        //response.sendRedirect("login");
         return true;
     }
 

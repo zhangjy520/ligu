@@ -23,7 +23,7 @@
     <bean name="shiroFilterChainDefinitions" class="java.lang.String">
         <constructor-arg>
             <value>
-                /assets/** = anon
+
                 /login = anon
                 /doLogin = anon
                 /doLogout = logout
@@ -34,7 +34,10 @@
                 /api = anon
                 /api/* = anon
                 /api/** = anon
+                /assets/** = anon
                 <!-- authc -->
+                / = anon
+                /** = authc
             </value>
         </constructor-arg>
     </bean>

@@ -1,6 +1,7 @@
 package cc.ligu.mvc.persistence.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class UserView implements Serializable {
     /**
@@ -122,6 +123,17 @@ public class UserView implements Serializable {
      * 创建日期(时间戳格式)
      */
     private Long createDate;
+
+    private List<PersonSalary> salaryList;
+
+    public List<PersonSalary> getSalaryList() {
+        return salaryList;
+    }
+
+    public UserView setSalaryList(List<PersonSalary> salaryList) {
+        this.salaryList = salaryList;
+        return this;
+    }
 
     /**
      * v_user

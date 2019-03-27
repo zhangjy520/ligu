@@ -1,5 +1,7 @@
 package cc.ligu.mvc.persistence.entity;
 
+import cc.ligu.common.utils.excel.annotation.ExcelField;
+
 import java.io.Serializable;
 
 public class PersonExamHistory implements Serializable {
@@ -14,6 +16,29 @@ public class PersonExamHistory implements Serializable {
     private String examTime;
 
     private Integer examType;
+
+    private String personName;//考试人员名字
+    private String personIdCard;//考试人员身份证
+
+    @ExcelField(title = "姓名", align = 2, sort = 1, groups = {1, 2}, isnull = 1)
+    public String getPersonName() {
+        return personName;
+    }
+
+    public PersonExamHistory setPersonName(String personName) {
+        this.personName = personName;
+        return this;
+    }
+
+    @ExcelField(title = "身份证", align = 2, sort = 2, groups = {1, 2}, isnull = 1)
+    public String getPersonIdCard() {
+        return personIdCard;
+    }
+
+    public PersonExamHistory setPersonIdCard(String personIdCard) {
+        this.personIdCard = personIdCard;
+        return this;
+    }
 
     private static final long serialVersionUID = 1L;
 
@@ -41,6 +66,7 @@ public class PersonExamHistory implements Serializable {
         this.fullScore = fullScore == null ? null : fullScore.trim();
     }
 
+    @ExcelField(title = "考试分数", align = 2, sort = 4, groups = {1, 2}, isnull = 1)
     public String getObtainScore() {
         return obtainScore;
     }
@@ -49,6 +75,7 @@ public class PersonExamHistory implements Serializable {
         this.obtainScore = obtainScore == null ? null : obtainScore.trim();
     }
 
+    @ExcelField(title = "考试时间", align = 2, sort = 3, groups = {1, 2}, isnull = 1)
     public String getExamTime() {
         return examTime;
     }

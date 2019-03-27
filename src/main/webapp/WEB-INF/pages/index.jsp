@@ -37,6 +37,7 @@
 
     <script src="${ctxStatic}/dwz/bin/dwz.min.js" type="text/javascript"></script>
     <script src="${ctxStatic}/dwz/js/dwz.regional.zh.js" type="text/javascript"></script>
+    <script src="${ctxStatic}/js/echart/echarts.common.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         $(function () {
@@ -118,6 +119,7 @@
                         <li><a>题库认证</a>
                             <ul>
                                 <li><a href="${ctx}/question/index" target="navTab">题库管理</a></li>
+                                <li><a href="${ctx}/question/score" target="navTab">成绩统计</a></li>
                             </ul>
                         </li>
                         <li><a>保险公司</a>
@@ -159,6 +161,11 @@
                         <li><a>工程完成报告</a>
                             <ul>
                                 <li><a href="${ctx}/projectReport/index" target="navTab">工程完成报告</a></li>
+                            </ul>
+                        </li>
+                        <li><a>薪资管理</a>
+                            <ul>
+                                <li><a href="${ctx}/personSalary/index" target="navTab">薪资管理</a></li>
                             </ul>
                         </li>
 

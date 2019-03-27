@@ -8,6 +8,7 @@ import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.security.AESencryptor;
 import cc.ligu.common.utils.DWZResponseUtil;
 import cc.ligu.common.utils.DicUtil;
+import cc.ligu.common.utils.GsonUtil;
 import cc.ligu.common.utils.excel.ExportExcel;
 import cc.ligu.common.utils.excel.ImportExcel;
 import cc.ligu.mvc.modelView.BaoXianView;
@@ -264,7 +265,6 @@ public class PersonController extends BasicController {
                 List<String> baoXianList = DicUtil.splitWithOutNull(person.getInsurancePurchases());
                 if (null != baoXianList && baoXianList.size() > 0) {
                     BaoXianView baoXianView = new BaoXianView();
-                    ;
                     try {
                         baoXianView.setCompany(baoXianList.get(0));
                         baoXianView.setOrder_num(baoXianList.get(1));
@@ -272,9 +272,12 @@ public class PersonController extends BasicController {
                         baoXianView.setOrder_time(baoXianList.get(3));
                     } catch (Exception e) {
                         //有的人员没有这些信息
+                        person.setInsurancePurchases(new Gson().toJson(new BaoXianView()));
                     }
 
                     person.setInsurancePurchases(new Gson().toJson(baoXianView));
+                } else {
+                    person.setInsurancePurchases(new Gson().toJson(new BaoXianView()));
                 }
 
                 String typeName = person.getTypeName();
@@ -297,4 +300,36 @@ public class PersonController extends BasicController {
 
     }
 
+
+    //导出功能
+    @ResponseBody
+    @RequestMapping(value = "/export", method = RequestMethod.GET)
+    public void exportFile(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String fileName = "施工人员导出数据.xlsx";
+            PageInfo<Person> dataList = personService.listAllPerson(Integer.MAX_VALUE, 1, null);
+
+            if (dataList.getList().size() > 0) {
+                for (Person person : dataList.getList()) {
+                    String baoXianView = person.getInsurancePurchases();
+                    if (!StringUtils.isEmpty(baoXianView)) {
+                        BaoXianView baoxian = GsonUtil.fromJson(baoXianView, BaoXianView.class);
+                        String pur = baoxian.getCompany() + "," + baoxian.getOrder_num() + "," + baoxian.getHow_much() + "," + baoxian.getOrder_time();
+                        person.setInsurancePurchases(pur);
+                    }
+
+                    String typeName = DicUtil.getValueByKeyAndFlag(person.getType(), "personType");
+                    person.setTypeName(typeName);
+                }
+            }
+            String anno = "注释：橙色字段为必填项\n" +
+                    "1.保险信息格式：保险公司,保险单号,保险额度,保险期限;" +
+                    "必须按照该格式填写，若该项没有则填无，例如：泰康人寿,无,1000元,已到期";
+
+            new ExportExcel("施工人员导出数据", Person.class, 2, 50, anno, 1).setDataList(dataList.getList()).write(response, fileName).dispose();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
