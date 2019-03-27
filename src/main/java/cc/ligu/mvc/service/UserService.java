@@ -20,4 +20,16 @@ public interface UserService {
     List<UserView> selectUserViewByUserView(UserView userView);
 
     int saveUser(User user,UserView userView);
+
+    //获取所有保险过期的人员
+    List<UserView> selectAllInsuPassUsers();
+
+    //根据身份证查询该用户保险是否过期，如果过期，返回用户信息
+    boolean isInsuPassByUserIdenty(String identi);
+
+    //获取所有薪资过期的人员
+    List<UserView> selectAllSalayPassUsers();
+
+    //根据当前身份证判断是否薪资过期
+    boolean isSalaryPassByUserIdenty(String identi,String type);
 }

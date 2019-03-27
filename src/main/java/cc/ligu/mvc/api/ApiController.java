@@ -218,7 +218,11 @@ public class ApiController extends BasicController {
             person.setIdentityNum(num);
             person.setBlackFlag(1);//[0正常 ,1黑名单待审，2黑名单人员]
             person.setRemark(remark);//申请拉黑原因
-            person.setBlackImage(request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath"));
+            String schme = "http";
+            if (!StringUtils.isEmpty(request.getScheme())){
+                schme = request.getScheme();
+            }
+            person.setBlackImage(schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath"));
 
             int size = personService.savePerson(person, getAppLoginUser(request));
             return ResultEntity.newResultEntity("添加成功");
@@ -272,7 +276,11 @@ public class ApiController extends BasicController {
 
             Map uploads = (Map) new FileController().uploads(multipartFile, request).getData();
             User user = userService.selectUserViewByUserId(Integer.valueOf(request.getParameter("userId")));
-            user.setPhotoUrl(request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath"));
+            String schme = "http";
+            if (!StringUtils.isEmpty(request.getScheme())){
+                schme = request.getScheme();
+            }
+            user.setPhotoUrl(schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath"));
             UserView userView = getAppLoginUser(request);
             userService.saveUser(user, userView);
             return ResultEntity.newResultEntity("上传成功", user.getPhotoUrl());
@@ -309,7 +317,11 @@ public class ApiController extends BasicController {
 
             Map uploads = (Map) new FileController().uploads(multipartFile, request).getData();
             Person person = personService.selectPersonByIdNum(request.getParameter("idNum"));
-            person.setIdentityImg(request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath"));
+            String schme = "http";
+            if (!StringUtils.isEmpty(request.getScheme())){
+                schme = request.getScheme();
+            }
+            person.setIdentityImg(schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath"));
             UserView userView = getAppLoginUser(request);
             personService.savePerson(person, userView);
             return ResultEntity.newResultEntity("上传成功", person.getIdentityImg());
@@ -547,12 +559,6 @@ public class ApiController extends BasicController {
             userView.setIdentityNum(identify);
 
             List<UserView> res = userService.selectUserViewByUserView(userView);
-            for (UserView view : res) {
-                //关联查询薪资信息。这里身份证查的结果为一条，这里再查数据库不算循环
-                PersonSalaryExample example = new PersonSalaryExample();
-                example.createCriteria().andPersonNumEqualTo(view.getIdentityNum());
-
-            }
             return ResultEntity.newResultEntity(res);
         } catch (Exception e) {
             e.printStackTrace();
@@ -674,7 +680,11 @@ public class ApiController extends BasicController {
 
             Map uploads = (Map) new FileController().uploads(multipartFile, request).getData();
 
-            url = request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath");
+            String schme = "http";
+            if (!StringUtils.isEmpty(request.getScheme())){
+                schme = request.getScheme();
+            }
+            url = schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath");
             UserView userView = getAppLoginUser(request);
             Source source = new Source();
             source.setApplyTime(0);
@@ -828,7 +838,11 @@ public class ApiController extends BasicController {
     @RequestMapping(value = "/add/project", consumes = "multipart/*", headers = "content-type=multipart/form-data")
     public ResultEntity addProject(@ApiParam(value = "上传工程报告图片", required = true) MultipartFile multipartFile, HttpServletRequest request) {
         try {
-            String itemPath = request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port");
+            String schme = "http";
+            if (!StringUtils.isEmpty(request.getScheme())){
+                schme = request.getScheme();
+            }
+            String itemPath = schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port");
             CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
             if (multipartResolver.isMultipart(request)) {
                 List<String> uploadList = (List) new FileController().uploadMuti(request).getData();
@@ -965,10 +979,87 @@ public class ApiController extends BasicController {
     @RequestMapping("/queryPersonArc")
     public ResultEntity queryPersonArc(HttpServletRequest request) {
         try {
-            String idNum = getParamVal(request,"idNum");
+            String idNum = getParamVal(request, "idNum");
             Person person = personService.selectPersonByIdNum(idNum);
             PvpPersonView pvpPerson = questionService.selectLatestPvpByPersonAId(person.getId());
             return ResultEntity.newResultEntity(pvpPerson);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultEntity.newErrEntity(e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "录入人员的薪资信息", httpMethod = "POST", notes = "录入人员的薪资信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "name", value = "姓名", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "num", value = "身份证号码", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "much", value = "金额", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "type", value = "分类", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "date", value = "日期", required = true),
+    })
+    @RequestMapping("/add/salary")
+    public ResultEntity addSalary(@ApiParam(value = "上传对应证明文件", required = true) MultipartFile multipartFile, HttpServletRequest request) {
+        String name = getParamVal(request, "name");
+        String num = getParamVal(request, "num");
+        String much = getParamVal(request, "much");
+        String type = getParamVal(request, "type");
+        String date = getParamVal(request, "date");
+
+        try {
+            CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+            if (multipartResolver.isMultipart(request)) {
+                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+                MultiValueMap<String, MultipartFile> multiFileMap = multiRequest.getMultiFileMap();
+                if (multiFileMap.size() > 0) {
+                    List<MultipartFile> fileSet = new LinkedList<>();
+                    for (Map.Entry<String, List<MultipartFile>> temp : multiFileMap.entrySet()) {
+                        fileSet = temp.getValue();
+                    }
+                    if (fileSet.size() > 0) {
+                        multipartFile = fileSet.get(0);
+                    }
+                }
+            }
+            request.setAttribute("basePath", "salary");
+            Map uploads = (Map) new FileController().uploads(multipartFile, request).getData();
+            PersonSalary salary = new PersonSalary();
+            salary.setFeeType(type);
+            salary.setPersonName(name);
+            salary.setPersonNum(num);
+            salary.setSendMuch(much);
+            salary.setSendTime(date);
+            String schme = "http";
+            if (!StringUtils.isEmpty(request.getScheme())){
+                schme = request.getScheme();
+            }
+            salary.setZhengJuUrls(schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath"));
+            personSalaryService.savePersonSalary(salary);
+
+            return ResultEntity.newResultEntity("添加成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultEntity.newErrEntity(e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "查询当前登录用户，薪资是否过期，保险是否过期", httpMethod = "POST", notes = "查询当前登录用户，薪资是否过期，保险是否过期" +
+            "baoxian:保险是否过期；life:生活费是否发放；gongcheng:工程款是否发放")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping("/queryOutDate")
+    public ResultEntity queryOutDate(HttpServletRequest request) {
+        try {
+            UserView user = getAppLoginUser(request);
+            boolean res1 = userService.isInsuPassByUserIdenty(user.getIdentityNum());
+            boolean res2 = userService.isSalaryPassByUserIdenty(user.getIdentityNum(),"生活费");
+            boolean res3 = userService.isSalaryPassByUserIdenty(user.getIdentityNum(),"工程款");
+            Map res = new HashMap();
+            res.put("baoxian",res1);
+            res.put("life",res2);
+            res.put("gongcheng",res3);
+            return ResultEntity.newResultEntity(res);
         } catch (Exception e) {
             e.printStackTrace();
             return ResultEntity.newErrEntity(e.getMessage());

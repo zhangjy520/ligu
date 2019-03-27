@@ -99,6 +99,15 @@ public class PersonSalaryServiceImpl extends BasicService implements PersonSalar
 
     @Override
     public PersonSalary selectPersonLatestSalaryByIdNum(String idNum) {
+        PersonSalaryExample example = new PersonSalaryExample();
+        example.createCriteria().andPersonNumEqualTo(idNum);
+        PageHelper.startPage(0,1);
+        example.setOrderByClause("send_time DESC");
+        List<PersonSalary> res = personSalaryMapper.selectByExample(example);
+
+        if (res.size()>0){
+         return res.get(0);
+        }
         return null;
     }
 

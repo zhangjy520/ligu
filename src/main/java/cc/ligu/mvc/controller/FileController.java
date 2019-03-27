@@ -61,6 +61,12 @@ public class FileController extends BasicController {
         try {
             String fullPath = FileUtils.VFS_ROOT_PATH + FileUtils.SOURCE_ATTACH;
             String basePath = getParamVal(request, "basePath");
+            if (StringUtils.isEmpty(basePath)){
+                if (null!=request.getAttribute("basePath")){
+                    basePath = request.getAttribute("basePath").toString();
+                }
+            }
+
             if (!StringUtils.isEmpty(basePath)) {
                 fullPath += basePath + "/";
             }

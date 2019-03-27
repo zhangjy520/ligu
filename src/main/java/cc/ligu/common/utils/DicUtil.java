@@ -3,6 +3,7 @@ package cc.ligu.common.utils;
 import net.sf.json.JSONObject;
 import org.springframework.util.StringUtils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -11,6 +12,14 @@ import java.util.*;
  * Created by zjy on 2016/9/9.
  */
 public class DicUtil {
+    public static DateFormat dateFormat;
+    public static DateFormat dateFormatSalary;
+
+    static {
+        dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        dateFormatSalary = new SimpleDateFormat("yyyy-MM");
+    }
+
     public static Integer WIN_INTEGRAL = 5;//对战获胜积分比例
     public static Integer PING_INTEGRAL = 0;//对战平局积分比例
     public static Integer LOSE_INTEGRAL = -5;//对战输积分比例
@@ -176,6 +185,18 @@ public class DicUtil {
         return out;
     }
 
+    public static List<String> splitWithOutNull(String param, String tag) {
+        if (StringUtils.isEmpty(param))
+            return null;
+        String[] res = param.split(tag);
+        List<String> out = new ArrayList<>();
+        for (String v : res) {
+            if (!StringUtils.isEmpty(v))
+                out.add(v);
+        }
+        return out;
+    }
+
     public static List searchParam(String paramList) {
         if (StringUtils.isEmpty(paramList))
             return null;
@@ -243,12 +264,31 @@ public class DicUtil {
 
     }
 
+    //2017年12月15日-2018年12月14日
+    public static long formatDate(String date) {
+        try {
+            List<String> split1 = splitWithOutNull(date, "-");
+            if (split1 != null && split1.size() == 2) {
+                String endDate = split1.get(1);
+                Date end = dateFormat.parse(endDate);
+                return end.getTime();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0L;
+    }
 
     public static void main(String[] args) {
-
-        String emailRegEx = "^[0-9]{4}-[0-12]{2}$";
-        String email = "2012-01";
+        String emailRegEx = "^[0-9]{4}-[0,1]{1}[0-9]{1}$";
+        String email = "2019-05";
+        String email1 = "2019-12";
+        String email2 = "2019-11";
+        String email3 = "2019-21";
         System.out.println(email.matches(emailRegEx));//true
+        System.out.println(email1.matches(emailRegEx));//true
+        System.out.println(email2.matches(emailRegEx));//true
+        System.out.println(email3.matches(emailRegEx));//true
         if (1 > 0)
             return;
 

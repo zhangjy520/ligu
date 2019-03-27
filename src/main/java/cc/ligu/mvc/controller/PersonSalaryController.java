@@ -30,7 +30,7 @@ import java.util.List;
 @Controller
 public class PersonSalaryController extends BasicController {
 
-    private static final String dateRegEx = "^[0-9]{4}-[0-12]{2}$";
+    private static final String dateRegEx = "^[0-9]{4}-[0,1]{1}[0-9]{1}$";
     @Autowired
     PersonSalaryService personSalaryService;
 
@@ -139,7 +139,11 @@ public class PersonSalaryController extends BasicController {
     public DWZResponse importExcel(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request) throws Exception {
         Long begin = System.currentTimeMillis();
         String zhengMingUrls = getParamVal(request, "projectPic");
-        String itemPath = request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port");
+        String schme = "http";
+        if (!StringUtils.isEmpty(request.getScheme())){
+            schme = request.getScheme();
+        }
+        String itemPath = schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port");
         List<String> attachList = DicUtil.splitWithOutNull(zhengMingUrls);
         if (attachList == null) {
             attachList = new ArrayList<>();
