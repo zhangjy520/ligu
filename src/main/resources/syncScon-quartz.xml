@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" default-autowire="byName">
+   
+
+    <!--定时将薪资,保险信息数据刷新到消息表-->
+    <bean id="push" class="cc.ligu.mvc.service.impl.MessageServiceImpl" />
+    <bean id="pushJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+                <property name="targetObject">
+                    <ref bean="push" />
+                </property>
+                <property name="targetMethod">
+                    <value>saveMessage</value>
+                </property>
+                <property name="concurrent">
+                    <value>true</value>
+                </property>
+            </bean>
+        </property>
+        <property name="cronExpression">
+            <value>0 0 3 * * ?</value><!-- 每天的凌晨3点执行 -->
+        </property>
+    </bean>
+
+    <!--定时器配置 lazy-init='false'-->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"  lazy-init="false" autowire="no">
+        <property name="triggers">
+            <list>
+                <ref bean="pushJob"/>
+            </list>
+        </property>
+    </bean>
+</beans>

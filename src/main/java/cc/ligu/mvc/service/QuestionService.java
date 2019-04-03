@@ -70,4 +70,13 @@ public interface QuestionService {
 
     //获取最新积分排行(积分从高到低排列)
     List<HashMap> selectLatestPvpList();
+
+    //发布考试
+    int saveExamNotice(ExamNotice examNotice,UserView userView);
+
+    //获取所有考试列表
+    List<ExamNotice> selectAllExamNotice(UserView userView);
+
+    //参加考试(返回考试信息，和考试题目列表)
+    Map inExamNotice(int personId,int examNoticeId);
 }

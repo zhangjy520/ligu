@@ -22,7 +22,7 @@
     <import resource="application-shiro.xml"/>
 
     <!-- 定时配置文件加载-->
-    <!-- <import resource="classpath:syncScon-quartz.xml"/>-->
+     <import resource="classpath:syncScon-quartz.xml"/>
     <bean class="cc.ligu.common.utils.SpringContextHolder" lazy-init="false" />
 
 </beans>

@@ -5,7 +5,7 @@
    
 
     <!--定时查询数据库推送数据-->
-    <bean id="push" class="cn.gukeer.sync.service.push.SyncMian" />
+    <bean id="push" class="cc.ligu.mvc.service.impl.MessageServiceImpl" />
     <bean id="pushJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail">
             <bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -13,7 +13,7 @@
                     <ref bean="push" />
                 </property>
                 <property name="targetMethod">
-                    <value>execute</value>
+                    <value>saveMessage</value>
                 </property>
                 <property name="concurrent">
                     <value>true</value>

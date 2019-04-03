@@ -1,7 +1,9 @@
 package cc.ligu.mvc.service.impl;
 
 import cc.ligu.common.service.BasicService;
+import cc.ligu.common.utils.DateUtils;
 import cc.ligu.common.utils.DicUtil;
+import cc.ligu.mvc.modelView.MessageView;
 import cc.ligu.mvc.modelView.PvpPersonView;
 import cc.ligu.mvc.modelView.ScoreView;
 import cc.ligu.mvc.persistence.dao.*;
@@ -48,6 +50,13 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
 
     @Autowired
     ApiMapper apiMapper;
+
+    @Autowired
+    ExamNoticeMapper examNoticeMapper;
+    @Autowired
+    NoticeMessageMapper noticeMessageMapper;
+    @Autowired
+    RefPersonExamMapper refPersonExamMapper;
 
     @Override
     public PageInfo<Question> listAllQuestion(int pageSize, int pageNum, Question question) {
@@ -440,6 +449,95 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     @Override
     public List<HashMap> selectLatestPvpList() {
         return pvpPersonMapper.selectLatestPvpList();
+    }
+
+    @Override
+    @Transactional
+    public int saveExamNotice(ExamNotice examNotice, UserView userView) {
+        try {
+            //1发布考试
+            examNoticeMapper.insertSelective(examNotice);
+            //2发布考试，要添加到消息表
+            NoticeMessage noticeMessage = new NoticeMessage();
+            noticeMessage.setRemark(userView.getName());
+            noticeMessage.setType(MessageView.EXAM_NOTICE);
+            noticeMessage.setNoticeTime(DateUtils.getYYYYMMDD());
+            noticeMessage.setNoticeTo(0);
+            noticeMessage.setNoticeFrom(userView.getRefId());
+            noticeMessage.setTitle("考试通知");
+            noticeMessage.setMessage(userView.getName() + "发布了考试：" + examNotice.getExamName());
+            noticeMessage.setFlag(DateUtils.getYYYYMMDD() + "," + userView.getRefId() + "," + MessageView.EXAM_NOTICE);
+            noticeMessageMapper.insertSelectiveDuUpdate(noticeMessage);
+
+            //新增消息，要将考试类的考试主键保存
+            NoticeMessage updateNoticeMessage = new NoticeMessage();
+            updateNoticeMessage.setId(noticeMessage.getId());
+            updateNoticeMessage.setRemark(noticeMessage.getRemark()+","+examNotice.getId());
+            noticeMessageMapper.updateByPrimaryKeySelective(updateNoticeMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+        return 1;
+    }
+
+    @Override
+    public List<ExamNotice> selectAllExamNotice(UserView userView) {
+        ExamNoticeExample examNoticeExample = new ExamNoticeExample();
+        examNoticeExample.createCriteria().andDelFlagEqualTo(0);
+
+        List<ExamNotice> examList = examNoticeMapper.selectByExample(examNoticeExample);
+        for (ExamNotice notice : examList) {
+            RefPersonExamExample examExample = new RefPersonExamExample();
+            examExample.createCriteria().andPersonIdEqualTo(userView.getRefId())
+                    .andExamIdEqualTo(notice.getId());
+            List<RefPersonExam> res = refPersonExamMapper.selectByExample(examExample);
+            notice.setDateBegin(DateUtils.millsToyyyyMMdd(Long.valueOf(notice.getDateBegin())));
+            notice.setDateEnd(DateUtils.millsToyyyyMMdd(Long.valueOf(notice.getDateEnd())));
+            if (res.size() > 0) {
+                //通过考试ID和人员id查询有数据证明参加过考试
+                notice.setIn(true);//参加过考试
+            }
+
+        }
+        return examList;
+    }
+
+    @Override
+    public Map inExamNotice(int personId, int examNoticeId) {
+        Map map = new HashMap();
+        //参加考试,返回考试题目列表
+        ExamNotice examNotice = examNoticeMapper.selectByPrimaryKey(examNoticeId);
+        examNotice.setDateBegin(DateUtils.millsToyyyyMMdd(Long.valueOf(examNotice.getDateBegin())));
+        examNotice.setDateEnd(DateUtils.millsToyyyyMMdd(Long.valueOf(examNotice.getDateEnd())));
+
+        List<Integer> questIdList = DicUtil.splitWithOutNullRetrunInt(examNotice.getQuestionIds());
+        if (questIdList.size() > 0) {
+            QuestionExample example = new QuestionExample();
+            example.createCriteria().andIdIn(questIdList);
+            List quesList = questionMapper.selectByExample(example);
+            map.put("questionList", quesList);
+        }
+    //将参加考试的人，题目信息录入到考试记录中
+        PersonExamHistoryWithBLOBs record = new PersonExamHistoryWithBLOBs();
+        record.setPersonId(personId);
+        record.setFullScore("100");
+        record.setExamTime(String.valueOf(System.currentTimeMillis()));
+        record.setExamType(3);//参加管理员发布的考试 1:平时练习,2:月份考试,3:管理员发布考试
+        record.setQuestionIds(examNotice.getQuestionIds());
+        saveExam(record);
+
+        //参加管理员发布的考试
+        RefPersonExam refPersonExam = new RefPersonExam();
+        refPersonExam.setExamId(examNoticeId);
+        refPersonExam.setExamTime(String.valueOf(System.currentTimeMillis()));
+        refPersonExam.setPersonId(personId);
+        refPersonExamMapper.insertSelective(refPersonExam);
+
+        examNotice.setId(record.getId());//将考试记录id给考试ID
+        map.put("exam", examNotice);
+
+        return map;
     }
 
     private static Date doGetMonthStart(Calendar calendar) {

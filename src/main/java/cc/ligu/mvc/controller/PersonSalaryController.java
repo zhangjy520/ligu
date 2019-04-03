@@ -67,9 +67,9 @@ public class PersonSalaryController extends BasicController {
     public DWZResponse savePerson(Model model, PersonSalary person, HttpServletRequest request) {
         try {
 
-            if ((!StringUtils.isEmpty(person.getSendTime()) && !person.getSendTime().matches(dateRegEx))) {
+            if ((!StringUtils.isEmpty(person.getSendTime()) && !DicUtil.formatCheck(person.getSendTime()))) {
                 //如果工资结算时间，或者生活费结算时间的格式不符合2019-01 不允许导入
-                return DWZResponseUtil.callbackFail("300", "填写失败,日期格式yyyy-mm", "_blank");
+                return DWZResponseUtil.callbackFail("300", "填写失败,日期格式yyyy-mm-dd", "_blank");
             }
             personSalaryService.savePersonSalary(person);
         } catch (Exception e) {

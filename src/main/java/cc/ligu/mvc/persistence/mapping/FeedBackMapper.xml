@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.ligu.mvc.persistence.dao.FeedBackMapper" >
+  <resultMap id="BaseResultMap" type="cc.ligu.mvc.persistence.entity.FeedBack" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="way" property="way" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="BIGINT" />
+    <result column="person_id" property="personId" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="pics" property="pics" jdbcType="VARCHAR" />
+    <result column="deal_person_id" property="dealPersonId" jdbcType="INTEGER" />
+    <result column="deal_time" property="dealTime" jdbcType="BIGINT" />
+    <result column="deal_status" property="dealStatus" jdbcType="INTEGER" />
+    <result column="deal_say" property="dealSay" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, way, type, time, person_id, content, pics, deal_person_id, deal_time, deal_status, 
+    deal_say
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cc.ligu.mvc.persistence.entity.FeedBackExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from feedback
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from feedback
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from feedback
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cc.ligu.mvc.persistence.entity.FeedBackExample" >
+    delete from feedback
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cc.ligu.mvc.persistence.entity.FeedBack" >
+    insert into feedback (id, way, type, 
+      time, person_id, content, 
+      pics, deal_person_id, deal_time, 
+      deal_status, deal_say)
+    values (#{id,jdbcType=INTEGER}, #{way,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{time,jdbcType=BIGINT}, #{personId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+      #{pics,jdbcType=VARCHAR}, #{dealPersonId,jdbcType=INTEGER}, #{dealTime,jdbcType=BIGINT}, 
+      #{dealStatus,jdbcType=INTEGER}, #{dealSay,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cc.ligu.mvc.persistence.entity.FeedBack" >
+    insert into feedback
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="way != null" >
+        way,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="personId != null" >
+        person_id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="pics != null" >
+        pics,
+      </if>
+      <if test="dealPersonId != null" >
+        deal_person_id,
+      </if>
+      <if test="dealTime != null" >
+        deal_time,
+      </if>
+      <if test="dealStatus != null" >
+        deal_status,
+      </if>
+      <if test="dealSay != null" >
+        deal_say,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="way != null" >
+        #{way,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=BIGINT},
+      </if>
+      <if test="personId != null" >
+        #{personId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="pics != null" >
+        #{pics,jdbcType=VARCHAR},
+      </if>
+      <if test="dealPersonId != null" >
+        #{dealPersonId,jdbcType=INTEGER},
+      </if>
+      <if test="dealTime != null" >
+        #{dealTime,jdbcType=BIGINT},
+      </if>
+      <if test="dealStatus != null" >
+        #{dealStatus,jdbcType=INTEGER},
+      </if>
+      <if test="dealSay != null" >
+        #{dealSay,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update feedback
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.way != null" >
+        way = #{record.way,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=BIGINT},
+      </if>
+      <if test="record.personId != null" >
+        person_id = #{record.personId,jdbcType=INTEGER},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pics != null" >
+        pics = #{record.pics,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dealPersonId != null" >
+        deal_person_id = #{record.dealPersonId,jdbcType=INTEGER},
+      </if>
+      <if test="record.dealTime != null" >
+        deal_time = #{record.dealTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.dealStatus != null" >
+        deal_status = #{record.dealStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.dealSay != null" >
+        deal_say = #{record.dealSay,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update feedback
+    set id = #{record.id,jdbcType=INTEGER},
+      way = #{record.way,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
+      time = #{record.time,jdbcType=BIGINT},
+      person_id = #{record.personId,jdbcType=INTEGER},
+      content = #{record.content,jdbcType=VARCHAR},
+      pics = #{record.pics,jdbcType=VARCHAR},
+      deal_person_id = #{record.dealPersonId,jdbcType=INTEGER},
+      deal_time = #{record.dealTime,jdbcType=BIGINT},
+      deal_status = #{record.dealStatus,jdbcType=INTEGER},
+      deal_say = #{record.dealSay,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cc.ligu.mvc.persistence.entity.FeedBack" >
+    update feedback
+    <set >
+      <if test="way != null" >
+        way = #{way,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=BIGINT},
+      </if>
+      <if test="personId != null" >
+        person_id = #{personId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="pics != null" >
+        pics = #{pics,jdbcType=VARCHAR},
+      </if>
+      <if test="dealPersonId != null" >
+        deal_person_id = #{dealPersonId,jdbcType=INTEGER},
+      </if>
+      <if test="dealTime != null" >
+        deal_time = #{dealTime,jdbcType=BIGINT},
+      </if>
+      <if test="dealStatus != null" >
+        deal_status = #{dealStatus,jdbcType=INTEGER},
+      </if>
+      <if test="dealSay != null" >
+        deal_say = #{dealSay,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cc.ligu.mvc.persistence.entity.FeedBack" >
+    update feedback
+    set way = #{way,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      time = #{time,jdbcType=BIGINT},
+      person_id = #{personId,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      pics = #{pics,jdbcType=VARCHAR},
+      deal_person_id = #{dealPersonId,jdbcType=INTEGER},
+      deal_time = #{dealTime,jdbcType=BIGINT},
+      deal_status = #{dealStatus,jdbcType=INTEGER},
+      deal_say = #{dealSay,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectFeedBackList" resultType="java.util.HashMap">
+    SELECT feedback.*,oa_person.`company`,oa_person.`name`,oa_person.`professional_unit` FROM feedback LEFT JOIN oa_person ON oa_person.`id` = feedback.`person_id`
+  </select>
+</mapper>

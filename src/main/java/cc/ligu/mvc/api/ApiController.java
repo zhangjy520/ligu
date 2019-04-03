@@ -7,14 +7,18 @@ package cc.ligu.mvc.api;
 import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.entity.ResultEntity;
 import cc.ligu.common.security.AESencryptor;
+import cc.ligu.common.utils.DateUtils;
 import cc.ligu.common.utils.DicUtil;
 import cc.ligu.common.utils.PropertiesUtil;
+import cc.ligu.common.utils.SpringContextHolder;
 import cc.ligu.mvc.controller.FileController;
 import cc.ligu.mvc.modelView.BaoXianView;
+import cc.ligu.mvc.modelView.MessageView;
 import cc.ligu.mvc.modelView.PvpPersonView;
 import cc.ligu.mvc.modelView.ScoreView;
 import cc.ligu.mvc.persistence.entity.*;
 import cc.ligu.mvc.service.*;
+import cc.ligu.mvc.service.impl.MessageServiceImpl;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
 import com.google.gson.Gson;
@@ -35,6 +39,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.util.*;
 
 @RestController
@@ -63,6 +68,9 @@ public class ApiController extends BasicController {
     @Resource
     PersonSalaryService personSalaryService;
 
+    @Resource
+    FeedBackService feedBackService;
+
     @ApiIgnore
     @ApiOperation(value = "通过客户端id判断是否需要登录", httpMethod = "POST", notes = "验证是否需要登录,不需要登录返回用户信息")
     @ApiImplicitParams({
@@ -87,6 +95,8 @@ public class ApiController extends BasicController {
     @RequestMapping("/logout")
     public ResultEntity applogOut(HttpServletRequest request) {
         String clientId = getParamVal(request, "clientId");
+        MessageServiceImpl messageService = SpringContextHolder.getBean("push");
+        messageService.saveMessage();
         try {
 //            request.getSession().removeAttribute(clientId);
             UserView userView = (UserView) cacheService.getCacheByKey(clientId);
@@ -219,7 +229,7 @@ public class ApiController extends BasicController {
             person.setBlackFlag(1);//[0正常 ,1黑名单待审，2黑名单人员]
             person.setRemark(remark);//申请拉黑原因
             String schme = "http";
-            if (!StringUtils.isEmpty(request.getScheme())){
+            if (!StringUtils.isEmpty(request.getScheme())) {
                 schme = request.getScheme();
             }
             person.setBlackImage(schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath"));
@@ -277,7 +287,7 @@ public class ApiController extends BasicController {
             Map uploads = (Map) new FileController().uploads(multipartFile, request).getData();
             User user = userService.selectUserViewByUserId(Integer.valueOf(request.getParameter("userId")));
             String schme = "http";
-            if (!StringUtils.isEmpty(request.getScheme())){
+            if (!StringUtils.isEmpty(request.getScheme())) {
                 schme = request.getScheme();
             }
             user.setPhotoUrl(schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath"));
@@ -318,7 +328,7 @@ public class ApiController extends BasicController {
             Map uploads = (Map) new FileController().uploads(multipartFile, request).getData();
             Person person = personService.selectPersonByIdNum(request.getParameter("idNum"));
             String schme = "http";
-            if (!StringUtils.isEmpty(request.getScheme())){
+            if (!StringUtils.isEmpty(request.getScheme())) {
                 schme = request.getScheme();
             }
             person.setIdentityImg(schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath"));
@@ -681,7 +691,7 @@ public class ApiController extends BasicController {
             Map uploads = (Map) new FileController().uploads(multipartFile, request).getData();
 
             String schme = "http";
-            if (!StringUtils.isEmpty(request.getScheme())){
+            if (!StringUtils.isEmpty(request.getScheme())) {
                 schme = request.getScheme();
             }
             url = schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath");
@@ -839,7 +849,7 @@ public class ApiController extends BasicController {
     public ResultEntity addProject(@ApiParam(value = "上传工程报告图片", required = true) MultipartFile multipartFile, HttpServletRequest request) {
         try {
             String schme = "http";
-            if (!StringUtils.isEmpty(request.getScheme())){
+            if (!StringUtils.isEmpty(request.getScheme())) {
                 schme = request.getScheme();
             }
             String itemPath = schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port");
@@ -996,7 +1006,7 @@ public class ApiController extends BasicController {
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "num", value = "身份证号码", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "much", value = "金额", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "type", value = "分类", required = true),
-            @ApiImplicitParam(paramType = "query", dataType = "String", name = "date", value = "日期", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "date", value = "日期截止日(例如：有效期到：2012-01-21)", required = true),
     })
     @RequestMapping("/add/salary")
     public ResultEntity addSalary(@ApiParam(value = "上传对应证明文件", required = true) MultipartFile multipartFile, HttpServletRequest request) {
@@ -1005,6 +1015,16 @@ public class ApiController extends BasicController {
         String much = getParamVal(request, "much");
         String type = getParamVal(request, "type");
         String date = getParamVal(request, "date");
+
+        UserView user = userService.selectUserViewByIdenti(num);
+        if (user == null) {
+            return ResultEntity.newErrEntity("身份证错误，系统中查无此人");
+        } else if (!user.getName().equals(name)) {
+            return ResultEntity.newErrEntity("姓名错误，身份证和姓名不匹配");
+        }
+        if (!DicUtil.formatCheck(date)) {
+            return ResultEntity.newErrEntity("日期格式不对，必须是2012-01-02这样的格式");
+        }
 
         try {
             CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
@@ -1030,7 +1050,7 @@ public class ApiController extends BasicController {
             salary.setSendMuch(much);
             salary.setSendTime(date);
             String schme = "http";
-            if (!StringUtils.isEmpty(request.getScheme())){
+            if (!StringUtils.isEmpty(request.getScheme())) {
                 schme = request.getScheme();
             }
             salary.setZhengJuUrls(schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath"));
@@ -1043,6 +1063,41 @@ public class ApiController extends BasicController {
         }
     }
 
+    @ApiOperation(value = "查询保险，工资未交，过期的人", httpMethod = "POST", notes = "查询保险，工资未交，过期的人")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "pageNum", value = "页码", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "pageSize", value = "条数", required = true),
+    })
+    @RequestMapping("/queryMessage")
+    public ResultEntity queryMessage(HttpServletRequest request) {
+        System.out.println(System.currentTimeMillis());
+        int pageSize = getPageSize(request);
+        int pageNum = getPageNum(request);
+        MessageServiceImpl messageService = SpringContextHolder.getBean("push");
+        PageInfo<NoticeMessage> res = messageService.listPageMessage(pageSize, pageNum);
+        List<MessageView> re = new ArrayList<>();
+        for (NoticeMessage noticeMessage : res.getList()) {
+            MessageView messageView = new MessageView();
+            messageView.setId(String.valueOf(noticeMessage.getId()));
+            messageView.setTitle(noticeMessage.getTitle());
+            messageView.setContent(noticeMessage.getMessage());
+            messageView.setType(noticeMessage.getType());
+            messageView.setTime(noticeMessage.getNoticeTime());
+
+            if (MessageView.EXAM_NOTICE == noticeMessage.getType()) {
+                List<String> remark = DicUtil.splitWithOutNull(noticeMessage.getRemark());
+                messageView.setPerson(remark.get(0));
+                messageView.setExamId(remark.get(1));
+            } else {
+                messageView.setPerson(noticeMessage.getRemark());
+                messageView.setExamId("");
+            }
+            re.add(messageView);
+        }
+        return ResultEntity.newResultEntity(re);
+    }
+
     @ApiOperation(value = "查询当前登录用户，薪资是否过期，保险是否过期", httpMethod = "POST", notes = "查询当前登录用户，薪资是否过期，保险是否过期" +
             "baoxian:保险是否过期；life:生活费是否发放；gongcheng:工程款是否发放")
     @ApiImplicitParams({
@@ -1053,17 +1108,113 @@ public class ApiController extends BasicController {
         try {
             UserView user = getAppLoginUser(request);
             boolean res1 = userService.isInsuPassByUserIdenty(user.getIdentityNum());
-            boolean res2 = userService.isSalaryPassByUserIdenty(user.getIdentityNum(),"生活费");
-            boolean res3 = userService.isSalaryPassByUserIdenty(user.getIdentityNum(),"工程款");
+            boolean res2 = userService.isSalaryPassByUserIdenty(user.getIdentityNum(), "生活费");
+            boolean res3 = userService.isSalaryPassByUserIdenty(user.getIdentityNum(), "工程款");
             Map res = new HashMap();
-            res.put("baoxian",res1);
-            res.put("life",res2);
-            res.put("gongcheng",res3);
+            res.put("baoxian", res1);
+            res.put("life", res2);
+            res.put("gongcheng", res3);
             return ResultEntity.newResultEntity(res);
         } catch (Exception e) {
             e.printStackTrace();
             return ResultEntity.newErrEntity(e.getMessage());
         }
+    }
+
+    @ApiOperation(value = "提交诉讼", httpMethod = "POST", notes = "提交诉讼")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "type", value = "诉讼类别[1工资 2保险 3其他]", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "time", value = "时间格式[2019-01-01]", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "detail", value = "详情", required = true),
+    })
+    @RequestMapping("/add/feedback")
+    public ResultEntity addFeedBack(@ApiParam(value = "提交诉讼", required = true) MultipartFile multipartFile, HttpServletRequest request) {
+        UserView user = getAppLoginUser(request);
+        Integer type = getParamInt(request, "type");
+        String time = getParamVal(request, "time");
+        String detail = getParamVal(request, "detail");
+
+        Long timeLong = 0L;
+        try {
+            timeLong = DateUtils.yyyyMMddToMillis(time);
+        } catch (ParseException e) {
+            return ResultEntity.newErrEntity("时间格式不正确，必须是2010-12-28这样的格式");
+        }
+
+        try {
+            CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+            if (multipartResolver.isMultipart(request)) {
+                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+                MultiValueMap<String, MultipartFile> multiFileMap = multiRequest.getMultiFileMap();
+                if (multiFileMap.size() > 0) {
+                    List<MultipartFile> fileSet = new LinkedList<>();
+                    for (Map.Entry<String, List<MultipartFile>> temp : multiFileMap.entrySet()) {
+                        fileSet = temp.getValue();
+                    }
+                    if (fileSet.size() > 0) {
+                        multipartFile = fileSet.get(0);
+                    }
+                }
+            }
+            request.setAttribute("basePath", "feedback");
+            Map uploads = (Map) new FileController().uploads(multipartFile, request).getData();
+            FeedBack feedBack = new FeedBack();
+            feedBack.setContent(detail);
+            feedBack.setType(type);
+            feedBack.setTime(timeLong);
+            String schme = "http";
+            if (!StringUtils.isEmpty(request.getScheme())) {
+                schme = request.getScheme();
+            }
+            feedBack.setPics(schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath"));
+            feedBackService.saveFeedBack(feedBack, user);
+
+            return ResultEntity.newResultEntity("提交成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultEntity.newErrEntity(e.getMessage());
+        }
+    }
+
+
+    @ApiOperation(value = "查看诉讼列表", httpMethod = "POST", notes = "查看诉讼列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping("/select/feedbackList")
+    public ResultEntity feedbackList(HttpServletRequest request) {
+        try {
+            List<HashMap> res = feedBackService.selectFeedBackList();
+            return ResultEntity.newResultEntity(res);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultEntity.newErrEntity(e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "参加考试", httpMethod = "POST", notes = "消息列表考试消息会有examId,或者考试列表有id,是要参加考试的ID,调用这个接口返回该考试的题目")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "examId", value = "参加考试的考试ID", required = true),
+    })
+    @RequestMapping(value = "/inExam")
+    public ResultEntity inExamNotice(HttpServletRequest request) {
+        UserView useView = getAppLoginUser(request);
+        int examId = getParamInt(request, "examId");
+        Map res = questionService.inExamNotice(useView.getRefId(), examId);
+        return ResultEntity.newResultEntity(res);
+    }
+
+    @ApiOperation(value = "获取管理员发布的考试列表", httpMethod = "POST", notes = "管理员发布的考试列表isIn：是否自己参加过。true:参加过，false:没参加")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping(value = "/selectAllExam")
+    public ResultEntity selectAllExamNotice(HttpServletRequest request) {
+        UserView userView = getAppLoginUser(request);
+        List<ExamNotice> res = questionService.selectAllExamNotice(userView);
+        return ResultEntity.newResultEntity(res);
     }
 
     protected UserView getAppLoginUser(HttpServletRequest request) {

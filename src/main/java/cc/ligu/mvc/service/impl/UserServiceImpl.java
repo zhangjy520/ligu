@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -118,21 +119,41 @@ public class UserServiceImpl extends BasicService implements UserService {
     }
 
     @Override
-    public List<UserView> selectAllInsuPassUsers() {
+    public HashMap selectAllInsuPassUsers() {
         UserViewExample example = new UserViewExample();
         example.createCriteria().andInsurancePurchasesIsNotNull();
         List<UserView> userViewList = userViewMapper.selectByExample(example);
 
-        List<UserView> passUsers = new ArrayList<>();
+        HashMap<String, List<UserView>> res = new HashMap<String, List<UserView>>();
+        List<UserView> meiFapassUsers = new ArrayList<>();
+        List<UserView> guoQipassUsers = new ArrayList<>();
         for (UserView userView : userViewList) {
             BaoXianView baoxian = GsonUtil.fromJson(userView.getInsurancePurchases(), BaoXianView.class);
-            if (DicUtil.formatDate(baoxian.getOrder_time()) < System.currentTimeMillis()) {
-                //保险结束日期小于当前日期，说明保险过期了
-                passUsers.add(userView);
+            long date = DicUtil.formatDate(baoxian.getOrder_time());//保险发放日期
+            if (date == 0L) {
+                //保险字段未空
+                meiFapassUsers.add(userView);
+            } else if (date < System.currentTimeMillis()) {
+                //保险时间小于当前时间
+                userView.setInsuTime(baoxian.getOrder_time());
+                guoQipassUsers.add(userView);
             }
         }
 
-        return passUsers;
+        res.put("noSet", meiFapassUsers);//保险没交
+        res.put("overTime", guoQipassUsers);//保险超时
+        return res;
+    }
+
+    @Override
+    public HashMap selectAllSalaryPassUsers() {
+        HashMap res = new HashMap();
+        List<UserView> meiFapassUsers = userViewMapper.selectNotSendSalary();
+        List<HashMap> guoQipassUsers = userViewMapper.selectOverDateSalary();
+
+        res.put("noSet", meiFapassUsers);
+        res.put("overTime", guoQipassUsers);
+        return res;
     }
 
     @Override
@@ -154,12 +175,7 @@ public class UserServiceImpl extends BasicService implements UserService {
     }
 
     @Override
-    public List<UserView> selectAllSalayPassUsers() {
-        return null;
-    }
-
-    @Override
-    public boolean isSalaryPassByUserIdenty(String identi,String type) {
+    public boolean isSalaryPassByUserIdenty(String identi, String type) {
         try {
             PersonSalaryExample example = new PersonSalaryExample();
             example.createCriteria().andPersonNumEqualTo(identi).andFeeTypeEqualTo(type);
@@ -182,6 +198,13 @@ public class UserServiceImpl extends BasicService implements UserService {
         }
 
         return false;
+    }
+
+    @Override
+    public void saveMessage() {
+        HashMap<String, List<UserView>> query = selectAllInsuPassUsers();
+
+        HashMap<String, List<UserView>> query1 = selectAllSalaryPassUsers();
     }
 
 }

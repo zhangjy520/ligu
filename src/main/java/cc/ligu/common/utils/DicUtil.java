@@ -17,7 +17,7 @@ public class DicUtil {
 
     static {
         dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
-        dateFormatSalary = new SimpleDateFormat("yyyy-MM");
+        dateFormatSalary = new SimpleDateFormat("yyyy-MM-dd");
     }
 
     public static Integer WIN_INTEGRAL = 5;//对战获胜积分比例
@@ -185,6 +185,19 @@ public class DicUtil {
         return out;
     }
 
+    public static List<Integer> splitWithOutNullRetrunInt(String param) {
+        if (StringUtils.isEmpty(param))
+            return null;
+        String[] res = param.split(",");
+        List<Integer> out = new ArrayList<>();
+        for (String v : res) {
+            if (!StringUtils.isEmpty(v)){
+                out.add(Integer.valueOf(v));
+            }
+        }
+        return out;
+    }
+
     public static List<String> splitWithOutNull(String param, String tag) {
         if (StringUtils.isEmpty(param))
             return null;
@@ -279,7 +292,37 @@ public class DicUtil {
         return 0L;
     }
 
+    public static boolean formatCheck(String yyyyMMdd){
+        try {
+            dateFormatSalary.parse(yyyyMMdd);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
     public static void main(String[] args) {
+        List<Integer> a = new ArrayList<>();
+        a.add(1);
+        a.add(2);
+        a.add(3);
+        a.add(4);
+        a.add(5);
+
+        List<Integer> d = a.subList(2,4);
+        List<Integer> sd = a.subList(0,5);
+        System.out.println();
+
+        String date="2012-01-02";
+        String date1="2012-31你02";
+
+        try {
+            System.out.println(formatCheck(date));
+            System.out.println(formatCheck(date1));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.out.println();
         String emailRegEx = "^[0-9]{4}-[0,1]{1}[0-9]{1}$";
         String email = "2019-05";
         String email1 = "2019-12";

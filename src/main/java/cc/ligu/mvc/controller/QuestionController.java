@@ -11,10 +11,7 @@ import cc.ligu.common.utils.DicUtil;
 import cc.ligu.common.utils.excel.ExportExcel;
 import cc.ligu.common.utils.excel.ImportExcel;
 import cc.ligu.mvc.modelView.DWZResponse;
-import cc.ligu.mvc.persistence.entity.PersonExamHistory;
-import cc.ligu.mvc.persistence.entity.PersonExamHistoryWithBLOBs;
-import cc.ligu.mvc.persistence.entity.Question;
-import cc.ligu.mvc.persistence.entity.UserView;
+import cc.ligu.mvc.persistence.entity.*;
 import cc.ligu.mvc.service.QuestionService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -204,5 +201,23 @@ public class QuestionController extends BasicController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    //发布考试
+    @ResponseBody
+    @RequestMapping(value = "/saveExam", method = RequestMethod.GET)
+    public void saveExam(){
+        UserView userView = getLoginUser();
+        List<Question> res = questionService.selectRandomQuestionByCount(40);
+        StringBuffer buffer = new StringBuffer();
+        for (Question question :res) {
+            buffer.append(","+question.getId());
+        }
+        ExamNotice examNotice = new ExamNotice();
+        examNotice.setExamName("模拟考试");
+        examNotice.setDateBegin("模拟考试");
+        examNotice.setDateEnd("模拟考试");
+        examNotice.setQuestionIds(buffer.toString());
+        questionService.saveExamNotice(examNotice,userView);
     }
 }

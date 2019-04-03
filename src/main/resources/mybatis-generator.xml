@@ -457,14 +457,14 @@
             <property name="useActualColumnNames" value="false"/>
             <columnOverride column="zheng_ju_urls" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>-->
-        <table schema="ligu" tableName="pvp_archievement" domainObjectName="PvpArchievement"
+    <!--    <table schema="ligu" tableName="pvp_archievement" domainObjectName="PvpArchievement"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
                enableSelectByExample="true"
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
-        </table>
+        </table>-->
         <!--<table schema="ligu" tableName="pvp_person" domainObjectName="PvpPerson"
                enableCountByExample="false"
                enableUpdateByExample="true"
@@ -474,5 +474,43 @@
             <property name="useActualColumnNames" value="false"/>
             <columnOverride column="question_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>-->
+       <!-- <table schema="ligu" tableName="feedback" domainObjectName="FeedBack"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="content" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="pics" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="deal_say" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
+        <!--<table schema="ligu" tableName="notice_message" domainObjectName="NoticeMessage"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="message" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
+        <table schema="ligu" tableName="exam_notice" domainObjectName="ExamNotice"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="question_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>
+        <table schema="ligu" tableName="ref_exam_person" domainObjectName="RefPersonExam"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
     </context>
 </generatorConfiguration>

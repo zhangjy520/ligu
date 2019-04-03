@@ -74,6 +74,8 @@ public class UserView implements Serializable {
      */
     private String insurancePurchases;
 
+    private String insuTime;
+
     /**
      * 薪资情况
      */
@@ -133,6 +135,14 @@ public class UserView implements Serializable {
     public UserView setSalaryList(List<PersonSalary> salaryList) {
         this.salaryList = salaryList;
         return this;
+    }
+
+    public String getInsuTime() {
+        return insuTime;
+    }
+
+    public void setInsuTime(String insuTime) {
+        this.insuTime = insuTime;
     }
 
     /**

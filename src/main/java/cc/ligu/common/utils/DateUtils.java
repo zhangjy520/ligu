@@ -197,36 +197,40 @@ public class DateUtils {
 
         return "10分钟前";
     }
-    public static Long yyyyMMddToMillis(String date) {
-        Calendar c= Calendar.getInstance();
-        try {
-            c.setTime(new SimpleDateFormat("yyyyMMdd").parse(date));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
+    public static Long yyyyMMddToMillis(String date) throws ParseException {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(date));
         return c.getTimeInMillis();
     }
 
-    public static String millsToyyyyMMdd(Long mills){
+    public static String millsToyyyyMMdd(Long mills) {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(mills);
-      /* System.out.println(  " = " + );*/
+        /* System.out.println(  " = " + );*/
         return formatter.format(calendar.getTime());
     }
 
-    public static String millsToDate(String mills,String pattern){
+    public static String millsToDate(String mills, String pattern) {
         DateFormat formatter = new SimpleDateFormat(pattern);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.valueOf(mills));
         return formatter.format(calendar.getTime());
     }
+
     /*判断当前时间和发布时间之间差别*/
-    public static boolean outOfDate(Long mills){
-        if (System.currentTimeMillis()>mills){
+    public static boolean outOfDate(Long mills) {
+        if (System.currentTimeMillis() > mills) {
             return false;
         }
-        return  true;
+        return true;
+    }
+
+    static Calendar now = Calendar.getInstance();
+
+    public static String getYYYYMMDD() {
+        return now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DAY_OF_MONTH);
     }
 
     /**
@@ -235,13 +239,14 @@ public class DateUtils {
      * @throws ParseException
      */
     public static void main(String[] args) throws UnsupportedEncodingException, ParseException {
-
-        System.out.println(millsToDate("1530713279049","yyyy-MM-dd HH:mm"));
-
+        System.out.println(yyyyMMddToMillis("2012-12-22"));
+        System.out.println(getYYYYMMDD());
+        System.out.println(millsToDate("1530713279049", "yyyy-MM-dd HH:mm"));
+        System.out.println(parseOnlyDate("2012-01-22"));
         DateFormat formatter = new SimpleDateFormat("MM");
         Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(Long.valueOf("1530713279049"));
-        String ss =formatter.format(calendar.getTime());
+        calendar.setTimeInMillis(Long.valueOf("1530713279049"));
+        String ss = formatter.format(calendar.getTime());
         System.out.println();
     }
 
