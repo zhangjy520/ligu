@@ -24,6 +24,11 @@ public class RefPersonExam implements Serializable {
     private String examTime;
 
     /**
+     * 考试记录ID,ref_person_exam_historyID
+     */
+    private Integer refHistoryExamId;
+
+    /**
      * ref_exam_person
      */
     private static final long serialVersionUID = 1L;
@@ -92,6 +97,22 @@ public class RefPersonExam implements Serializable {
         this.examTime = examTime == null ? null : examTime.trim();
     }
 
+    /**
+     * 获取考试记录ID,ref_person_exam_historyID
+     * @return ref_history_exam_id 考试记录ID,ref_person_exam_historyID
+     */
+    public Integer getRefHistoryExamId() {
+        return refHistoryExamId;
+    }
+
+    /**
+     * 设置考试记录ID,ref_person_exam_historyID
+     * @param refHistoryExamId 考试记录ID,ref_person_exam_historyID
+     */
+    public void setRefHistoryExamId(Integer refHistoryExamId) {
+        this.refHistoryExamId = refHistoryExamId;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -107,7 +128,8 @@ public class RefPersonExam implements Serializable {
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getPersonId() == null ? other.getPersonId() == null : this.getPersonId().equals(other.getPersonId()))
             && (this.getExamId() == null ? other.getExamId() == null : this.getExamId().equals(other.getExamId()))
-            && (this.getExamTime() == null ? other.getExamTime() == null : this.getExamTime().equals(other.getExamTime()));
+            && (this.getExamTime() == null ? other.getExamTime() == null : this.getExamTime().equals(other.getExamTime()))
+            && (this.getRefHistoryExamId() == null ? other.getRefHistoryExamId() == null : this.getRefHistoryExamId().equals(other.getRefHistoryExamId()));
     }
 
     @Override
@@ -118,6 +140,7 @@ public class RefPersonExam implements Serializable {
         result = prime * result + ((getPersonId() == null) ? 0 : getPersonId().hashCode());
         result = prime * result + ((getExamId() == null) ? 0 : getExamId().hashCode());
         result = prime * result + ((getExamTime() == null) ? 0 : getExamTime().hashCode());
+        result = prime * result + ((getRefHistoryExamId() == null) ? 0 : getRefHistoryExamId().hashCode());
         return result;
     }
 
@@ -131,6 +154,7 @@ public class RefPersonExam implements Serializable {
         sb.append(", personId=").append(personId);
         sb.append(", examId=").append(examId);
         sb.append(", examTime=").append(examTime);
+        sb.append(", refHistoryExamId=").append(refHistoryExamId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

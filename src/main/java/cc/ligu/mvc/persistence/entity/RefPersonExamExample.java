@@ -73,7 +73,7 @@ public class RefPersonExamExample {
     }
 
     /**
-     * ref_exam_person 2019-04-03
+     * ref_exam_person 2019-04-10
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -366,6 +366,66 @@ public class RefPersonExamExample {
             return (Criteria) this;
         }
 
+        public Criteria andRefHistoryExamIdIsNull() {
+            addCriterion("ref_history_exam_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefHistoryExamIdIsNotNull() {
+            addCriterion("ref_history_exam_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefHistoryExamIdEqualTo(Integer value) {
+            addCriterion("ref_history_exam_id =", value, "refHistoryExamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefHistoryExamIdNotEqualTo(Integer value) {
+            addCriterion("ref_history_exam_id <>", value, "refHistoryExamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefHistoryExamIdGreaterThan(Integer value) {
+            addCriterion("ref_history_exam_id >", value, "refHistoryExamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefHistoryExamIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("ref_history_exam_id >=", value, "refHistoryExamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefHistoryExamIdLessThan(Integer value) {
+            addCriterion("ref_history_exam_id <", value, "refHistoryExamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefHistoryExamIdLessThanOrEqualTo(Integer value) {
+            addCriterion("ref_history_exam_id <=", value, "refHistoryExamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefHistoryExamIdIn(List<Integer> values) {
+            addCriterion("ref_history_exam_id in", values, "refHistoryExamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefHistoryExamIdNotIn(List<Integer> values) {
+            addCriterion("ref_history_exam_id not in", values, "refHistoryExamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefHistoryExamIdBetween(Integer value1, Integer value2) {
+            addCriterion("ref_history_exam_id between", value1, value2, "refHistoryExamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefHistoryExamIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("ref_history_exam_id not between", value1, value2, "refHistoryExamId");
+            return (Criteria) this;
+        }
+
         public Criteria andExamTimeLikeInsensitive(String value) {
             addCriterion("upper(exam_time) like", value.toUpperCase(), "examTime");
             return (Criteria) this;
@@ -383,7 +443,7 @@ public class RefPersonExamExample {
     }
 
     /**
-     * ref_exam_person 2019-04-03
+     * ref_exam_person 2019-04-10
      */
     public static class Criterion {
         private String condition;

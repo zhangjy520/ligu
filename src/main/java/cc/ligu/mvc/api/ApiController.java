@@ -1217,6 +1217,32 @@ public class ApiController extends BasicController {
         return ResultEntity.newResultEntity(res);
     }
 
+    @ApiOperation(value = "根据examId获取此次考试的人员列表和分数情况", httpMethod = "POST", notes = "")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "examId", value = "管理员发布的考试ID(不要和个人考试ID弄混了,)", required = true),
+    })
+    @RequestMapping(value = "/selectExamPersonList")
+    public ResultEntity getExamPersonListByExamId(HttpServletRequest request) {
+        int examId = getParamInt(request,"examId");
+
+        List<HashMap> res = questionService.getExamPersonListByExamId(examId);
+        return ResultEntity.newResultEntity(res);
+    }
+
+    @ApiOperation(value = "通过身份证,查询此人参加的所有考试的得分情况", httpMethod = "POST", notes = "")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "identi", value = "身份证", required = true),
+    })
+    @RequestMapping(value = "/selectPersonScoreList")
+    public ResultEntity getPersonScoreListByPersonId(HttpServletRequest request) {
+        String identi = getParamVal(request,"identi");
+        Person person = personService.selectPersonByIdNum(identi);
+        List<HashMap> res = questionService.getPersonScoreListByPersonId(person.getId());
+        return ResultEntity.newResultEntity(res);
+    }
+
     protected UserView getAppLoginUser(HttpServletRequest request) {
         UserView UserView = (UserView) cacheService.getCacheByKey(request.getParameter("clientId"));
         return UserView;

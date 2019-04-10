@@ -532,12 +532,34 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
         refPersonExam.setExamId(examNoticeId);
         refPersonExam.setExamTime(String.valueOf(System.currentTimeMillis()));
         refPersonExam.setPersonId(personId);
+        refPersonExam.setRefHistoryExamId(record.getId());
         refPersonExamMapper.insertSelective(refPersonExam);
 
         examNotice.setId(record.getId());//将考试记录id给考试ID
         map.put("exam", examNotice);
 
         return map;
+    }
+
+    @Override
+    public List<HashMap> getExamPersonListByExamId(int examNoticeId) {
+        return questionMapper.selectExamPersonListByExamId(examNoticeId);
+    }
+
+    @Override
+    public List<HashMap> getPersonScoreListByPersonId(int personId) {
+        List<HashMap> mingci = questionMapper.selectAllMingCi();
+        Map mingciMap = new HashMap();
+        for (HashMap map : mingci) {
+            mingciMap.put(map.get("id"),map.get("rank"));
+        }
+
+        List<HashMap> res = questionMapper.selectPersonScoreListByPersonId(personId);
+        for (HashMap map : res) {
+            Object rank = mingciMap.get(map.get("id"));
+            map.put("rank",rank);
+        }
+        return res;
     }
 
     private static Date doGetMonthStart(Calendar calendar) {

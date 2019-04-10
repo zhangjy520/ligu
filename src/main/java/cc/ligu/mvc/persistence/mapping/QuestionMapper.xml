@@ -515,4 +515,89 @@
               pvp_person
             WHERE person_a_id = #{personId,jdbcType=INTEGER}) a)
     </update>
+
+    <!--查询某次考试的人的列表分数-->
+    <select id="selectExamPersonListByExamId" resultType="java.util.HashMap">
+        SELECT
+          ref_exam_person.*,
+          exam_notice.`exam_name` AS city,
+          oa_person.`name`,
+          ref_person_exam_history.`obtain_score` AS score
+        FROM
+          ref_exam_person
+          LEFT JOIN exam_notice
+            ON ref_exam_person.`exam_id` = exam_notice.id
+          LEFT JOIN oa_person
+            ON ref_exam_person.`person_id` = oa_person.`id`
+          LEFT JOIN ref_person_exam_history
+            ON ref_exam_person.`ref_history_exam_id` = ref_person_exam_history.`id`
+            WHERE exam_id = #{examId,jdbcType=INTEGER} ORDER BY score DESC
+    </select>
+
+    <!--查询某个人参加的所有考试的得分情况-->
+    <select id="selectPersonScoreListByPersonId" resultType="java.util.HashMap">
+        SELECT
+          ref_exam_person.*,
+          exam_notice.`exam_name`,
+          oa_person.`name`,
+          ref_person_exam_history.`obtain_score` AS score
+        FROM
+          ref_exam_person
+          LEFT JOIN exam_notice
+            ON ref_exam_person.`exam_id` = exam_notice.id
+          LEFT JOIN oa_person
+            ON ref_exam_person.`person_id` = oa_person.`id`
+          LEFT JOIN ref_person_exam_history
+            ON ref_exam_person.`ref_history_exam_id` = ref_person_exam_history.`id`
+            WHERE ref_exam_person.`person_id` = #{personId,jdbcType=INTEGER} ORDER BY exam_time DESC
+    </select>
+
+    <!--查询每次考试的每个人的名次-->
+    <select id="selectAllMingCi" resultType="java.util.HashMap">
+      SELECT
+          id,
+          person_id,
+          exam_id,
+          exam_time,
+          ref_history_exam_id,
+          exam_name,
+          `name`,
+          obtain_score,
+          rank
+        FROM
+          (SELECT
+            *,
+            IF(
+              @p = exam_name,
+              CASE
+                WHEN @s = obtain_score
+                THEN @r
+                WHEN @s := obtain_score
+                THEN @r := @r + 1
+              END,
+              @r := 1
+            ) AS rank,
+            @p := exam_name,
+            @s := obtain_score
+          FROM
+            (SELECT
+              ref_exam_person.*,
+              exam_notice.`exam_name`,
+              oa_person.`name`,
+              ref_person_exam_history.`obtain_score`
+            FROM
+              ref_exam_person
+              LEFT JOIN exam_notice
+                ON ref_exam_person.`exam_id` = exam_notice.id
+              LEFT JOIN oa_person
+                ON ref_exam_person.`person_id` = oa_person.`id`
+              LEFT JOIN ref_person_exam_history
+                ON ref_exam_person.`ref_history_exam_id` = ref_person_exam_history.`id`) test,
+            (SELECT
+              @p := NULL,
+              @s := NULL,
+              @r := 0) r
+          ORDER BY exam_name,
+            obtain_score desc) s ;
+    </select>
 </mapper>

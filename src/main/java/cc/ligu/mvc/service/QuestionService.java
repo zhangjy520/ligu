@@ -4,6 +4,7 @@ import cc.ligu.mvc.modelView.PvpPersonView;
 import cc.ligu.mvc.modelView.ScoreView;
 import cc.ligu.mvc.persistence.entity.*;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.crypto.hash.Hash;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -79,4 +80,9 @@ public interface QuestionService {
 
     //参加考试(返回考试信息，和考试题目列表)
     Map inExamNotice(int personId,int examNoticeId);
+
+    //根据examId获取此次考试的人员列表和分数情况
+    List<HashMap> getExamPersonListByExamId(int examNoticeId);
+    //查询某个人参加的所有考试的得分情况
+    List<HashMap> getPersonScoreListByPersonId(int personId);
 }
