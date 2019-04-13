@@ -46,7 +46,8 @@
             <mvc:mapping path="/api/**"/>
             <mvc:exclude-mapping path="/api/login"/>
             <mvc:exclude-mapping path="/api/permissionDeny"/>
-            <mvc:exclude-mapping path="/api/logout"/>
+            <mvc:exclude-mapping path="/ueFile/*"/>
+            <mvc:exclude-mapping path="/ueFile/**"/>
             <bean class="cc.ligu.common.interceptor.AppLoginInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

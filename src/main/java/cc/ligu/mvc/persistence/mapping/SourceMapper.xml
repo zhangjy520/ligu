@@ -6,6 +6,7 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="html_content" property="htmlContent" jdbcType="VARCHAR" />
     <result column="size" property="size" jdbcType="VARCHAR" />
     <result column="suffix" property="suffix" jdbcType="VARCHAR" />
     <result column="apply_time" property="applyTime" jdbcType="INTEGER" />
@@ -75,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, type, url, size, suffix, apply_time, remark, create_date, create_by, update_date, 
-    update_by, del_flag
+    id, name, type, url, html_content, size, suffix, apply_time, remark, create_date, 
+    create_by, update_date, update_by, del_flag
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cc.ligu.mvc.persistence.entity.SourceExample" >
     select
@@ -111,15 +112,15 @@
   </delete>
   <insert id="insert" parameterType="cc.ligu.mvc.persistence.entity.Source" >
     insert into doc_source (id, name, type, 
-      url, size, suffix, 
-      apply_time, remark, create_date, 
-      create_by, update_date, update_by, 
-      del_flag)
+      url, html_content, size, 
+      suffix, apply_time, remark, 
+      create_date, create_by, update_date, 
+      update_by, del_flag)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
-      #{url,jdbcType=VARCHAR}, #{size,jdbcType=VARCHAR}, #{suffix,jdbcType=VARCHAR}, 
-      #{applyTime,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{createDate,jdbcType=BIGINT}, 
-      #{createBy,jdbcType=INTEGER}, #{updateDate,jdbcType=BIGINT}, #{updateBy,jdbcType=INTEGER}, 
-      #{delFlag,jdbcType=INTEGER})
+      #{url,jdbcType=VARCHAR}, #{htmlContent,jdbcType=VARCHAR}, #{size,jdbcType=VARCHAR}, 
+      #{suffix,jdbcType=VARCHAR}, #{applyTime,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=BIGINT}, #{createBy,jdbcType=INTEGER}, #{updateDate,jdbcType=BIGINT}, 
+      #{updateBy,jdbcType=INTEGER}, #{delFlag,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="cc.ligu.mvc.persistence.entity.Source" >
     insert into doc_source
@@ -135,6 +136,9 @@
       </if>
       <if test="url != null" >
         url,
+      </if>
+      <if test="htmlContent != null" >
+        html_content,
       </if>
       <if test="size != null" >
         size,
@@ -176,6 +180,9 @@
       </if>
       <if test="url != null" >
         #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="htmlContent != null" >
+        #{htmlContent,jdbcType=VARCHAR},
       </if>
       <if test="size != null" >
         #{size,jdbcType=VARCHAR},
@@ -221,6 +228,9 @@
       <if test="record.url != null" >
         url = #{record.url,jdbcType=VARCHAR},
       </if>
+      <if test="record.htmlContent != null" >
+        html_content = #{record.htmlContent,jdbcType=VARCHAR},
+      </if>
       <if test="record.size != null" >
         size = #{record.size,jdbcType=VARCHAR},
       </if>
@@ -259,6 +269,7 @@
       name = #{record.name,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=INTEGER},
       url = #{record.url,jdbcType=VARCHAR},
+      html_content = #{record.htmlContent,jdbcType=VARCHAR},
       size = #{record.size,jdbcType=VARCHAR},
       suffix = #{record.suffix,jdbcType=VARCHAR},
       apply_time = #{record.applyTime,jdbcType=INTEGER},
@@ -283,6 +294,9 @@
       </if>
       <if test="url != null" >
         url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="htmlContent != null" >
+        html_content = #{htmlContent,jdbcType=VARCHAR},
       </if>
       <if test="size != null" >
         size = #{size,jdbcType=VARCHAR},
@@ -319,6 +333,7 @@
     set name = #{name,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
       url = #{url,jdbcType=VARCHAR},
+      html_content = #{htmlContent,jdbcType=VARCHAR},
       size = #{size,jdbcType=VARCHAR},
       suffix = #{suffix,jdbcType=VARCHAR},
       apply_time = #{applyTime,jdbcType=INTEGER},

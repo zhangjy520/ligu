@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
+import java.util.Map;
 
 @RequestMapping("/doc")
 @Controller
@@ -38,7 +40,7 @@ public class SourceController extends BasicController {
         source.setName(name);
         source.setType(Integer.parseInt(docType));
 
-        PageInfo<Source> pageInfo = sourceService.listAllSource(getPageSize(request), getPageNum(request), source);
+        PageInfo<Source> pageInfo = sourceService.listAllSourceByType(getPageSize(request), getPageNum(request), source,0);
 
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("chooseType", docType);
@@ -85,5 +87,54 @@ public class SourceController extends BasicController {
             return DWZResponseUtil.callbackFail("300", "删除资源失败", "");
         }
         return DWZResponseUtil.callbackSuccess("删除资源成功", "");
+    }
+
+
+    //秀米编辑器
+    @RequestMapping(value = "/h5index")
+    public String h5index(HttpServletRequest request, Model model) {
+        String name = getParamVal(request, "name");//文档名称模糊查询
+        String docType = getParamVal(request, "type", "0");//文档类型精确查询 文档类别：0全部 1安全生产视频课程 2安全生产培训文档 3安全生产安全守则 4施工工艺视频课程 5施工工艺培训文档 6施工工艺工艺示例
+
+        Source source = new Source();
+        source.setName(name);
+        source.setType(Integer.parseInt(docType));
+
+        PageInfo<Source> pageInfo = sourceService.listAllSourceByType(getPageSize(request), getPageNum(request), source,1);
+
+        model.addAttribute("pageInfo", pageInfo);
+        model.addAttribute("chooseType", docType);
+        model.addAttribute("chooseName", name);
+        return "document/h5index";
+    }
+
+    @RequestMapping("/pop/h5modify")
+    public String h5modify(Model model, HttpServletRequest request) {
+        String id = getParamVal(request, "id");
+        if (!StringUtils.isEmpty(id)) {
+            Source source = sourceService.selectSourceByPrimary(Integer.parseInt(id));
+            model.addAttribute("source", source);
+        }
+        return "document/pop/h5editDocument";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveh5", method = RequestMethod.POST)
+    public DWZResponse saveh5(HttpServletRequest request, Model model, Source source) {
+        String headContent = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><meta http-equiv=\"x-ua-compatible\" content=\"IE=edge\"></head>";
+        String footContent = "</html>";
+        Enumeration enu=request.getParameterNames();
+        while(enu.hasMoreElements()){
+            String paraName=(String)enu.nextElement();
+            if ("content".equals(paraName)){
+                String bodyContent = request.getParameter(paraName);
+
+                source.setHtmlContent(headContent+bodyContent+footContent);
+                break;
+            }
+
+        }
+        sourceService.saveSource(source,getLoginUser());
+        return DWZResponseUtil.callbackSuccess("保存资源成功", "_blank");
     }
 }

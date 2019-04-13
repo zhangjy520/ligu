@@ -114,6 +114,7 @@
                         <li><a>文档资料</a>
                             <ul>
                                 <li><a href="${ctx}/doc/index" target="navTab">培训文档</a></li>
+                                <li><a href="${ctx}/doc/h5index" target="navTab">图文资料</a></li>
                             </ul>
                         </li>
                         <li><a>题库认证</a>

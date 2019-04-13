@@ -4,10 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SourceExample {
+    /**
+     * doc_source
+     */
     protected String orderByClause;
 
+    /**
+     * doc_source
+     */
     protected boolean distinct;
 
+    /**
+     * doc_source
+     */
     protected List<Criteria> oredCriteria;
 
     public SourceExample() {
@@ -63,6 +72,9 @@ public class SourceExample {
         distinct = false;
     }
 
+    /**
+     * doc_source 2019-04-14
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -361,6 +373,76 @@ public class SourceExample {
 
         public Criteria andUrlNotBetween(String value1, String value2) {
             addCriterion("url not between", value1, value2, "url");
+            return (Criteria) this;
+        }
+
+        public Criteria andHtmlContentIsNull() {
+            addCriterion("html_content is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHtmlContentIsNotNull() {
+            addCriterion("html_content is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHtmlContentEqualTo(String value) {
+            addCriterion("html_content =", value, "htmlContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andHtmlContentNotEqualTo(String value) {
+            addCriterion("html_content <>", value, "htmlContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andHtmlContentGreaterThan(String value) {
+            addCriterion("html_content >", value, "htmlContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andHtmlContentGreaterThanOrEqualTo(String value) {
+            addCriterion("html_content >=", value, "htmlContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andHtmlContentLessThan(String value) {
+            addCriterion("html_content <", value, "htmlContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andHtmlContentLessThanOrEqualTo(String value) {
+            addCriterion("html_content <=", value, "htmlContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andHtmlContentLike(String value) {
+            addCriterion("html_content like", value, "htmlContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andHtmlContentNotLike(String value) {
+            addCriterion("html_content not like", value, "htmlContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andHtmlContentIn(List<String> values) {
+            addCriterion("html_content in", values, "htmlContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andHtmlContentNotIn(List<String> values) {
+            addCriterion("html_content not in", values, "htmlContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andHtmlContentBetween(String value1, String value2) {
+            addCriterion("html_content between", value1, value2, "htmlContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andHtmlContentNotBetween(String value1, String value2) {
+            addCriterion("html_content not between", value1, value2, "htmlContent");
             return (Criteria) this;
         }
 
@@ -944,6 +1026,11 @@ public class SourceExample {
             return (Criteria) this;
         }
 
+        public Criteria andHtmlContentLikeInsensitive(String value) {
+            addCriterion("upper(html_content) like", value.toUpperCase(), "htmlContent");
+            return (Criteria) this;
+        }
+
         public Criteria andSizeLikeInsensitive(String value) {
             addCriterion("upper(size) like", value.toUpperCase(), "size");
             return (Criteria) this;
@@ -960,6 +1047,9 @@ public class SourceExample {
         }
     }
 
+    /**
+     * doc_source
+     */
     public static class Criteria extends GeneratedCriteria {
 
         protected Criteria() {
@@ -967,6 +1057,9 @@ public class SourceExample {
         }
     }
 
+    /**
+     * doc_source 2019-04-14
+     */
     public static class Criterion {
         private String condition;
 

@@ -522,6 +522,7 @@
           ref_exam_person.*,
           exam_notice.`exam_name` AS city,
           oa_person.`name`,
+          oa_person.`identity_num` AS identi,
           ref_person_exam_history.`obtain_score` AS score
         FROM
           ref_exam_person

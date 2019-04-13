@@ -503,14 +503,22 @@
             <property name="useActualColumnNames" value="false"/>
             <columnOverride column="question_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>-->
-        <table schema="ligu" tableName="ref_exam_person" domainObjectName="RefPersonExam"
+       <!-- <table schema="ligu" tableName="ref_exam_person" domainObjectName="RefPersonExam"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
                enableSelectByExample="true"
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <table schema="ligu" tableName="doc_source" domainObjectName="Source"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="html_content" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>
-
     </context>
 </generatorConfiguration>
