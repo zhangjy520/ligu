@@ -36,7 +36,7 @@ public class SourceServiceImpl extends BasicService implements SourceService {
         }
 
         PageHelper.startPage(pageNum, pageSize);
-        List<Source> questionList = sourceMapper.selectByExample(sourceExample);
+        List<Source> questionList = sourceMapper.selectByExampleWithOutBigBlob(sourceExample);
         PageInfo<Source> page = new PageInfo<Source>(questionList);
 
         //查询文档，设置该文档请求数+1;
@@ -55,7 +55,7 @@ public class SourceServiceImpl extends BasicService implements SourceService {
         if (!StringUtils.isEmpty(source.getName())) {
             criteria.andNameLike("%" + source.getName() + "%");
         }
-        if (source.getType()!=0){
+        if (null!=source.getType()&&source.getType()!=0){
             criteria.andTypeEqualTo(source.getType());
         }
         if (type == 1){

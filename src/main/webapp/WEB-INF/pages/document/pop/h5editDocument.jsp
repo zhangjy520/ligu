@@ -14,7 +14,7 @@
 
         <div class="unit">
             <label>资源名称</label>
-            <input type="text" class="required" name="name" value="${source.name}" size="30"/>
+            <input type="text" class="required" name="name" id="htmlName" value="${source.name}" size="30"/>
         </div>
         <div class="unit">
             <label>请编辑资源内容</label>
@@ -80,7 +80,21 @@
         }
         
         function okHaha() {
-            $("#hahaOk").submit();
+            var sourceNameList = '${sourceNameList}';
+            debugger
+            if (array_contain(sourceNameList)){
+                alert("资源名称不能现有文件重复");
+            }else{
+                $("#hahaOk").submit();
+            }
+        }
+        function array_contain(array){
+            array = eval(''+array+'');
+            for (var i = 0; i < array.length; i++){
+                if (array[i].id != '${source.id}'&& array[i].name== $("#htmlName").val())//如果主键不一样,名字一样
+                    return true;
+            }
+            return false;
         }
 
     </script>

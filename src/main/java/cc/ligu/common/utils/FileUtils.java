@@ -17,6 +17,7 @@ public class FileUtils {
 	public static final String SOURCE_ATTACH = "/source/attach/";
 	public static final String UE_ATTACH = "/source/attach/ueUpload";
 	public static final String UE_REMOTE_ATTACH = "/source/attach/ueRemote";
+	public static final String H5_ATTACH = "/source/attach/H5/";
 
 	public static String readStreamAsString(InputStream ins) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(ins));

@@ -6,11 +6,13 @@ package cc.ligu.mvc.controller;
 
 import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.utils.DWZResponseUtil;
+import cc.ligu.common.utils.FileUtils;
 import cc.ligu.common.utils.PropertiesUtil;
 import cc.ligu.mvc.modelView.DWZResponse;
 import cc.ligu.mvc.persistence.entity.Source;
 import cc.ligu.mvc.service.SourceService;
 import com.github.pagehelper.PageInfo;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,8 +23,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
-import java.util.Map;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RequestMapping("/doc")
 @Controller
@@ -40,7 +43,7 @@ public class SourceController extends BasicController {
         source.setName(name);
         source.setType(Integer.parseInt(docType));
 
-        PageInfo<Source> pageInfo = sourceService.listAllSourceByType(getPageSize(request), getPageNum(request), source,0);
+        PageInfo<Source> pageInfo = sourceService.listAllSourceByType(getPageSize(request), getPageNum(request), source, 0);
 
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("chooseType", docType);
@@ -68,7 +71,7 @@ public class SourceController extends BasicController {
                 url = getParamVal(request, "fileUrl");
                 source.setUrl(request.getScheme() + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + url);
             }
-            sourceService.saveSource(source,getLoginUser());
+            sourceService.saveSource(source, getLoginUser());
         } catch (Exception e) {
             e.printStackTrace();
             return DWZResponseUtil.callbackFail("300", "保存资源失败", "");
@@ -100,7 +103,7 @@ public class SourceController extends BasicController {
         source.setName(name);
         source.setType(Integer.parseInt(docType));
 
-        PageInfo<Source> pageInfo = sourceService.listAllSourceByType(getPageSize(request), getPageNum(request), source,1);
+        PageInfo<Source> pageInfo = sourceService.listAllSourceByType(getPageSize(request), getPageNum(request), source, 1);
 
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("chooseType", docType);
@@ -111,10 +114,19 @@ public class SourceController extends BasicController {
     @RequestMapping("/pop/h5modify")
     public String h5modify(Model model, HttpServletRequest request) {
         String id = getParamVal(request, "id");
+        List sourceNameList = new ArrayList<>();
+        PageInfo<Source> pageInfo = sourceService.listAllSourceByType(getPageSize(request), getPageNum(request), new Source(), 1);
+        for (Source s : pageInfo.getList()) {
+            HashMap map = new HashMap();
+            map.put("id",s.getId());
+            map.put("name",s.getName());
+            sourceNameList.add(map);
+        }
         if (!StringUtils.isEmpty(id)) {
             Source source = sourceService.selectSourceByPrimary(Integer.parseInt(id));
             model.addAttribute("source", source);
         }
+        model.addAttribute("sourceNameList",new Gson().toJson(sourceNameList));
         return "document/pop/h5editDocument";
     }
 
@@ -123,18 +135,51 @@ public class SourceController extends BasicController {
     public DWZResponse saveh5(HttpServletRequest request, Model model, Source source) {
         String headContent = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><meta http-equiv=\"x-ua-compatible\" content=\"IE=edge\"></head>";
         String footContent = "</html>";
-        Enumeration enu=request.getParameterNames();
-        while(enu.hasMoreElements()){
-            String paraName=(String)enu.nextElement();
-            if ("content".equals(paraName)){
+        Enumeration enu = request.getParameterNames();
+        while (enu.hasMoreElements()) {
+            String paraName = (String) enu.nextElement();
+            if ("content".equals(paraName)) {
                 String bodyContent = request.getParameter(paraName);
 
-                source.setHtmlContent(headContent+bodyContent+footContent);
+                source.setHtmlContent(headContent + bodyContent + footContent);
                 break;
             }
 
         }
-        sourceService.saveSource(source,getLoginUser());
+
+        try {
+            String url = saveLocalHtml(request, source.getName(), source.getHtmlContent());
+            source.setUrl(url);
+            sourceService.saveSource(source, getLoginUser());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return DWZResponseUtil.callbackFail("500", "保存资源失败", "_blank");
+        }
+
         return DWZResponseUtil.callbackSuccess("保存资源成功", "_blank");
+    }
+
+    public String saveLocalHtml(HttpServletRequest request, String fileName, String fileContent) throws IOException {
+        String upLoadPath = FileUtils.VFS_ROOT_PATH + FileUtils.H5_ATTACH;
+        File filePath = new File(upLoadPath);
+        File fileHtml = new File(upLoadPath + fileName + ".html");
+        if (fileHtml.exists()) {
+            fileHtml.delete();
+            fileHtml.createNewFile();
+        } else {
+            filePath.mkdirs();
+        }
+        BufferedWriter w = null;
+        w = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(upLoadPath + fileName + ".html"), "utf-8"));
+        w.write(fileContent);
+        w.close();
+
+        String schme = "http";
+        if (!StringUtils.isEmpty(request.getScheme())) {
+            schme = request.getScheme();
+        }
+        String requirPath = schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + FileUtils.H5_ATTACH + fileName + ".html";
+        return requirPath;
     }
 }

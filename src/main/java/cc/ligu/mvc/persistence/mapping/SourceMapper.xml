@@ -17,6 +17,21 @@
     <result column="update_by" property="updateBy" jdbcType="INTEGER" />
     <result column="del_flag" property="delFlag" jdbcType="INTEGER" />
   </resultMap>
+  <resultMap id="BaseResultMapWithOutBigBlob" type="cc.ligu.mvc.persistence.entity.Source" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="size" property="size" jdbcType="VARCHAR" />
+    <result column="suffix" property="suffix" jdbcType="VARCHAR" />
+    <result column="apply_time" property="applyTime" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="BIGINT" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="BIGINT" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="del_flag" property="delFlag" jdbcType="INTEGER" />
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -80,6 +95,22 @@
     create_by, update_date, update_by, del_flag
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cc.ligu.mvc.persistence.entity.SourceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from doc_source
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByExampleWithOutBigBlob" resultMap="BaseResultMapWithOutBigBlob" parameterType="cc.ligu.mvc.persistence.entity.SourceExample" >
     select
     <if test="distinct" >
       distinct

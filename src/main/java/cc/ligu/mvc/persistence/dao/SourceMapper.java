@@ -16,6 +16,8 @@ public interface SourceMapper {
 
     List<Source> selectByExample(SourceExample example);
 
+    List<Source> selectByExampleWithOutBigBlob(SourceExample example);
+
     Source selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") Source record, @Param("example") SourceExample example);
