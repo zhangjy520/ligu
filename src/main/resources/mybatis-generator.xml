@@ -511,14 +511,14 @@
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
         </table>-->
-        <table schema="ligu" tableName="doc_source" domainObjectName="Source"
+        <table schema="ligu" tableName="app_guanggao" domainObjectName="AppGuangGao"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
                enableSelectByExample="true"
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
-            <columnOverride column="html_content" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="content" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>
     </context>
 </generatorConfiguration>

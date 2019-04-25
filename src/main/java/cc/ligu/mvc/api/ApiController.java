@@ -71,6 +71,9 @@ public class ApiController extends BasicController {
     @Resource
     FeedBackService feedBackService;
 
+    @Resource
+    AppGuangGaoService guangGaoService;
+
     @ApiIgnore
     @ApiOperation(value = "通过客户端id判断是否需要登录", httpMethod = "POST", notes = "验证是否需要登录,不需要登录返回用户信息")
     @ApiImplicitParams({
@@ -1240,6 +1243,20 @@ public class ApiController extends BasicController {
         String identi = getParamVal(request,"identi");
         Person person = personService.selectPersonByIdNum(identi);
         List<HashMap> res = questionService.getPersonScoreListByPersonId(person.getId());
+        return ResultEntity.newResultEntity(res);
+    }
+
+    @ApiOperation(value = "获取广告列表", httpMethod = "POST", notes = "")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "pageNum", value = "页码", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "pageSize", value = "条数", required = true),
+    })
+    @RequestMapping(value = "/selectGuangGaoList")
+    public ResultEntity getGuangGaoList(HttpServletRequest request) {
+        int pageSize = getPageSize(request);
+        int pageNum = getPageNum(request);
+        PageInfo<AppGuangGao> res = guangGaoService.listAllAppGuangGao(pageSize,pageNum,new AppGuangGao());
         return ResultEntity.newResultEntity(res);
     }
 

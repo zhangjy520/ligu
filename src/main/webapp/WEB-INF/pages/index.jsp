@@ -157,6 +157,7 @@
                         <li><a>app个性化设置</a>
                             <ul>
                                 <li><a href="${ctx}/appConfig/index" target="navTab">app欢迎页</a></li>
+                                <li><a href="${ctx}/appGuangGao/index" target="navTab">app图文广告</a></li>
                             </ul>
                         </li>
                         <li><a>工程完成报告</a>
