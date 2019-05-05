@@ -98,8 +98,8 @@ public class ApiController extends BasicController {
     @RequestMapping("/logout")
     public ResultEntity applogOut(HttpServletRequest request) {
         String clientId = getParamVal(request, "clientId");
-        MessageServiceImpl messageService = SpringContextHolder.getBean("push");
-        messageService.saveMessage();
+        /*MessageServiceImpl messageService = SpringContextHolder.getBean("push");
+        messageService.saveMessage();*/
         try {
 //            request.getSession().removeAttribute(clientId);
             UserView userView = (UserView) cacheService.getCacheByKey(clientId);
@@ -454,6 +454,7 @@ public class ApiController extends BasicController {
             bloBs.setId(examId);
             bloBs.setWrongIds(wrongIds);
             bloBs.setObtainScore(score);
+            bloBs.setPersonId(userView.getRefId());
 
             int winJiFen = questionService.saveExamHistory(bloBs);//保存考试成绩
 

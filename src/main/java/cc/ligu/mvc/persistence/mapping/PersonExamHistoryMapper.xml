@@ -338,7 +338,7 @@
           WHERE obtain_score IS NOT NULL
             AND exam_type = 2
           GROUP BY person_id) d
-          LEFT JOIN oa_person p
+          INNER JOIN oa_person p
             ON d.person_id = p.`id`
     </select>
 
