@@ -306,16 +306,19 @@ public class QuestionServiceImpl extends BasicService implements QuestionService
     @Transactional
     public int saveExamHistory(PersonExamHistoryWithBLOBs personExamHistory) {
         if (StringUtils.isEmpty(personExamHistory.getId())) {
-            //TODO 保存考试成绩
+            //TODO 保存考试成绩uploadExamResult
             //questionMapper.insertSelective(question);
             return 0;
         } else {
             personExamHistoryMapper.updateByPrimaryKeySelective(personExamHistory);
 
             PvpPerson score = selectLatestPvpByPersonAId(personExamHistory.getPersonId());//获取该人员的最新积分
+
             int getJiFen = calcJiFen(Integer.parseInt(personExamHistory.getObtainScore()));//计算该人员本次考试获取积分
-            score.setPersonACurrentJifen(score.getPersonACurrentJifen() + getJiFen);//求和
-            pvpPersonMapper.updateByPrimaryKeySelective(score);//更新
+            if (score!=null&&score.getPersonACurrentJifen()!=null){
+                score.setPersonACurrentJifen(score.getPersonACurrentJifen() + getJiFen);//求和
+                pvpPersonMapper.updateByPrimaryKeySelective(score);//更新
+            }
             return getJiFen;
         }
     }
