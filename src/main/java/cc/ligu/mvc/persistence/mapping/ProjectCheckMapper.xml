@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.ligu.mvc.persistence.dao.ProjectCheckMapper" >
+  <resultMap id="BaseResultMap" type="cc.ligu.mvc.persistence.entity.ProjectCheck" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="check_time" property="checkTime" jdbcType="BIGINT" />
+    <result column="check_person" property="checkPerson" jdbcType="VARCHAR" />
+    <result column="manage_person" property="managePerson" jdbcType="VARCHAR" />
+    <result column="deal_way" property="dealWay" jdbcType="VARCHAR" />
+    <result column="local_desc" property="localDesc" jdbcType="VARCHAR" />
+    <result column="local_pics" property="localPics" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, project_id, location, status, check_time, check_person, manage_person, deal_way, 
+    local_desc, local_pics
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cc.ligu.mvc.persistence.entity.ProjectCheckExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from project_check
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from project_check
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from project_check
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cc.ligu.mvc.persistence.entity.ProjectCheckExample" >
+    delete from project_check
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cc.ligu.mvc.persistence.entity.ProjectCheck" >
+    insert into project_check (id, project_id, location, 
+      status, check_time, check_person, 
+      manage_person, deal_way, local_desc, 
+      local_pics)
+    values (#{id,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{checkTime,jdbcType=BIGINT}, #{checkPerson,jdbcType=VARCHAR}, 
+      #{managePerson,jdbcType=VARCHAR}, #{dealWay,jdbcType=VARCHAR}, #{localDesc,jdbcType=VARCHAR}, 
+      #{localPics,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cc.ligu.mvc.persistence.entity.ProjectCheck" >
+    insert into project_check
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="checkTime != null" >
+        check_time,
+      </if>
+      <if test="checkPerson != null" >
+        check_person,
+      </if>
+      <if test="managePerson != null" >
+        manage_person,
+      </if>
+      <if test="dealWay != null" >
+        deal_way,
+      </if>
+      <if test="localDesc != null" >
+        local_desc,
+      </if>
+      <if test="localPics != null" >
+        local_pics,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTime != null" >
+        #{checkTime,jdbcType=BIGINT},
+      </if>
+      <if test="checkPerson != null" >
+        #{checkPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="managePerson != null" >
+        #{managePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="dealWay != null" >
+        #{dealWay,jdbcType=VARCHAR},
+      </if>
+      <if test="localDesc != null" >
+        #{localDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="localPics != null" >
+        #{localPics,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update project_check
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.location != null" >
+        location = #{record.location,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkTime != null" >
+        check_time = #{record.checkTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.checkPerson != null" >
+        check_person = #{record.checkPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.managePerson != null" >
+        manage_person = #{record.managePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dealWay != null" >
+        deal_way = #{record.dealWay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.localDesc != null" >
+        local_desc = #{record.localDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.localPics != null" >
+        local_pics = #{record.localPics,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update project_check
+    set id = #{record.id,jdbcType=INTEGER},
+      project_id = #{record.projectId,jdbcType=INTEGER},
+      location = #{record.location,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      check_time = #{record.checkTime,jdbcType=BIGINT},
+      check_person = #{record.checkPerson,jdbcType=VARCHAR},
+      manage_person = #{record.managePerson,jdbcType=VARCHAR},
+      deal_way = #{record.dealWay,jdbcType=VARCHAR},
+      local_desc = #{record.localDesc,jdbcType=VARCHAR},
+      local_pics = #{record.localPics,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cc.ligu.mvc.persistence.entity.ProjectCheck" >
+    update project_check
+    <set >
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTime != null" >
+        check_time = #{checkTime,jdbcType=BIGINT},
+      </if>
+      <if test="checkPerson != null" >
+        check_person = #{checkPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="managePerson != null" >
+        manage_person = #{managePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="dealWay != null" >
+        deal_way = #{dealWay,jdbcType=VARCHAR},
+      </if>
+      <if test="localDesc != null" >
+        local_desc = #{localDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="localPics != null" >
+        local_pics = #{localPics,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cc.ligu.mvc.persistence.entity.ProjectCheck" >
+    update project_check
+    set project_id = #{projectId,jdbcType=INTEGER},
+      location = #{location,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      check_time = #{checkTime,jdbcType=BIGINT},
+      check_person = #{checkPerson,jdbcType=VARCHAR},
+      manage_person = #{managePerson,jdbcType=VARCHAR},
+      deal_way = #{dealWay,jdbcType=VARCHAR},
+      local_desc = #{localDesc,jdbcType=VARCHAR},
+      local_pics = #{localPics,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

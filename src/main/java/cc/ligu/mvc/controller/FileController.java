@@ -55,7 +55,7 @@ public class FileController extends BasicController {
      */
     @ResponseBody
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public ResultEntity uploads(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
+    public synchronized ResultEntity uploads(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
         FileOutputStream fos = null;
         InputStream fis = null;
         try {

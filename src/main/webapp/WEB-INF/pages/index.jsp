@@ -160,8 +160,9 @@
                                 <li><a href="${ctx}/appGuangGao/index" target="navTab">app图文广告</a></li>
                             </ul>
                         </li>
-                        <li><a>工程完成报告</a>
+                        <li><a>工程管理</a>
                             <ul>
+                                <li><a href="${ctx}/projectInfo/index" target="navTab">工程信息管理</a></li>
                                 <li><a href="${ctx}/projectReport/index" target="navTab">工程完成报告</a></li>
                             </ul>
                         </li>

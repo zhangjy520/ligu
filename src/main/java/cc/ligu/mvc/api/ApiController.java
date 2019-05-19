@@ -74,6 +74,9 @@ public class ApiController extends BasicController {
     @Resource
     AppGuangGaoService guangGaoService;
 
+    @Resource
+    ProjectInfoService projectInfoService;
+
     @ApiIgnore
     @ApiOperation(value = "通过客户端id判断是否需要登录", httpMethod = "POST", notes = "验证是否需要登录,不需要登录返回用户信息")
     @ApiImplicitParams({
@@ -1259,6 +1262,68 @@ public class ApiController extends BasicController {
         int pageNum = getPageNum(request);
         PageInfo<AppGuangGao> res = guangGaoService.listAllAppGuangGao(pageSize,pageNum,new AppGuangGao());
         return ResultEntity.newResultEntity(res);
+    }
+
+    @ApiOperation(value = "获取工程信息级联json(1选区县---2再选年份---3再选公司---4再选专业--5最后选工程名称(projectName))", httpMethod = "POST", notes = "")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true)
+    })
+    @RequestMapping(value = "/selectProjectDropDownJson")
+    public ResultEntity selectProjectDropDownJson(HttpServletRequest request) {
+        return ResultEntity.newResultEntity(projectInfoService.selectProjectDropDownJson());
+    }
+
+
+    @ApiOperation(value = "录入巡检信息", httpMethod = "POST", notes = "")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "projectId", value = "工程ID(selectProjectDropDownJson接口有返回projectId)", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "location", value = "工程地点", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "status", value = "工程状态", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "checkTime", value = "工程巡检时间", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "checkPerson", value = "巡检人员json 例如:[{分管领导:'张三,李四',主任:A,管理员:D}]", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "managePerson", value = "监理人员", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "dealWay", value = "处理方式", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "localDesc", value = "现场情况说明", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true)
+    })
+    @RequestMapping(value = "/saveProjectCheckInfo")
+    public ResultEntity saveProjectCheckInfo(HttpServletRequest request,ProjectCheck projectCheck) {
+
+        try {
+            String schme = "http";
+            if (!StringUtils.isEmpty(request.getScheme())) {
+                schme = request.getScheme();
+            }
+            String projectPics="";
+            CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+            if (multipartResolver.isMultipart(request)) {
+                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+                MultiValueMap<String, MultipartFile> multiFileMap = multiRequest.getMultiFileMap();
+                if (multiFileMap.size() > 0) {
+                    List<MultipartFile> fileSet = new LinkedList<>();
+                    for (Map.Entry<String, List<MultipartFile>> temp : multiFileMap.entrySet()) {
+                        fileSet = temp.getValue();
+                    }
+                    if (fileSet.size() > 0) {
+                        for (MultipartFile file : fileSet) {
+                            Map uploads = null;
+                            try {
+                                uploads = (Map) new FileController().uploads(file, request).getData();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            projectPics+=","+schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath");
+                        }
+                    }
+                }
+            }
+            projectCheck.setLocalPics(projectPics);
+            projectInfoService.saveProjectCheck(projectCheck);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultEntity.newErrEntity("巡检记录保存失败");
+        }
+        return ResultEntity.newResultEntity("巡检记录保存成功");
     }
 
     protected UserView getAppLoginUser(HttpServletRequest request) {

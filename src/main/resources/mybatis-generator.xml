@@ -511,7 +511,7 @@
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
         </table>-->
-        <table schema="ligu" tableName="app_guanggao" domainObjectName="AppGuangGao"
+        <!--<table schema="ligu" tableName="app_guanggao" domainObjectName="AppGuangGao"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
@@ -519,6 +519,24 @@
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
             <columnOverride column="content" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
+       <!-- <table schema="ligu" tableName="project_info" domainObjectName="ProjectInfo"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <table schema="ligu" tableName="project_check" domainObjectName="ProjectCheck"
+               enableCountByExample="false"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="local_desc" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="local_pics" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>
     </context>
 </generatorConfiguration>
