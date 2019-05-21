@@ -50,6 +50,9 @@ public class LoginLogServiceImpl implements LoginLogService {
         result.put("todayUsers",todayUsers.size());//今日活跃度
         result.put("currentLoginUsers",currentLoginUsers.size());//当前正在登录的数量
 
+        result.put("todayUsersList",todayUsers);//日活跃用户
+        result.put("usersAllList",currentLoginUsers);//当前用户数
+
         return result;
     }
 
