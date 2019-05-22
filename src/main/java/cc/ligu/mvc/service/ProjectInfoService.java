@@ -4,6 +4,7 @@ import cc.ligu.mvc.persistence.entity.*;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface ProjectInfoService {
@@ -21,4 +22,9 @@ public interface ProjectInfoService {
     String selectProjectDropDownJson();
 
     int saveProjectCheck(ProjectCheck projectCheck);
+
+    Map projectCheckReport(String area, String projectYear, String companyUnit,
+                                   String profession, String status);
+
+    Map getQueryConditions();
 }
