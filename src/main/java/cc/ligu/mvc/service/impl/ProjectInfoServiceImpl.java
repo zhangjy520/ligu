@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -55,7 +56,7 @@ public class ProjectInfoServiceImpl extends BasicService implements ProjectInfoS
                 andCompanyUnitEqualTo(projectInfo.getCompanyUnit()).andProfessionEqualTo(projectInfo.getProfession()).
                 andProjectNameEqualTo(projectInfo.getProjectName());
         List<ProjectInfo> re = projectInfoMapper.selectByExample(example);
-        if (re.size()>0){
+        if (re.size() > 0) {
             return 0;//参数一致的信息不再录入了。
         }
 
@@ -96,7 +97,7 @@ public class ProjectInfoServiceImpl extends BasicService implements ProjectInfoS
     public Map selectProjectDropDownJson() {
         ProjectInfoExample projectExample = new ProjectInfoExample();
         projectExample.createCriteria();
-        List<ProjectInfo> res =  projectInfoMapper.selectByExample(projectExample);
+        List<ProjectInfo> res = projectInfoMapper.selectByExample(projectExample);
         try {
             Map json = toLianDong(res);
             return json;
@@ -112,13 +113,51 @@ public class ProjectInfoServiceImpl extends BasicService implements ProjectInfoS
         if (StringUtils.isEmpty(projectCheck.getId())) {
             return projectCheckMapper.insertSelective(projectCheck);
         } else {
-            return  projectCheckMapper.updateByPrimaryKeySelective(projectCheck);
+            return projectCheckMapper.updateByPrimaryKeySelective(projectCheck);
         }
+    }
+
+    @Override
+    public Map projectCheckReport(String area, String projectYear, String companyUnit, String profession, String status) {
+        Map resView = new HashMap();
+        List<Map> res = projectCheckMapper.projectCheckReport(area, projectYear, companyUnit, profession, status);
+        if (res.size() > 0) {
+            int over = 0;//完成
+            int modi = 0;//在建
+            int ing = 0;//进行
+            for (Map map : res) {
+                map.put("local_pics", DicUtil.splitWithOutNull(map.get("local_pics").toString()));
+                over += Integer.parseInt(map.get("over").toString());
+                modi += Integer.parseInt(map.get("modi").toString());
+                ing += Integer.parseInt(map.get("ing").toString());
+            }
+            resView.put("over",over);
+            resView.put("modi",modi);
+            resView.put("ing",ing);
+            resView.put("data",res);
+        }
+        return resView;
+    }
+
+    @Override
+    public Map getQueryConditions() {
+        List<String> areaList = projectCheckMapper.getAreaConditions();
+        List<String> companyUnitList = projectCheckMapper.getCompanyUnitConditions();
+        List<String> professionList = projectCheckMapper.getProfessionConditions();
+        List<String> projectYearList = projectCheckMapper.getProjectYearConditions();
+        List<String> statusList = DicUtil.splitWithOutNull("在建,整改,完成");
+        Map res = new HashMap();
+        res.put("areaList",areaList);
+        res.put("companyUnitList",companyUnitList);
+        res.put("professionList",professionList);
+        res.put("projectYearList",projectYearList);
+        res.put("statusList",statusList);
+        return res;
     }
 
 
     public Map toLianDong(List<ProjectInfo> param) throws Exception{
-        Map<Object,Map<Object,Map<Object,Map<Object,List<Map<String,String>>>>>> m = new HashMap();
+        Map<Object, Map<Object, Map<Object, Map<Object, List<Map<String, String>>>>>> m = new HashMap();
         for (ProjectInfo projectInfo : param) {
             String area = projectInfo.getArea();
             String profession = projectInfo.getProfession();
@@ -127,61 +166,61 @@ public class ProjectInfoServiceImpl extends BasicService implements ProjectInfoS
             String project_name = projectInfo.getProjectName();
             int projectId = projectInfo.getId();
 
-            Map<Object, Map<Object, Map<Object, List<Map<String,String>>>>> areaMap = m.get(area);
-            if (areaMap!=null){
-                Map<Object, Map<Object, List<Map<String,String>>>> yearMap = areaMap.get(project_year);
-                if (yearMap!=null){
-                    Map<Object, List<Map<String,String>>> company_unitMap = yearMap.get(company_unit);
-                    if (company_unitMap!=null){
-                        List<Map<String,String>> professionList = company_unitMap.get(profession);
-                        if (professionList!=null){
+            Map<Object, Map<Object, Map<Object, List<Map<String, String>>>>> areaMap = m.get(area);
+            if (areaMap != null) {
+                Map<Object, Map<Object, List<Map<String, String>>>> yearMap = areaMap.get(project_year);
+                if (yearMap != null) {
+                    Map<Object, List<Map<String, String>>> company_unitMap = yearMap.get(company_unit);
+                    if (company_unitMap != null) {
+                        List<Map<String, String>> professionList = company_unitMap.get(profession);
+                        if (professionList != null) {
                             Map detail = new HashMap();
-                            detail.put("projectName",project_name);
-                            detail.put("projectId",projectId);
+                            detail.put("projectName", project_name);
+                            detail.put("projectId", projectId);
                             professionList.add(detail);
-                        }else{
-                            List<Map<String,String>> project_nameList = new ArrayList<>();
+                        } else {
+                            List<Map<String, String>> project_nameList = new ArrayList<>();
                             Map detail = new HashMap();
-                            detail.put("projectName",project_name);
-                            detail.put("projectId",projectId);
+                            detail.put("projectName", project_name);
+                            detail.put("projectId", projectId);
                             project_nameList.add(detail);
-                            company_unitMap.put(profession,project_nameList);
+                            company_unitMap.put(profession, project_nameList);
                         }
-                    }else{
-                        Map<Object, List<Map<String,String>>> newMap = new HashMap<>();
-                        List<Map<String,String>> project_nameList = new ArrayList<>();
+                    } else {
+                        Map<Object, List<Map<String, String>>> newMap = new HashMap<>();
+                        List<Map<String, String>> project_nameList = new ArrayList<>();
                         Map detail = new HashMap();
-                        detail.put("projectName",project_name);
-                        detail.put("projectId",projectId);
+                        detail.put("projectName", project_name);
+                        detail.put("projectId", projectId);
                         project_nameList.add(detail);
-                        newMap.put(profession,project_nameList);
-                        yearMap.put(company_unit,newMap);
+                        newMap.put(profession, project_nameList);
+                        yearMap.put(company_unit, newMap);
                     }
-                }else {
-                    Map<Object, Map<Object, List<Map<String,String>>>> newYearMap = new HashMap<>();
-                    Map<Object, List<Map<String,String>>> newMap = new HashMap<>();
-                    List<Map<String,String>> project_nameList = new ArrayList<>();
+                } else {
+                    Map<Object, Map<Object, List<Map<String, String>>>> newYearMap = new HashMap<>();
+                    Map<Object, List<Map<String, String>>> newMap = new HashMap<>();
+                    List<Map<String, String>> project_nameList = new ArrayList<>();
                     Map detail = new HashMap();
-                    detail.put("projectName",project_name);
-                    detail.put("projectId",projectId);
+                    detail.put("projectName", project_name);
+                    detail.put("projectId", projectId);
                     project_nameList.add(detail);
-                    newMap.put(profession,project_nameList);
-                    newYearMap.put(company_unit,newMap);
-                    areaMap.put(project_year,newYearMap);
+                    newMap.put(profession, project_nameList);
+                    newYearMap.put(company_unit, newMap);
+                    areaMap.put(project_year, newYearMap);
                 }
-            }else {
-                Map<Object, Map<Object, Map<Object, List<Map<String,String>>>>> newAreMap = new HashMap<>();
-                Map<Object, Map<Object, List<Map<String,String>>>> newYearMap = new HashMap<>();
-                Map<Object, List<Map<String,String>>> newMap = new HashMap<>();
-                List<Map<String,String>> project_nameList = new ArrayList<>();
+            } else {
+                Map<Object, Map<Object, Map<Object, List<Map<String, String>>>>> newAreMap = new HashMap<>();
+                Map<Object, Map<Object, List<Map<String, String>>>> newYearMap = new HashMap<>();
+                Map<Object, List<Map<String, String>>> newMap = new HashMap<>();
+                List<Map<String, String>> project_nameList = new ArrayList<>();
                 Map detail = new HashMap();
-                detail.put("projectName",project_name);
-                detail.put("projectId",projectId);
+                detail.put("projectName", project_name);
+                detail.put("projectId", projectId);
                 project_nameList.add(detail);
-                newMap.put(profession,project_nameList);
-                newYearMap.put(company_unit,newMap);
-                newAreMap.put(project_year,newYearMap);
-                m.put(area,newAreMap);
+                newMap.put(profession, project_nameList);
+                newYearMap.put(company_unit, newMap);
+                newAreMap.put(project_year, newYearMap);
+                m.put(area, newAreMap);
             }
 
         }

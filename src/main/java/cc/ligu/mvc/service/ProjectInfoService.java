@@ -22,4 +22,9 @@ public interface ProjectInfoService {
     Map selectProjectDropDownJson();
 
     int saveProjectCheck(ProjectCheck projectCheck);
+
+    Map projectCheckReport(String area, String projectYear, String companyUnit,
+                                   String profession, String status);
+
+    Map getQueryConditions();
 }

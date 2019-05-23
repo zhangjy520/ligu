@@ -50,8 +50,22 @@ public class LoginLogServiceImpl implements LoginLogService {
         result.put("todayUsers",todayUsers.size());//今日活跃度
         result.put("currentLoginUsers",currentLoginUsers.size());//当前正在登录的数量
 
-        result.put("todayUsersList",todayUsers);//日活跃用户
-        result.put("usersAllList",currentLoginUsers);//当前用户数
+        List<Map> todayUsersList = new ArrayList<>();
+        List<Map> usersAllList = new ArrayList<>();
+        for (LoginLog a :todayUsers) {
+            Map map = new HashMap();
+            map.put("account",a.getUsername());
+            map.put("name",a.getName());
+            todayUsersList.add(map);
+        }
+        for (LoginLog b :currentLoginUsers) {
+            Map mapB = new HashMap();
+            mapB.put("account",b.getUsername());
+            mapB.put("name",b.getName());
+            usersAllList.add(mapB);
+        }
+        result.put("todayUsersList",todayUsersList);//日活跃用户
+        result.put("usersAllList",usersAllList);//当前用户数
 
         return result;
     }

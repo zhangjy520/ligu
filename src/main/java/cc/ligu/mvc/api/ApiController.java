@@ -39,6 +39,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.ParseException;
 import java.util.*;
 
@@ -1231,7 +1232,7 @@ public class ApiController extends BasicController {
     })
     @RequestMapping(value = "/selectExamPersonList")
     public ResultEntity getExamPersonListByExamId(HttpServletRequest request) {
-        int examId = getParamInt(request,"examId");
+        int examId = getParamInt(request, "examId");
 
         List<HashMap> res = questionService.getExamPersonListByExamId(examId);
         return ResultEntity.newResultEntity(res);
@@ -1244,7 +1245,7 @@ public class ApiController extends BasicController {
     })
     @RequestMapping(value = "/selectPersonScoreList")
     public ResultEntity getPersonScoreListByPersonId(HttpServletRequest request) {
-        String identi = getParamVal(request,"identi");
+        String identi = getParamVal(request, "identi");
         Person person = personService.selectPersonByIdNum(identi);
         List<HashMap> res = questionService.getPersonScoreListByPersonId(person.getId());
         return ResultEntity.newResultEntity(res);
@@ -1260,7 +1261,7 @@ public class ApiController extends BasicController {
     public ResultEntity getGuangGaoList(HttpServletRequest request) {
         int pageSize = getPageSize(request);
         int pageNum = getPageNum(request);
-        PageInfo<AppGuangGao> res = guangGaoService.listAllAppGuangGao(pageSize,pageNum,new AppGuangGao());
+        PageInfo<AppGuangGao> res = guangGaoService.listAllAppGuangGao(pageSize, pageNum, new AppGuangGao());
         return ResultEntity.newResultEntity(res);
     }
 
@@ -1287,14 +1288,14 @@ public class ApiController extends BasicController {
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true)
     })
     @RequestMapping(value = "/saveProjectCheckInfo")
-    public ResultEntity saveProjectCheckInfo(HttpServletRequest request,ProjectCheck projectCheck) {
+    public ResultEntity saveProjectCheckInfo(HttpServletRequest request, ProjectCheck projectCheck) {
 
         try {
             String schme = "http";
             if (!StringUtils.isEmpty(request.getScheme())) {
                 schme = request.getScheme();
             }
-            String projectPics="";
+            String projectPics = "";
             CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
             if (multipartResolver.isMultipart(request)) {
                 MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
@@ -1312,7 +1313,7 @@ public class ApiController extends BasicController {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            projectPics+=","+schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath");
+                            projectPics += "," + schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath");
                         }
                     }
                 }
@@ -1324,6 +1325,36 @@ public class ApiController extends BasicController {
             return ResultEntity.newErrEntity("巡检记录保存失败");
         }
         return ResultEntity.newResultEntity("巡检记录保存成功");
+    }
+
+    @ApiOperation(value = "查询工程信息情况", httpMethod = "POST", notes = "根据条件查询工程信息情况")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "area", value = "区县", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "projectYear", value = "年份", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "companyUnit", value = "施工单位", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "profession", value = "专业", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "status", value = "状态[目前只有：在建，完成，整改]", required = true),
+    })
+    @RequestMapping("/query/projectInfo")
+    public ResultEntity queryProjectInfo(HttpServletRequest request) {
+        String area = URLDecoder.decode(getParamVal(request, "area"));
+        String projectYear = getParamVal(request, "projectYear");
+        String companyUnit = getParamVal(request, "companyUnit");
+        String profession = getParamVal(request, "profession");
+        String status = getParamVal(request, "status");
+
+        Map res = projectInfoService.projectCheckReport(area, projectYear, companyUnit, profession, status);
+        return ResultEntity.newResultEntity(res);
+    }
+
+    @ApiOperation(value = "获取查询条件", httpMethod = "POST", notes = "获取工程信息的查询条件")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping("/query/projectInfoConditions")
+    public ResultEntity getQueryConditions(HttpServletRequest request) {
+        return ResultEntity.newResultEntity(projectInfoService.getQueryConditions());
     }
 
     protected UserView getAppLoginUser(HttpServletRequest request) {
