@@ -93,16 +93,16 @@ public class ProjectInfoServiceImpl extends BasicService implements ProjectInfoS
     }
 
     @Override
-    public String selectProjectDropDownJson() {
+    public Map selectProjectDropDownJson() {
         ProjectInfoExample projectExample = new ProjectInfoExample();
         projectExample.createCriteria();
         List<ProjectInfo> res =  projectInfoMapper.selectByExample(projectExample);
         try {
-            String json = toLianDong(res);
+            Map json = toLianDong(res);
             return json;
         } catch (Exception e) {
             e.printStackTrace();
-            return "";
+            return null;
         }
     }
 
@@ -117,7 +117,7 @@ public class ProjectInfoServiceImpl extends BasicService implements ProjectInfoS
     }
 
 
-    public String toLianDong(List<ProjectInfo> param) throws Exception{
+    public Map toLianDong(List<ProjectInfo> param) throws Exception{
         Map<Object,Map<Object,Map<Object,Map<Object,List<Map<String,String>>>>>> m = new HashMap();
         for (ProjectInfo projectInfo : param) {
             String area = projectInfo.getArea();
@@ -185,6 +185,6 @@ public class ProjectInfoServiceImpl extends BasicService implements ProjectInfoS
             }
 
         }
-        return new Gson().toJson(m);
+        return m;
     }
 }

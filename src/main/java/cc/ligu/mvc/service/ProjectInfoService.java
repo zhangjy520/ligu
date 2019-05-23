@@ -4,6 +4,7 @@ import cc.ligu.mvc.persistence.entity.*;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface ProjectInfoService {
@@ -18,7 +19,7 @@ public interface ProjectInfoService {
     int batchDeleteProjectInfo(List projectIdList);
 
     //获取工程信息的级联json
-    String selectProjectDropDownJson();
+    Map selectProjectDropDownJson();
 
     int saveProjectCheck(ProjectCheck projectCheck);
 }
