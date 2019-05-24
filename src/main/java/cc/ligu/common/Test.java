@@ -1,6 +1,8 @@
 package cc.ligu.common;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import net.sf.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +19,10 @@ public class Test {
     }
 
     public static void main(String[] args) {
+        String aad = "{分管领导:'hjjhjjj',主任:'hjj',管理员:'jjj'}";
+        JSONObject dd = JSONObject.fromObject(aad);
+        System.out.println(dd.toString());
+
         List<Map> aa = new ArrayList<>();
 
         Map a1 = new HashMap();

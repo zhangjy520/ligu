@@ -14,6 +14,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -130,6 +131,11 @@ public class ProjectInfoServiceImpl extends BasicService implements ProjectInfoS
                 over += Integer.parseInt(map.get("over").toString());
                 modi += Integer.parseInt(map.get("modi").toString());
                 ing += Integer.parseInt(map.get("ing").toString());
+                try {
+                    map.put("check_person", JSONObject.fromObject(map.get("check_person")));
+                }catch (Exception e){
+
+                }
             }
             resView.put("over",over);
             resView.put("modi",modi);
