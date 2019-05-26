@@ -7,10 +7,7 @@ package cc.ligu.mvc.api;
 import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.entity.ResultEntity;
 import cc.ligu.common.security.AESencryptor;
-import cc.ligu.common.utils.DateUtils;
-import cc.ligu.common.utils.DicUtil;
-import cc.ligu.common.utils.PropertiesUtil;
-import cc.ligu.common.utils.SpringContextHolder;
+import cc.ligu.common.utils.*;
 import cc.ligu.mvc.controller.FileController;
 import cc.ligu.mvc.modelView.BaoXianView;
 import cc.ligu.mvc.modelView.MessageView;
@@ -28,6 +25,7 @@ import com.wordnik.swagger.annotations.ApiImplicitParams;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -1291,6 +1289,22 @@ public class ApiController extends BasicController {
     public ResultEntity saveProjectCheckInfo(HttpServletRequest request, ProjectCheck projectCheck) {
 
         try {
+
+            try {
+                JSONObject checkPersonJson = JSONObject.fromObject(projectCheck.getCheckPerson());
+
+                Map<String, String> keyMap = new HashMap<String, String>();
+                keyMap.put("分管领导", "fenguan");
+                keyMap.put("主任", "zhuren");
+                keyMap.put("管理员", "guanli");
+                JSONObject jsonObj = JSONUtil.changeJsonObj(checkPersonJson,keyMap);
+                projectCheck.setCheckPerson(jsonObj.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+                //
+                return ResultEntity.newErrEntity("巡检记录巡检人员不是正确的JSON格式");
+            }
+
             String schme = "http";
             if (!StringUtils.isEmpty(request.getScheme())) {
                 schme = request.getScheme();
@@ -1338,7 +1352,7 @@ public class ApiController extends BasicController {
     })
     @RequestMapping("/query/projectInfo")
     public ResultEntity queryProjectInfo(HttpServletRequest request) {
-        String area = URLDecoder.decode(getParamVal(request, "area"));
+        String area = getParamVal(request, "area");
         String projectYear = getParamVal(request, "projectYear");
         String companyUnit = getParamVal(request, "companyUnit");
         String profession = getParamVal(request, "profession");
