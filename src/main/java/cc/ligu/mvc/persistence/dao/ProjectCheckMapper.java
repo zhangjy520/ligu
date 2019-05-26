@@ -35,4 +35,5 @@ public interface ProjectCheckMapper {
     List<String> getProjectYearConditions();
     List<String> getCompanyUnitConditions();
     List<String> getProfessionConditions();
+    List<Map> xunJianReport();
 }

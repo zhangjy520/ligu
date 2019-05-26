@@ -1371,6 +1371,15 @@ public class ApiController extends BasicController {
         return ResultEntity.newResultEntity(projectInfoService.getQueryConditions());
     }
 
+    @ApiOperation(value = "巡检统计", httpMethod = "POST", notes = "巡检统计结果查询")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "clientId", value = "客户端id", required = true),
+    })
+    @RequestMapping("/query/xunJianReport")
+    public ResultEntity xunJianReport(HttpServletRequest request) {
+        return ResultEntity.newResultEntity(projectInfoService.xunJianReport());
+    }
+
     protected UserView getAppLoginUser(HttpServletRequest request) {
         UserView UserView = (UserView) cacheService.getCacheByKey(request.getParameter("clientId"));
         return UserView;

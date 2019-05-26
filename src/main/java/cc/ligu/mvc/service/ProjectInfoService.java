@@ -27,4 +27,6 @@ public interface ProjectInfoService {
                                    String profession, String status);
 
     Map getQueryConditions();
+
+    List<Map> xunJianReport();
 }

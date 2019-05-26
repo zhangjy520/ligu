@@ -170,15 +170,26 @@ public class ProjectInfoServiceImpl extends BasicService implements ProjectInfoS
         return res;
     }
 
+    @Override
+    public List<Map> xunJianReport() {
+        return projectCheckMapper.xunJianReport();
+    }
+
 
     public Map toLianDong(List<ProjectInfo> param) throws Exception{
         Map<Object, Map<Object, Map<Object, Map<Object, List<Map<String, String>>>>>> m = new HashMap();
         for (ProjectInfo projectInfo : param) {
-            String area = projectInfo.getArea();
-            String profession = projectInfo.getProfession();
-            String project_year = projectInfo.getProjectYear();
-            String company_unit = projectInfo.getCompanyUnit();
-            String project_name = projectInfo.getProjectName();
+//            String area = projectInfo.getArea();//区县
+//            String project_year = projectInfo.getProjectYear();//年份
+//            String company_unit = projectInfo.getCompanyUnit();//施工单位
+//            String profession = projectInfo.getProfession();//所属专业
+//            String project_name = projectInfo.getProjectName();//工程名称
+
+            String area = projectInfo.getArea();//区县
+            String project_year = projectInfo.getProjectYear();//年份
+            String company_unit = projectInfo.getProfession();//专业
+            String profession = projectInfo.getCompanyUnit();//施工单位
+            String project_name = projectInfo.getProjectName();//工程名称
             int projectId = projectInfo.getId();
 
             Map<Object, Map<Object, Map<Object, List<Map<String, String>>>>> areaMap = m.get(area);
