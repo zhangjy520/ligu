@@ -119,9 +119,9 @@ public class ProjectInfoServiceImpl extends BasicService implements ProjectInfoS
     }
 
     @Override
-    public Map projectCheckReport(String area, String projectYear, String companyUnit, String profession, String status) {
+    public Map projectCheckReport(String area, String projectYear, String companyUnit, String profession, String status,String projectName) {
         Map resView = new HashMap();
-        List<Map> res = projectCheckMapper.projectCheckReport(area, projectYear, companyUnit, profession, status);
+        List<Map> res = projectCheckMapper.projectCheckReport(area, projectYear, companyUnit, profession, status,projectName);
         if (res.size() > 0) {
             int over = 0;//完成
             int modi = 0;//在建

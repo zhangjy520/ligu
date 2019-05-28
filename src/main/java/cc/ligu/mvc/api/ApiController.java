@@ -1335,6 +1335,7 @@ public class ApiController extends BasicController {
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "companyUnit", value = "施工单位", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "profession", value = "专业", required = true),
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "status", value = "状态[目前只有：在建，完成，整改]", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "projectName", value = "项目名", required = true),
     })
     @RequestMapping("/query/projectInfo")
     public ResultEntity queryProjectInfo(HttpServletRequest request) {
@@ -1343,8 +1344,9 @@ public class ApiController extends BasicController {
         String companyUnit = getParamVal(request, "companyUnit");
         String profession = getParamVal(request, "profession");
         String status = getParamVal(request, "status");
+        String projectName = getParamVal(request, "projectName");
 
-        Map res = projectInfoService.projectCheckReport(area, projectYear, companyUnit, profession, status);
+        Map res = projectInfoService.projectCheckReport(area, projectYear, companyUnit, profession, status,projectName);
         return ResultEntity.newResultEntity(res);
     }
 

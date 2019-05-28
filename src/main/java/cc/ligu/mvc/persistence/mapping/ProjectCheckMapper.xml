@@ -326,6 +326,9 @@
         <if test="status != null and status!='全部' and status != ''">
             AND v.status =#{status}
         </if>
+        <if test="projectName != null and status!='全部' and projectName != ''">
+            AND v.project_name =#{projectName}
+        </if>
         GROUP BY v.checkId
     </select>
 

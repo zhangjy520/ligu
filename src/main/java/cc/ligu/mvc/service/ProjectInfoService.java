@@ -24,7 +24,7 @@ public interface ProjectInfoService {
     int saveProjectCheck(ProjectCheck projectCheck);
 
     Map projectCheckReport(String area, String projectYear, String companyUnit,
-                                   String profession, String status);
+                                   String profession, String status,String projectName);
 
     Map getQueryConditions();
 }

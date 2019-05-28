@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import net.sf.json.JSONObject;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +21,8 @@ public class Test {
     }
 
     public static void main(String[] args) {
+        System.out.println(java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
+
         String aad = "{分管领导:'hjjhjjj',主任:'hjj',管理员:'jjj'}";
         JSONObject dd = JSONObject.fromObject(aad);
         System.out.println(dd.toString());
