@@ -326,7 +326,7 @@
         <if test="status != null and status!='全部' and status != ''">
             AND v.status =#{status}
         </if>
-        <if test="projectName != null and status!='全部' and projectName != ''">
+        <if test="projectName != null and projectName!='全部' and projectName != ''">
             AND v.project_name =#{projectName}
         </if>
         GROUP BY v.checkId
@@ -350,5 +350,41 @@
     <select id="getProfessionConditions" resultType="java.lang.String">
       SELECT DISTINCT i.`profession`
         FROM project_info i ORDER BY i.`profession`
+    </select>
+
+    <select id="xunJianReport" resultType="java.util.Map">
+        SELECT
+          SUM(
+            CASE
+              c.status
+              WHEN '在建'
+              THEN 1
+              ELSE 0
+            END
+          ) AS ing,
+          SUM(
+            CASE
+              c.status
+              WHEN '整改'
+              THEN 1
+              ELSE 0
+            END
+          ) AS modi,
+          SUM(
+            CASE
+              c.status
+              WHEN '完成'
+              THEN 1
+              ELSE 0
+            END
+          ) AS over,
+          COUNT(*) AS total,
+          i.area,
+          GROUP_CONCAT(i.id) AS detail
+        FROM
+          project_check c
+          INNER JOIN project_info i
+            ON c.project_id = i.id
+        GROUP BY i.area
     </select>
 </mapper>

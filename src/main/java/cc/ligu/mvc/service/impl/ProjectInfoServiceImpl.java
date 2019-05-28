@@ -3,6 +3,7 @@ package cc.ligu.mvc.service.impl;
 import cc.ligu.common.service.BasicService;
 import cc.ligu.common.utils.DateUtils;
 import cc.ligu.common.utils.DicUtil;
+import cc.ligu.common.utils.JSONUtil;
 import cc.ligu.mvc.modelView.MessageView;
 import cc.ligu.mvc.modelView.PvpPersonView;
 import cc.ligu.mvc.modelView.ScoreView;
@@ -132,7 +133,15 @@ public class ProjectInfoServiceImpl extends BasicService implements ProjectInfoS
                 modi += Integer.parseInt(map.get("modi").toString());
                 ing += Integer.parseInt(map.get("ing").toString());
                 try {
-                    map.put("check_person", JSONObject.fromObject(map.get("check_person")));
+                    JSONObject checkPersonJson = JSONObject.fromObject(map.get("check_person"));
+
+                    Map<String, String> keyMap = new HashMap<String, String>();
+                    keyMap.put("fenguan", "分管领导");
+                    keyMap.put("zhuren", "主任");
+                    keyMap.put("guanli", "管理员");
+                    JSONObject jsonObj = JSONUtil.changeJsonObj(checkPersonJson,keyMap);
+
+                    map.put("check_person", jsonObj);
                 }catch (Exception e){
 
                 }
@@ -147,11 +156,11 @@ public class ProjectInfoServiceImpl extends BasicService implements ProjectInfoS
 
     @Override
     public Map getQueryConditions() {
-        List<String> areaList = projectCheckMapper.getAreaConditions();
-        List<String> companyUnitList = projectCheckMapper.getCompanyUnitConditions();
-        List<String> professionList = projectCheckMapper.getProfessionConditions();
-        List<String> projectYearList = projectCheckMapper.getProjectYearConditions();
-        List<String> statusList = DicUtil.splitWithOutNull("在建,整改,完成");
+        List<String> areaList = projectCheckMapper.getAreaConditions();areaList.add(0,"全部");
+        List<String> companyUnitList = projectCheckMapper.getCompanyUnitConditions();companyUnitList.add(0,"全部");
+        List<String> professionList = projectCheckMapper.getProfessionConditions();professionList.add(0,"全部");
+        List<String> projectYearList = projectCheckMapper.getProjectYearConditions();projectYearList.add(0,"全部");
+        List<String> statusList = DicUtil.splitWithOutNull("全部,在建,整改,完成");
         Map res = new HashMap();
         res.put("areaList",areaList);
         res.put("companyUnitList",companyUnitList);
@@ -161,15 +170,26 @@ public class ProjectInfoServiceImpl extends BasicService implements ProjectInfoS
         return res;
     }
 
+    @Override
+    public List<Map> xunJianReport() {
+        return projectCheckMapper.xunJianReport();
+    }
+
 
     public Map toLianDong(List<ProjectInfo> param) throws Exception{
         Map<Object, Map<Object, Map<Object, Map<Object, List<Map<String, String>>>>>> m = new HashMap();
         for (ProjectInfo projectInfo : param) {
-            String area = projectInfo.getArea();
-            String profession = projectInfo.getProfession();
-            String project_year = projectInfo.getProjectYear();
-            String company_unit = projectInfo.getCompanyUnit();
-            String project_name = projectInfo.getProjectName();
+//            String area = projectInfo.getArea();//区县
+//            String project_year = projectInfo.getProjectYear();//年份
+//            String company_unit = projectInfo.getCompanyUnit();//施工单位
+//            String profession = projectInfo.getProfession();//所属专业
+//            String project_name = projectInfo.getProjectName();//工程名称
+
+            String area = projectInfo.getArea();//区县
+            String project_year = projectInfo.getProjectYear();//年份
+            String company_unit = projectInfo.getProfession();//专业
+            String profession = projectInfo.getCompanyUnit();//施工单位
+            String project_name = projectInfo.getProjectName();//工程名称
             int projectId = projectInfo.getId();
 
             Map<Object, Map<Object, Map<Object, List<Map<String, String>>>>> areaMap = m.get(area);
