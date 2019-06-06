@@ -827,6 +827,24 @@ public class ApiController extends BasicController {
     })
     @RequestMapping("/welcome/pics")
     public ResultEntity getWelcomePages(HttpServletRequest request) {
+
+        try {
+            String clientId = getParamVal(request,"clientId");
+            UserView user = getAppLoginUser(request);
+            LoginLog loginLog = new LoginLog();
+            loginLog.setLoginSource(0);//0 app  1 pc
+            loginLog.setLoginId(clientId);
+            loginLog.setSysUserId(user.getId());
+            loginLog.setRefPersonId(user.getRefId());
+            loginLog.setUsername(user.getUsername());
+            loginLog.setName(user.getName());
+            loginLog.setLoginStatus(0);//0登录中 1已经退出 2其他
+            loginLog.setLoginDate(System.currentTimeMillis());
+            loginLogService.saveLoginLog(loginLog);
+        }catch (Exception e){
+            e.printStackTrace();//保存登陆日志失败
+        }
+
         AppConfig appConfig = new AppConfig();
         appConfig.setConfigType("welcome_page_pic");
 
