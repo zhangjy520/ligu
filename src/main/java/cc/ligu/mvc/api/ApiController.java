@@ -1336,18 +1336,19 @@ public class ApiController extends BasicController {
                     List<MultipartFile> fileSet = new LinkedList<>();
                     for (Map.Entry<String, List<MultipartFile>> temp : multiFileMap.entrySet()) {
                         fileSet = temp.getValue();
-                    }
-                    if (fileSet.size() > 0) {
-                        for (MultipartFile file : fileSet) {
-                            Map uploads = null;
-                            try {
-                                uploads = (Map) new FileController().uploads(file, request).getData();
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                        if (fileSet.size() > 0) {
+                            for (MultipartFile file : fileSet) {
+                                Map uploads = null;
+                                try {
+                                    uploads = (Map) new FileController().uploads(file, request).getData();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                projectPics += "," + schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath");
                             }
-                            projectPics += "," + schme + "://" + request.getServerName() + ":" + PropertiesUtil.getProperties("db.properties").get("nginx.static.port") + uploads.get("fileRequestPath");
                         }
                     }
+
                 }
             }
             projectCheck.setLocalPics(projectPics);
