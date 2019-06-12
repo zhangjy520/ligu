@@ -33,6 +33,8 @@
             <li class="line">line</li>
             <li><a class="icon" href="${ctx}/question/template/download" target="dwzExport" targetType="navTab" title="下载导入模版?"><span>下载导入模版</span></a></li>
             <li><a class="icon" href="${ctx}/question/pop/upload" target="dialog" title="导入题库?"><span>导入题库</span></a></li>
+                <li><a class="icon" href="${ctx}/question/questionExport" target="dwzExport" targetType="navTab"
+                       title="导出人员数据?"><span>导出题库</span></a></li>
             </shiro:hasAnyRoles>
         </ul>
     </div>

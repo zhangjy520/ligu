@@ -220,4 +220,24 @@ public class QuestionController extends BasicController {
         examNotice.setQuestionIds(buffer.toString());
         questionService.saveExamNotice(examNotice,userView);
     }
+
+
+    //导出功能
+    @ResponseBody
+    @RequestMapping(value = "/questionExport", method = RequestMethod.GET)
+    public void exportQuestionFile(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String fileName = "题库导出数据.xlsx";
+            PageInfo<Question> dataList = questionService.listAllQuestion(Integer.MAX_VALUE, 1, new Question());
+
+            String anno = "导出的模板：题目类别，题目难度为数字，意思如下：\n" +
+                    "题目类别：1：单选题,2：多选题,3：其他\n" +
+                    "题目难度：1：简单,2：一般,3：困难";
+
+            new ExportExcel("题库导出数据", Question.class, 2, 50, anno, 1).setDataList(dataList.getList()).write(response, fileName).dispose();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
