@@ -14,8 +14,23 @@ import java.io.IOException;
 public class Test {
     public static void main(String[] args) {
         try {
-            compressPic("C:\\Users\\dell\\Desktop\\大图\\1536304794566.jpg","C:\\Users\\dell\\Desktop\\大图\\1536304794566_small.jpg");
-        } catch (IOException e) {
+            compressPic("C:\\Users\\dell\\Desktop\\大图\\1560500152956.jpg","C:\\Users\\dell\\Desktop\\大图\\1560500152956.jpg");
+            if (1==1)
+                return;
+            File file = new File("C:\\Users\\dell\\Desktop\\大图");
+            File[] res  = file.listFiles();
+
+            for (File f : res) {
+                if (f.length()>=1024*1024*0.5){
+                    compressPic(f.getAbsolutePath(),f.getAbsolutePath());
+                }
+               // compressPic(f.getAbsolutePath(),f.getAbsolutePath());
+                if (f.getAbsolutePath().indexOf(".png.png")>=0){
+                   // f.delete();
+                }
+            }
+            //compressPic("C:\\Users\\dell\\Desktop\\大图\\1536896651110.jpg","C:\\Users\\dell\\Desktop\\大图\\1536896651110_small.jpg");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
