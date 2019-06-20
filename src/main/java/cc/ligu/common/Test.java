@@ -12,22 +12,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class Test {
-    public static void main(String[] args) {
-        try {
-            compressPic("C:\\Users\\dell\\Desktop\\大图\\1560500152956.jpg","C:\\Users\\dell\\Desktop\\大图\\1560500152956.jpg");
-            if (1==1)
-                return;
-            File file = new File("C:\\Users\\dell\\Desktop\\大图");
+    public static void main(String[] args) throws IOException {
+      //compressPic("C:\\Users\\dell\\Desktop\\1532354629431.png","C:\\Users\\dell\\Desktop\\1532354629431.png");
+          try {
+            File file = new File("C:\\Users\\dell\\Desktop\\dojo");
             File[] res  = file.listFiles();
 
             for (File f : res) {
-                if (f.length()>=1024*1024*0.5){
-                    compressPic(f.getAbsolutePath(),f.getAbsolutePath());
-                }
-               // compressPic(f.getAbsolutePath(),f.getAbsolutePath());
-                if (f.getAbsolutePath().indexOf(".png.png")>=0){
-                   // f.delete();
-                }
+                compressPic(f.getAbsolutePath(),f.getAbsolutePath());
+
             }
             //compressPic("C:\\Users\\dell\\Desktop\\大图\\1536896651110.jpg","C:\\Users\\dell\\Desktop\\大图\\1536896651110_small.jpg");
         } catch (Exception e) {
@@ -40,9 +33,10 @@ public class Test {
         FileOutputStream out = null;
         ImageWriter imgWrier;
         ImageWriteParam imgWriteParams;
-
         // 指定写图片的方式为 jpg
-        imgWrier = ImageIO.getImageWritersByFormatName("jpg").next();
+
+//        imgWrier = ImageIO.getImageWritersByFormatName("jpg").next();
+        imgWrier = ImageIO.getImageWritersByFormatName(srcFilePath.substring(srcFilePath.lastIndexOf(".")+1)).next();
         imgWriteParams = new javax.imageio.plugins.jpeg.JPEGImageWriteParam(
                 null);
         // 要使用压缩，必须指定压缩方式为MODE_EXPLICIT
