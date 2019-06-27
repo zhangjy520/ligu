@@ -13,9 +13,10 @@ import java.io.IOException;
 
 public class Test {
     public static void main(String[] args) throws IOException {
+
       //compressPic("C:\\Users\\dell\\Desktop\\1532354629431.png","C:\\Users\\dell\\Desktop\\1532354629431.png");
           try {
-            File file = new File("C:\\Users\\dell\\Desktop\\dojo");
+            File file = new File("C:\\Users\\dell\\Desktop\\test");
             File[] res  = file.listFiles();
 
             for (File f : res) {
