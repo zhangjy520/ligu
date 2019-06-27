@@ -131,12 +131,12 @@ public class TimeOutThread {
 
     public static void main(String[] args) {
         //2秒后调用Test.test(2);
-        TimeOutThread timeOutThread = new TimeOutThread(2, Test.class, "test", "2");
+        TimeOutThread timeOutThread = new TimeOutThread(2, Test.class, "isBlank", "2aaaaa");
         timeOutThread.startThread();
 
         List<String> pa = new ArrayList<>();
         pa.add("测试啊啊啊啊");
-        TimeOutThread timeOutThread1 = new TimeOutThread(5, Test.class, "test1", "5",pa);
+        TimeOutThread timeOutThread1 = new TimeOutThread(5, Test.class, "isBlank",pa);
         timeOutThread1.startThread();
     }
 

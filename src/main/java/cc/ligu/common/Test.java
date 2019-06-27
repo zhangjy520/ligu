@@ -10,6 +10,8 @@ import java.awt.image.ColorModel;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Test {
     public static void main(String[] args) throws IOException {
@@ -79,9 +81,15 @@ public class Test {
     }
 
     public static boolean isBlank(String string) {
+        System.out.println(string);
         if (string == null || string.length() == 0 || string.trim().equals("")) {
             return true;
         }
+        return false;
+    }
+
+    public static boolean isBlank(ArrayList<String> string) {
+        System.out.println(string);
         return false;
     }
 }
