@@ -45,7 +45,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by zjy on 2018/5/14.
  */
-@Controller
+
 @RequestMapping(value = "/file")
 public class FileController extends BasicController {
 
