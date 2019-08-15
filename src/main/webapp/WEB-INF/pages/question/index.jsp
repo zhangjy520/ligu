@@ -29,6 +29,7 @@
     <div class="panelBar">
         <ul class="toolBar">
             <shiro:hasAnyRoles name="root">
+            <li><a class="add" href="${ctx}/question/pop/sendExam" target="dialog" mask="true"><span>发布考试</span></a></li>
             <li><a class="add" href="${ctx}/question/pop/modify" target="dialog" mask="true"><span>新增</span></a></li>
             <li class="line">line</li>
             <li><a class="icon" href="${ctx}/question/template/download" target="dwzExport" targetType="navTab" title="下载导入模版?"><span>下载导入模版</span></a></li>

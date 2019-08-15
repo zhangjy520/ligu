@@ -56,6 +56,11 @@ public class QuestionController extends BasicController {
         return "question/pop/editQuestion";
     }
 
+    @RequestMapping("/pop/sendExam")
+    public String examSend(Model model, HttpServletRequest request) {
+        return "question/pop/sendExam";
+    }
+
     @ResponseBody
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public DWZResponse saveQuestion(Model model, Question question) {
