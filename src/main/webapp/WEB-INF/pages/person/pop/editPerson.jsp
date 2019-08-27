@@ -7,7 +7,7 @@
             <input style="display: none;" type="text" name="id" value="${person.id}"/>
             <div class="unit">
                 <label>姓名：</label>
-                <input ${disabled} type="text" name="name" value="${person.name}" size="30"/>
+                <input ${disabled} <c:if test="${flag}">disabled</c:if> type="text" name="name" value="${person.name}" size="30"/>
             </div>
             <div class="unit">
                 <label>性别：</label>

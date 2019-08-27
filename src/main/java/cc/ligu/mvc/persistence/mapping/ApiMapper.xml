@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cc.ligu.mvc.persistence.dao.ApiMapper">
+
+    <select id="testse" resultType="String">
+        select oid from zddw_part where oid= 597350
+    </select>
     <!--获取所有的 0 承保公司/ 1隶属单位-->
     <select id="getAllSelect" parameterType="java.lang.Integer" resultType="String">
 

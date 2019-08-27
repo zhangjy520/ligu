@@ -4,6 +4,7 @@ import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.entity.ResultEntity;
 import cc.ligu.common.exception.ErrcodeException;
 import cc.ligu.common.security.AESencryptor;
+import cc.ligu.mvc.persistence.dao.ApiMapper;
 import cc.ligu.mvc.persistence.entity.UserView;
 import cc.ligu.mvc.service.QuestionService;
 import org.apache.shiro.SecurityUtils;
@@ -24,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class LoginController extends BasicController {
 
+    @Autowired
+    ApiMapper apiMapper;
     @RequestMapping(value = "/login")
     public String toLogin(HttpServletRequest request, HttpServletResponse response) {
         return "login";
@@ -37,7 +40,7 @@ public class LoginController extends BasicController {
     @ResponseBody
     @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
     public ResultEntity login(HttpServletRequest request) {
-
+        apiMapper.testse();
         String username = getParamVal(request, "username");
         String password = getParamVal(request, "password");
 

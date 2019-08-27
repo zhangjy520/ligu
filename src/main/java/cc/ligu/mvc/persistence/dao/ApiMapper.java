@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface ApiMapper {
+    String testse();
+
     //获取下拉列表的数据集合。0 承包公司/ 1隶属单位
     List<String> getAllSelect(@Param("type") int type);
 
