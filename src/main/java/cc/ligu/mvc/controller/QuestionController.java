@@ -23,7 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -212,6 +214,21 @@ public class QuestionController extends BasicController {
     @ResponseBody
     @RequestMapping(value = "/saveExam", method = RequestMethod.GET)
     public void saveExam(){
+        Calendar cale = Calendar.getInstance();
+        // 获取当月第一天和最后一天
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        // 获取前月的第一天
+        cale = Calendar.getInstance();
+        cale.add(Calendar.MONTH, 0);
+        cale.set(Calendar.DAY_OF_MONTH, 1);
+        long firstday = cale.getTimeInMillis();
+
+        // 获取前月的最后一天
+        cale = Calendar.getInstance();
+        cale.add(Calendar.MONTH, 1);
+        cale.set(Calendar.DAY_OF_MONTH, 0);
+        long lastday = cale.getTimeInMillis();
+
         UserView userView = getLoginUser();
         List<Question> res = questionService.selectRandomQuestionByCount(40);
         StringBuffer buffer = new StringBuffer();
@@ -219,9 +236,9 @@ public class QuestionController extends BasicController {
             buffer.append(","+question.getId());
         }
         ExamNotice examNotice = new ExamNotice();
-        examNotice.setExamName("模拟考试");
-        examNotice.setDateBegin("模拟考试");
-        examNotice.setDateEnd("模拟考试");
+        examNotice.setExamName((cale.get(Calendar.MONTH)+1)+"月模拟考试");
+        examNotice.setDateBegin(String.valueOf(firstday));
+        examNotice.setDateEnd(String.valueOf(lastday));
         examNotice.setQuestionIds(buffer.toString());
         questionService.saveExamNotice(examNotice,userView);
     }

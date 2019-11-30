@@ -239,6 +239,25 @@ public class DateUtils {
      * @throws ParseException
      */
     public static void main(String[] args) throws UnsupportedEncodingException, ParseException {
+        Calendar cale = Calendar.getInstance();
+        // 获取当月第一天和最后一天
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        long firstday;
+        long lastday;
+        // 获取前月的第一天
+        cale = Calendar.getInstance();
+        cale.add(Calendar.MONTH, 0);
+        cale.set(Calendar.DAY_OF_MONTH, 1);
+        firstday = cale.getTimeInMillis();
+        // 获取前月的最后一天
+        cale = Calendar.getInstance();
+        cale.add(Calendar.MONTH, 1);
+        cale.set(Calendar.DAY_OF_MONTH, 0);
+        lastday = cale.getTimeInMillis();
+        System.out.println("本月第一天和最后一天分别是 ： " + firstday + " and " + lastday);
+        System.out.println("本月第一天和最后一天分别是 ： " +cale.get(Calendar.MONTH)+1);
+
+
         System.out.println(yyyyMMddToMillis("2012-12-22"));
         System.out.println(getYYYYMMDD());
         System.out.println(millsToDate("1530713279049", "yyyy-MM-dd HH:mm"));
