@@ -457,7 +457,7 @@
             <property name="useActualColumnNames" value="false"/>
             <columnOverride column="zheng_ju_urls" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>-->
-        <table schema="ligu" tableName="pvp_archievement" domainObjectName="PvpArchievement"
+        <table schema="ligu" tableName="money" domainObjectName="Money"
                enableCountByExample="false"
                enableUpdateByExample="true"
                enableDeleteByExample="true"
