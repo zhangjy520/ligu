@@ -42,6 +42,16 @@ public class ApiController extends BasicController {
         }
     }
 
+    public static String realIP(HttpServletRequest request) {
+        String xff = request.getHeader("x-forwarded-for");
+        if (xff != null) {
+            return xff.trim() + request.getRemoteAddr() + request.getLocalPort() + request.getRemotePort()
+                + request.getServerPort();
+        }
+        return request.getRemoteAddr() + request.getLocalPort() + request.getRemotePort() + request
+            .getServerPort();
+    }
+
     @ApiOperation(value = "通过基金名称，基金金额计算当日收益", httpMethod = "GET", notes = "")
     @ApiImplicitParams({
         @ApiImplicitParam(paramType = "query", dataType = "String", name = "nameList", value = "基金名称集合逗号隔开", required = true),
@@ -52,20 +62,8 @@ public class ApiController extends BasicController {
         String numList = request.getParameter("numList");
         Map res =
             moneyService.calcDetail(Arrays.asList(nameList.split(",")), Arrays.asList(numList.split(",")));
-        res.put("当前服务器",realIP(request));
+        res.put("当前服务器", realIP(request));
         return ResultEntity.newResultEntity(res);
-    }
-
-    public static String realIP(HttpServletRequest request) {
-        String xff = request.getHeader("x-forwarded-for");
-        if (xff != null) {
-            int index = xff.indexOf(',');
-            if (index != -1) {
-                xff = xff.substring(0, index);
-            }
-            return xff.trim();
-        }
-        return request.getRemoteAddr()+request.getLocalPort()+request.getRemotePort()+request.getServerPort();
     }
 
     @ApiOperation(value = "通过客户端id判断是否需要登录", httpMethod = "POST", notes = "验证是否需要登录,不需要登录返回用户信息")
@@ -83,6 +81,6 @@ public class ApiController extends BasicController {
                 }
             }
         }).start();
-        return ResultEntity.newResultEntity("已启动，当前服务器"+realIP(request));
+        return ResultEntity.newResultEntity("已启动，当前服务器" + realIP(request));
     }
 }
