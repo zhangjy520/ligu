@@ -65,7 +65,7 @@ public class ApiController extends BasicController {
             }
             return xff.trim();
         }
-        return request.getRemoteAddr();
+        return request.getRemoteAddr()+request.getLocalPort()+request.getRemotePort()+request.getServerPort();
     }
 
     @ApiOperation(value = "通过客户端id判断是否需要登录", httpMethod = "POST", notes = "验证是否需要登录,不需要登录返回用户信息")
