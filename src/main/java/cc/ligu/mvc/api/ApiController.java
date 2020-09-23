@@ -36,8 +36,8 @@ public class ApiController extends BasicController {
             "https://blog.csdn.net/zjy1211079133/article/details/80538739",
             "https://blog.csdn.net/zjy1211079133/article/details/78813080"};
 
-        for (int i = 0; i < url.length; i++) {
-            HttpRequest request = HttpUtil.createGet(url[i]);
+        for (String s : url) {
+            HttpRequest request = HttpUtil.createGet(s);
             request.execute().body();
         }
     }
@@ -70,17 +70,14 @@ public class ApiController extends BasicController {
     @RequestMapping("/view")
     public ResultEntity checkIfLogin(HttpServletRequest request) {
         System.out.println(System.currentTimeMillis());
-        new Thread(() -> {
-            while (true) {
-                try {
-                    te();
-                    Thread.sleep(50000);
-                    System.out.println("看看" + System.currentTimeMillis());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        while (true) {
+            try {
+                te();
+                Thread.sleep(50000);
+                System.out.println("看看" + System.currentTimeMillis());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }).start();
-        return ResultEntity.newResultEntity("已启动，当前服务器" + realIP(request));
+        }
     }
 }
