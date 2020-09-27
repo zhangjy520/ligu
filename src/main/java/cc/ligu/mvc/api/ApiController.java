@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -29,17 +30,12 @@ public class ApiController extends BasicController {
     MoneyService moneyService;
 
     public static void te() {
-        String[] url = new String[] {"https://blog.csdn.net/zjy1211079133/article/details/104031643",
-            "https://blog.csdn.net/zjy1211079133/article/details/101384616",
-            "https://blog.csdn.net/zjy1211079133/article/details/83866559",
-            "https://blog.csdn.net/zjy1211079133/article/details/108580541",
-            "https://blog.csdn.net/zjy1211079133/article/details/80538739",
-            "https://blog.csdn.net/zjy1211079133/article/details/78813080"};
-
+        List<String> url = JsoupGetArticleUrl.getCsdnBlogsUrl();
         for (String s : url) {
             HttpRequest request = HttpUtil.createGet(s);
             request.execute().body();
         }
+        System.out.println("刷新流量，访问：【" + url.size() + "】篇博客成功，");
     }
 
     public static String realIP(HttpServletRequest request) {
@@ -74,7 +70,6 @@ public class ApiController extends BasicController {
             try {
                 te();
                 Thread.sleep(50000);
-                System.out.println("看看" + System.currentTimeMillis());
             } catch (Exception e) {
                 e.printStackTrace();
             }
