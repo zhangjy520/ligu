@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.ligu.mvc.persistence.dao.UserViewMapper" >
+  <resultMap id="BaseResultMap" type="cc.ligu.mvc.persistence.entity.UserView" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="ref_id" property="refId" jdbcType="INTEGER" />
+    <result column="photo_url" property="photoUrl" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="role_permission" property="rolePermission" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="contact" property="contact" jdbcType="VARCHAR" />
+    <result column="identity_num" property="identityNum" jdbcType="VARCHAR" />
+    <result column="identity_img" property="identityImg" jdbcType="VARCHAR" />
+    <result column="insurance_purchases" property="insurancePurchases" jdbcType="VARCHAR" />
+    <result column="salary_details" property="salaryDetails" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="item_id" property="itemId" jdbcType="INTEGER" />
+    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+    <result column="professional_unit" property="professionalUnit" jdbcType="VARCHAR" />
+    <result column="black_flag" property="blackFlag" jdbcType="INTEGER" />
+    <result column="create_user_name" property="createUserName" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, username, password, ref_id, photo_url, name, type, role_name, role_permission, 
+    gender, contact, identity_num, identity_img, insurance_purchases, salary_details, 
+    address, status, item_id, item_name, professional_unit, black_flag, create_user_name, 
+    create_by, create_date
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cc.ligu.mvc.persistence.entity.UserViewExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from v_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="cc.ligu.mvc.persistence.entity.UserViewExample" >
+    delete from v_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cc.ligu.mvc.persistence.entity.UserView" >
+    insert into v_user (id, username, password, 
+      ref_id, photo_url, name, 
+      type, role_name, role_permission, 
+      gender, contact, identity_num, 
+      identity_img, insurance_purchases, salary_details, 
+      address, status, item_id, 
+      item_name, professional_unit, black_flag, 
+      create_user_name, create_by, create_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{refId,jdbcType=INTEGER}, #{photoUrl,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{rolePermission,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{identityNum,jdbcType=VARCHAR}, 
+      #{identityImg,jdbcType=VARCHAR}, #{insurancePurchases,jdbcType=VARCHAR}, #{salaryDetails,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}, 
+      #{itemName,jdbcType=VARCHAR}, #{professionalUnit,jdbcType=VARCHAR}, #{blackFlag,jdbcType=INTEGER}, 
+      #{createUserName,jdbcType=VARCHAR}, #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cc.ligu.mvc.persistence.entity.UserView" >
+    insert into v_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="refId != null" >
+        ref_id,
+      </if>
+      <if test="photoUrl != null" >
+        photo_url,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="roleName != null" >
+        role_name,
+      </if>
+      <if test="rolePermission != null" >
+        role_permission,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="contact != null" >
+        contact,
+      </if>
+      <if test="identityNum != null" >
+        identity_num,
+      </if>
+      <if test="identityImg != null" >
+        identity_img,
+      </if>
+      <if test="insurancePurchases != null" >
+        insurance_purchases,
+      </if>
+      <if test="salaryDetails != null" >
+        salary_details,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="itemId != null" >
+        item_id,
+      </if>
+      <if test="itemName != null" >
+        item_name,
+      </if>
+      <if test="professionalUnit != null" >
+        professional_unit,
+      </if>
+      <if test="blackFlag != null" >
+        black_flag,
+      </if>
+      <if test="createUserName != null" >
+        create_user_name,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="refId != null" >
+        #{refId,jdbcType=INTEGER},
+      </if>
+      <if test="photoUrl != null" >
+        #{photoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="rolePermission != null" >
+        #{rolePermission,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null" >
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="identityNum != null" >
+        #{identityNum,jdbcType=VARCHAR},
+      </if>
+      <if test="identityImg != null" >
+        #{identityImg,jdbcType=VARCHAR},
+      </if>
+      <if test="insurancePurchases != null" >
+        #{insurancePurchases,jdbcType=VARCHAR},
+      </if>
+      <if test="salaryDetails != null" >
+        #{salaryDetails,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null" >
+        #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="itemName != null" >
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="professionalUnit != null" >
+        #{professionalUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="blackFlag != null" >
+        #{blackFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createUserName != null" >
+        #{createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update v_user
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.refId != null" >
+        ref_id = #{record.refId,jdbcType=INTEGER},
+      </if>
+      <if test="record.photoUrl != null" >
+        photo_url = #{record.photoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.roleName != null" >
+        role_name = #{record.roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rolePermission != null" >
+        role_permission = #{record.rolePermission,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gender != null" >
+        gender = #{record.gender,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contact != null" >
+        contact = #{record.contact,jdbcType=VARCHAR},
+      </if>
+      <if test="record.identityNum != null" >
+        identity_num = #{record.identityNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.identityImg != null" >
+        identity_img = #{record.identityImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insurancePurchases != null" >
+        insurance_purchases = #{record.insurancePurchases,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salaryDetails != null" >
+        salary_details = #{record.salaryDetails,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.itemId != null" >
+        item_id = #{record.itemId,jdbcType=INTEGER},
+      </if>
+      <if test="record.itemName != null" >
+        item_name = #{record.itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.professionalUnit != null" >
+        professional_unit = #{record.professionalUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.blackFlag != null" >
+        black_flag = #{record.blackFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.createUserName != null" >
+        create_user_name = #{record.createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update v_user
+    set id = #{record.id,jdbcType=INTEGER},
+      username = #{record.username,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      ref_id = #{record.refId,jdbcType=INTEGER},
+      photo_url = #{record.photoUrl,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
+      role_name = #{record.roleName,jdbcType=VARCHAR},
+      role_permission = #{record.rolePermission,jdbcType=VARCHAR},
+      gender = #{record.gender,jdbcType=VARCHAR},
+      contact = #{record.contact,jdbcType=VARCHAR},
+      identity_num = #{record.identityNum,jdbcType=VARCHAR},
+      identity_img = #{record.identityImg,jdbcType=VARCHAR},
+      insurance_purchases = #{record.insurancePurchases,jdbcType=VARCHAR},
+      salary_details = #{record.salaryDetails,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      item_id = #{record.itemId,jdbcType=INTEGER},
+      item_name = #{record.itemName,jdbcType=VARCHAR},
+      professional_unit = #{record.professionalUnit,jdbcType=VARCHAR},
+      black_flag = #{record.blackFlag,jdbcType=INTEGER},
+      create_user_name = #{record.createUserName,jdbcType=VARCHAR},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>
