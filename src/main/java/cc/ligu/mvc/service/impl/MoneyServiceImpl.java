@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import cc.ligu.common.service.BasicService;
 import cc.ligu.mvc.persistence.dao.MoneyMapper;
@@ -30,6 +31,30 @@ public class MoneyServiceImpl extends BasicService implements MoneyService {
 
     @Autowired
     MoneyMapper moneyMapper;
+
+    public static void main(String[] args) {
+        String base = "https://www.tvmao.com/drama/XWNfZG4i/episode/";
+        for (int i = 1; i <= 30; i++) {
+            base+= (i-1)/3+"-"+i;
+            System.out.println(base+"：第"+i+"集\r\n"+getText(parseUrl(base)));
+            base = "https://www.tvmao.com/drama/XWNfZG4i/episode/";
+        }
+    }
+    public static String getText(Document document){
+        Elements contents = document.getElementsByTag("article").get(0).getElementsByTag("p");
+        StringBuffer sb = new StringBuffer();
+        contents.forEach(f->{
+            sb.append(f.text()+"\r\n");
+        });
+        return sb.toString();
+    }
+    public static Document parseUrl(String url){
+        //http请求
+        HttpRequest request = HttpUtil.createGet(url);
+        String str = request.execute().body();
+        //Jsoup解析html
+        return Jsoup.parse(str);
+    }
 
     public static Document parseHtml(String searchKey) throws UnsupportedEncodingException {
         String baseUrl = "https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&tn=baidu" + "&wd=" + URLEncoder
@@ -58,7 +83,7 @@ public class MoneyServiceImpl extends BasicService implements MoneyService {
 
     @Override
     public Map calcDetail(List<String> nameList, List<String> muchList) {
-        Map res = new HashMap();
+        Map res = new TreeMap();
         double total = 0;
         for (int i = 0; i < nameList.size(); i++) {
             String fuDu = queryMoneyDetail(nameList.get(i));
