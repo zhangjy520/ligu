@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -83,7 +84,7 @@ public class MoneyServiceImpl extends BasicService implements MoneyService {
 
     @Override
     public Map calcDetail(List<String> nameList, List<String> muchList) {
-        Map res = new TreeMap();
+        Map res = new LinkedHashMap();
         double total = 0;
         for (int i = 0; i < nameList.size(); i++) {
             String fuDu = queryMoneyDetail(nameList.get(i));
