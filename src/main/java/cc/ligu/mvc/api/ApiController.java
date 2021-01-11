@@ -62,6 +62,17 @@ public class ApiController extends BasicController {
         return ResultEntity.newResultEntity(res);
     }
 
+    @ApiOperation(value = "test", httpMethod = "POST", notes = "")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "query", dataType = "String", name = "nameList", value = "基金名称集合逗号隔开", required = true),
+        @ApiImplicitParam(paramType = "query", dataType = "String", name = "numList", value = "基金金额集合逗号隔开", required = true),})
+    @RequestMapping("/queryMoney1")
+    public ResultEntity queryMoney1(HttpServletRequest request) {
+        String nameList = request.getParameter("nameList");
+
+        return ResultEntity.newResultEntity(nameList);
+    }
+
     @ApiOperation(value = "通过客户端id判断是否需要登录", httpMethod = "POST", notes = "验证是否需要登录,不需要登录返回用户信息")
     @RequestMapping("/view")
     public ResultEntity checkIfLogin(HttpServletRequest request) {
