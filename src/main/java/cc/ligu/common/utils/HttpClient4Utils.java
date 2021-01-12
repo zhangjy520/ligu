@@ -275,12 +275,13 @@ public class HttpClient4Utils {
         return responseContent;
     }
 
-    public static ResultEntity test(String appId){
+    public static ResultEntity test(String appId) throws InterruptedException {
 
         AtomicInteger atomicInteger = new AtomicInteger(0);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
+            Thread.sleep(100);
             new Thread(() -> {
-                for (int j = 0; j < 600; j++) {
+                for (int j = 0; j < 60; j++) {
                     System.out.println(atomicInteger.incrementAndGet());
                     //1w 异常12次
                     //String serverUrl ="http://36.7.109.47:7080/im-callback/V1.0/imcallback?CallbackCommand=C2C.CallbackBeforeSendMsg&ClientIP=27.17.60.148&OptPlatform=Web&SdkAppid=1400461348&appId=zjy_test2&contenttype=json";
