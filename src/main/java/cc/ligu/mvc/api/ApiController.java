@@ -70,7 +70,7 @@ public class ApiController extends BasicController {
     @ApiImplicitParams({
         @ApiImplicitParam(paramType = "query", dataType = "String", name = "appId", value = "appId", required = true)})
     @RequestMapping("/test1")
-    public ResultEntity test1(HttpServletRequest request) {
+    public ResultEntity test1(HttpServletRequest request) throws InterruptedException {
         String appId = request.getParameter("appId");
         return HttpClient4Utils.test(appId);
     }
