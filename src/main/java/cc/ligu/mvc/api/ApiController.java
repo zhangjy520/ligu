@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import cc.ligu.common.controller.BasicController;
 import cc.ligu.common.entity.ResultEntity;
+import cc.ligu.common.utils.HttpClient4Utils;
 import cc.ligu.mvc.persistence.entity.AppConfig;
 import cc.ligu.mvc.service.MoneyService;
 import cn.hutool.http.HttpRequest;
@@ -66,10 +67,12 @@ public class ApiController extends BasicController {
         return ResultEntity.newResultEntity(res);
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/queryMoney1", method = RequestMethod.POST)
-    public ResultEntity queryMoney1(HttpServletRequest request, AppConfig appConfig) {
-        return ResultEntity.newResultEntity(appConfig);
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "query", dataType = "String", name = "appId", value = "appId", required = true)})
+    @RequestMapping("/test1")
+    public ResultEntity test1(HttpServletRequest request) {
+        String appId = request.getParameter("appId");
+        return HttpClient4Utils.test(appId);
     }
 
     @ApiOperation(value = "通过客户端id判断是否需要登录", httpMethod = "POST", notes = "验证是否需要登录,不需要登录返回用户信息")
